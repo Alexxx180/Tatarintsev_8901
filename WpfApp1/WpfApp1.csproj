@@ -12,9 +12,11 @@
     <None Remove="AbsoluteBlack.jpg" />
     <None Remove="ActiveTask.png" />
     <None Remove="AG.png" />
+    <None Remove="AG2.png" />
     <None Remove="AncientArtifact.png" />
     <None Remove="AntidoteItem.png" />
     <None Remove="ATK.png" />
+    <None Remove="ATK2.png" />
     <None Remove="BandageBootsItems.png" />
     <None Remove="BandageItem.png" />
     <None Remove="Battle1.bmp" />
@@ -24,15 +26,18 @@
     <None Remove="Bones.png" />
     <None Remove="BonesDied.ogg" />
     <None Remove="Boots.png" />
+    <None Remove="Boots2.png" />
     <None Remove="ChestClosed%28ver1%29.png" />
     <None Remove="ChestOpened%28ver1%29.png" />
     <None Remove="CompletedTask.png" />
     <None Remove="CureMenu.png" />
     <None Remove="DEF.png" />
+    <None Remove="DEF2.png" />
     <None Remove="Defence.png" />
     <None Remove="EagleWearsItems.png" />
     <None Remove="EnemyCursor.png" />
     <None Remove="EquipButton.png" />
+    <None Remove="EquipButton2.png" />
     <None Remove="EtherItem.png" />
     <None Remove="FusedItem.png" />
     <None Remove="GetItemsArmor1.png" />
@@ -40,6 +45,7 @@
     <None Remove="GetItemsCustomPants1.png" />
     <None Remove="GetItemsCustomWeapon1.png" />
     <None Remove="Hands.png" />
+    <None Remove="Hands2.png" />
     <None Remove="HealMenu.png" />
     <None Remove="IconDefence1.png" />
     <None Remove="IconPoisoned.png" />
@@ -47,12 +53,17 @@
     <None Remove="ItemsButton.png" />
     <None Remove="ItemsCount.png" />
     <None Remove="Jacket.png" />
+    <None Remove="Jacket2.png" />
     <None Remove="Key.png" />
     <None Remove="KnucledusterItem.png" />
     <None Remove="Legs.png" />
+    <None Remove="Legs2.png" />
     <None Remove="Loc1_1.jpg" />
+    <None Remove="Loc1_2.jpg" />
     <None Remove="Lock.png" />
     <None Remove="Menu.bmp" />
+    <None Remove="Menu2.png" />
+    <None Remove="Menu3.png" />
     <None Remove="Mummy.png" />
     <None Remove="New_game_show.heif" />
     <None Remove="New_game_show.jpg" />
@@ -64,27 +75,46 @@
     <None Remove="person4.png" />
     <None Remove="person5.png" />
     <None Remove="person6.png" />
+    <None Remove="PersonHurts1.png" />
     <None Remove="Pharaoh.png" />
     <None Remove="SP.png" />
+    <None Remove="SP2.png" />
     <None Remove="Spider.png" />
     <None Remove="StatusButton.png" />
     <None Remove="Table.png" />
+    <None Remove="TableBorder1.png" />
     <None Remove="TableMessage1.png" />
     <None Remove="TableMessage2.png" />
     <None Remove="TableMessage3.png" />
     <None Remove="Target.gif" />
     <None Remove="TaskCompleted.png" />
     <None Remove="TasksButton.png" />
+    <None Remove="TimeTurn.png" />
     <None Remove="WalkD1.png" />
     <None Remove="WalkD2.png" />
     <None Remove="WalkL1.png" />
     <None Remove="WalkR1.png" />
     <None Remove="WalkU1.png" />
     <None Remove="WalkU2.png" />
+    <None Remove="Wall1.jpg" />
     <None Remove="Zombie.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="AG2.png" />
+    <Resource Include="ATK2.png" />
+    <Resource Include="Boots2.png" />
+    <Resource Include="DEF2.png" />
+    <Resource Include="EquipButton2.png" />
+    <Resource Include="Hands2.png" />
+    <Resource Include="Jacket2.png" />
+    <Resource Include="Legs2.png" />
+    <Resource Include="Loc1_2.jpg" />
+    <Resource Include="Menu2.png" />
+    <Resource Include="Menu3.png" />
+    <Resource Include="PersonHurts1.png" />
+    <Resource Include="SP2.png" />
+    <Resource Include="TableBorder1.png" />
     <Resource Include="TableMessage2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -277,6 +307,7 @@
     <Resource Include="TasksButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="TimeTurn.png" />
     <Resource Include="WalkD1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -295,6 +326,7 @@
     <Resource Include="WalkU2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Wall1.jpg" />
     <Resource Include="Zombie.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
