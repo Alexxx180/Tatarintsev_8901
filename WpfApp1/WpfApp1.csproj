@@ -58,9 +58,11 @@
     <None Remove="KnucledusterItem.png" />
     <None Remove="Legs.png" />
     <None Remove="Legs2.png" />
+    <None Remove="LevelUpMenu.jpg" />
     <None Remove="Loc1_1.jpg" />
     <None Remove="Loc1_2.jpg" />
     <None Remove="Lock.png" />
+    <None Remove="Materials.png" />
     <None Remove="Menu.bmp" />
     <None Remove="Menu2.png" />
     <None Remove="Menu3.png" />
@@ -80,6 +82,7 @@
     <None Remove="SP.png" />
     <None Remove="SP2.png" />
     <None Remove="Spider.png" />
+    <None Remove="Spider1.png" />
     <None Remove="StatusButton.png" />
     <None Remove="Table.png" />
     <None Remove="TableBorder1.png" />
@@ -87,6 +90,7 @@
     <None Remove="TableMessage2.png" />
     <None Remove="TableMessage3.png" />
     <None Remove="Target.gif" />
+    <None Remove="Target1.png" />
     <None Remove="TaskCompleted.png" />
     <None Remove="TasksButton.png" />
     <None Remove="TimeTurn.png" />
@@ -109,11 +113,14 @@
     <Resource Include="Hands2.png" />
     <Resource Include="Jacket2.png" />
     <Resource Include="Legs2.png" />
+    <Resource Include="LevelUpMenu.jpg" />
     <Resource Include="Loc1_2.jpg" />
+    <Resource Include="Materials.png" />
     <Resource Include="Menu2.png" />
     <Resource Include="Menu3.png" />
     <Resource Include="PersonHurts1.png" />
     <Resource Include="SP2.png" />
+    <Resource Include="Spider1.png" />
     <Resource Include="TableBorder1.png" />
     <Resource Include="TableMessage2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -301,6 +308,7 @@
     <Resource Include="Target.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Target1.png" />
     <Resource Include="TaskCompleted.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
