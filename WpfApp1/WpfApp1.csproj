@@ -17,6 +17,9 @@
     <None Remove="AntidoteItem.png" />
     <None Remove="ATK.png" />
     <None Remove="ATK2.png" />
+    <None Remove="BackImg.png" />
+    <None Remove="BackToAdventure.png" />
+    <None Remove="BackToAdventure2.png" />
     <None Remove="BandageBootsItems.png" />
     <None Remove="BandageItem.png" />
     <None Remove="Battle1.bmp" />
@@ -27,18 +30,23 @@
     <None Remove="BonesDied.ogg" />
     <None Remove="Boots.png" />
     <None Remove="Boots2.png" />
+    <None Remove="CancelImg.png" />
     <None Remove="ChestClosed%28ver1%29.png" />
     <None Remove="ChestOpened%28ver1%29.png" />
     <None Remove="CompletedTask.png" />
+    <None Remove="Confirm.png" />
     <None Remove="CureMenu.png" />
     <None Remove="DEF.png" />
     <None Remove="DEF2.png" />
     <None Remove="Defence.png" />
+    <None Remove="DefenceBeforeImg.png" />
     <None Remove="EagleWearsItems.png" />
     <None Remove="EnemyCursor.png" />
     <None Remove="EquipButton.png" />
     <None Remove="EquipButton2.png" />
+    <None Remove="EscapeBeforeImg.png" />
     <None Remove="EtherItem.png" />
+    <None Remove="FightBeforeImg.png" />
     <None Remove="FusedItem.png" />
     <None Remove="GetItemsArmor1.png" />
     <None Remove="GetItemsCustomBoots1.png" />
@@ -50,6 +58,7 @@
     <None Remove="IconDefence1.png" />
     <None Remove="IconPoisoned.png" />
     <None Remove="InfoButton.png" />
+    <None Remove="ItemsBeforeImg.png" />
     <None Remove="ItemsButton.png" />
     <None Remove="ItemsCount.png" />
     <None Remove="Jacket.png" />
@@ -79,11 +88,17 @@
     <None Remove="person6.png" />
     <None Remove="PersonHurts1.png" />
     <None Remove="Pharaoh.png" />
+    <None Remove="PharaohModel.png" />
+    <None Remove="SettingsButton.png" />
+    <None Remove="SettingsButton1.png" />
+    <None Remove="SkillsAfterImg.png" />
+    <None Remove="SkillsBeforeImg.png" />
     <None Remove="SP.png" />
     <None Remove="SP2.png" />
     <None Remove="Spider.png" />
     <None Remove="Spider1.png" />
     <None Remove="StatusButton.png" />
+    <None Remove="SuperImg.png" />
     <None Remove="Table.png" />
     <None Remove="TableBorder1.png" />
     <None Remove="TableMessage1.png" />
@@ -94,6 +109,10 @@
     <None Remove="TaskCompleted.png" />
     <None Remove="TasksButton.png" />
     <None Remove="TimeTurn.png" />
+    <None Remove="ToNext.png" />
+    <None Remove="ToPrev.png" />
+    <None Remove="TorchImg.png" />
+    <None Remove="TrgtSelectBeforeImg.png" />
     <None Remove="WalkD1.png" />
     <None Remove="WalkD2.png" />
     <None Remove="WalkL1.png" />
@@ -101,16 +120,26 @@
     <None Remove="WalkU1.png" />
     <None Remove="WalkU2.png" />
     <None Remove="Wall1.jpg" />
+    <None Remove="WhipImg.png" />
     <None Remove="Zombie.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="AG2.png" />
     <Resource Include="ATK2.png" />
+    <Resource Include="BackImg.png" />
+    <Resource Include="BackToAdventure.png" />
+    <Resource Include="BackToAdventure2.png" />
     <Resource Include="Boots2.png" />
+    <Resource Include="CancelImg.png" />
+    <Resource Include="Confirm.png" />
     <Resource Include="DEF2.png" />
+    <Resource Include="DefenceBeforeImg.png" />
     <Resource Include="EquipButton2.png" />
+    <Resource Include="EscapeBeforeImg.png" />
+    <Resource Include="FightBeforeImg.png" />
     <Resource Include="Hands2.png" />
+    <Resource Include="ItemsBeforeImg.png" />
     <Resource Include="Jacket2.png" />
     <Resource Include="Legs2.png" />
     <Resource Include="LevelUpMenu.jpg" />
@@ -119,8 +148,14 @@
     <Resource Include="Menu2.png" />
     <Resource Include="Menu3.png" />
     <Resource Include="PersonHurts1.png" />
+    <Resource Include="PharaohModel.png" />
+    <Resource Include="SettingsButton.png" />
+    <Resource Include="SettingsButton1.png" />
+    <Resource Include="SkillsAfterImg.png" />
+    <Resource Include="SkillsBeforeImg.png" />
     <Resource Include="SP2.png" />
     <Resource Include="Spider1.png" />
+    <Resource Include="SuperImg.png" />
     <Resource Include="TableBorder1.png" />
     <Resource Include="TableMessage2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -316,6 +351,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="TimeTurn.png" />
+    <Resource Include="ToNext.png" />
+    <Resource Include="ToPrev.png" />
+    <Resource Include="TorchImg.png" />
+    <Resource Include="TrgtSelectBeforeImg.png" />
     <Resource Include="WalkD1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -335,6 +374,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Wall1.jpg" />
+    <Resource Include="WhipImg.png" />
     <Resource Include="Zombie.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
