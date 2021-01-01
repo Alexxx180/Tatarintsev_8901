@@ -455,7 +455,7 @@
         <Label x:Name="TimeRecordText" Content="Срочно выключай машину! Время: 23:59:59.999" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" Panel.ZIndex="11" Foreground="White" FontSize="36" FontFamily="Cooper Black" Grid.Column="15" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="2" Grid.ColumnSpan="28" Grid.Row="26"/>
 
         <!--Параметры персонажа-->
-        <Label x:Name="Params" Content="Параметры" Grid.ColumnSpan="8" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Franklin Gothic Demi" FontSize="48" Panel.ZIndex="11" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="2" Grid.Row="12" Grid.Column="4"/>
+        <Label x:Name="Params" Content="Параметры" Grid.ColumnSpan="9" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Franklin Gothic Demi" FontSize="48" Panel.ZIndex="11" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="2" Grid.Row="12" Grid.Column="4"/>
         <Label x:Name="ParamsATK" Content="АТК" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Panel.ZIndex="11" FontSize="36" FontFamily="Franklin Gothic Demi" Foreground="White" IsEnabled="False" Visibility="Hidden" Grid.Row="15" Grid.Column="2" Grid.RowSpan="2"/>
         <Label x:Name="ParamsDEF" Content="ЗЩТ" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" FontFamily="Franklin Gothic Demi" FontSize="36" Panel.ZIndex="11" Foreground="White" IsEnabled="False" Visibility="Hidden" Grid.Row="17" Grid.Column="2" Grid.RowSpan="2"/>
         <Label x:Name="ParamsAG" Content="СКР" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" FontFamily="Franklin Gothic Demi" FontSize="36" Panel.ZIndex="11" Foreground="White" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="2" Grid.Row="19" Grid.Column="2" Grid.ColumnSpan="3"/>
@@ -485,6 +485,9 @@
         <!--Экипировка-->
         <Button x:Name="Equipments" Grid.ColumnSpan="9" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Panel.ZIndex="11" FontFamily="Bauhaus 93" FontSize="36" Click="Equipments_Click" Visibility="Hidden" MouseEnter="Equipments_MouseEnter" MouseLeave="Equipments_MouseLeave" Grid.RowSpan="4" Grid.Row="24" Grid.Column="2">
             <Image x:Name="EquipmentsImg" Source="/KnucledusterItem.png" Stretch="Fill"/>
+        </Button>
+        <Button x:Name="Equipments4" Grid.ColumnSpan="9" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Panel.ZIndex="11" FontFamily="Bauhaus 93" FontSize="36" Click="Equipments4_Click" Visibility="Hidden" MouseEnter="Equipments4_MouseEnter" MouseLeave="Equipments4_MouseLeave" Grid.RowSpan="4" Grid.Row="7" Grid.Column="2">
+            <Image x:Name="Equipments4Img" Source="/CoolT-shirt.png" Stretch="Fill"/>
         </Button>
         <Button x:Name="Equip1" Content="Надеть" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" FontFamily="Franklin Gothic Demi" FontSize="38" Click="Equip1_Click" Visibility="Hidden" Grid.RowSpan="2" Grid.Row="15" Grid.Column="32"/>
         <Button x:Name="Remove1" Content="Снять" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" FontFamily="Franklin Gothic Demi" FontSize="40" Click="Remove1_Click" Visibility="Hidden" Grid.Row="15" Grid.Column="37" Grid.RowSpan="2" MouseLeave="Remove1_MouseLeave" MouseEnter="Remove1_MouseEnter"/>

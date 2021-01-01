@@ -50,7 +50,7 @@ namespace WpfApp1
             public Byte EnemyAgility { get; set; }
         }
         public void GetStats() {
-            EnemyName = new string[] { "Паук", "Мумия", "Зомби", "Страж","Фараон" };
+            EnemyName = new string[] { "Паук", "Мумия", "Зомби", "Страж","Фараон", "Угх-зан I" };
             EnemyAppears = new string[] { "", "", "" };
             EnemyTurn = new Byte[] { 60, 30, 0 };
             EnemyHP = new UInt16[] { 0, 0, 0 };
@@ -142,9 +142,13 @@ namespace WpfApp1
         public void Equip()
         {
             Hands = false;
+            Weapon = new Boolean[] { false, false, false, false };
             Jacket = false;
+            Armor = new Boolean[] { false, false, false, false };
             Legs = false;
+            Pants = new Boolean[] { false, false, false, false };
             Boots = false;
+            ArmBoots = new Boolean[] { false, false, false, false };
         }
 
         //[EN] Initialize items count method
@@ -162,9 +166,13 @@ namespace WpfApp1
         public Byte EtherITM { get; set; }
         public Byte FusedITM { get; set; }
         public Boolean Hands { get; set; }
+        public Boolean[] Weapon { get; set; }
         public Boolean Jacket { get; set; }
+        public Boolean[] Armor { get; set; }
         public Boolean Legs { get; set; }
+        public Boolean[] Pants { get; set; }
         public Boolean Boots { get; set; }
+        public Boolean[] ArmBoots { get; set; }
         public UInt16 Materials { get; set; }
     }
 
@@ -243,7 +251,7 @@ namespace WpfApp1
             EnemyRate = 2;
             Rnd1 = 0;
             Rnd2 = 0;
-            BossPharaoh = false;
+            SpecialBattle = 0;
             ItemsDropRate = new Byte[] { 0, 0, 0, 0 };
         }
         public Byte SelectedTarget { get; set; }
@@ -259,7 +267,7 @@ namespace WpfApp1
         public Byte BonesAlive { get; set; }
         public bool TableEN { get; set; }
         public Byte LockIndex { get; set; }
-        public bool BossPharaoh { get; set; }
+        public Byte SpecialBattle { get; set; }
         public Byte[] ItemsDropRate { get; set; }
     }
 
@@ -302,10 +310,10 @@ namespace WpfApp1
             //ImgMove(TableMessage1, 402, 749);
             CheckScreenProperties();
         }
-        public static UInt16[] TimeWorldRecord = new UInt16[] { 0,0,0,0 };
+        public static UInt16[] TimeWorldRecord = new UInt16[] { 0, 0, 0, 0 };
         private void WorldRecord(object sender, EventArgs e)
         {
-            if ((TimeWorldRecord[0]<=23)&& (TimeWorldRecord[1] <= 60) && (TimeWorldRecord[2] <= 60) && (TimeWorldRecord[3] <= 100)) {
+            if ((TimeWorldRecord[0] <= 23) && (TimeWorldRecord[1] <= 60) && (TimeWorldRecord[2] <= 60) && (TimeWorldRecord[3] <= 100)) {
                 TimeWorldRecord[3]++;
                 if (TimeWorldRecord[3] >= 100)
                 {
@@ -340,10 +348,10 @@ namespace WpfApp1
                     else
                         TimeRecordText.Content = "Эй, это уже не шутки! Время: " + TimeWorldRecord[0] + ":0" + TimeWorldRecord[1] + ":0" + TimeWorldRecord[2] + ".0" + TimeWorldRecord[3];
                 }
-                else if (TimeWorldRecord[1]>=30)
+                else if (TimeWorldRecord[1] >= 30)
                 {
                     TimeRecordText.Foreground = Brushes.Green;
-                    if ((TimeWorldRecord[1]>=10)&& (TimeWorldRecord[2] >= 10) && (TimeWorldRecord[3] >= 10))
+                    if ((TimeWorldRecord[1] >= 10) && (TimeWorldRecord[2] >= 10) && (TimeWorldRecord[3] >= 10))
                         TimeRecordText.Content = "Пора передохнуть... Время: " + TimeWorldRecord[0] + ":" + TimeWorldRecord[1] + ":" + TimeWorldRecord[2] + "." + TimeWorldRecord[3];
                     else if ((TimeWorldRecord[1] >= 10) && (TimeWorldRecord[2] >= 10))
                         TimeRecordText.Content = "Пора передохнуть... Время: " + TimeWorldRecord[0] + ":" + TimeWorldRecord[1] + ":" + TimeWorldRecord[2] + ".0" + TimeWorldRecord[3];
@@ -404,6 +412,7 @@ namespace WpfApp1
         Foe.Stats Zombie = new Foe.Stats();
         Foe.Stats Bones = new Foe.Stats();
         Foe.Stats BOSS1 = new Foe.Stats();
+        Foe.Stats SecretBOSS1 = new Foe.Stats();
 
         private void ChbShow(CheckBox Chb)
         {
@@ -427,6 +436,8 @@ namespace WpfApp1
             Bones.PreStats(50, 0, 35, 1, 125);
             BOSS1.GetStats();
             BOSS1.PreStats(75, 0, 40, 1, 500);
+            SecretBOSS1.GetStats();
+            SecretBOSS1.PreStats(50, 0, 50, 1, 350);
         }
 
 
@@ -592,7 +603,7 @@ namespace WpfApp1
             }
             foreach (MediaElement med in MedMS)
             {
-               //MedMove(med, med.Margin.Left * Adoptation.WidthAdBack, med.Margin.Top * Adoptation.HeightAdBack);
+                //MedMove(med, med.Margin.Left * Adoptation.WidthAdBack, med.Margin.Top * Adoptation.HeightAdBack);
                 MedShrink(med, med.Width * Adoptation.WidthAdBack, med.Height * Adoptation.HeightAdBack);
             }
             ///[EN] When fire start, break this, this may make more fun) Or if you want to release where player and Location stands|[RU] Ничего такого, просто способ быстро понять в чём дело, если элементы уехали в сторону
@@ -701,7 +712,7 @@ namespace WpfApp1
             Sets.BonesAlive = 0;
             PharaohAppears.Opacity = 0.1;
             ImgGrid(PharaohAppears, 8, 36);
-            Sets.BossPharaoh = false;
+            Sets.SpecialBattle = 0;
             Adoptation.ImgXbounds = 18;
             Adoptation.ImgYbounds = 34;
             Super1.CurrentLevel = 1;
@@ -853,7 +864,7 @@ namespace WpfApp1
               {  1,1,0,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,0,1,0,0,1,1,1,1,0,1,0,1 },
               {  1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,203,1,0,0,1,1,0,1,0,0,0,1,1,1,1,133,1,1,1,0,0,0,0,1,0,0,1,0,1,0,1,1,0,0,1,0,1,0,1 },
               {  1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,0,0,1,1,1,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,1,0,1,0,1,0,0,0,1,0,1,0,1 },
-              {  1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,1,1,204,0,0,0,0,1,1,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,1,0,1,0,1,0,1,0,1,0,1,0,1 },
+              {  1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,1,1,204,0,0,0,0,1,1,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,1,0,1,0,1,191,1,0,1,0,1,0,1 },
               {  1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,1,0,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,0,0,0,0,0,173,1,1,1,1,1,1,0,1,1,0,1,0,0,1,1,0,1,0,1,0,1 },
               {  1,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,1,0,1,0,0,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,1,1,0,1 },
               {  1,0,1,0,1,0,1,1,1,0,1,0,1,1,1,1,1,0,1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,1,1,1,1,1,0,0,1 },
@@ -877,7 +888,7 @@ namespace WpfApp1
               {  1,0,1,0,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0,1,0,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1 },
               {  1,1,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,0,0,1,0,0,0,1,0,1,0,1,0,1,1,1,0,1,1,0,0,1,1,1,1,0,0,1,1,0,1,0,0,1 },
               {  1,0,0,0,1,0,0,0,0,1,1,0,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,1,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,1,1,0,1 },
-              {  1,0,101,0,1,0,0,0,0,0,0,0,0,0,0,0,0,171,0,0,1,0,1,0,1,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,103,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,1 },
+              {  1,0,101,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,171,0,1,0,1,0,1,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,103,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,1 },
               {  1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
               {  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 } };
         }
@@ -996,8 +1007,8 @@ namespace WpfApp1
         {
             Byte[] grRow = new Byte[] { 23, 15, 21 };
             Byte[] grColumn = new Byte[] { 2, 13, 24 };
-            int[] newHP = { Spider.EnemyMHP, Mummy.EnemyMHP, Zombie.EnemyMHP, Bones.EnemyMHP, BOSS1.EnemyMHP };
-            Uri[] EnemySource = new Uri[] { new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Zombie1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Bones1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Pharaoh.png", UriKind.RelativeOrAbsolute) };
+            int[] newHP = { Spider.EnemyMHP, Mummy.EnemyMHP, Zombie.EnemyMHP, Bones.EnemyMHP, BOSS1.EnemyMHP, SecretBOSS1.EnemyMHP };
+            Uri[] EnemySource = new Uri[] { new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Zombie1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Bones1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Pharaoh.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\UghZan1.png", UriKind.RelativeOrAbsolute) };
             LabShow(BattleText1);
             for (int en = 0; en < newHP.Length; en++)
             {
@@ -1013,7 +1024,7 @@ namespace WpfApp1
             }
             //MedMove(Trgt,x[Sets.SelectedTarget] * Adoptation.WidthAdBack, y[Sets.SelectedTarget] * Adoptation.HeightAdBack);
             Grid.SetRow(TrgtImg, grRow[Sets.SelectedTarget]);
-            if (Foe1.EnemyAppears[0]=="Фараон")
+            if ((Foe1.EnemyAppears[0] == "Фараон") || (Foe1.EnemyAppears[0] == "Угх-зан I"))
                 ImgGrid(TrgtImg, (byte)((Int32)TrgtImg.GetValue(Grid.RowProperty) - 5), (byte)(Int32)TrgtImg.GetValue(Grid.ColumnProperty));
             Grid.SetColumn(TrgtImg, grColumn[Sets.SelectedTarget]);
             HPenemyBar.Value = Foe1.EnemyHP[Sets.SelectedTarget];
@@ -1076,7 +1087,7 @@ namespace WpfApp1
                 ImgHide(TableMessage1);
             }
             Byte Interaction = 0;
-            if (Img2.Source.ToString().Contains("person3.png")||Img2.Source.ToString().Contains("WalkR1.png"))
+            if (Img2.Source.ToString().Contains("person3.png") || Img2.Source.ToString().Contains("WalkR1.png"))
             {
                 Interaction = MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1];
             }
@@ -1097,21 +1108,21 @@ namespace WpfApp1
             {
                 case 171:
                     TableMessage1.Source = new BitmapImage(new Uri(@"TableMessage1.png", UriKind.RelativeOrAbsolute));
-                    ImgGrid(TableMessage1,25,13);
+                    ImgGrid(TableMessage1, 25, 13);
                     if (!Sets.TableEN)
                         Sets.TableEN = true;
                     ImgShow(TableMessage1);
                     break;
                 case 172:
                     TableMessage1.Source = new BitmapImage(new Uri(@"TableMessage2.png", UriKind.RelativeOrAbsolute));
-                    ImgGrid(TableMessage1,28,39);
+                    ImgGrid(TableMessage1, 17, 10);
                     if (!Sets.TableEN)
                         Sets.TableEN = true;
                     ImgShow(TableMessage1);
                     break;
                 case 173:
                     TableMessage1.Source = new BitmapImage(new Uri(@"TableMessage3.png", UriKind.RelativeOrAbsolute));
-                    ImgGrid(TableMessage1,2,33);
+                    ImgGrid(TableMessage1, 2, 33);
                     if (!Sets.TableEN)
                         Sets.TableEN = true;
                     ImgShow(TableMessage1);
@@ -1184,12 +1195,19 @@ namespace WpfApp1
                     else
                         Img2.Source = new BitmapImage(new Uri(@"WalkU1.png", UriKind.RelativeOrAbsolute));
 
-                    if (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 0)
+                    if ((MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 191))
                     {
                         Adoptation.ImgYbounds -= 1;
                         Img2.SetValue(Grid.RowProperty, Adoptation.ImgYbounds);
+                        if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 191)
+                        {
+                            MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0;
+                            Sets.StepsToBattle--;
+                            MediaShow(Med2);
+                            Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
+                        }
                     }
-
+                    TablesSetInfo();
                     if (Sets.StepsToBattle >= rnd)
                     {
                         ImgHide(Img2);
@@ -1208,10 +1226,19 @@ namespace WpfApp1
                     }
                     else
                         Img2.Source = new BitmapImage(new Uri(@"person4.png", UriKind.RelativeOrAbsolute));
-                    if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 0)
+                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 191))
                     {
                         Adoptation.ImgXbounds -= 1;
                         Img2.SetValue(Grid.ColumnProperty, Adoptation.ImgXbounds);
+                        if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 191)
+                        {
+                            ImgShrink(TrgtImg, 475, 475);
+                            MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0;
+                            Sets.StepsToBattle--;
+                            Sets.SpecialBattle = 200;
+                            Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
+                            MediaShow(Med2);
+                        }
                     }
                     TablesSetInfo();
                     if (Sets.StepsToBattle >= rnd)
@@ -1233,10 +1260,19 @@ namespace WpfApp1
                     else
                         Img2.Source = new BitmapImage(new Uri(@"WalkD1.png", UriKind.RelativeOrAbsolute));
                     //Img2.Source = new BitmapImage(new Uri(@"person1.png", UriKind.RelativeOrAbsolute));
-                    if (MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 0)
+                    if ((MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 191))
                     {
                         Adoptation.ImgYbounds += 1;
                         Img2.SetValue(Grid.RowProperty, Adoptation.ImgYbounds);
+                        if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 191)
+                        {
+                            ImgShrink(TrgtImg, 475, 475);
+                            MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0;
+                            Sets.StepsToBattle--;
+                            Sets.SpecialBattle = 200;
+                            Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
+                            MediaShow(Med2);
+                        }
                     }
                     TablesSetInfo();
                     if (Sets.StepsToBattle >= rnd)
@@ -1258,10 +1294,19 @@ namespace WpfApp1
                     else
                         Img2.Source = new BitmapImage(new Uri(@"person3.png", UriKind.RelativeOrAbsolute));
                     //Img2.Source = new BitmapImage(new Uri(@"person3.png", UriKind.RelativeOrAbsolute));
-                    if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 0)
+                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 191))
                     {
                         Adoptation.ImgXbounds += 1;
                         Img2.SetValue(Grid.ColumnProperty, Adoptation.ImgXbounds);
+                        if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 191)
+                        {
+                            ImgShrink(TrgtImg, 475, 475);
+                            MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0;
+                            Sets.StepsToBattle--;
+                            Sets.SpecialBattle = 200;
+                            Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
+                            MediaShow(Med2);
+                        }
                     }
                     TablesSetInfo();
                     if (Sets.StepsToBattle >= rnd)
@@ -1276,7 +1321,7 @@ namespace WpfApp1
                 }
                 if (e.Key == Key.E)
                 {
-                    
+
                     Uri DoorSound1 = new Uri(@"DoorOpened1.mp3", UriKind.RelativeOrAbsolute);
                     Uri ChestSound1 = new Uri(@"ChestOpened1.mp3", UriKind.RelativeOrAbsolute);
                     Uri BossSound1 = new Uri(@"Horror.mp3", UriKind.RelativeOrAbsolute);
@@ -1285,33 +1330,32 @@ namespace WpfApp1
                     Uri Weapon1 = new Uri(@"GetItemsCustomWeapon1.png", UriKind.RelativeOrAbsolute);
                     Uri Pants1 = new Uri(@"GetItemsCustomPants1.png", UriKind.RelativeOrAbsolute);
                     Uri Boots1 = new Uri(@"GetItemsCustomBoots1.png", UriKind.RelativeOrAbsolute);
-                    ImgShrink(TrgtImg, 475, 475);
-                    Dj(BossSound1);
+                   //Dj(BossSound1);
                     Byte Interaction = 0;
                     Int32[] LocItem = new Int32[] { 0, 0 };
                     if (Img2.Source.ToString().Contains("person3.png"))
                     {
                         LocItem[0] = Adoptation.ImgYbounds;
                         LocItem[1] = Adoptation.ImgXbounds + 1;
-                        Interaction =MapScheme[LocItem[0], LocItem[1]];
+                        Interaction = MapScheme[LocItem[0], LocItem[1]];
                     }
                     else if (Img2.Source.ToString().Contains("person1.png"))
                     {
                         LocItem[0] = Adoptation.ImgYbounds + 1;
                         LocItem[1] = Adoptation.ImgXbounds;
-                        Interaction =MapScheme[LocItem[0], LocItem[1]];
+                        Interaction = MapScheme[LocItem[0], LocItem[1]];
                     }
                     else if (Img2.Source.ToString().Contains("person4.png"))
                     {
                         LocItem[0] = Adoptation.ImgYbounds;
-                        LocItem[1] = Adoptation.ImgXbounds-1;
-                        Interaction =MapScheme[LocItem[0], LocItem[1]];
+                        LocItem[1] = Adoptation.ImgXbounds - 1;
+                        Interaction = MapScheme[LocItem[0], LocItem[1]];
                     }
                     else if (Img2.Source.ToString().Contains("person2.png"))
                     {
-                        LocItem[0] = Adoptation.ImgYbounds-1;
+                        LocItem[0] = Adoptation.ImgYbounds - 1;
                         LocItem[1] = Adoptation.ImgXbounds;
-                        Interaction =MapScheme[LocItem[0], LocItem[1]];
+                        Interaction = MapScheme[LocItem[0], LocItem[1]];
                     }
 
                     switch (Interaction)
@@ -1321,7 +1365,7 @@ namespace WpfApp1
                             CollectKey(KeyImg1, LockImg1);
                             SEF(DoorSound1);
                             MapScheme[LocItem[0], LocItem[1]] = 0;
-                            for (Byte i=0;i<MapScheme.GetLength(0); i++)
+                            for (Byte i = 0; i < MapScheme.GetLength(0); i++)
                             {
                                 for (Byte j = 0; j < MapScheme.GetLength(1); j++)
                                 {
@@ -1374,7 +1418,8 @@ namespace WpfApp1
                         case 133:
                             break;
                         case 161:
-                            Sets.BossPharaoh = true;
+                            ImgShrink(TrgtImg, 475, 475);
+                            Sets.SpecialBattle = 1;
                             Img2.IsEnabled = false;
                             Sound1.Stop();
                             ImgShow(PharaohAppears);
@@ -1382,6 +1427,7 @@ namespace WpfApp1
                             BossAppear1.Tick += new EventHandler(PharaohAppear_Time51);
                             BossAppear1.Interval = new TimeSpan(0, 0, 0, 0, 20);
                             BossAppear1.Start();
+                            Dj(BossSound1);
                             break;
                         case 162:
                             break;
@@ -1392,14 +1438,16 @@ namespace WpfApp1
                             ChestImg1.Source = new BitmapImage(uriSourceCH);
                             ImgShow(ChestMessage1);
                             BAG.Jacket = true;
+                            BAG.Armor[0] = true;
                             SEF(ChestSound1);
-                            ImgGrid(ChestMessage1,22,16);
+                            ImgGrid(ChestMessage1, 22, 16);
                             break;
                         case 202:
                             ImgShow(ChestMessage1);
                             ChestMessage1.Source = new BitmapImage(Boots1);
                             ChestImg2.Source = new BitmapImage(uriSourceCH);
                             BAG.Boots = true;
+                            BAG.ArmBoots[0] = true;
                             SEF(ChestSound1);
                             ImgGrid(ChestMessage1, 19, 8);
                             break;
@@ -1408,6 +1456,7 @@ namespace WpfApp1
                             ChestMessage1.Source = new BitmapImage(Weapon1);
                             ChestImg3.Source = new BitmapImage(uriSourceCH);
                             BAG.Hands = true;
+                            BAG.Weapon[0] = true;
                             SEF(ChestSound1);
                             ImgGrid(ChestMessage1, 2, 18);
                             break;
@@ -1573,7 +1622,7 @@ namespace WpfApp1
         {
             if (PharaohAppears.Opacity < 1)
             {
-                PharaohAppears.Opacity+=0.01;
+                PharaohAppears.Opacity += 0.01;
             } else
             {
                 //ImgGrid(8, 36);
@@ -1582,7 +1631,7 @@ namespace WpfApp1
                     MediaShow(Med2);
                     BossAppear1.Stop();
                 }
-                ImgGrid(PharaohAppears, (byte)((Int32)PharaohAppears.GetValue(Grid.RowProperty)-1), (byte)(Int32)(PharaohAppears.GetValue(Grid.ColumnProperty)));
+                ImgGrid(PharaohAppears, (byte)((Int32)PharaohAppears.GetValue(Grid.RowProperty) - 1), (byte)(Int32)(PharaohAppears.GetValue(Grid.ColumnProperty)));
             }
         }
         private void StatusCalculate()
@@ -1603,7 +1652,7 @@ namespace WpfApp1
                 LabShow(TimeRecordText);
             }
             BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 7, 9 }, new Byte[] { 11, 11 });
-            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 7, 9, Convert.ToByte(HPbar1.GetValue(Grid.RowProperty)), Convert.ToByte(APbar1.GetValue(Grid.RowProperty)), Convert.ToByte(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 2, 2, Convert.ToByte(Convert.ToInt32(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(HPbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(APbar1.GetValue(Grid.ColumnProperty))+1 + (Convert.ToInt32(APbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(ExpBar1.Width) / 32))});
+            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 7, 9, Convert.ToByte(HPbar1.GetValue(Grid.RowProperty)), Convert.ToByte(APbar1.GetValue(Grid.RowProperty)), Convert.ToByte(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 2, 2, Convert.ToByte(Convert.ToInt32(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(HPbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(APbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(ExpBar1.Width) / 32)) });
             Img2.SetValue(Grid.RowProperty, Adoptation.ImgYbounds);
             //Img2.GetValue(Grid.RowProperty);
             Status.IsEnabled = false;
@@ -1659,7 +1708,7 @@ namespace WpfApp1
         }
         private void BarGridX(in ProgressBar[] ProgressBarArray, in Byte[] rows, in Byte[] cols)
         {
-            for (Byte i=0;i<ProgressBarArray.Length;i++)
+            for (Byte i = 0; i < ProgressBarArray.Length; i++)
             {
                 BarGrid(ProgressBarArray[i], rows[i], cols[i]);
             }
@@ -1712,7 +1761,7 @@ namespace WpfApp1
             }
         }
 
-        public static Byte[] EnemyNamesFight= new Byte[] {0,0,0,0};
+        public static Byte[] EnemyNamesFight = new Byte[] { 0, 0, 0, 0 };
         public static UInt16 Mat = 0;
 
         private void EnemiesTotal(in Byte num, in string EnemyKind, in Byte CountEnemy)
@@ -1735,7 +1784,216 @@ namespace WpfApp1
                     break;
             }
         }
-        private void Med2_MediaEnded(object sender, RoutedEventArgs e)
+
+        private void RegularBattle()
+        {
+            CalculateBattleStatus();
+
+            string[] RegularEnemies = new string[] { "Паук", "Мумия", "Зомби", "Страж" };
+            Uri[] RegularEnemiesImg = new Uri[] { new Uri(@"Spider.png", UriKind.RelativeOrAbsolute), new Uri(@"Mummy.png", UriKind.RelativeOrAbsolute), new Uri(@"Zombie.png", UriKind.RelativeOrAbsolute), new Uri(@"Bones.png", UriKind.RelativeOrAbsolute) };
+            Uri RegularBattleTheme1 = new Uri(@"Battle_theme2.mp3", UriKind.RelativeOrAbsolute);
+
+            HeyPlaySomething(RegularBattleTheme1);
+
+            Sets.StepsToBattle = 0;
+            rnd = Random1.Next(5, 20);
+
+            if (Sets.SpecialBattle == 0)
+            {
+                Sets.Rnd1 = Random1.Next(1, 4);
+                Foe1.EnemiesStillAlive = (byte)Sets.Rnd1;
+                for (int ib = 1; ib <= Sets.Rnd1; ib++)
+                {
+                    Sets.Rnd2 = Random1.Next(1, Sets.EnemyRate);
+                    if (Sets.Rnd2 == 1)
+                    {
+                        if (ib == 1)
+                        {
+                            Foe1.EnemyHP[0] = 65;
+                            Img6.Source = new BitmapImage(RegularEnemiesImg[0]);
+                            Foe1.EnemyAppears[0] = RegularEnemies[0];
+                        }
+                        if (ib == 2)
+                        {
+                            Foe1.EnemyHP[1] = 65;
+                            Img7.Source = new BitmapImage(RegularEnemiesImg[0]);
+                            Foe1.EnemyAppears[1] = RegularEnemies[0];
+                        }
+                        if (ib == 3)
+                        {
+                            Foe1.EnemyHP[2] = 65;
+                            Img8.Source = new BitmapImage(RegularEnemiesImg[0]);
+                            Foe1.EnemyAppears[2] = RegularEnemies[0];
+                        }
+                        Exp += 5;
+                        Mat += 5;
+                        Sets.SpiderAlive += 1;
+                        Sets.ItemsDropRate[0] += 1;
+                        if (EnemyNamesFight[0] == 0)
+                        {
+                            if ((EnemyNamesFight[1] != 1) && (EnemyNamesFight[2] != 1) && (EnemyNamesFight[3] != 1))
+                            {
+                                EnemyNamesFight[0] = 1;
+                            }
+                            else if ((EnemyNamesFight[1] != 2) && (EnemyNamesFight[2] != 2) && (EnemyNamesFight[3] != 2))
+                            {
+                                EnemyNamesFight[0] = 2;
+                            }
+                            else
+                            {
+                                EnemyNamesFight[0] = 3;
+                            }
+                        }
+                    }
+                    if (Sets.Rnd2 == 2)
+                    {
+                        if (ib == 1)
+                        {
+                            Foe1.EnemyHP[0] = 83;
+                            Img6.Source = new BitmapImage(RegularEnemiesImg[1]);
+                            Foe1.EnemyAppears[0] = RegularEnemies[1];
+                        }
+                        if (ib == 2)
+                        {
+                            Foe1.EnemyHP[1] = 83;
+                            Img7.Source = new BitmapImage(RegularEnemiesImg[1]);
+                            Foe1.EnemyAppears[1] = RegularEnemies[1];
+                        }
+                        if (ib == 3)
+                        {
+                            Foe1.EnemyHP[2] = 83;
+                            Img8.Source = new BitmapImage(RegularEnemiesImg[1]);
+                            Foe1.EnemyAppears[2] = RegularEnemies[1];
+                        }
+                        Mat += 10;
+                        Exp += 8;
+                        Sets.MummyAlive += 1;
+                        Sets.ItemsDropRate[1] += 1;
+                        if (EnemyNamesFight[1] == 0)
+                        {
+                            if ((EnemyNamesFight[0] != 1) && (EnemyNamesFight[2] != 1) && (EnemyNamesFight[3] != 1))
+                            {
+                                EnemyNamesFight[1] = 1;
+                            }
+                            else if ((EnemyNamesFight[0] != 2) && (EnemyNamesFight[2] != 2) && (EnemyNamesFight[3] != 2))
+                            {
+                                EnemyNamesFight[1] = 2;
+                            }
+                            else
+                            {
+                                EnemyNamesFight[1] = 3;
+                            }
+                        }
+                    }
+                    if (Sets.Rnd2 == 3)
+                    {
+                        if (ib == 1)
+                        {
+                            Foe1.EnemyHP[0] = 101;
+                            Img6.Source = new BitmapImage(RegularEnemiesImg[2]);
+                            Foe1.EnemyAppears[0] = RegularEnemies[2];
+                        }
+                        if (ib == 2)
+                        {
+                            Foe1.EnemyHP[1] = 101;
+                            Img7.Source = new BitmapImage(RegularEnemiesImg[2]);
+                            Foe1.EnemyAppears[1] = RegularEnemies[2];
+                        }
+                        if (ib == 3)
+                        {
+                            Foe1.EnemyHP[2] = 101;
+                            Img8.Source = new BitmapImage(RegularEnemiesImg[2]);
+                            Foe1.EnemyAppears[2] = RegularEnemies[2];
+                        }
+                        Mat += 35;
+                        Exp += 12;
+                        Sets.ZombieAlive += 1;
+                        Sets.ItemsDropRate[2] += 1;
+                        if (EnemyNamesFight[2] == 0)
+                        {
+                            if ((EnemyNamesFight[0] != 1) && (EnemyNamesFight[1] != 1) && (EnemyNamesFight[3] != 1))
+                            {
+                                EnemyNamesFight[2] = 1;
+                            }
+                            else if ((EnemyNamesFight[0] != 2) && (EnemyNamesFight[1] != 2) && (EnemyNamesFight[3] != 2))
+                            {
+                                EnemyNamesFight[2] = 2;
+                            }
+                            else
+                            {
+                                EnemyNamesFight[2] = 3;
+                            }
+                        }
+                    }
+                    if (Sets.Rnd2 == 4)
+                    {
+                        if (ib == 1)
+                        {
+                            Foe1.EnemyHP[0] = 125;
+                            Img6.Source = new BitmapImage(RegularEnemiesImg[3]);
+                            Foe1.EnemyAppears[0] = RegularEnemies[3];
+                        }
+                        if (ib == 2)
+                        {
+                            Foe1.EnemyHP[1] = 125;
+                            Img7.Source = new BitmapImage(RegularEnemiesImg[3]);
+                            Foe1.EnemyAppears[1] = RegularEnemies[3];
+                        }
+                        if (ib == 3)
+                        {
+                            Foe1.EnemyHP[2] = 125;
+                            Img8.Source = new BitmapImage(RegularEnemiesImg[3]);
+                            Foe1.EnemyAppears[2] = RegularEnemies[3];
+                        }
+                        Mat += 75;
+                        Exp += 15;
+                        Sets.BonesAlive += 1;
+                        Sets.ItemsDropRate[3] += 1;
+                        if (EnemyNamesFight[3] == 0)
+                        {
+                            if ((EnemyNamesFight[0] != 1) && (EnemyNamesFight[1] != 1) && (EnemyNamesFight[2] != 1))
+                            {
+                                EnemyNamesFight[3] = 1;
+                            }
+                            else if ((EnemyNamesFight[0] != 2) && (EnemyNamesFight[1] != 2) && (EnemyNamesFight[2] != 2))
+                            {
+                                EnemyNamesFight[3] = 2;
+                            }
+                            else
+                            {
+                                EnemyNamesFight[3] = 3;
+                            }
+                        }
+                    }
+                }
+                //"            "
+                EnemiesTotal(0, RegularEnemies[0], Sets.SpiderAlive);
+                EnemiesTotal(1, RegularEnemies[1], Sets.MummyAlive);
+                EnemiesTotal(2, RegularEnemies[2], Sets.ZombieAlive);
+                EnemiesTotal(3, RegularEnemies[3], Sets.BonesAlive);
+                switch (Sets.Rnd1)
+                {
+                    case 1:
+                        ImgShow(Img6);
+                        break;
+                    case 2:
+                        ImgShowX(new Image[] { Img6, Img7 });
+                        break;
+                    case 3:
+                        ImgShowX(new Image[] { Img6, Img7, Img8 });
+                        break;
+                    default:
+                        ImgShow(Img6);
+                        break;
+                }
+            }
+            else
+            {
+
+            }
+            TimeEnemy();
+        }
+        private void CalculateBattleStatus()
         {
             EnemyNamesFight = new Byte[] { 0, 0, 0, 0 };
             if (Img2.Source.ToString().Contains("WalkU1.png") || Img2.Source.ToString().Contains("WalkU2.png"))
@@ -1766,7 +2024,7 @@ namespace WpfApp1
             AP.Content = APbar.Value + "/" + APbar.Maximum;
             speed = 0;
             Lab2.Foreground = Brushes.Yellow;
-            
+
             LabShowX(new Label[] { LevelText, Lab2, HP, AP, HPtext, APtext });
             ImgHideX(new Image[] { Threasure1, Img1, Img2, PharaohAppears });
             ImgShowX(new Image[] { Img3, Img4, Img5, TimeTurnImg });
@@ -1777,237 +2035,11 @@ namespace WpfApp1
             ChestsAllTurnOff1();
             KeysAllTurnOff1();
             LocksAllTurnOff1();
-            FightMenuBack();
+            if (Sets.SpecialBattle!=200)
+                FightMenuBack();
             ImgGrid(Img6, 23, 2);
 
             Time1.Value = 100;
-            Uri RegularBattleTheme1 = new Uri(@"Battle_theme2.mp3", UriKind.RelativeOrAbsolute);
-            Uri PharaohSource = new Uri(@"Pharaoh.mp3", UriKind.RelativeOrAbsolute);
-            Uri SpiderSRC = new Uri(@"Spider.png", UriKind.RelativeOrAbsolute);
-            Uri MummySRC = new Uri(@"Mummy.png", UriKind.RelativeOrAbsolute);
-            Uri ZombieSRC = new Uri(@"Zombie.png", UriKind.RelativeOrAbsolute);
-            Uri DefenderSRC = new Uri(@"Bones.png", UriKind.RelativeOrAbsolute);
-            Uri PharaohSRC = new Uri(@"Pharaoh.png", UriKind.RelativeOrAbsolute);
-            if (!Sets.BossPharaoh)
-                HeyPlaySomething(RegularBattleTheme1);
-            else
-                HeyPlaySomething(PharaohSource);
-            Sets.StepsToBattle = 0;
-            rnd = Random1.Next(5, 20);
-            if (!Sets.BossPharaoh)
-            {
-                Sets.Rnd1 = Random1.Next(1, 4);
-                Foe1.EnemiesStillAlive = (byte)Sets.Rnd1;
-                for (int ib = 1; ib <= Sets.Rnd1; ib++)
-                {
-                    Sets.Rnd2 = Random1.Next(1, Sets.EnemyRate);
-                    if (Sets.Rnd2 == 1)
-                    {
-                        if (ib == 1)
-                        {
-                            Foe1.EnemyHP[0] = 65;
-                            Img6.Source = new BitmapImage(SpiderSRC);
-                            Foe1.EnemyAppears[0] = "Паук";
-                        }
-                        if (ib == 2)
-                        {
-                            Foe1.EnemyHP[1] = 65;
-                            Img7.Source = new BitmapImage(SpiderSRC);
-                            Foe1.EnemyAppears[1] = "Паук";
-                        }
-                        if (ib == 3)
-                        {
-                            Foe1.EnemyHP[2] = 65;
-                            Img8.Source = new BitmapImage(SpiderSRC);
-                            Foe1.EnemyAppears[2] = "Паук";
-                        }
-                        Exp += 5;
-                        Mat += 5;
-                        Sets.SpiderAlive += 1;
-                        Sets.ItemsDropRate[0] += 1;
-                        if (EnemyNamesFight[0] == 0)
-                        {
-                            if ((EnemyNamesFight[1] != 1) && (EnemyNamesFight[2] != 1) && (EnemyNamesFight[3] != 1))
-                            {
-                                EnemyNamesFight[0] = 1;
-                            }
-                            else if ((EnemyNamesFight[1] != 2) && (EnemyNamesFight[2] != 2) && (EnemyNamesFight[3] != 2))
-                            {
-                                EnemyNamesFight[0] = 2;
-                            }
-                            else
-                            {
-                                EnemyNamesFight[0] = 3;
-                            }
-                        }
-                    }
-                    if (Sets.Rnd2 == 2)
-                    {
-                        if (ib == 1)
-                        {
-                            Foe1.EnemyHP[0] = 83;
-                            Img6.Source = new BitmapImage(MummySRC);
-                            Foe1.EnemyAppears[0] = "Мумия";
-                        }
-                        if (ib == 2)
-                        {
-                            Foe1.EnemyHP[1] = 83;
-                            Img7.Source = new BitmapImage(MummySRC);
-                            Foe1.EnemyAppears[1] = "Мумия";
-                        }
-                        if (ib == 3)
-                        {
-                            Foe1.EnemyHP[2] = 83;
-                            Img8.Source = new BitmapImage(MummySRC);
-                            Foe1.EnemyAppears[2] = "Мумия";
-                        }
-                        Mat += 10;
-                        Exp += 8;
-                        Sets.MummyAlive += 1;
-                        Sets.ItemsDropRate[1] += 1;
-                        if (EnemyNamesFight[1] == 0)
-                        {
-                            if ((EnemyNamesFight[0] != 1) && (EnemyNamesFight[2] != 1) && (EnemyNamesFight[3] != 1))
-                            {
-                                EnemyNamesFight[1] = 1;
-                            }
-                            else if ((EnemyNamesFight[0] != 2) && (EnemyNamesFight[2] != 2) && (EnemyNamesFight[3] != 2))
-                            {
-                                EnemyNamesFight[1] = 2;
-                            }
-                            else
-                            {
-                                EnemyNamesFight[1] = 3;
-                            }
-                        }
-                    }
-                    if (Sets.Rnd2 == 3)
-                    {
-                        if (ib == 1)
-                        {
-                            Foe1.EnemyHP[0] = 101;
-                            Img6.Source = new BitmapImage(ZombieSRC);
-                            Foe1.EnemyAppears[0] = "Зомби";
-                        }
-                        if (ib == 2)
-                        {
-                            Foe1.EnemyHP[1] = 101;
-                            Img7.Source = new BitmapImage(ZombieSRC);
-                            Foe1.EnemyAppears[1] = "Зомби";
-                        }
-                        if (ib == 3)
-                        {
-                            Foe1.EnemyHP[2] = 101;
-                            Img8.Source = new BitmapImage(ZombieSRC);
-                            Foe1.EnemyAppears[2] = "Зомби";
-                        }
-                        Mat += 35;
-                        Exp += 12;
-                        Sets.ZombieAlive += 1;
-                        Sets.ItemsDropRate[2] += 1;
-                        if (EnemyNamesFight[2] == 0)
-                        {
-                            if ((EnemyNamesFight[0] != 1) && (EnemyNamesFight[1] != 1) && (EnemyNamesFight[3] != 1))
-                            {
-                                EnemyNamesFight[2] = 1;
-                            }
-                            else if ((EnemyNamesFight[0] != 2) && (EnemyNamesFight[1] != 2) && (EnemyNamesFight[3] != 2))
-                            {
-                                EnemyNamesFight[2] = 2;
-                            }
-                            else
-                            {
-                                EnemyNamesFight[2] = 3;
-                            }
-                        }
-                    }
-                    if (Sets.Rnd2 == 4)
-                    {
-                        if (ib == 1)
-                        {
-                            Foe1.EnemyHP[0] = 125;
-                            Img6.Source = new BitmapImage(DefenderSRC);
-                            Foe1.EnemyAppears[0] = "Страж";
-                        }
-                        if (ib == 2)
-                        {
-                            Foe1.EnemyHP[1] = 125;
-                            Img7.Source = new BitmapImage(DefenderSRC);
-                            Foe1.EnemyAppears[1] = "Страж";
-                        }
-                        if (ib == 3)
-                        {
-                            Foe1.EnemyHP[2] = 125;
-                            Img8.Source = new BitmapImage(DefenderSRC);
-                            Foe1.EnemyAppears[2] = "Страж";
-                        }
-                        Mat += 75;
-                        Exp += 15;
-                        Sets.BonesAlive += 1;
-                        Sets.ItemsDropRate[3] += 1;
-                        if (EnemyNamesFight[3] == 0)
-                        {
-                            if ((EnemyNamesFight[0] != 1) && (EnemyNamesFight[1] != 1) && (EnemyNamesFight[2] != 1))
-                            {
-                                EnemyNamesFight[3] = 1;
-                            }
-                            else if ((EnemyNamesFight[0] != 2) && (EnemyNamesFight[1] != 2) && (EnemyNamesFight[2] != 2))
-                            {
-                                EnemyNamesFight[3] = 2;
-                            }
-                            else
-                            {
-                                EnemyNamesFight[3] = 3;
-                            }
-                        }
-                    }
-                }
-                string spdr = "Паук";
-                string mum = "Мумия";
-                string zomb = "Зомби";
-                string defd = "Страж";
-                //"            "
-                EnemiesTotal(0, spdr, Sets.SpiderAlive);
-                EnemiesTotal(1, mum, Sets.MummyAlive);
-                EnemiesTotal(2, zomb, Sets.ZombieAlive);
-                EnemiesTotal(3, defd, Sets.BonesAlive);
-                switch (Sets.Rnd1)
-                {
-                    case 1:
-                        ImgShow(Img6);
-                        break;
-                    case 2:
-                        ImgShow(Img6);
-                        ImgShow(Img7);
-                        break;
-                    case 3:
-                        ImgShow(Img6);
-                        ImgShow(Img7);
-                        ImgShow(Img8);
-                        break;
-                    default:
-                        ImgShow(Img6);
-                        break;
-                }
-            }
-            else
-            {
-                Sets.Rnd1 = 1;
-                Foe1.EnemiesStillAlive = (byte)Sets.Rnd1;
-                BattleText3.Content = "Фараон: " + Foe1.EnemiesStillAlive;
-                LabShow(BattleText3);
-                Foe1.EnemyAppears[0] = "Фараон";
-                Foe1.EnemyHP[0] = 500;
-                Img6.Source = new BitmapImage(PharaohSRC);
-                //Img6.Margin = new Thickness(Img6.Margin.Left, Img6.Margin.Top - 150 * Adoptation.HeightAdBack, 0, 0);
-                ImgGrid(Img6, 18,2);
-                Img6.Width = 450 * Adoptation.WidthAdBack;
-                Img6.Height = 450 * Adoptation.HeightAdBack;
-                //MedMove(Trgt, Img6.Margin.Left, Img6.Margin.Top);
-                MedShrink(Trgt, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
-                ImgShow(Img6);
-                Exp += 125;
-            }
             if (Super1.PlayerStatus == 0)
             {
                 Icon0.Source = new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute));
@@ -2016,7 +2048,100 @@ namespace WpfApp1
             {
                 Icon0.Source = new BitmapImage(new Uri(@"IconPoisoned.png", UriKind.RelativeOrAbsolute));
             }
+        }
+        private void BossBattle1()
+        {
+            CalculateBattleStatus();
+            Uri PharaohSource = new Uri(@"Pharaoh.mp3", UriKind.RelativeOrAbsolute);
+            Uri PharaohSRC = new Uri(@"Pharaoh.png", UriKind.RelativeOrAbsolute);
+            Sets.Rnd1 = 1;
+            Foe1.EnemiesStillAlive = Convert.ToByte(Sets.Rnd1);
+            BattleText3.Content = "Фараон: " + Foe1.EnemiesStillAlive;
+            LabShow(BattleText3);
+            Foe1.EnemyAppears[0] = "Фараон";
+            Foe1.EnemyHP[0] = 500;
+            Img6.Source = new BitmapImage(PharaohSRC);
+
+            ImgGrid(Img6, 18, 2);
+            ImgShrink(Img6, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
+            MedShrink(Trgt, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
+            ImgShow(Img6);
+
+            Exp += 125;
+            Mat += 250;
+
+            HeyPlaySomething(PharaohSource);
             TimeEnemy();
+        }
+        public static UInt16[] RememberHPAP = {0,0,0,0};
+        public static Byte[] RememberParams = { 0, 0, 0, 0 };
+        private void SecretBossBattle1()
+        {
+            CalculateBattleStatus();
+            Uri SecretSource = new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SecretBossFight1.mp3", UriKind.RelativeOrAbsolute);
+            Uri SecretSRC = new Uri(@"UghZan.png", UriKind.RelativeOrAbsolute);
+
+            Sets.Rnd1 = 1;
+            Foe1.EnemiesStillAlive = Convert.ToByte(Sets.Rnd1);
+            BattleText3.Content = "Угх-зан I: " + Foe1.EnemiesStillAlive;
+            LabShow(BattleText3);
+            Foe1.EnemyAppears[0] = "Угх-зан I";
+            Foe1.EnemyHP[0] = 500;
+            Img6.Source = new BitmapImage(SecretSRC);
+
+            ImgGrid(Img6, 18, 2);
+            ImgShrink(Img6, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
+            ImgShow(Img6);
+
+            Byte GameSpeed1 = Convert.ToByte(50/GameSpeed.Value);
+            timer8 = new System.Windows.Threading.DispatcherTimer();
+            timer8.Tick += new EventHandler(SeriousSwitch_Time_Tick45);
+            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
+            timer8.Start();
+            
+            RememberHPAP[0] = Convert.ToUInt16(HPbar.Value);
+            RememberHPAP[1] = Convert.ToUInt16(APbar.Value);
+            RememberHPAP[2] = Super1.MaxHP;
+            RememberHPAP[3] = Super1.MaxAP;
+            RememberParams[0] = Super1.Attack;
+            RememberParams[1] = Super1.Defence;
+            RememberParams[2] = Super1.Speed;
+            RememberParams[3] = Super1.Special;
+
+            APtext.Content = "БР";
+            APbar.Maximum = 200;
+            APbar.Value = APbar.Maximum;
+            APbar.Width= APbar.Maximum;
+            AP.Content = APbar.Value + "/" + APbar.Maximum;
+            HPbar.Maximum = 200;
+            HPbar.Value = HPbar.Maximum;
+            HPbar.Width = HPbar.Maximum;
+            HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+            Super1.Attack = 100;
+            Super1.Defence = 35;
+
+            Exp += 250;
+            Mat += 500;
+
+            HeyPlaySomething(SecretSource);
+            TimeEnemy();
+        }
+        private void Med2_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            switch (Sets.SpecialBattle)
+            {
+                case 0:
+                    RegularBattle();
+                    break;
+                case 1:
+                    BossBattle1();
+                    break;
+                case 200:
+                    SecretBossBattle1();
+                    break;
+                default:
+                    break;
+            }
         }
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
@@ -2030,8 +2155,8 @@ namespace WpfApp1
         {
             // LabMove(BattleText1, 473 * Adoptation.WidthAdBack, 5 * Adoptation.HeightAdBack);
             // LabShrink(BattleText1, 48 * Adoptation.WidthAdBack);
-            LabShow(BattleText1);
-            Uri[] EnemySource = new Uri[] { new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Zombie1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Bones1.png", UriKind.RelativeOrAbsolute),new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Pharaoh.png", UriKind.RelativeOrAbsolute) };
+            //LabShow(BattleText1);
+            Uri[] EnemySource = new Uri[] { new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Zombie1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Bones1.png", UriKind.RelativeOrAbsolute),new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Pharaoh.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\UghZan1.png", UriKind.RelativeOrAbsolute) };
             if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Паук")
             {
                 BattleText1.Content = "Паук";
@@ -2065,6 +2190,13 @@ namespace WpfApp1
                 BattleText1.Content = "Фараон";
                 HPenemyBar.Maximum = 500;
                 EnemyImg.Source = new BitmapImage(EnemySource[4]);
+                // HPenemyBar.Width = HPenemyBar.Maximum * Adoptation.WidthAdBack;
+            }
+            if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Угх-зан I")
+            {
+                BattleText1.Content = "Угх-Зан I";
+                HPenemyBar.Maximum = 350;
+                EnemyImg.Source = new BitmapImage(EnemySource[5]);
                 // HPenemyBar.Width = HPenemyBar.Maximum * Adoptation.WidthAdBack;
             }
             LabShow(HPenemy);
@@ -2224,8 +2356,28 @@ namespace WpfApp1
             Super1.DefenseState = 2;
             FightMenuMakesDisappear();
             Time1.Value = 0;
-            Img5.Source = new BitmapImage(new Uri(@"IconDefence1.png", UriKind.RelativeOrAbsolute));
-            Img4.Source = new BitmapImage(new Uri(@"Defence.png", UriKind.RelativeOrAbsolute));
+            HP.Foreground = Brushes.White;
+            if (Sets.SpecialBattle == 200)
+            {
+                Img4.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute));
+                Img5.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute));
+                if (HPbar.Value + 40 < HPbar.Maximum)
+                    HPbar.Value += 40;
+                else
+                    HPbar.Value = HPbar.Maximum;
+                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+                if (APbar.Value + 20 < APbar.Maximum)
+                    APbar.Value += 20;
+                else
+                    APbar.Value = APbar.Maximum;
+                AP.Content = APbar.Value + "/" + APbar.Maximum;
+
+            }
+            else
+            {
+                Img5.Source = new BitmapImage(new Uri(@"IconDefence1.png", UriKind.RelativeOrAbsolute));
+                Img4.Source = new BitmapImage(new Uri(@"Defence.png", UriKind.RelativeOrAbsolute));
+            }
             Lab2.Foreground = Brushes.White;
             Dj(new Uri(@"Defence.mp3", UriKind.RelativeOrAbsolute));
             Time();
@@ -2236,15 +2388,24 @@ namespace WpfApp1
             if ((Time1.Value == 100) && (HPbar.Value != 0))
             {
                 Super1.DefenseState = 1;
-                var uriSource = new Uri(@"pers5.png", UriKind.RelativeOrAbsolute);
-                var uriSource1 = new Uri(@"person6.png", UriKind.RelativeOrAbsolute);
+                Uri uriSource = new Uri(@"pers5.png", UriKind.RelativeOrAbsolute);
+                Uri uriSource1 = new Uri(@"person6.png", UriKind.RelativeOrAbsolute);
                 if (Super1.PlayerStatus == 0)
                     uriSource1 = new Uri(@"person6.png", UriKind.RelativeOrAbsolute);
                 else
                     uriSource1 = new Uri(@"IconPoisoned.png", UriKind.RelativeOrAbsolute);
+                if (Sets.SpecialBattle == 200)
+                {
+                    uriSource = new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute);
+                    uriSource1 = new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute);
+                }
                 Img4.Source = new BitmapImage(uriSource);
                 Img5.Source = new BitmapImage(uriSource1);
                 FightMenuBack();
+                if (Sets.SpecialBattle == 200)
+                {
+                    BtnHideX(new Button[] { Button4, Items, Abilities });
+                }
                 Lab2.Foreground = Brushes.Yellow;
             }
             else
@@ -2278,7 +2439,7 @@ namespace WpfApp1
                 //Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1 };
                 if (Foe1.EnemyAppears[pos - 1] == Foe1.EnemyName[i])
                 {
-                    Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1 };
+                    Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 };
                     EnemyAttack = FS[i].EnemyAttack;
                     break;
                 }
@@ -2293,7 +2454,7 @@ namespace WpfApp1
                 for (int j = 0; j < Foe1.EnemyName.Length; j++) {
                     if (Foe1.EnemyAppears[i] == Foe1.EnemyName[j])
                     {
-                        Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1 };
+                        Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 };
                         if (Speed < FS[j].EnemySpeed)
                             Speed = FS[j].EnemySpeed;
                     }
@@ -2309,7 +2470,7 @@ namespace WpfApp1
             {
                 if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[i])
                 {
-                    Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1 };
+                    Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 };
                     enemy = FS[i].EnemyName[i];
                     break;
                 }
@@ -2334,7 +2495,25 @@ namespace WpfApp1
         private void EnemyOnAttack(in string enemy, in int dmg)
         {
             //BattleText1.Content = enemy + " атакует!\nРэй получает " + dmg + " урона!";
-            HPbar.Value = HPbar.Value - dmg;
+            if (Sets.SpecialBattle!=200)
+                HPbar.Value = HPbar.Value - dmg;
+            else
+            {
+                if (APbar.Value - 10 >= 0)
+                {
+                    APbar.Value -= 10;
+                    HPbar.Value = HPbar.Value - (dmg - 10);
+                    AP.Content = APbar.Value + "/" + APbar.Maximum;
+                    HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+                }
+                else
+                {
+                    HPbar.Value = HPbar.Value - (dmg - APbar.Value);
+                    APbar.Value = 0;
+                    AP.Content = APbar.Value + "/" + APbar.Maximum;
+                    HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+                }
+            }
             //HP.Margin = new Thickness(HPbar.Margin.Left + HPbar.Width - 1 / Adoptation.WidthAdBack, 38 * Adoptation.HeightAdBack, 0, 0);
             HP.Content = HPbar.Value + "/" + HPbar.Maximum;
             BattleText6.Content = "-" + dmg;
@@ -2342,36 +2521,40 @@ namespace WpfApp1
             HP.Foreground = Brushes.Red;
             //DamageGet = dmg.ToString();
             UInt16 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-            if(timer3 == null)
+            if (Sets.SpecialBattle != 200)
             {
-                timer3 = new System.Windows.Threading.DispatcherTimer();
-                timer3.Tick += new EventHandler(DamageTime_Tick3);
-                timer3.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer3.Start();
-                timer3.IsEnabled = true;
-            }
-            else if (Img4.Source.ToString().Contains("pers5.png")&&(!timer3.IsEnabled)) {
-                timer3 = new System.Windows.Threading.DispatcherTimer();
-                timer3.Tick += new EventHandler(DamageTime_Tick3);
-                timer3.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer3.Start();
-                timer3.IsEnabled = true;
-            }
-            if (timer4 == null)
-            {
-                timer4 = new System.Windows.Threading.DispatcherTimer();
-                timer4.Tick += new EventHandler(HurtTime_Tick4);
-                timer4.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer4.Start();
-                timer4.IsEnabled = true;
-            }
-            else if (!timer4.IsEnabled)
-            {
-                timer4 = new System.Windows.Threading.DispatcherTimer();
-                timer4.Tick += new EventHandler(HurtTime_Tick4);
-                timer4.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer4.Start();
-                timer4.IsEnabled = true;
+                if (timer3 == null)
+                {
+                    timer3 = new System.Windows.Threading.DispatcherTimer();
+                    timer3.Tick += new EventHandler(DamageTime_Tick3);
+                    timer3.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
+                    timer3.Start();
+                    timer3.IsEnabled = true;
+                }   
+                else if (Img4.Source.ToString().Contains("pers5.png")&&(!timer3.IsEnabled)) {
+                    timer3 = new System.Windows.Threading.DispatcherTimer();
+                    timer3.Tick += new EventHandler(DamageTime_Tick3);
+                    timer3.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
+                    timer3.Start();
+                    timer3.IsEnabled = true;
+                }
+            
+                if (timer4 == null)
+                {
+                    timer4 = new System.Windows.Threading.DispatcherTimer();
+                    timer4.Tick += new EventHandler(HurtTime_Tick4);
+                    timer4.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
+                    timer4.Start();
+                    timer4.IsEnabled = true;
+                }
+                else if (!timer4.IsEnabled)
+                {
+                    timer4 = new System.Windows.Threading.DispatcherTimer();
+                    timer4.Tick += new EventHandler(HurtTime_Tick4);
+                    timer4.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
+                    timer4.Start();
+                    timer4.IsEnabled = true;
+                }
             }
             //LabShow(BattleText4);
             GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
@@ -2443,12 +2626,23 @@ namespace WpfApp1
                     EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
                     Enemy = "/Pharaoh.png";
                     break;
+                case "Угх-зан I":
+                    EnemyAnimate = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
+                    Enemy = "/UghZan.png";
+                    break;
                 default:
                     break;
             }
+            //BattleText5.Content = Foe1.EnemyAppears[0];
+            //LabShow(BattleText5);
             Img6.Source = new BitmapImage(new Uri(EnemyAnimate[EnemyAtck[0]], UriKind.RelativeOrAbsolute));
             if (EnemyAtck[0] == EnemyAnimate.Length - 1)
             {
+                if (Sets.SpecialBattle == 200)
+                {
+                    LabHide(BattleText6);
+                    HP.Foreground = Brushes.White;
+                }
                 EnemyAtck[0] = 0;
                 Img6.Source = new BitmapImage(new Uri(Enemy, UriKind.RelativeOrAbsolute));
                 timer5.Stop();
@@ -2481,6 +2675,10 @@ namespace WpfApp1
                 case "Фараон":
                     EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
                     Enemy = "/Pharaoh.png";
+                    break;
+                case "Угх-зан I":
+                    EnemyAnimate = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
+                    Enemy = "/UghZan.png";
                     break;
                 default:
                     break;
@@ -2520,6 +2718,10 @@ namespace WpfApp1
                 case "Фараон":
                     EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
                     Enemy = "/Pharaoh.png";
+                    break;
+                case "Угх-зан I":
+                    EnemyAnimate = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
+                    Enemy = "/UghZan.png";
                     break;
                 default:
                     break;
@@ -2770,19 +2972,21 @@ namespace WpfApp1
         {
             ButtonShow(Button2);
             ButtonShow(Button3);
-            if (!Sets.BossPharaoh)
-                ButtonShow(Button4);
-            else
-            {
-                Button4.Visibility = Visibility.Visible;
+            if (Sets.SpecialBattle != 200) {
+                if (Sets.SpecialBattle == 0)
+                    ButtonShow(Button4);
+                else
+                {
+                    Button4.Visibility = Visibility.Visible;
+                }
+                //if (Super1.CurrentLevel >= 2)
+                ButtonShow(Abilities);
+                //else
+                // {
+                // Abilities.Visibility = Visibility.Visible;
+                // }
+                ButtonShow(Items);
             }
-            //if (Super1.CurrentLevel >= 2)
-            ButtonShow(Abilities);
-            //else
-            // {
-            // Abilities.Visibility = Visibility.Visible;
-            // }
-            ButtonShow(Items);
         }
         private void Trgt_MediaEnded(object sender, RoutedEventArgs e)
         {
@@ -2810,7 +3014,7 @@ namespace WpfApp1
             timer10.Start();
             //BattleText1.Margin = new Thickness(473 * Adoptation.WidthAdBack, 45 * Adoptation.HeightAdBack, 0, 0);
             //BattleText1.FontSize = 48*Adoptation.WidthAdBack;
-            if (Sets.BossPharaoh)
+            if (Sets.SpecialBattle==1)
             {
                 PharaohAura = 25;
             }
@@ -2865,7 +3069,7 @@ namespace WpfApp1
                     CheckFoeCounts(0, (spdr + ": " + Sets.SpiderAlive));
                     if (Sets.SpiderAlive == 0)
                     {
-                        LabShow(BattleText3);
+                       // LabShow(BattleText3);
                         CheckFoeCounts(0, "");
                       //  EnemyNamesFight[0]=0;
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
@@ -2879,7 +3083,7 @@ namespace WpfApp1
                     {
                         CheckFoeCounts(1, "");
                       //  EnemyNamesFight[1] = 0;
-                        LabShow(BattleText4);
+                        //LabShow(BattleText4);
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
                     }
                 }
@@ -2889,7 +3093,7 @@ namespace WpfApp1
                     CheckFoeCounts(2, (zomb + ": " + Sets.ZombieAlive));
                     if (Sets.ZombieAlive == 0)
                     {
-                        LabShow(BattleText5);
+                        //LabShow(BattleText5);
                         CheckFoeCounts(2, "");
                       //  EnemyNamesFight[2] = 0;
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
@@ -2901,7 +3105,7 @@ namespace WpfApp1
                     CheckFoeCounts(3, (defd + ": " + Sets.BonesAlive));
                     if (Sets.BonesAlive == 0)
                     {
-                        LabShow(BattleText6);
+                      //  LabShow(BattleText6);
                         CheckFoeCounts(3, "");
                       //  EnemyNamesFight[3] = 0;
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
@@ -2931,26 +3135,66 @@ namespace WpfApp1
                     }
 
                 }
+                if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Угх-зан I")
+                {
+                    if (Foe1.EnemiesStillAlive == 0)
+                    {
+                        BattleText2.Content = Foe1.EnemyAppears[Sets.SelectedTarget] + " погибает!";
+                        LabShow(BattleText2);
+                        LabHide(BattleText6);
+                        BattleText6.Content = "";
+                        Foe1.EnemyAppears[Sets.SelectedTarget] = "";
+                    }
+
+                }
             }
             GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(HandAttack_Time_Tick8);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
+            if (Sets.SpecialBattle==200)
+            {
+                timer8 = new System.Windows.Threading.DispatcherTimer();
+                timer8.Tick += new EventHandler(SeriousMinigun_Time_Tick39);
+                timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
+                timer8.Start();
+            }
+            else
+            {
+                timer8 = new System.Windows.Threading.DispatcherTimer();
+                timer8.Tick += new EventHandler(HandAttack_Time_Tick8);
+                timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
+                timer8.Start();
+            }
             //Med3.Source = new Uri(@"HandAttack3.avi", UriKind.RelativeOrAbsolute);
             //MediaShow(Med3);
             Dj(new Uri(@"Punch.mp3", UriKind.RelativeOrAbsolute));
             //Med4.Source = new Uri(@"IconRage1.avi", UriKind.RelativeOrAbsolute);
             //MediaShow(Med4);
+            /*timer8 = new System.Windows.Threading.DispatcherTimer();
+            timer8.Tick += new EventHandler(HandAttack_Time_Tick8);
+            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
+            timer8.Start();*/
         }
 
         public static Byte Actions = 0;
+   
+        private void SeriousMinigun_Time_Tick39(object sender, EventArgs e)
+        {
+            string[] SSam = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun14.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun15.png" };
+            string[] IcoSS = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png" };
+            ActionsTickCheck(SSam, IcoSS);
+        }
+        private void SeriousSwitch_Time_Tick45(object sender, EventArgs e)
+        {
+            string[] SSam = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch9.png", };
+            string[] IcoSS = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked10.png", };
+            ActionsTickCheck(SSam, IcoSS);
+        }
         private void HandAttack_Time_Tick8(object sender, EventArgs e)
         {
             string[] HndAt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack10.png" };
             string[] IcoRg = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage10.png" };
             ActionsTickCheck(HndAt, IcoRg);
         }
+
 
         private void Escape_Time_Tick9(object sender, EventArgs e)
         {
@@ -3041,6 +3285,8 @@ namespace WpfApp1
                 else
                     trchsp = Convert.ToUInt16(trchsp * 1.25);
             }
+            if (Foe1.EnemyAppears[0] == "Угх-Зан I")
+                trchsp = 0;
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             Labs[SelectedTrgt].Content = Convert.ToUInt16(trchsp);
             FoesKicked();
@@ -3060,6 +3306,8 @@ namespace WpfApp1
                 else
                     whipsp = Convert.ToUInt16(whipsp * 1.5);
             }
+            if (Foe1.EnemyAppears[0] == "Угх-Зан I")
+                whipsp = 0;
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             Labs[SelectedTrgt].Content = Convert.ToUInt16(whipsp);
             FoesKicked();
@@ -3070,6 +3318,8 @@ namespace WpfApp1
             UInt16 supersp = Convert.ToUInt16(Super1.Special);
             if (Foe1.EnemyAppears[0] != "Фараон")
                 supersp *= 2;
+            if (Foe1.EnemyAppears[0] == "Угх-Зан I")
+                supersp = 0;
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             if (Foe1.EnemyHP[0] != 0)
                 Labs[0].Content = Convert.ToUInt16(supersp);
@@ -3223,11 +3473,21 @@ namespace WpfApp1
             if (Actions == pers.Length - 1)
             {
                 Actions = 0;
-                Img4.Source = new BitmapImage(new Uri("/pers5.png", UriKind.RelativeOrAbsolute));
-                if (Super1.PlayerStatus==1)
-                    Img5.Source = new BitmapImage(new Uri("/IconPoisoned.png", UriKind.RelativeOrAbsolute));
+                if (Sets.SpecialBattle!=200)
+                    Img4.Source = new BitmapImage(new Uri("/pers5.png", UriKind.RelativeOrAbsolute));
                 else
-                    Img5.Source = new BitmapImage(new Uri("/person6.png", UriKind.RelativeOrAbsolute));
+                    Img4.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute));
+                if (Sets.SpecialBattle != 200)
+                {
+                    if (Super1.PlayerStatus == 1)
+                        Img5.Source = new BitmapImage(new Uri("/IconPoisoned.png", UriKind.RelativeOrAbsolute));
+                    else
+                        Img5.Source = new BitmapImage(new Uri("/person6.png", UriKind.RelativeOrAbsolute));
+                }
+                else
+                {
+                    Img5.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute));
+                }
                 AfterAction();
                 timer8.Stop();
             }
@@ -3256,6 +3516,10 @@ namespace WpfApp1
             ButtonHide(Fight);
             ButtonHide(Cancel1);
             FightMenuBack();
+            if (Sets.SpecialBattle == 200)
+            {
+                BtnHideX(new Button[] { Button4, Items, Abilities });
+            }
             LabHide(HPenemy);
             BarHide(HPenemyBar);
             LabHide(BattleText1);
@@ -3357,19 +3621,36 @@ namespace WpfApp1
 
         private void TextOk1_Click(object sender, RoutedEventArgs e)
         {
-            if (!Sets.BossPharaoh)
+            Win.Source = new Uri(@"Win.mp4", UriKind.RelativeOrAbsolute);
+            if (Sets.SpecialBattle == 0)
             {
-                Win.Source = new Uri(@"Win.mp4", UriKind.RelativeOrAbsolute);
                 MediaShow(Win);
                 LabHideX(new Label[] { BattleText1, BattleText2, BattleText3 });
                 ImgHide(Img1);
             }
             else
             {
+                ImgGrid(Img6, 18, 2);
+                ImgShrink(Img6, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
                 LabHideX(new Label[] { BattleText1, BattleText2, BattleText3 });
-                HideAfterBattleMenu();
-                MediaShow(TheEnd);
-                Img1.Source = new BitmapImage(new Uri(@"AbsoluteBlack.jpg", UriKind.RelativeOrAbsolute));
+                switch (Sets.SpecialBattle)
+                {
+                    case 1:
+                        HideAfterBattleMenu();
+                        MediaShow(TheEnd);
+                        Img1.Source = new BitmapImage(new Uri(@"AbsoluteBlack.jpg", UriKind.RelativeOrAbsolute));
+                        break;
+                    case 200:
+                        MediaShow(Win);
+                        LabHideX(new Label[] { BattleText1, BattleText2, BattleText3 });
+                        ImgHide(Img1);
+                        break;
+                    default:
+                        MediaShow(Win);
+                        LabHideX(new Label[] { BattleText1, BattleText2, BattleText3 });
+                        ImgHide(Img1);
+                        break;
+                }
             }
             Sound1.Stop();
             ImgShow(Img1);
@@ -3868,6 +4149,34 @@ namespace WpfApp1
         }
         private void textOk2_Click(object sender, RoutedEventArgs e)
         {
+            ItemsGetSlot1.Content = "";
+            if (Sets.SpecialBattle == 200)
+            {
+                APtext.Content = "ОД";
+                APbar.Maximum = RememberHPAP[3];
+                APbar.Value = RememberHPAP[1];
+                HPbar.Maximum = RememberHPAP[2];
+                HPbar.Value = RememberHPAP[0];
+                Super1.Attack = RememberParams[0];
+                Super1.Defence = RememberParams[1];
+                AP.Content = APbar.Value + "/" + APbar.Maximum;
+                APbar.Width = APbar.Maximum;
+                HPbar.Width = HPbar.Maximum;
+                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+                Sets.SpecialBattle = 0;
+                TrgtImg.Width = 325;
+                TrgtImg.Height = 325;
+                Img6.Width = 325;
+                Img6.Height = 325;
+                Img4.Source = new BitmapImage(new Uri("/pers5.png", UriKind.RelativeOrAbsolute));
+                Img5.Source = new BitmapImage(new Uri("/person6.png",UriKind.RelativeOrAbsolute));
+                BAG.Armor[3] = true;
+                if (Super1.PlayerEQ[1] == 0)
+                    BAG.Jacket = true;
+                ItemsGetSlot1.Content += "Футболка серьёзного \n";
+                LabShow(ItemsGetSlot1);
+            }
+            
             LevelUpCount = 1;
             CurrentNextParams[0] = Super1.Attack;
             CurrentNextParams[1] = Super1.Defence;
@@ -4003,7 +4312,6 @@ namespace WpfApp1
             //ButtonShow(TextOk1);
             //SEF(new Uri(@"LevelUp.mp3", UriKind.RelativeOrAbsolute));
             // Exp = 0;
-            ItemsGetSlot1.Content = "";
             timer2.Stop();
             Byte item = 0;
             if (Sets.ItemsDropRate[0] != 0)
@@ -4132,88 +4440,35 @@ namespace WpfApp1
         {
             SelectTarget();
             AbilitiesMakeDisappear1();
-            ButtonShow(ACT1);
-            ButtonShow(Cancel2);
+            BtnShowX(new Button[] { ACT1, Cancel2 });
+        }
+
+        private void InBattleHighSkillsMenu()
+        {
+            if (ToNextImg.Source.ToString().Contains("ToNext.png"))
+            {
+                BtnHideX(new Button[] { Cure, Heal });
+                CheckAccessAbilities(new Button[] { Torch, Whip, Super }, new Byte[] { 3, 6, 7 }, new Byte[] { 4, 6, 10 });
+                ButtonShow(SwitchAbils);
+                ToNextImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ToPrev.png", UriKind.RelativeOrAbsolute));
+            }
+            else if (ToNextImg.Source.ToString().Contains("ToPrev.png"))
+            {
+                BtnHideX(new Button[] { Torch, Whip, Super });
+                CheckAccessAbilities(new Button[] { Cure, Heal }, new Byte[] { 2, 4 }, new Byte[] { 5, 3 });
+                ButtonShow(SwitchAbils);
+                ToNextImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ToNext.png", UriKind.RelativeOrAbsolute));
+            }
         }
 
         private void Cancel2_Click(object sender, RoutedEventArgs e)
         {
-            //MediaHide(Trgt);
             timer9.Stop();
             BarHide(HPenemyBar);
-            LabHide(HPenemy);
-            LabHide(BattleText1);
-            ImgHide(EnemyImg);
-            ButtonHide(Fight);
-            ButtonHide(ACT1);
-            ButtonHide(ACT2);
-            ButtonHide(Cancel2);
-            ButtonShow(Back1);
-            ImgHide(TrgtImg);
-            if (SwitchAbils.Content.ToString() == "=====>")
-            {
-                ButtonHide(Cure);
-                ButtonHide(Heal);
-                //if (Super1.CurrentLevel >= 3)
-                //  {
-                Torch.Visibility = Visibility.Visible;
-                if (APbar.Value >= 4)
-                    Torch.IsEnabled = true;
-                //  }
-
-                // if (Super1.CurrentLevel >= 6)
-                // {
-                Whip.Visibility = Visibility.Visible;
-                if (APbar.Value >= 6)
-                    Whip.IsEnabled = true;
-                // }
-
-                // if (Super1.CurrentLevel >= 7)
-                //{
-                Super.Visibility = Visibility.Visible;
-                if (APbar.Value >= 10)
-                    Super.IsEnabled = true;
-                //}
-                SwitchAbils.Content = "<=====";
-            }
-            else if (SwitchAbils.Content.ToString() != "=====>")
-            {
-
-                Cure.Visibility = Visibility.Visible;
-                if (APbar.Value >= 1)
-                    Cure.IsEnabled = true;
-                //   if (Super1.CurrentLevel >= 4)
-                // {
-                Heal.Visibility = Visibility.Visible;
-                if (APbar.Value >= 1)
-                    Heal.IsEnabled = true;
-                ButtonShow(SwitchAbils);
-                //  }
-                ButtonHide(Torch);
-                ButtonHide(Whip);
-                ButtonHide(Super);
-                SwitchAbils.Content = "=====>";
-            }
-            /*if (Super1.CurrentLevel >= 4)
-            {
-                if (APbar.Value >= 4)
-                    Heal.IsEnabled = true;
-                Heal.Visibility = Visibility.Visible;
-            }
-            if (Super1.CurrentLevel >= 6)
-            {
-                if (APbar.Value >= 6)
-                    Heal.IsEnabled = true;
-                Whip.IsEnabled = true;
-                Whip.Visibility = Visibility.Visible;
-            }
-            if (Super1.CurrentLevel >= 7)
-            {
-                if (APbar.Value >= 10)
-                    Heal.IsEnabled = true;
-                Super.IsEnabled = true;
-                Super.Visibility = Visibility.Visible;
-            }*/
+            LabHideX(new Label[] { HPenemy, BattleText1 });
+            ImgHideX(new Image[] { EnemyImg, TrgtImg });
+            BtnHideX(new Button[] { Fight, ACT1, ACT2, Cancel2, Back1 });
+            InBattleHighSkillsMenu();
         }
         private void CheckFoeCounts(in Byte selected, in string foestatus)
         {
@@ -4229,18 +4484,10 @@ namespace WpfApp1
             {
                 BattleText5.Content = foestatus;
                 BattleText5.Foreground = Brushes.Red;
-            } /*else
-            {
-                BattleText4.Content = selected;
-                LabShow(BattleText4);
-                BattleText5.Content = EnemyNamesFight[selected];
-                LabShow(BattleText5);
-            }*/
+            }
         }
         private void ACT(in Byte a1)
         {
-            UInt16[] x = { 34, 360, 712 };
-            UInt16[] y = { 644, 492, 675 };
             string spdr = "Паук";
             string mum = "Мумия";
             string zomb = "Зомби";
@@ -4301,7 +4548,7 @@ namespace WpfApp1
                     CheckFoeCounts(0, (spdr + ": " + Sets.SpiderAlive));
                     if (Sets.SpiderAlive == 0)
                     {
-                        LabShow(BattleText3);
+                      //  LabShow(BattleText3);
                         CheckFoeCounts(0, "");
                    //     EnemyNamesFight[0] = 0;
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
@@ -4315,7 +4562,7 @@ namespace WpfApp1
                     {
                         CheckFoeCounts(1, "");
                       //  EnemyNamesFight[1] = 0;
-                        LabShow(BattleText4);
+                      //  LabShow(BattleText4);
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
                     }
                 }
@@ -4325,7 +4572,7 @@ namespace WpfApp1
                     CheckFoeCounts(2, (zomb + ": " + Sets.ZombieAlive));
                     if (Sets.ZombieAlive == 0)
                     {
-                        LabShow(BattleText5);
+                      //  LabShow(BattleText5);
                         CheckFoeCounts(2, "");
                     //    EnemyNamesFight[2] = 0;
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
@@ -4337,7 +4584,7 @@ namespace WpfApp1
                     CheckFoeCounts(3, (defd + ": " + Sets.BonesAlive));
                     if (Sets.BonesAlive == 0)
                     {
-                        LabShow(BattleText6);
+                     //   LabShow(BattleText6);
                         CheckFoeCounts(3, "");
                     //    EnemyNamesFight[3] = 0;
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
@@ -4516,7 +4763,7 @@ namespace WpfApp1
                 CheckFoeCounts(0, ("Паук: " + Sets.SpiderAlive));
                 if (Sets.SpiderAlive == 0)
                 {
-                    LabShow(BattleText3);
+                   // LabShow(BattleText3);
                     CheckFoeCounts(0, "");
                     Foe1.EnemyAppears[seltrg] = "";
                 }
@@ -4535,7 +4782,7 @@ namespace WpfApp1
                 if (Sets.MummyAlive == 0)
                 {
                     CheckFoeCounts(1, "");
-                    LabShow(BattleText4);
+                    //LabShow(BattleText4);
                     Foe1.EnemyAppears[seltrg] = "";
                 }
             }
@@ -4545,7 +4792,7 @@ namespace WpfApp1
                 CheckFoeCounts(2, ("Зомби: " + Sets.ZombieAlive));
                 if (Sets.ZombieAlive == 0)
                 {
-                    LabShow(BattleText5);
+                   // LabShow(BattleText5);
                     CheckFoeCounts(2, "");
                     Foe1.EnemyAppears[seltrg] = "";
                 }
@@ -4556,7 +4803,7 @@ namespace WpfApp1
                 CheckFoeCounts(3, ("Страж: " + Sets.BonesAlive));
                 if (Sets.BonesAlive == 0)
                 {
-                    LabShow(BattleText6);
+                  //  LabShow(BattleText6);
                     CheckFoeCounts(3, "");
                     Foe1.EnemyAppears[seltrg] = "";
                 }
@@ -5424,7 +5671,10 @@ namespace WpfApp1
         private void Equip1_Click(object sender, RoutedEventArgs e)
         {
             Sets.EquipmentClass = 0;
-            ButtonShow(Equipments);
+            if (BAG.Weapon[0])
+                ButtonShow(Equipments);
+            if (BAG.Weapon[3])
+                ButtonShow(Equipments4);
             EquipmentsImg.Source = new BitmapImage(new Uri(@"KnucledusterItem.png", UriKind.RelativeOrAbsolute));
             ButtonShow(CancelEq);
         }
@@ -5468,7 +5718,10 @@ namespace WpfApp1
         private void Equip2_Click(object sender, RoutedEventArgs e)
         {
             Sets.EquipmentClass = 1;
-            ButtonShow(Equipments);
+            if (BAG.Armor[0])
+                ButtonShow(Equipments);
+            if (BAG.Armor[3])
+                ButtonShow(Equipments4);
             EquipmentsImg.Source = new BitmapImage(new Uri(@"BlackSkinItems.png", UriKind.RelativeOrAbsolute));
             ButtonShow(CancelEq);
         }
@@ -5476,7 +5729,10 @@ namespace WpfApp1
         private void Equip3_Click(object sender, RoutedEventArgs e)
         {
             Sets.EquipmentClass = 2;
-            ButtonShow(Equipments);
+            if (BAG.Pants[0])
+                ButtonShow(Equipments);
+            if (BAG.Pants[3])
+                ButtonShow(Equipments4);
             EquipmentsImg.Source = new BitmapImage(new Uri(@"EagleWearsItems.png", UriKind.RelativeOrAbsolute));
             ButtonShow(CancelEq);
         }
@@ -5484,7 +5740,10 @@ namespace WpfApp1
         private void Equip4_Click(object sender, RoutedEventArgs e)
         {
             Sets.EquipmentClass = 3;
-            ButtonShow(Equipments);
+            if (BAG.ArmBoots[0])
+                ButtonShow(Equipments);
+            if (BAG.ArmBoots[3])
+                ButtonShow(Equipments4);
             EquipmentsImg.Source = new BitmapImage(new Uri(@"BandageBootsItems.png", UriKind.RelativeOrAbsolute));
             ButtonShow(CancelEq);
         }
@@ -5492,6 +5751,7 @@ namespace WpfApp1
         private void CancelEq_Click(object sender, RoutedEventArgs e)
         {
             ButtonHide(Equipments);
+            ButtonHide(Equipments4);
             ButtonHide(CancelEq);
         }
 
@@ -5795,46 +6055,16 @@ namespace WpfApp1
         {
             if (ToNextImg.Source.ToString().Contains("ToNext.png"))
             {
-                ButtonHide(Cure);
-                ButtonHide(Heal);
-                //if (Super1.CurrentLevel >= 3)
-                //  {
-                Torch.Visibility = Visibility.Visible;
-                if (APbar.Value >= 4)
-                    Torch.IsEnabled = true;
-                //  }
-
-                // if (Super1.CurrentLevel >= 6)
-                // {
-                Whip.Visibility = Visibility.Visible;
-                if (APbar.Value >= 6)
-                    Whip.IsEnabled = true;
-                // }
-
-                // if (Super1.CurrentLevel >= 7)
-                //{
-                Super.Visibility = Visibility.Visible;
-                if (APbar.Value >= 10)
-                    Super.IsEnabled = true;
-                //}
+                BtnHideX(new Button[] { Cure, Heal });
+                CheckAccessAbilities(new Button[] { Torch, Whip, Super }, new Byte[] { 3, 6, 7 }, new Byte[] { 4, 6, 10 });
+                ButtonShow(SwitchAbils);
                 ToNextImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ToPrev.png", UriKind.RelativeOrAbsolute));
             }
             else if (ToNextImg.Source.ToString().Contains("ToPrev.png"))
             {
-
-                Cure.Visibility = Visibility.Visible;
-                if (APbar.Value >= 1)
-                    Cure.IsEnabled = true;
-                //   if (Super1.CurrentLevel >= 4)
-                // {
-                Heal.Visibility = Visibility.Visible;
-                if (APbar.Value >= 1)
-                    Heal.IsEnabled = true;
+                BtnHideX(new Button[] { Torch, Whip, Super });
+                CheckAccessAbilities(new Button[] { Cure, Heal }, new Byte[] { 2, 4 }, new Byte[] { 5, 3 });
                 ButtonShow(SwitchAbils);
-                //  }
-                ButtonHide(Torch);
-                ButtonHide(Whip);
-                ButtonHide(Super);
                 ToNextImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ToNext.png", UriKind.RelativeOrAbsolute));
             }
         }
@@ -5916,10 +6146,7 @@ namespace WpfApp1
                 Ether1.IsEnabled = false;
                 Antidote.IsEnabled = false;
                 Fused.IsEnabled = false;
-                LabHide(BandageText);
-                LabHide(AntidoteText);
-                LabHide(EtherText);
-                LabHide(FusedText);
+                LabHideX(new Label[] { BandageText, AntidoteText, EtherText, FusedText });
                 CheckAccessMaterials(new Byte[] { 10, 20, 70, 150 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused });
                 TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused });
                 CraftSwitch.Content = "Инвентарь";
@@ -6112,6 +6339,82 @@ namespace WpfApp1
         private void Super0_MouseLeave(object sender, MouseEventArgs e)
         {
             LabHide(AbilsCost);
+        }
+
+        private void Equipments4_Click(object sender, RoutedEventArgs e)
+        {
+            if (Sets.EquipmentClass == 0)
+            {
+                Equip1.IsEnabled = false;
+                EquipH.Content = "Миниган";
+                Super1.PlayerEQ[0] = 165;
+                BAG.Hands = false;
+            }
+            if (Sets.EquipmentClass == 1)
+            {
+                Equip2.IsEnabled = false;
+                EquipB.Content = "Футболка крутого";
+                Super1.PlayerEQ[1] = 85;
+                BAG.Jacket = false;
+            }
+            if (Sets.EquipmentClass == 2)
+            {
+                Equip3.IsEnabled = false;
+                EquipL.Content = "Штаны серьёзного";
+                Super1.PlayerEQ[2] = 55;
+                BAG.Legs = false;
+            }
+            if (Sets.EquipmentClass == 3)
+            {
+                Equip4.IsEnabled = false;
+                EquipD.Content = "Армейские ботинки";
+                Super1.PlayerEQ[3] = 25;
+                BAG.Boots = false;
+            }
+            StatsMeaning();
+            ButtonHide(Equipments4);
+            ButtonHide(CancelEq);
+            EquipWatch();
+        }
+
+        private void Equipments4_MouseEnter(object sender, MouseEventArgs e)
+        {
+            LabShow(Describe1);
+            if (Sets.EquipmentClass == 0)
+            {
+                Describe1.Content = "Размер не имеет значение, главное как его используют\n";
+                AddATK1.Content = "+165";
+                LabShow(AddATK1);
+                AddATK1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+            }
+            if (Sets.EquipmentClass == 1)
+            {
+                Describe1.Content = "Футболка для настоящих ценителей";
+                AddDEF1.Content = "+85";
+                LabShow(AddDEF1);
+                AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+            }
+            if (Sets.EquipmentClass == 2)
+            {
+                Describe1.Content = "Штаны серьёзных намерений\n";
+                AddDEF1.Content = "+55";
+                LabShow(AddDEF1);
+                AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+            }
+            if (Sets.EquipmentClass == 3)
+            {
+                Describe1.Content = "Прочные сапоги из натуральной дублёной кожи\n";
+                AddDEF1.Content = "+25";
+                LabShow(AddDEF1);
+                AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+            }
+        }
+
+        private void Equipments4_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Describe1.Content = "";
+            LabHide(AddATK1);
+            LabHide(AddDEF1);
         }
     }
 }
