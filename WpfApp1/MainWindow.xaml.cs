@@ -292,23 +292,14 @@ namespace WpfApp1
             Form1.ResizeMode = ResizeMode.NoResize;
             Form1.WindowStyle = WindowStyle.None;
             Form1.WindowState = WindowState.Maximized;
-            //MapBuild();
-            //Lab1.Content = MapScheme[Adoptation.ImgYbounds+1, Adoptation.ImgXbounds];
+
+            WidelyUsedAnyTimer(out TimeRecord,WorldRecord, new TimeSpan(0, 0, 0, 0, 1));
+            HeyPlaySomething(new Uri(@"Begin2.mp3", UriKind.RelativeOrAbsolute));
+            CheckScreenProperties();
+
             //[EN] Working with directories (for commercial and private purposes)
             //[RU] Работа с директориями (для коммерческих и личных целей).
             //Environment.CurrentDirectory();
-            //Sound1.Play();
-            TimeRecord = new System.Windows.Threading.DispatcherTimer();
-            TimeRecord.Tick += new EventHandler(WorldRecord);
-            TimeRecord.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            TimeRecord.Start();
-            HeyPlaySomething(new Uri(@"Begin2.mp3", UriKind.RelativeOrAbsolute));
-            //Sound1.Volume = 0.0;
-            //Sound2.Volume = 0.0;
-            //Sound3.Volume = 0.0;
-            //ImgMove(Img2, -1362, 1020);
-            //ImgMove(TableMessage1, 402, 749);
-            CheckScreenProperties();
         }
         public static UInt16[] TimeWorldRecord = new UInt16[] { 0, 0, 0, 0 };
         private void WorldRecord(object sender, EventArgs e)
@@ -621,7 +612,6 @@ namespace WpfApp1
             MedShrink(Win, W, H);
             MedShrink(GameOver, W, H);
             MedShrink(TheEnd, W, H);
-            //ImgShrink(Img3, W, H);
             ImgShrink(Img1, W, H);
         }
         private void CheckScreenProperties()
@@ -639,7 +629,6 @@ namespace WpfApp1
                         Adoptation.WidthAdBack = WHB[0, j];
                         ImgShrink(Img2, I2S[0, j], I2S[1, j]);
                         FullImgMedAutoShrink(ScreenSize[0, j], ScreenSize[1, j]);
-                        //ImgMove(Img2, -(I2S[0, j] * 25), 1020 * Adoptation.HeightAdBack);
                         Adoptation.ImgLeftStep = I2S[0, j] * 2;
                         Adoptation.ImgTopStep = I2S[1, j];
                         Adaptate();
@@ -657,7 +646,6 @@ namespace WpfApp1
             }
             else
             {
-                //ImgMove(Img2, -1075, 1020);
                 Adoptation.ImgLeftStep = 62;
                 Adoptation.ImgTopStep = 30;
             }
@@ -720,8 +708,6 @@ namespace WpfApp1
             HPbar.Value = HPbar.Maximum;
             APbar.Maximum = Super1.MaxAPNxt[Super1.CurrentLevel - 1];
             APbar.Value = APbar.Maximum;
-            //ImgMove(Img2, -775 * Adoptation.WidthAdBack, 1020 * Adoptation.HeightAdBack);
-            //ImgMove(Img2, -172*Adoptation.WidthAdBack, 1020* Adoptation.HeightAdBack);
             Super1.MaxHP = 100;
             Super1.MaxAP = 40;
             Super1.CurrentLevel = 1;
@@ -739,11 +725,8 @@ namespace WpfApp1
             BAG.FusedITM = 10;
             BAG.Materials = 200;
             Sets.MenuTask = 0;
-            var uriSourceCH = new Uri(@"ChestClosed(ver1).png", UriKind.RelativeOrAbsolute);
-            ChestImg1.Source = new BitmapImage(uriSourceCH);
-            ChestImg2.Source = new BitmapImage(uriSourceCH);
-            ChestImg3.Source = new BitmapImage(uriSourceCH);
-            ChestImg4.Source = new BitmapImage(uriSourceCH);
+            Uri uriSourceCH = new Uri(@"ChestClosed(ver1).png", UriKind.RelativeOrAbsolute);
+            FastImgChange(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4 }, new BitmapImage[] { new BitmapImage(uriSourceCH), new BitmapImage(uriSourceCH), new BitmapImage(uriSourceCH), new BitmapImage(uriSourceCH) } );
         }
         private void HeyPlaySomething(Uri uris)
         {
@@ -844,11 +827,6 @@ namespace WpfApp1
             LabHide(Lab1);
             ButtonHide(Button1);
             ButtonShow(Skip1);
-            /*Sound1.Stop();
-            Sound1.Resources.Add(Properties.Resources.Intro1);
-            Sound1.Source = Sound1.Resources.Source;s
-            Sound1.Play();*/
-            //string uri = "..\\Intro1.mp3";
             HeyPlaySomething(new Uri(@"Intro1.mp3", UriKind.RelativeOrAbsolute));
         }
 
@@ -966,17 +944,14 @@ namespace WpfApp1
         //[RU] После завершения пролога.
         private void Med1_MediaEnded(object sender, RoutedEventArgs e)
         {
-            MediaHide(Med1);
-            ImgShow(Img1);
             TablesAllTurnOn1();
-            Img1.Source = new BitmapImage(new Uri(@"Loc1_2.jpg", UriKind.RelativeOrAbsolute));
-            ImgShow(TableMessage1);
-            ButtonHide(Skip1);
             ChestsAllTurnOn1();
             KeysAllTurnOn1();
             LocksAllTurnOn1();
-            ImgShow(Threasure1);
-            ImgShow(Img2);
+            MediaHide(Med1);
+            ButtonHide(Skip1);
+            ImgShowX(new Image[] { Img1, TableMessage1, Threasure1, Img2 });
+            Img1.Source = new BitmapImage(new Uri(@"Loc1_2.jpg", UriKind.RelativeOrAbsolute));
             HeyPlaySomething(new Uri(@"Main_theme.mp3", UriKind.RelativeOrAbsolute));
         }
         private void CheckIfInteracted()
@@ -994,8 +969,7 @@ namespace WpfApp1
         //[RU] Завершение задач.
         private void CollectKey(Image Key, Image Lock)
         {
-            ImgHide(Key);
-            ImgHide(Lock);
+            ImgHideX(new Image[] { Key, Lock });
             ImgShow(TaskCompletedImg);
             Sets.LockIndex--;
             Sets.EnemyRate++;
@@ -1009,7 +983,6 @@ namespace WpfApp1
             Byte[] grColumn = new Byte[] { 2, 13, 24 };
             int[] newHP = { Spider.EnemyMHP, Mummy.EnemyMHP, Zombie.EnemyMHP, Bones.EnemyMHP, BOSS1.EnemyMHP, SecretBOSS1.EnemyMHP };
             Uri[] EnemySource = new Uri[] { new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Zombie1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Bones1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Pharaoh.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\UghZan1.png", UriKind.RelativeOrAbsolute) };
-            LabShow(BattleText1);
             for (int en = 0; en < newHP.Length; en++)
             {
                 if (Foe1.EnemyAppears[Sets.SelectedTarget] == Foe1.EnemyName[en])
@@ -1022,15 +995,12 @@ namespace WpfApp1
                     break;
                 }
             }
-            //MedMove(Trgt,x[Sets.SelectedTarget] * Adoptation.WidthAdBack, y[Sets.SelectedTarget] * Adoptation.HeightAdBack);
-            Grid.SetRow(TrgtImg, grRow[Sets.SelectedTarget]);
             if ((Foe1.EnemyAppears[0] == "Фараон") || (Foe1.EnemyAppears[0] == "Угх-зан I"))
                 ImgGrid(TrgtImg, (byte)((Int32)TrgtImg.GetValue(Grid.RowProperty) - 5), (byte)(Int32)TrgtImg.GetValue(Grid.ColumnProperty));
-            Grid.SetColumn(TrgtImg, grColumn[Sets.SelectedTarget]);
+            ImgGrid(TrgtImg, grRow[Sets.SelectedTarget], grColumn[Sets.SelectedTarget]);
             HPenemyBar.Value = Foe1.EnemyHP[Sets.SelectedTarget];
-            //LabMove(HPenemy, HPenemyBar.Margin.Left + HPenemyBar.Width - 1 / Adoptation.WidthAdBack, 125 * Adoptation.HeightAdBack);
-            HPenemy.Content = HPenemyBar.Value + "/" + HPenemyBar.Maximum;
-            LabShow(HPenemy);
+            RefreshAllHP();
+            LabShowX(new Label[] { HPenemy, BattleText1 });
         }
         private void SelectWithKeyBoard(bool Left)
         {
@@ -1130,44 +1100,18 @@ namespace WpfApp1
                 default:
                     break;
             }
-            /*if ((Adoptation.ImgYbounds == 1020) && (Adoptation.ImgXbounds == -1362))
-            {
-                if (!Sets.TableEN)
-                    Sets.TableEN = true;
-                
-                ImgShow(TableMessage1);
-                //ImgMove(TableMessage1, 402 * Adoptation.WidthAdBack, 749 * Adoptation.HeightAdBack);
-            }
-            if ((Adoptation.ImgYbounds == 780) && (Adoptation.ImgXbounds == -1455))
-            {
-                if (!Sets.TableEN)
-                    Sets.TableEN = true;
-                TableMessage1.Source = new BitmapImage(new Uri(@"TableMessage2.png", UriKind.RelativeOrAbsolute));
-                ImgShow(TableMessage1);
-                //ImgMove(TableMessage1, 310 * Adoptation.WidthAdBack, 510 * Adoptation.HeightAdBack);
-            }
-            if ((Adoptation.ImgYbounds == 330) && (Adoptation.ImgXbounds == -742))
-            {
-                if (!Sets.TableEN)
-                    Sets.TableEN = true;
-                TableMessage1.Source = new BitmapImage(new Uri(@"TableMessage3.png", UriKind.RelativeOrAbsolute));
-                ImgShow(TableMessage1);
-                //ImgMove(TableMessage1, 1022 * Adoptation.WidthAdBack, 58 * Adoptation.HeightAdBack);
-            }*/
         }
         private void GetPoisoned()
         {
             if (Super1.PlayerStatus == 1)
             {
                 HPbar.Value -= 1;
-                //HP.Margin = new Thickness(HPbar.Margin.Left + HPbar.Width - 1 / Adoptation.WidthAdBack, 38 * Adoptation.HeightAdBack, 0, 0);
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+                RefreshAllHP();
             }
             if (HPbar.Value <= 0)
             {
                 Super1.PlayerStatus = 0;
-                ImgHide(Img2);
-                ImgHide(Menu1);
+                ImgHideX(new Image[] { Img2, Menu1 });
                 MegaHide();
                 Sound1.Stop();
                 Sound2.Stop();
@@ -1259,7 +1203,7 @@ namespace WpfApp1
                     }
                     else
                         Img2.Source = new BitmapImage(new Uri(@"WalkD1.png", UriKind.RelativeOrAbsolute));
-                    //Img2.Source = new BitmapImage(new Uri(@"person1.png", UriKind.RelativeOrAbsolute));
+
                     if ((MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 191))
                     {
                         Adoptation.ImgYbounds += 1;
@@ -1293,7 +1237,7 @@ namespace WpfApp1
                     }
                     else
                         Img2.Source = new BitmapImage(new Uri(@"person3.png", UriKind.RelativeOrAbsolute));
-                    //Img2.Source = new BitmapImage(new Uri(@"person3.png", UriKind.RelativeOrAbsolute));
+
                     if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 191))
                     {
                         Adoptation.ImgXbounds += 1;
@@ -1325,12 +1269,8 @@ namespace WpfApp1
                     Uri DoorSound1 = new Uri(@"DoorOpened1.mp3", UriKind.RelativeOrAbsolute);
                     Uri ChestSound1 = new Uri(@"ChestOpened1.mp3", UriKind.RelativeOrAbsolute);
                     Uri BossSound1 = new Uri(@"Horror.mp3", UriKind.RelativeOrAbsolute);
-                    var uriSourceCH = new Uri(@"ChestOpened(ver1).png", UriKind.RelativeOrAbsolute);
-                    Uri Armor1 = new Uri(@"GetItemsArmor1.png", UriKind.RelativeOrAbsolute);
-                    Uri Weapon1 = new Uri(@"GetItemsCustomWeapon1.png", UriKind.RelativeOrAbsolute);
-                    Uri Pants1 = new Uri(@"GetItemsCustomPants1.png", UriKind.RelativeOrAbsolute);
-                    Uri Boots1 = new Uri(@"GetItemsCustomBoots1.png", UriKind.RelativeOrAbsolute);
-                   //Dj(BossSound1);
+                    Uri uriSourceCH = new Uri(@"ChestOpened(ver1).png", UriKind.RelativeOrAbsolute);
+                    Uri[] EquipmentAll = new Uri[] { new Uri(@"GetItemsCustomWeapon1.png", UriKind.RelativeOrAbsolute), new Uri(@"GetItemsArmor1.png", UriKind.RelativeOrAbsolute), new Uri(@"GetItemsCustomPants1.png", UriKind.RelativeOrAbsolute), new Uri(@"GetItemsCustomBoots1.png", UriKind.RelativeOrAbsolute) };
                     Byte Interaction = 0;
                     Int32[] LocItem = new Int32[] { 0, 0 };
                     if (Img2.Source.ToString().Contains("person3.png"))
@@ -1434,7 +1374,7 @@ namespace WpfApp1
                         case 163:
                             break;
                         case 201:
-                            ChestMessage1.Source = new BitmapImage(Armor1);
+                            ChestMessage1.Source = new BitmapImage(EquipmentAll[1]);
                             ChestImg1.Source = new BitmapImage(uriSourceCH);
                             ImgShow(ChestMessage1);
                             BAG.Jacket = true;
@@ -1444,7 +1384,7 @@ namespace WpfApp1
                             break;
                         case 202:
                             ImgShow(ChestMessage1);
-                            ChestMessage1.Source = new BitmapImage(Boots1);
+                            ChestMessage1.Source = new BitmapImage(EquipmentAll[3]);
                             ChestImg2.Source = new BitmapImage(uriSourceCH);
                             BAG.Boots = true;
                             BAG.ArmBoots[0] = true;
@@ -1453,7 +1393,7 @@ namespace WpfApp1
                             break;
                         case 203:
                             ImgShow(ChestMessage1);
-                            ChestMessage1.Source = new BitmapImage(Weapon1);
+                            ChestMessage1.Source = new BitmapImage(EquipmentAll[0]);
                             ChestImg3.Source = new BitmapImage(uriSourceCH);
                             BAG.Hands = true;
                             BAG.Weapon[0] = true;
@@ -1462,7 +1402,7 @@ namespace WpfApp1
                             break;
                         case 204:
                             ImgShow(ChestMessage1);
-                            ChestMessage1.Source = new BitmapImage(Pants1);
+                            ChestMessage1.Source = new BitmapImage(EquipmentAll[2]);
                             ChestImg4.Source = new BitmapImage(uriSourceCH);
                             BAG.Legs = true;
                             SEF(ChestSound1);
@@ -1487,93 +1427,12 @@ namespace WpfApp1
                         default:
                             break;
                     }
-                    /*
-                    //W
-                    if (((Adoptation.ImgYbounds == 1020) && (Adoptation.ImgXbounds == -618)) && (Img2.Source.ToString().Contains("person2.png")))
-                    {
-                        //ImgMove(TaskCompletedImg, 1207 * Adoptation.WidthAdBack, 840 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg3, LockImg3);
-                        SEF(DoorSound1);
-                    }
-                    if (((Adoptation.ImgYbounds == 1020) && (Adoptation.ImgXbounds == -1858)) && (Img2.Source.ToString().Contains("person2.png")))
-                    {
-                       // ImgMove(TaskCompletedImg, 0 * Adoptation.WidthAdBack, 840 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg1, LockImg1);
-                        SEF(DoorSound1);
-                    }
-                    if (((Adoptation.ImgYbounds == 660) && (Adoptation.ImgXbounds == -1486)) && (Img2.Source.ToString().Contains("person2.png")))
-                    {
-                        //ImgMove(TaskCompletedImg, 340 * Adoptation.WidthAdBack, 539 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg2, LockImg2);
-                        SEF(DoorSound1);
-                    }
-
-
-                    //S
-                    if (((Adoptation.ImgYbounds == 960) && (Adoptation.ImgXbounds == -618)) && (Img2.Source.ToString().Contains("person1.png")))
-                    {
-                       // ImgMove(TaskCompletedImg, 1207 * Adoptation.WidthAdBack, 840 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg3, LockImg3);
-                        SEF(DoorSound1);
-                    }
-                    if (((Adoptation.ImgYbounds == 960) && (Adoptation.ImgXbounds == -1858)) && (Img2.Source.ToString().Contains("person1.png")))
-                    {
-                        //ImgMove(TaskCompletedImg, 0 * Adoptation.WidthAdBack, 840 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg1, LockImg1);
-                        SEF(DoorSound1);
-                    }
-                    if (((Adoptation.ImgYbounds == 600) && (Adoptation.ImgXbounds == -1486)) && (Img2.Source.ToString().Contains("person1.png")))
-                    {
-                        //ImgMove(TaskCompletedImg, 340 * Adoptation.WidthAdBack, 539 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg2, LockImg2);
-                        SEF(DoorSound1);
-                    }
-                    //A
-                    if (((Adoptation.ImgYbounds == 990) && (Adoptation.ImgXbounds == -587)) && (Img2.Source.ToString().Contains("person4.png")))
-                    {
-                        //ImgMove(TaskCompletedImg, 1207 * Adoptation.WidthAdBack, 840 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg3, LockImg3);
-                        SEF(DoorSound1);
-                    }
-                    if (((Adoptation.ImgYbounds == 990) && (Adoptation.ImgXbounds == -1827)) && (Img2.Source.ToString().Contains("person4.png")))
-                    {
-                       // ImgMove(TaskCompletedImg, 0 * Adoptation.WidthAdBack, 840 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg1, LockImg1);
-                        SEF(DoorSound1);
-                    }
-                    if (((Adoptation.ImgYbounds == 630) && (Adoptation.ImgXbounds == -1455)) && (Img2.Source.ToString().Contains("person4.png")))
-                    {
-                        //ImgMove(TaskCompletedImg, 340 * Adoptation.WidthAdBack, 539 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg2, LockImg2);
-                        SEF(DoorSound1);
-                    }
-                    //D
-                    if (((Adoptation.ImgYbounds == 990) && (Adoptation.ImgXbounds == -649)) && (Img2.Source.ToString().Contains("person3.png")))
-                    {
-                        //ImgMove(TaskCompletedImg, 1207 * Adoptation.WidthAdBack, 840 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg3, LockImg3);
-                        SEF(DoorSound1);
-                    }
-                    if (((Adoptation.ImgYbounds == 990) && (Adoptation.ImgXbounds == -1889)) && (Img2.Source.ToString().Contains("person3.png")))
-                    {
-                       // ImgMove(TaskCompletedImg, 0 * Adoptation.WidthAdBack, 840 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg1, LockImg1);
-                        SEF(DoorSound1);
-                    }
-                    if (((Adoptation.ImgYbounds == 630) && (Adoptation.ImgXbounds == -1517)) && (Img2.Source.ToString().Contains("person3.png")))
-                    {
-                       // ImgMove(TaskCompletedImg, 340 * Adoptation.WidthAdBack, 539 * Adoptation.HeightAdBack);
-                        CollectKey(KeyImg2, LockImg2);
-                        SEF(DoorSound1);
-                    }*/
                 }
             }
             else
             {
                 if ((Fight.IsEnabled) || (ACT1.IsEnabled) || (ACT2.IsEnabled))
                 {
-                    //int[] x = { 34, 360, 712 };
-                    //int[] y = { 644, 492, 675 };
                     if (e.Key == Key.W)
                     {
                         SelectWithKeyBoard(true);
@@ -1608,8 +1467,7 @@ namespace WpfApp1
                     else
                     {
                         ImgHide(Menu1);
-                        ImgShow(Img2);
-                        ImgShow(Img1);
+                        ImgShowX(new Image[] { Img2, Img1 });
                         BtnHideX(new Button[] { Status, Abils, Items0, Equip, Tasks, Info, Settings });
                         MegaHide();
                     }
@@ -1625,7 +1483,6 @@ namespace WpfApp1
                 PharaohAppears.Opacity += 0.01;
             } else
             {
-                //ImgGrid(8, 36);
                 if ((byte)((Int32)PharaohAppears.GetValue(Grid.RowProperty) - 1) < 6)
                 {
                     MediaShow(Med2);
@@ -1654,10 +1511,9 @@ namespace WpfApp1
             BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 7, 9 }, new Byte[] { 11, 11 });
             LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 7, 9, Convert.ToByte(HPbar1.GetValue(Grid.RowProperty)), Convert.ToByte(APbar1.GetValue(Grid.RowProperty)), Convert.ToByte(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 2, 2, Convert.ToByte(Convert.ToInt32(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(HPbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(APbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(ExpBar1.Width) / 32)) });
             Img2.SetValue(Grid.RowProperty, Adoptation.ImgYbounds);
-            //Img2.GetValue(Grid.RowProperty);
             Status.IsEnabled = false;
             Describe2.Content = "Статус героя";
-            Describe1.Content = "ОЗ имеет тенденцию падать до 0. Враги только этого и добиваются.\nПохоже им уже пора задать трёпку.";
+            Describe1.Content = "ОЗ имеет тенденцию падать до 0. Враги только этого и добиваются.\nПохоже им уже давно пора задать трёпку.";
             LabShow(Describe1);
         }
 
@@ -2020,8 +1876,7 @@ namespace WpfApp1
                 ImgHide(TableMessage1);
             HPbar.Maximum = Super1.MaxHPNxt[Super1.CurrentLevel - 1];
             APbar.Maximum = Super1.MaxAPNxt[Super1.CurrentLevel - 1];
-            HP.Content = HPbar.Value + "/" + HPbar.Maximum;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
+            RefreshAllHPAP();
             speed = 0;
             Lab2.Foreground = Brushes.Yellow;
 
@@ -2094,10 +1949,7 @@ namespace WpfApp1
             ImgShow(Img6);
 
             Byte GameSpeed1 = Convert.ToByte(50/GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(SeriousSwitch_Time_Tick45);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
+            WidelyUsedAnyTimer(out timer8, SeriousSwitch_Time_Tick45, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             
             RememberHPAP[0] = Convert.ToUInt16(HPbar.Value);
             RememberHPAP[1] = Convert.ToUInt16(APbar.Value);
@@ -2112,11 +1964,10 @@ namespace WpfApp1
             APbar.Maximum = 200;
             APbar.Value = APbar.Maximum;
             APbar.Width= APbar.Maximum;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
             HPbar.Maximum = 200;
             HPbar.Value = HPbar.Maximum;
             HPbar.Width = HPbar.Maximum;
-            HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+            RefreshAllHPAP();
             Super1.Attack = 100;
             Super1.Defence = 35;
 
@@ -2146,75 +1997,57 @@ namespace WpfApp1
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
             FightMenuMakesDisappear();
-            ButtonShow(Fight);
-            ButtonShow(Cancel1);
+            BtnShowX(new Button[] { Fight, Cancel1 });
             SelectTarget();
         }
 
         public void SelectTarget()
         {
-            // LabMove(BattleText1, 473 * Adoptation.WidthAdBack, 5 * Adoptation.HeightAdBack);
-            // LabShrink(BattleText1, 48 * Adoptation.WidthAdBack);
-            //LabShow(BattleText1);
             Uri[] EnemySource = new Uri[] { new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Zombie1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Bones1.png", UriKind.RelativeOrAbsolute),new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Pharaoh.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\UghZan1.png", UriKind.RelativeOrAbsolute) };
             if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Паук")
             {
                 BattleText1.Content = "Паук";
                 HPenemyBar.Maximum = 65;
                 EnemyImg.Source = new BitmapImage(EnemySource[0]);
-                // HPenemyBar.Width = HPenemyBar.Maximum*Adoptation.WidthAdBack;
             }
             if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Мумия")
             {
                 BattleText1.Content = "Мумия";
                 HPenemyBar.Maximum = 83;
-                EnemyImg.Source = new BitmapImage(EnemySource[1]);
-                // HPenemyBar.Width = HPenemyBar.Maximum * Adoptation.WidthAdBack;
+                EnemyImg.Source = new BitmapImage(EnemySource[1]);                
             }
             if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Зомби")
             {
                 BattleText1.Content = "Зомби";
                 HPenemyBar.Maximum = 101;
                 EnemyImg.Source = new BitmapImage(EnemySource[2]);
-                //  HPenemyBar.Width = HPenemyBar.Maximum * Adoptation.WidthAdBack;
             }
             if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Страж")
             {
                 BattleText1.Content = "Страж";
                 HPenemyBar.Maximum = 125;
                 EnemyImg.Source = new BitmapImage(EnemySource[3]);
-                //HPenemyBar.Width = HPenemyBar.Maximum * Adoptation.WidthAdBack;
             }
             if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Фараон")
             {
                 BattleText1.Content = "Фараон";
                 HPenemyBar.Maximum = 500;
                 EnemyImg.Source = new BitmapImage(EnemySource[4]);
-                // HPenemyBar.Width = HPenemyBar.Maximum * Adoptation.WidthAdBack;
             }
             if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Угх-зан I")
             {
                 BattleText1.Content = "Угх-Зан I";
                 HPenemyBar.Maximum = 350;
                 EnemyImg.Source = new BitmapImage(EnemySource[5]);
-                // HPenemyBar.Width = HPenemyBar.Maximum * Adoptation.WidthAdBack;
             }
             LabShow(HPenemy);
             BarShow(HPenemyBar);
-            ImgShow(EnemyImg);
+            ImgShowX(new Image[] { EnemyImg, TrgtImg });
             HPenemyBar.Value = Foe1.EnemyHP[Sets.SelectedTarget];
-            //HPenemy.Margin = new Thickness(HPenemyBar.Margin.Left + HPenemyBar.Width - 1/ Adoptation.WidthAdBack, 125 * Adoptation.HeightAdBack, 0, 0);
-            ImgShow(TrgtImg);
-            HPenemy.Content = HPenemyBar.Value + "/" + HPenemyBar.Maximum;
+            RefreshAllHP();
             InfoAboutEnemies();
             UInt16 GameSpeed1 = Convert.ToUInt16(100 / GameSpeed.Value);
-            timer9 = new System.Windows.Threading.DispatcherTimer();
-            timer9.Tick += new EventHandler(Target_Time_Tick16);
-            timer9.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer9.Start();
-            //Trgt.IsEnabled = true;
-            //Trgt.Visibility = Visibility.Visible;
-            //Trgt.Play();
+            WidelyUsedAnyTimer(out timer9, Target_Time_Tick16, new TimeSpan(0, 0, 0, 0, GameSpeed1));
         }
 
         private void Med3_MediaEnded(object sender, RoutedEventArgs e)
@@ -2224,14 +2057,14 @@ namespace WpfApp1
 
         private void AfterAction()
         {
-            // Med3.Stop();
-            // Med3.Position = new TimeSpan(0, 0, 0, 0, 0);
-            //  MediaHide(Med3);
             BattleText3.Foreground = Brushes.White;
             BattleText4.Foreground = Brushes.White;
             BattleText5.Foreground = Brushes.White;
-            LabHide(BattleText1);
-            LabHide(BattleText2);
+            if (Sets.SpecialBattle == 200)
+            {
+                HP.Foreground = Brushes.White;
+            }
+            LabHideX(new Label[] { BattleText1, BattleText2 });
             if (speed > 0)
             {
                 Sets.SpiderAlive = 0;
@@ -2242,54 +2075,29 @@ namespace WpfApp1
                 Foe1.EnemyHP[1] = 0;
                 Foe1.EnemyHP[2] = 0;
                 Exp = 0;
-                LabHide(HP);
-                LabHide(AP);
-                ImgShow(Img1);
-                ImgShow(Img2);
-                ImgHide(Img3);
-                ImgHide(Img4);
-                ImgHide(Img5);
-                ImgHide(Img6);
-                ImgHide(Img7);
-                ImgHide(Img8);
-                ImgHide(TimeTurnImg);
-                BarHide(Time1);
+
+                ImgShowX(new Image[] { Img1, Img2, Threasure1 });
+                ImgHideX(new Image[] { Img3, Img4, Img5, Img6, Img7, Img8, TimeTurnImg });
+                BarHideX(new ProgressBar[] { HPbar, APbar, NextExpBar, Time1 });
+                LabHideX(new Label[] { HP, AP, Lab2, HPtext, APtext, LevelText, ExpText, BattleText3, BattleText4, BattleText5, BattleText6 });
                 speed = 0;
                 timer2.Stop();
                 Sound1.Stop();
-                LabHide(Lab2);
-                LabHide(HPtext);
-                LabHide(APtext);
+                
                 ChestsAllTurnOn1();
                 TablesAllTurnOn1();
                 if (Sets.TableEN)
                     ImgShow(TableMessage1);
-                BarHide(HPbar);
-                BarHide(APbar);
-                //LabHide(HeroName);
-                LabHide(LevelText);
-                BarHide(NextExpBar);
-                LabHide(ExpText);
-                //TimeImg
-                //LabHide(TimeText);
-                LabHide(BattleText3);
-                LabHide(BattleText4);
-                LabHide(BattleText5);
-                LabHide(BattleText6);
-                ImgShow(Threasure1);
+                
                 switch (Sets.LockIndex)
                 {
                     case 0:
                         break;
                     case 1:
-                        ImgShow(KeyImg3);
-                        ImgShow(LockImg3);
+                        ImgShowX(new Image[] { KeyImg3, LockImg3 });
                         break;
                     case 2:
-                        ImgShow(KeyImg2);
-                        ImgShow(LockImg2);
-                        ImgShow(KeyImg3);
-                        ImgShow(LockImg3);
+                        ImgShowX(new Image[] { KeyImg2, LockImg2, KeyImg3, LockImg3 });
                         break;
                     case 3:
                         KeysAllTurnOn1();
@@ -2300,7 +2108,6 @@ namespace WpfApp1
                         LocksAllTurnOn1();
                         break;
                 }
-                //MediaHide(Med4);
                 if (Super1.CurrentLevel >= 2)
                     Abilities.IsEnabled = false;
                 Abilities.Visibility = Visibility.Hidden;
@@ -2311,42 +2118,18 @@ namespace WpfApp1
             {
                 Sound1.Stop();
                 SEF(new Uri(@"YouWon.mp3", UriKind.RelativeOrAbsolute));
-                // ImgHide(EnemyCursor);
-                //LabMove(BattleText1, 723 * Adoptation.WidthAdBack, 45 * Adoptation.HeightAdBack);
-                // LabShrink(BattleText1, 72 * Adoptation.WidthAdBack);
                 Grid.SetColumn(BattleText1, 22);
                 BattleText1.Content = "Победа!";
-                //BattleText2.Content = "Получено " + Exp + " очков опыта";
                 BattleText2.Content = "Пора переходить к добыче";
                 BattleText3.Content = "";
                 ImgShow(Img4);
-                LabShow(BattleText1);
-                LabShow(BattleText2);
+                LabShowX(new Label[] { BattleText1, BattleText2 });
                 ButtonShow(textOk2);
-                /*if (Super1.CurrentLevel < 10)
-                {
-                    if ((NextExpBar.Value + Exp) < NextExpBar.Maximum)
-                    {
-                        NextExpBar.Value = NextExpBar.Value + Exp;
-                        ExpText.Content = "Опыт " + Convert.ToString(NextExpBar.Value) + "/" + Super1.NextLevel[Super1.CurrentLevel - 1];
-                        ButtonShow(TextOk1);
-                        Exp = 0;
-                    }
-                    else
-                    {
-                        ButtonShow(textOk2);
-                    }
-                }
-                else
-                {
-                    ButtonShow(TextOk1);
-                }*/
             }
             else
             {
                 if (HPbar.Value != 0)
                 {
-                    //ImgShow(Img4);
                     Time();
                 }
             }
@@ -2359,24 +2142,21 @@ namespace WpfApp1
             HP.Foreground = Brushes.White;
             if (Sets.SpecialBattle == 200)
             {
-                Img4.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute));
-                Img5.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute));
+                FastImgChange(new Image[] { Img4, Img5 }, new BitmapImage[] { new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute)) });
                 if (HPbar.Value + 40 < HPbar.Maximum)
                     HPbar.Value += 40;
                 else
                     HPbar.Value = HPbar.Maximum;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+                
                 if (APbar.Value + 20 < APbar.Maximum)
                     APbar.Value += 20;
                 else
                     APbar.Value = APbar.Maximum;
-                AP.Content = APbar.Value + "/" + APbar.Maximum;
-
+                RefreshAllHPAP();
             }
             else
             {
-                Img5.Source = new BitmapImage(new Uri(@"IconDefence1.png", UriKind.RelativeOrAbsolute));
-                Img4.Source = new BitmapImage(new Uri(@"Defence.png", UriKind.RelativeOrAbsolute));
+                FastImgChange(new Image[] { Img4, Img5 }, new BitmapImage[] { new BitmapImage(new Uri(@"Defence.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"IconDefence1.png", UriKind.RelativeOrAbsolute)) });
             }
             Lab2.Foreground = Brushes.White;
             Dj(new Uri(@"Defence.mp3", UriKind.RelativeOrAbsolute));
@@ -2388,19 +2168,17 @@ namespace WpfApp1
             if ((Time1.Value == 100) && (HPbar.Value != 0))
             {
                 Super1.DefenseState = 1;
-                Uri uriSource = new Uri(@"pers5.png", UriKind.RelativeOrAbsolute);
-                Uri uriSource1 = new Uri(@"person6.png", UriKind.RelativeOrAbsolute);
+                Uri[] uriSources = new Uri[] { new Uri(@"pers5.png", UriKind.RelativeOrAbsolute), new Uri(@"person6.png", UriKind.RelativeOrAbsolute) };
                 if (Super1.PlayerStatus == 0)
-                    uriSource1 = new Uri(@"person6.png", UriKind.RelativeOrAbsolute);
+                    uriSources[1] = new Uri(@"person6.png", UriKind.RelativeOrAbsolute);
                 else
-                    uriSource1 = new Uri(@"IconPoisoned.png", UriKind.RelativeOrAbsolute);
+                    uriSources[1] = new Uri(@"IconPoisoned.png", UriKind.RelativeOrAbsolute);
                 if (Sets.SpecialBattle == 200)
                 {
-                    uriSource = new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute);
-                    uriSource1 = new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute);
+                    uriSources[0] = new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute);
+                    uriSources[1] = new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute);
                 }
-                Img4.Source = new BitmapImage(uriSource);
-                Img5.Source = new BitmapImage(uriSource1);
+                FastImgChange(new Image[] { Img4, Img5 }, new BitmapImage[] { new BitmapImage(uriSources[0]), new BitmapImage(uriSources[1]) });
                 FightMenuBack();
                 if (Sets.SpecialBattle == 200)
                 {
@@ -2411,10 +2189,7 @@ namespace WpfApp1
             else
             {
                 UInt16 GameSpeed1 = Convert.ToUInt16((240 / Super1.Speed) / GameSpeed.Value);
-                timer = new System.Windows.Threading.DispatcherTimer();
-                timer.Tick += new EventHandler(Player_Time_Tick);
-                timer.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer.Start();
+                WidelyUsedAnyTimer(out timer, Player_Time_Tick, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             }
         }
         private void TimeEnemy()
@@ -2423,20 +2198,15 @@ namespace WpfApp1
             if ((Foe1.EnemyHP[0] != 0) || (Foe1.EnemyHP[1] != 0) || (Foe1.EnemyHP[2] != 0))
             {
                 UInt16 GameSpeed1 = Convert.ToUInt16((50 - aglfoe) / GameSpeed.Value);
-                timer2 = new System.Windows.Threading.DispatcherTimer();
-                timer2.Tick += new EventHandler(EnemyTime_Tick2);
-                timer2.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer2.Start();
+                WidelyUsedAnyTimer(out timer2, EnemyTime_Tick2, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             }
         }
 
-        private int CheckEnemies(out int EnemyAttack, int pos)
+        private int CheckEnemies(out UInt16 EnemyAttack, Byte pos)
         {
             EnemyAttack = 25;
-            //Foe1.EnemyName[4] = "Фараон";
-            for (int i = 0; i < Foe1.EnemyName.Length; i++)
+            for (Byte i = 0; i < Foe1.EnemyName.Length; i++)
             {
-                //Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1 };
                 if (Foe1.EnemyAppears[pos - 1] == Foe1.EnemyName[i])
                 {
                     Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 };
@@ -2446,12 +2216,12 @@ namespace WpfApp1
             }
             return EnemyAttack;
         }
-        private int GetOut(out int Speed)
+        private int GetOut(out Byte Speed)
         {
             Speed = 10;
-            for (int i = 0; i < Foe1.EnemyAppears.Length; i++)
+            for (Byte i = 0; i < Foe1.EnemyAppears.Length; i++)
             {
-                for (int j = 0; j < Foe1.EnemyName.Length; j++) {
+                for (Byte j = 0; j < Foe1.EnemyName.Length; j++) {
                     if (Foe1.EnemyAppears[i] == Foe1.EnemyName[j])
                     {
                         Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 };
@@ -2463,10 +2233,10 @@ namespace WpfApp1
             return Speed;
         }
 
-        private string NameEnemies(out string enemy, int pos)
+        private string NameEnemies(out string enemy, Byte pos)
         {
             enemy = "Паук";
-            for (int i = 0; i < Foe1.EnemyName.Length; i++)
+            for (Byte i = 0; i < Foe1.EnemyName.Length; i++)
             {
                 if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[i])
                 {
@@ -2478,10 +2248,10 @@ namespace WpfApp1
             return enemy;
         }
 
-        private string EnemySounds(in int pos)
+        private string EnemySounds(in Byte pos)
         {
             string ogg = "";
-            for (int i = 0; i < Foe1.EnemyName.Length; i++)
+            for (Byte i = 0; i < Foe1.EnemyName.Length; i++)
             {
                 if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[i])
                 {
@@ -2492,9 +2262,8 @@ namespace WpfApp1
             }
             return ogg;
         }
-        private void EnemyOnAttack(in string enemy, in int dmg)
+        private void EnemyOnAttack(in string enemy, in UInt16 dmg)
         {
-            //BattleText1.Content = enemy + " атакует!\nРэй получает " + dmg + " урона!";
             if (Sets.SpecialBattle!=200)
                 HPbar.Value = HPbar.Value - dmg;
             else
@@ -2503,64 +2272,43 @@ namespace WpfApp1
                 {
                     APbar.Value -= 10;
                     HPbar.Value = HPbar.Value - (dmg - 10);
-                    AP.Content = APbar.Value + "/" + APbar.Maximum;
-                    HP.Content = HPbar.Value + "/" + HPbar.Maximum;
                 }
                 else
                 {
                     HPbar.Value = HPbar.Value - (dmg - APbar.Value);
                     APbar.Value = 0;
-                    AP.Content = APbar.Value + "/" + APbar.Maximum;
-                    HP.Content = HPbar.Value + "/" + HPbar.Maximum;
                 }
+                RefreshAllHPAP();
             }
-            //HP.Margin = new Thickness(HPbar.Margin.Left + HPbar.Width - 1 / Adoptation.WidthAdBack, 38 * Adoptation.HeightAdBack, 0, 0);
-            HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+            RefreshAllHP();
             BattleText6.Content = "-" + dmg;
-            BattleText6.Visibility = Visibility.Visible;
+            LabShow(BattleText6);
             HP.Foreground = Brushes.Red;
-            //DamageGet = dmg.ToString();
             UInt16 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
             if (Sets.SpecialBattle != 200)
             {
                 if (timer3 == null)
                 {
-                    timer3 = new System.Windows.Threading.DispatcherTimer();
-                    timer3.Tick += new EventHandler(DamageTime_Tick3);
-                    timer3.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                    timer3.Start();
+                    WidelyUsedAnyTimer(out timer3, DamageTime_Tick3, new TimeSpan(0, 0, 0, 0, GameSpeed1));
                     timer3.IsEnabled = true;
                 }   
                 else if (Img4.Source.ToString().Contains("pers5.png")&&(!timer3.IsEnabled)) {
-                    timer3 = new System.Windows.Threading.DispatcherTimer();
-                    timer3.Tick += new EventHandler(DamageTime_Tick3);
-                    timer3.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                    timer3.Start();
+                    WidelyUsedAnyTimer(out timer3, DamageTime_Tick3, new TimeSpan(0, 0, 0, 0, GameSpeed1));
                     timer3.IsEnabled = true;
                 }
             
                 if (timer4 == null)
                 {
-                    timer4 = new System.Windows.Threading.DispatcherTimer();
-                    timer4.Tick += new EventHandler(HurtTime_Tick4);
-                    timer4.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                    timer4.Start();
+                    WidelyUsedAnyTimer(out timer4, HurtTime_Tick4, new TimeSpan(0, 0, 0, 0, GameSpeed1));
                     timer4.IsEnabled = true;
                 }
                 else if (!timer4.IsEnabled)
                 {
-                    timer4 = new System.Windows.Threading.DispatcherTimer();
-                    timer4.Tick += new EventHandler(HurtTime_Tick4);
-                    timer4.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                    timer4.Start();
+                    WidelyUsedAnyTimer(out timer4, HurtTime_Tick4, new TimeSpan(0, 0, 0, 0, GameSpeed1));
                     timer4.IsEnabled = true;
                 }
             }
-            //LabShow(BattleText4);
             GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-            //LabMove(BattleText1, 473 * Adoptation.WidthAdBack, 5 * Adoptation.HeightAdBack);
-            //LabShrink(BattleText1, 48 * Adoptation.WidthAdBack);
-            // ImgShow(EnemyCursor);
         }
 
         public static Byte PlayerHurt = 0;
@@ -2596,10 +2344,7 @@ namespace WpfApp1
             }
             else
             {
-                //BattleText6.SetValue(Grid.RowProperty, RowSet1[PlayerHurtM]);
-                //BattleText6.SetValue(Grid.ColumnProperty, ColumnSet1[PlayerHurtM]);
-                Grid.SetRow(BattleText6, RowSet1[PlayerHurtM]);
-                Grid.SetColumn(BattleText6, ColumnSet1[PlayerHurtM]);
+                LabGrid(BattleText6, RowSet1[PlayerHurtM], ColumnSet1[PlayerHurtM]);
                 PlayerHurtM++;
             }
         }
@@ -2633,8 +2378,6 @@ namespace WpfApp1
                 default:
                     break;
             }
-            //BattleText5.Content = Foe1.EnemyAppears[0];
-            //LabShow(BattleText5);
             Img6.Source = new BitmapImage(new Uri(EnemyAnimate[EnemyAtck[0]], UriKind.RelativeOrAbsolute));
             if (EnemyAtck[0] == EnemyAnimate.Length - 1)
             {
@@ -2742,14 +2485,6 @@ namespace WpfApp1
 
         private void EnemyTime_Tick2(object sender, EventArgs e)
         {
-            /*if (Med3.Position.TotalMilliseconds>=99995)
-            {
-                Med3_MediaEnded(Med3, null);
-            }
-            if (Med4.Position.TotalMilliseconds >= 99995)
-            {
-                Med4_MediaEnded(Med4, null);
-            }*/
             if (HPbar.Value == 0)
             {
                 Super1.PlayerStatus = 0;
@@ -2762,7 +2497,6 @@ namespace WpfApp1
                 if (timer != null)
                     timer.Stop();
                 timer2.Stop();
-                //HPbar.Value = 100;
             }
             if ((Super1.PlayerStatus == 1) && (HPbar.Value != 0))
             {
@@ -2774,31 +2508,27 @@ namespace WpfApp1
                 {
                     poison = 0;
                     HPbar.Value = HPbar.Value - 1;
-                    HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+                    RefreshAllHP();
                 }
             }
             string enemy = "";
-            int EnemyAttack = 25;
-            int PlayerDef = Super1.Defence * Super1.DefenseState + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3];
-            var uriSource = new Uri(@"IconPoisoned.png", UriKind.RelativeOrAbsolute);
+            UInt16 EnemyAttack = 25;
+            UInt16 PlayerDef = Convert.ToUInt16(Super1.Defence * Super1.DefenseState + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3]);
+            Uri uriSource = new Uri(@"IconPoisoned.png", UriKind.RelativeOrAbsolute);
             if (((Foe1.EnemyHP[0] != 0) || (Foe1.EnemyHP[1] != 0) || (Foe1.EnemyHP[2] != 0)) && (HPbar.Value != 0))
             {
                 if (Foe1.EnemyHP[0] != 0)
                     if (Foe1.EnemyTurn[0] == 200)
                     {
                         Foe1.EnemyTurn[0] = 0;
-                        EnemyAttack = CheckEnemies(out EnemyAttack, 1);
-                        enemy = NameEnemies(out enemy, 1);
+                        CheckEnemies(out EnemyAttack, 1);
+                        NameEnemies(out enemy, 1);
                         if (EnemyAttack > PlayerDef)
                         {
                             UInt16 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-                            timer5 = new System.Windows.Threading.DispatcherTimer();
-                            timer5.Tick += new EventHandler(FoeAttack1_Time_Tick5);
-                            timer5.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                            timer5.Start();
-                            int dmg = EnemyAttack - PlayerDef;
+                            WidelyUsedAnyTimer(out timer5, FoeAttack1_Time_Tick5, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+                            UInt16 dmg = Convert.ToUInt16(EnemyAttack - PlayerDef);
                             EnemyOnAttack(enemy, dmg);
-                            // EnemyCursor.Margin = new Thickness(Img6.Margin.Left + Img6.Width / 4, Img6.Margin.Top - 120 * Adoptation.HeightAdBack, 0, 0);
                             if ((Random1.Next(1, 13) == 7) && (Super1.PlayerStatus != 1) && (Foe1.EnemyAppears[0] == "Паук"))
                             {
                                 Img5.Source = new BitmapImage(uriSource);
@@ -2814,20 +2544,15 @@ namespace WpfApp1
                 if (Foe1.EnemyHP[1] != 0)
                     if (Foe1.EnemyTurn[1] == 200)
                     {
-                        //Foe1.EnemyTurn[0] = 0;
-                        EnemyAttack = CheckEnemies(out EnemyAttack, 1);
-                        enemy = NameEnemies(out enemy, 1);
+                        CheckEnemies(out EnemyAttack, 1);
+                        NameEnemies(out enemy, 1);
                         Foe1.EnemyTurn[1] = 0;
                         if (EnemyAttack > PlayerDef)
                         {
                             UInt16 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-                            timer6 = new System.Windows.Threading.DispatcherTimer();
-                            timer6.Tick += new EventHandler(FoeAttack2_Time_Tick6);
-                            timer6.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                            timer6.Start();
-                            int dmg = EnemyAttack - PlayerDef;
+                            WidelyUsedAnyTimer(out timer6, FoeAttack2_Time_Tick6, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+                            UInt16 dmg = Convert.ToUInt16(EnemyAttack - PlayerDef);
                             EnemyOnAttack(enemy, dmg);
-                            // EnemyCursor.Margin = new Thickness(Img7.Margin.Left + Img7.Width / 4, Img7.Margin.Top - 120 * Adoptation.HeightAdBack, 0, 0);
                             if ((Random1.Next(1, 13) == 7) && (Super1.PlayerStatus != 1) && (Foe1.EnemyAppears[1] == "Паук"))
                             {
                                 Img5.Source = new BitmapImage(uriSource);
@@ -2844,18 +2569,14 @@ namespace WpfApp1
                     if (Foe1.EnemyTurn[2] == 200)
                     {
                         Foe1.EnemyTurn[2] = 0;
-                        EnemyAttack = CheckEnemies(out EnemyAttack, 1);
-                        enemy = NameEnemies(out enemy, 1);
+                        CheckEnemies(out EnemyAttack, 1);
+                        NameEnemies(out enemy, 1);
                         if (EnemyAttack > PlayerDef)
                         {
                             UInt16 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-                            timer7 = new System.Windows.Threading.DispatcherTimer();
-                            timer7.Tick += new EventHandler(FoeAttack3_Time_Tick7);
-                            timer7.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                            timer7.Start();
-                            int dmg = EnemyAttack - PlayerDef;
+                            WidelyUsedAnyTimer(out timer7, FoeAttack3_Time_Tick7, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+                            UInt16 dmg = Convert.ToUInt16(EnemyAttack - PlayerDef);
                             EnemyOnAttack(enemy, dmg);
-                            //EnemyCursor.Margin = new Thickness(Img8.Margin.Left + Img8.Width / 4, Img8.Margin.Top - 120 * Adoptation.HeightAdBack, 0, 0);
                             if ((Random1.Next(1, 13) == 7) && (Super1.PlayerStatus != 1) && (Foe1.EnemyAppears[2] == "Паук"))
                             {
                                 Img5.Source = new BitmapImage(uriSource);
@@ -2875,7 +2596,6 @@ namespace WpfApp1
                         LabHide(BattleText2);
                     }
                     LabHide(BattleText1);
-                    //ImgHide(EnemyCursor);
                 }
             }
         }
@@ -2906,25 +2626,18 @@ namespace WpfApp1
         }
         private void FightMenuMakesDisappear()
         {
-            ButtonHide(Button2);
-            ButtonHide(Button3);
-            ButtonHide(Button4);
-            ButtonHide(Abilities);
-            ButtonHide(Items);
+            BtnHideX(new Button[] { Button2, Button3, Button4, Abilities, Items });
         }
         private void Button4_Click(object sender, RoutedEventArgs e)
         {
-            int agl = Super1.Speed;
-            int fagl = 10;
+            Byte agl = Super1.Speed;
+            Byte fagl = 10;
             FightMenuMakesDisappear();
-
-
-            fagl = GetOut(out fagl);
+            GetOut(out fagl);
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
             if (agl > fagl)
             {
-                //ImgHide(EnemyCursor);
                 timer2.Stop();
                 speed = 1;
             }
@@ -2934,14 +2647,7 @@ namespace WpfApp1
                 LabShow(BattleText2);
             }
             UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(Escape_Time_Tick9);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
-            //Med4.Source = new Uri(@"IconEscape1.avi", UriKind.RelativeOrAbsolute);
-            //Med3.Source = new Uri(@"Escape2.avi", UriKind.RelativeOrAbsolute);
-            //MediaShow(Med4);
-            //MediaShow(Med3);
+            WidelyUsedAnyTimer(out timer8, Escape_Time_Tick9, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             Dj(new Uri(@"Escape.mp3", UriKind.RelativeOrAbsolute));
         }
 
@@ -2963,15 +2669,10 @@ namespace WpfApp1
                 if (HPbar.Value != 0)
                     ImgShow(Img5);
             }
-            else
-            {
-
-            }
         }
         private void FightMenuBack()
         {
-            ButtonShow(Button2);
-            ButtonShow(Button3);
+            BtnShowX(new Button[] { Button2, Button3 });
             if (Sets.SpecialBattle != 200) {
                 if (Sets.SpecialBattle == 0)
                     ButtonShow(Button4);
@@ -2979,13 +2680,9 @@ namespace WpfApp1
                 {
                     Button4.Visibility = Visibility.Visible;
                 }
-                //if (Super1.CurrentLevel >= 2)
-                ButtonShow(Abilities);
-                //else
-                // {
-                // Abilities.Visibility = Visibility.Visible;
-                // }
-                ButtonShow(Items);
+                BtnShowX(new Button[] { Abilities, Items });
+                if (Super1.CurrentLevel <= 1)
+                    Abilities.IsEnabled = false;
             }
         }
         private void Trgt_MediaEnded(object sender, RoutedEventArgs e)
@@ -2998,32 +2695,22 @@ namespace WpfApp1
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             timer9.Stop();
-            ImgHide(TrgtImg);
-            ImgHide(EnemyImg);
+            ImgHideX(new Image[] { TrgtImg, EnemyImg });
             UInt16 strength = Convert.ToUInt16(Super1.Attack + Super1.PlayerEQ[0]);
-            UInt16[] x = { 34, 360, 712 };
-            UInt16[] y = { 644, 492, 675 };
             Byte PharaohAura = 0;
-            //MediaHide(Trgt);
             LabHide(BattleText1);
             SelectedTrgt = Sets.SelectedTarget;
             UInt16 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-            timer10 = new System.Windows.Threading.DispatcherTimer();
-            timer10.Tick += new EventHandler(DamageFoe_Time_Tick17);
-            timer10.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer10.Start();
-            //BattleText1.Margin = new Thickness(473 * Adoptation.WidthAdBack, 45 * Adoptation.HeightAdBack, 0, 0);
-            //BattleText1.FontSize = 48*Adoptation.WidthAdBack;
+            WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+            
             if (Sets.SpecialBattle==1)
             {
                 PharaohAura = 25;
             }
-            //BattleText1.Content = Foe1.EnemyAppears[Sets.SelectedTarget] + " получает " + (strength - PharaohAura) + " урона!";
             LabShow(BattleText1);
             BarHide(HPenemyBar);
             LabHide(HPenemy);
-            ButtonHide(Fight);
-            ButtonHide(Cancel1);
+            BtnHideX(new Button[] { Fight, Cancel1 });
 
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
@@ -3038,17 +2725,9 @@ namespace WpfApp1
             }
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
             {
-                // ImgHide(EnemyCursor);
-                //BattleText2.Content = Foe1.EnemyAppears[Sets.SelectedTarget] + " погибает!";
-                //LabShow(BattleText2);
-                string res = "";
-                res = EnemySounds(Sets.SelectedTarget);
+                string res = EnemySounds(Sets.SelectedTarget);
                 SEF(new Uri(@"" + res + ".mp3", UriKind.RelativeOrAbsolute));
             }
-            string spdr = "Паук";
-            string mum = "Мумия";
-            string zomb = "Зомби";
-            string defd = "Страж";
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
             {
                 switch (Sets.SelectedTarget)
@@ -3063,61 +2742,15 @@ namespace WpfApp1
                         ImgHide(Img8);
                         break;
                 }
-                if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Паук")
-                {
-                    Sets.SpiderAlive--;
-                    CheckFoeCounts(0, (spdr + ": " + Sets.SpiderAlive));
-                    if (Sets.SpiderAlive == 0)
-                    {
-                       // LabShow(BattleText3);
-                        CheckFoeCounts(0, "");
-                      //  EnemyNamesFight[0]=0;
-                        Foe1.EnemyAppears[Sets.SelectedTarget] = "";
-                    }
-                }
-                if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Мумия")
-                {
-                    Sets.MummyAlive--;
-                    CheckFoeCounts(1, (mum + ": " + Sets.MummyAlive));
-                    if (Sets.MummyAlive == 0)
-                    {
-                        CheckFoeCounts(1, "");
-                      //  EnemyNamesFight[1] = 0;
-                        //LabShow(BattleText4);
-                        Foe1.EnemyAppears[Sets.SelectedTarget] = "";
-                    }
-                }
-                if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Зомби")
-                {
-                    Sets.ZombieAlive--;
-                    CheckFoeCounts(2, (zomb + ": " + Sets.ZombieAlive));
-                    if (Sets.ZombieAlive == 0)
-                    {
-                        //LabShow(BattleText5);
-                        CheckFoeCounts(2, "");
-                      //  EnemyNamesFight[2] = 0;
-                        Foe1.EnemyAppears[Sets.SelectedTarget] = "";
-                    }
-                }
-                if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Страж")
-                {
-                    Sets.BonesAlive--;
-                    CheckFoeCounts(3, (defd + ": " + Sets.BonesAlive));
-                    if (Sets.BonesAlive == 0)
-                    {
-                      //  LabShow(BattleText6);
-                        CheckFoeCounts(3, "");
-                      //  EnemyNamesFight[3] = 0;
-                        Foe1.EnemyAppears[Sets.SelectedTarget] = "";
-                    }
-                }
+                SuperCheckFoes(Sets.SelectedTarget);
+
                 if (Foe1.EnemyHP[0] != 0)
                     Sets.SelectedTarget = 0;
                 else if (Foe1.EnemyHP[1] != 0)
                     Sets.SelectedTarget = 1;
                 else if (Foe1.EnemyHP[2] != 0)
                     Sets.SelectedTarget = 2;
-                //Trgt.Margin = new Thickness(x[Sets.SelectedTarget]*Adoptation.WidthAdBack, y[Sets.SelectedTarget] * Adoptation.HeightAdBack, 0, 0);
+                
                 Byte[] grRow = new Byte[] { 23, 15, 21 };
                 Byte[] grColumn = new Byte[] { 2, 13, 24 };
                 Grid.SetRow(TrgtImg, grRow[Sets.SelectedTarget]);
@@ -3151,27 +2784,15 @@ namespace WpfApp1
             GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
             if (Sets.SpecialBattle==200)
             {
-                timer8 = new System.Windows.Threading.DispatcherTimer();
-                timer8.Tick += new EventHandler(SeriousMinigun_Time_Tick39);
-                timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer8.Start();
+                WidelyUsedAnyTimer(out timer8, SeriousMinigun_Time_Tick39, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+
             }
             else
             {
-                timer8 = new System.Windows.Threading.DispatcherTimer();
-                timer8.Tick += new EventHandler(HandAttack_Time_Tick8);
-                timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer8.Start();
+                WidelyUsedAnyTimer(out timer8, HandAttack_Time_Tick8, new TimeSpan(0, 0, 0, 0, GameSpeed1));                
             }
-            //Med3.Source = new Uri(@"HandAttack3.avi", UriKind.RelativeOrAbsolute);
-            //MediaShow(Med3);
             Dj(new Uri(@"Punch.mp3", UriKind.RelativeOrAbsolute));
-            //Med4.Source = new Uri(@"IconRage1.avi", UriKind.RelativeOrAbsolute);
-            //MediaShow(Med4);
-            /*timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(HandAttack_Time_Tick8);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();*/
+            
         }
 
         public static Byte Actions = 0;
@@ -3409,8 +3030,7 @@ namespace WpfApp1
                 }
                 else
                 {
-                    Grid.SetRow(Labs[SelectedTrgt], RowSet2[SelectedTrgt, FoeDamage]);
-                    Grid.SetColumn(Labs[SelectedTrgt], ColumnSet2[SelectedTrgt, FoeDamage]);
+                    LabGrid(Labs[SelectedTrgt], RowSet2[SelectedTrgt, FoeDamage], ColumnSet2[SelectedTrgt, FoeDamage]);
                     FoeDamage++;
                 }
             }
@@ -3426,26 +3046,21 @@ namespace WpfApp1
                 {
                     FoeDamage = 0;
                     timer10.Stop();
-                    LabHide(Labs[0]);
-                    LabHide(Labs[1]);
-                    LabHide(Labs[2]);
+                    LabHideX(Labs);
                 }
                 else
                 {
                     if (Foe1.EnemyHP[0] != 0)
                     {
-                        Grid.SetRow(Labs[0], RowSet2[0, FoeDamage]);
-                        Grid.SetColumn(Labs[0], ColumnSet2[0, FoeDamage]);
+                        LabGrid(Labs[0], RowSet2[0, FoeDamage], ColumnSet2[0, FoeDamage]);
                     }
                     if (Foe1.EnemyHP[1] != 0)
                     {
-                        Grid.SetRow(Labs[1], RowSet2[1, FoeDamage]);
-                        Grid.SetColumn(Labs[1], ColumnSet2[1, FoeDamage]);
+                        LabGrid(Labs[1], RowSet2[1, FoeDamage], ColumnSet2[1, FoeDamage]);
                     }
                     if (Foe1.EnemyHP[2] != 0)
                     {
-                        Grid.SetRow(Labs[2], RowSet2[2, FoeDamage]);
-                        Grid.SetColumn(Labs[2], ColumnSet2[2, FoeDamage]);
+                        LabGrid(Labs[2], RowSet2[2, FoeDamage], ColumnSet2[2, FoeDamage]);
                     }
                     FoeDamage++;
                 }
@@ -3458,18 +3073,14 @@ namespace WpfApp1
             {
                 Actions = 0;
                 icon.Source = new BitmapImage(new Uri("/person6.png", UriKind.RelativeOrAbsolute));
-                //AfterAction();
                 timer2.Stop();
             }
             else
-            {
                 Actions++;
-            }
         }
         private void ActionsTickCheck(in string[] pers, in string[] ico)
         {
-            Img4.Source = new BitmapImage(new Uri(pers[Actions], UriKind.RelativeOrAbsolute));
-            Img5.Source = new BitmapImage(new Uri(ico[Actions], UriKind.RelativeOrAbsolute));
+            FastImgChange(new Image[] { Img4, Img5 }, new BitmapImage[] { new BitmapImage(new Uri(pers[Actions], UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(ico[Actions], UriKind.RelativeOrAbsolute)) });
             if (Actions == pers.Length - 1)
             {
                 Actions = 0;
@@ -3501,31 +3112,23 @@ namespace WpfApp1
         {
             TrgtImg.Source = new BitmapImage(new Uri(spec[trgt], UriKind.RelativeOrAbsolute));
             if (trgt == spec.Length - 1)
-            {
                 trgt = 0;
-            }
             else
-            {
                 trgt++;
-            }
         }
 
         private void Cancel1_Click(object sender, RoutedEventArgs e)
         {
             timer9.Stop();
-            ButtonHide(Fight);
-            ButtonHide(Cancel1);
+            BtnHideX(new Button[] { Fight, Cancel1 });
             FightMenuBack();
             if (Sets.SpecialBattle == 200)
             {
                 BtnHideX(new Button[] { Button4, Items, Abilities });
             }
-            LabHide(HPenemy);
+            LabHideX(new Label[] { HPenemy, BattleText1 });
+            ImgHideX(new Image[] { EnemyImg, TrgtImg });
             BarHide(HPenemyBar);
-            LabHide(BattleText1);
-            ImgHide(EnemyImg);
-            //MediaHide(Trgt);
-            ImgHide(TrgtImg);
         }
 
         private void Win_MediaEnded(object sender, RoutedEventArgs e)
@@ -3542,14 +3145,10 @@ namespace WpfApp1
                 case 0:
                     break;
                 case 1:
-                    ImgShow(KeyImg3);
-                    ImgShow(LockImg3);
+                    ImgShowX(new Image[] { KeyImg3, LockImg3 });
                     break;
                 case 2:
-                    ImgShow(KeyImg2);
-                    ImgShow(LockImg2);
-                    ImgShow(KeyImg3);
-                    ImgShow(LockImg3);
+                    ImgShowX(new Image[] { KeyImg2, LockImg2, KeyImg3, LockImg3 });
                     break;
                 case 3:
                     KeysAllTurnOn1();
@@ -3560,16 +3159,14 @@ namespace WpfApp1
                     LocksAllTurnOn1();
                     break;
             }
-            ImgShow(Threasure1);
-            ImgShow(Img2);
+            ImgShowX(new Image[] { Threasure1, Img2 });
             ChestsAllTurnOn1();
             TablesAllTurnOn1();
             if (Sets.TableEN)
                 ImgShow(TableMessage1);
             MediaHide(Win);
-            MediaHide(Med4);
-            ImgHide(Img5);
             Win.Position = new TimeSpan(0, 0, 0, 0, 0);
+            ImgHide(Img5);
             HeyPlaySomething(new Uri(@"Main_theme.mp3", UriKind.RelativeOrAbsolute));
         }
         private void Sound2_MediaEnded(object sender, RoutedEventArgs e)
@@ -3586,37 +3183,10 @@ namespace WpfApp1
 
         private void HideAfterBattleMenu()
         {
+            LabHideX(new Label[] { NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1 });
+            ImgHideX(new Image[] { AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg });
+            BarHideX(new ProgressBar[] { AfterHPbar, AfterAPbar, NextExpBar, BeforeHPbar, BeforeAPbar });
             ButtonHide(TextOk1);
-            Label[] ANLabs = new Label[] { NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP };
-            Label[] AFLabs = new Label[] { ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1 };
-            Image[] ANImgs = new Image[] { AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg };
-            Image[] AFImgs = new Image[] { AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg };
-            ProgressBar[] ANBars = new ProgressBar[] { AfterHPbar, AfterAPbar };
-            ProgressBar[] AFBars = new ProgressBar[] { NextExpBar, BeforeHPbar, BeforeAPbar };
-            for (Byte i = 0; i < AFLabs.Length; i++)
-            {
-                LabHide(AFLabs[i]);
-            }
-            for (Byte i = 0; i < AFImgs.Length; i++)
-            {
-                ImgHide(AFImgs[i]);
-            }
-            for (Byte i = 0; i < AFBars.Length; i++)
-            {
-                BarHide(AFBars[i]);
-            }
-            for (Byte i = 0; i < ANLabs.Length; i++)
-            {
-                LabHide(ANLabs[i]);
-            }
-            for (Byte i = 0; i < ANImgs.Length; i++)
-            {
-                ImgHide(ANImgs[i]);
-            }
-            for (Byte i = 0; i < ANBars.Length; i++)
-            {
-                BarHide(ANBars[i]);
-            }
         }
 
         private void TextOk1_Click(object sender, RoutedEventArgs e)
@@ -3749,37 +3319,13 @@ namespace WpfApp1
         private void HideFightIconPersActions()
         {
             BarHide(HPenemyBar);
-            LabHide(BattleText4);
-            LabHide(BattleText5);
-            LabHide(BattleText6);
-            LabHide(HPenemy);
-            LabHide(ItemText);
-            ImgHide(ItemsCountImg);
-            ImgHide(Img4);
-            ImgHide(Img5);
-            ButtonHide(Cure);
-            ButtonHide(Heal);
-            ButtonHide(Torch);
-            ButtonHide(Whip);
-            ButtonHide(Super);
-            ButtonHide(Back1);
-            ButtonHide(Button2);
-            ButtonHide(Button3);
-            ButtonHide(Button4);
-            ButtonHide(Items);
-            ButtonHide(Abilities);
-            ButtonHide(Fight);
-            ButtonHide(Cancel1);
-            ButtonHide(ACT1);
-            ButtonHide(ACT2);
-            ButtonHide(Cancel2);
-            MediaHide(Trgt);
+            LabHideX(new Label[] { BattleText4, BattleText5, BattleText6, HPenemy, ItemText });
+            ImgHideX(new Image[] { ItemsCountImg, Img4, Img5, TrgtImg });
+            BtnHideX(new Button[] { Cure, Heal, Torch, Whip, Super, Back1, Button2, Button3, Button4, Items, Abilities, Fight, Cancel1, ACT1, ACT2, Cancel2 });
         }
 
         private void GameOver_MediaEnded(object sender, RoutedEventArgs e)
         {
-            MediaHide(Med3);
-            MediaHide(Med4);
             MediaHide(GameOver);
             GameOver.Stop();
             if (timer != null)
@@ -3790,27 +3336,19 @@ namespace WpfApp1
             LocksAllTurnOff1();
             TablesAllTurnOff1();
             ImgHide(Threasure1);
-            Img1.Source = new BitmapImage(new Uri(@"New_game_show.jpg", UriKind.RelativeOrAbsolute));
             HideFightIconPersActions();
             ImgShow(Img1);
             ButtonShow(Button1);
             LabShow(Lab1);
             Sound1.Position = new TimeSpan(0, 0, 0, 0, 0);
+            Img1.Source = new BitmapImage(new Uri(@"New_game_show.jpg", UriKind.RelativeOrAbsolute));
             HeyPlaySomething(new Uri(@"Begin2.mp3", UriKind.RelativeOrAbsolute));
-            ButtonHide(Button2);
-            ButtonHide(Button3);
-            ButtonHide(Button4);
+            BtnHideX(new Button[] { Button2, Button3, Button4 });
         }
 
         private void AbilitiesMakeDisappear1()
         {
-            ButtonHide(Cure);
-            ButtonHide(Torch);
-            ButtonHide(Heal);
-            ButtonHide(Back1);
-            ButtonHide(Whip);
-            ButtonHide(Super);
-            ButtonHide(SwitchAbils);
+            BtnHideX(new Button[] { Cure, Torch, Heal, Back1, Whip, Super, SwitchAbils });
         }
         private void Back1_Click(object sender, RoutedEventArgs e)
         {
@@ -3832,28 +3370,20 @@ namespace WpfApp1
         private void Cure_Click(object sender, RoutedEventArgs e)
         {
             UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(Cure_Time_Tick11);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, 25);
-            timer8.Start();
+            WidelyUsedAnyTimer(out timer8, Cure_Time_Tick11, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            timer11 = new System.Windows.Threading.DispatcherTimer();
-            timer11.Tick += new EventHandler(CureHP_Time_Tick18);
-            timer11.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer11.Start();
+            WidelyUsedAnyTimer(out timer11, CureHP_Time_Tick18, new TimeSpan(0, 0, 0, 0, GameSpeed1));            
             Dj(new Uri(@"Cure.mp3", UriKind.RelativeOrAbsolute));
             if (((Super1.Special * 2) + HPbar.Value) >= HPbar.Maximum)
             {
                 HPbar.Value = HPbar.Maximum;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
             }
             else
             {
                 HPbar.Value = HPbar.Value + Super1.Special * 2;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
             }
-            APbar.Value -= 2;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
+            APbar.Value -= 5;
+            RefreshAllHPAP();
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
         }
@@ -3871,37 +3401,10 @@ namespace WpfApp1
 
         private void Abilities_Click(object sender, RoutedEventArgs e)
         {
-            Cure.Visibility = Visibility.Visible;
-            if (APbar.Value >= 1)
-                Cure.IsEnabled = true;
-            //if (Super1.CurrentLevel >= 3)
-            // {
-            /* Torch.Visibility = Visibility.Visible;
-             if (APbar.Value >= 4)
-                 Torch.IsEnabled = true;*/
-            // }
-            //   if (Super1.CurrentLevel >= 4)
-            // {
-            Heal.Visibility = Visibility.Visible;
-            if (APbar.Value >= 1)
-                Heal.IsEnabled = true;
+            CheckAccessAbilities(new Button[] { Cure, Heal }, new Byte[] { 2, 4 }, new Byte[] { 5, 3 });
             ButtonShow(SwitchAbils);
-            ToNextImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ToNext.png", UriKind.RelativeOrAbsolute));
-            //SwitchAbils.Content = "=====>";
-            //  }
-            //  if (Super1.CurrentLevel >= 6)
-            //  {
-            /* Whip.Visibility = Visibility.Visible;
-             if (APbar.Value >= 6)
-                 Whip.IsEnabled = true;*/
-            // }
-            // if (Super1.CurrentLevel >= 7)
-            // {
-            /* Super.Visibility = Visibility.Visible;
-             if (APbar.Value >= 10)
-                 Super.IsEnabled = true;*/
-            // }
             ButtonShow(Back1);
+            ToNextImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ToNext.png", UriKind.RelativeOrAbsolute));
             FightMenuMakesDisappear();
         }
 
@@ -3920,21 +3423,9 @@ namespace WpfApp1
 
         private void LevelUpShow()
         {
-            Label[] ANLabs = new Label[] { NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP };
-            Image[] ANImgs = new Image[] { AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg };
-            ProgressBar[] ANBars = new ProgressBar[] { AfterHPbar, AfterAPbar };
-            for (Byte i = 0; i < ANLabs.Length; i++)
-            {
-                LabShow(ANLabs[i]);
-            }
-            for (Byte i = 0; i < ANImgs.Length; i++)
-            {
-                ImgShow(ANImgs[i]);
-            }
-            for (Byte i = 0; i < ANBars.Length; i++)
-            {
-                BarShow(ANBars[i]);
-            }
+            LabShowX(new Label[] { NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP });
+            ImgShowX(new Image[] { AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg });
+            BarShowX(new ProgressBar[] { AfterHPbar, AfterAPbar });
         }
         private void AddingStats_Time_Tick41(object sender, EventArgs e)
         {
@@ -4017,12 +3508,7 @@ namespace WpfApp1
             else
             {
                 timer13.Stop();
-                LabHide(AddHP);
-                LabHide(AddAP);
-                LabHide(AddATK);
-                LabHide(AddDEF);
-                LabHide(AddAG);
-                LabHide(AddSP);
+                LabHideX(new Label[] { AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP });
                 ButtonShow(TextOk1);
             }
         }
@@ -4059,18 +3545,21 @@ namespace WpfApp1
                         NextExpBar.Value = 0;
                         ExpText.Content = "Опыт " + NextExpBar.Value + "/" + NextExpBar.Maximum;
                         AfterLevel.Content = "Уровень " + Super1.CurrentLevel;
+                        
                         /*CurrentNextParams[0] = Super1.Attack;
                         CurrentNextParams[1] = Super1.Defence;
                         CurrentNextParams[2] = Super1.Speed;
                         CurrentNextParams[3] = Super1.Special;
                         CurrentNextHPAP[0] = Super1.MaxHP;
                         CurrentNextHPAP[1] = Super1.MaxAP;*/
+
                         AddHP.Content = "+" + (Super1.MaxHP - CurrentNextHPAP[0]);
                         AddAP.Content = "+" + (Super1.MaxAP - CurrentNextHPAP[1]);
                         AddATK.Content = "+" + (Super1.Attack - CurrentNextParams[0]);
                         AddDEF.Content = "+" + (Super1.Defence - CurrentNextParams[1]);
                         AddAG.Content = "+" + (Super1.Speed - CurrentNextParams[2]);
                         AddSP.Content = "+" + (Super1.Special - CurrentNextParams[3]);
+
                         if (!NewLevelGet.IsEnabled)
                             LevelUpShow();
                         if (LevelUpCount > 1)
@@ -4083,10 +3572,7 @@ namespace WpfApp1
                         }
                         LevelUpCount += 1;
                         Dj(new Uri("D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp.mp3", UriKind.RelativeOrAbsolute));
-                        timer2 = new System.Windows.Threading.DispatcherTimer();
-                        timer2.Tick += new EventHandler(LevelingUPImage_Time_Tick44);
-                        timer2.Interval = new TimeSpan(0, 0, 0, 0, 25);
-                        timer2.Start();
+                        WidelyUsedAnyTimer(out timer2, LevelingUPImage_Time_Tick44, new TimeSpan(0, 0, 0, 0, 25));
                     } else
                     {
                         NextExpBar.Value = NextExpBar.Maximum;
@@ -4101,10 +3587,7 @@ namespace WpfApp1
                         else
                         {
                             timer12.Stop();
-                            timer13 = new System.Windows.Threading.DispatcherTimer();
-                            timer13.Tick += new EventHandler(AddingStats_Time_Tick41);
-                            timer13.Interval = new TimeSpan(0, 0, 0, 0, 25);
-                            timer13.Start();
+                            WidelyUsedAnyTimer(out timer13, AddingStats_Time_Tick41, new TimeSpan(0, 0, 0, 0, 25));                            
                         }
                     }
                 }
@@ -4112,7 +3595,6 @@ namespace WpfApp1
                 {
                     NextExpBar.Value++;
                     ExpText.Content = "Опыт " + NextExpBar.Value + "/" + NextExpBar.Maximum;
-                    //ex = Convert.ToInt32(Exp - NextExpBar.Maximum);
                 }
                 Exp--;
             }
@@ -4126,16 +3608,9 @@ namespace WpfApp1
                 else
                 {
                     timer12.Stop();
-                    timer13 = new System.Windows.Threading.DispatcherTimer();
-                    timer13.Tick += new EventHandler(AddingStats_Time_Tick41);
-                    timer13.Interval = new TimeSpan(0, 0, 0, 0, 25);
-                    timer13.Start();
+                    WidelyUsedAnyTimer(out timer13, AddingStats_Time_Tick41, new TimeSpan(0, 0, 0, 0, 25));
                 }
             }
-            //int ex = Exp;
-
-            //ex = Convert.ToInt32(NextExpBar.Value + Exp - NextExpBar.Maximum);
-
         }
 
         public static Byte LevelUpCount = 1;
@@ -4159,17 +3634,15 @@ namespace WpfApp1
                 HPbar.Value = RememberHPAP[0];
                 Super1.Attack = RememberParams[0];
                 Super1.Defence = RememberParams[1];
-                AP.Content = APbar.Value + "/" + APbar.Maximum;
                 APbar.Width = APbar.Maximum;
                 HPbar.Width = HPbar.Maximum;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+                RefreshAllHPAP();
                 Sets.SpecialBattle = 0;
                 TrgtImg.Width = 325;
                 TrgtImg.Height = 325;
                 Img6.Width = 325;
                 Img6.Height = 325;
-                Img4.Source = new BitmapImage(new Uri("/pers5.png", UriKind.RelativeOrAbsolute));
-                Img5.Source = new BitmapImage(new Uri("/person6.png",UriKind.RelativeOrAbsolute));
+                FastImgChange(new Image[] { Img4, Img5 }, new BitmapImage[] { new BitmapImage(new Uri("/pers5.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri("/person6.png", UriKind.RelativeOrAbsolute)) });
                 BAG.Armor[3] = true;
                 if (Super1.PlayerEQ[1] == 0)
                     BAG.Jacket = true;
@@ -4222,96 +3695,17 @@ namespace WpfApp1
             
             MaterialsOnHand.Content = BAG.Materials;
             MaterialsAdd.Content = "+"+Mat;
-            //HPbar.Value = HPbar.Maximum;
-            //APbar.Value = APbar.Maximum;
             AfterLevel.Content = "Уровень " +Super1.CurrentLevel;
             LabHideX(new Label[] { BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6 });
             ItemsGetSlot1.Content = "";
-            //HP.Margin = new Thickness(HPbar.Margin.Left + HPbar.Width- 1 / Adoptation.WidthAdBack, 38 * Adoptation.HeightAdBack, 0, 0);
-            Label[] ANLabs = new Label[] { NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP };
-            Label[] AFLabs = new Label[] { ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1 };
-            Image[] ANImgs = new Image[] { AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg };
-            Image[] AFImgs = new Image[] { AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg };
-            ProgressBar[] ANBars = new ProgressBar[] { AfterHPbar, AfterAPbar };
-            ProgressBar[] AFBars = new ProgressBar[] { NextExpBar, BeforeHPbar, BeforeAPbar };
-            for (Byte i=0; i<AFLabs.Length; i++)
-            {
-                LabShow(AFLabs[i]);
-            }
-            for (Byte i = 0; i < AFImgs.Length; i++)
-            {
-                ImgShow(AFImgs[i]);
-            }
-            for (Byte i = 0; i < AFBars.Length; i++)
-            {
-                BarShow(AFBars[i]);
-            }
-            timer12 = new System.Windows.Threading.DispatcherTimer();
-            timer12.Tick += new EventHandler(Levelling_Time_Tick40);
-            timer12.Interval = new TimeSpan(0, 0, 0, 0, 25);
-            timer12.Start();
-            timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Tick += new EventHandler(AddingMaterials_Time_Tick42);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 25);
-            timer.Start();
-            HP.Content = HPbar.Value + "/" + HPbar.Maximum;
-            //AP.Margin = new Thickness(APbar.Margin.Left + APbar.Width- 1 / Adoptation.WidthAdBack, 87 * Adoptation.HeightAdBack, 0, 0);
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
-            /*if (Super1.CurrentLevel < 10)
-                ExpText.Content = "Опыт " + Convert.ToString(ex) + "/" + Super1.NextLevel[Super1.CurrentLevel - 1];
-            else
-            {
-                ExpText.Content = "Максимальный";
-                NextExpBar.Value = NextExpBar.Maximum;
-            }*/
-            //ImgHide(Img5);
-            //Med4.Source = new Uri(@"LevelUP.mp4", UriKind.RelativeOrAbsolute);
-            //MediaShow(Med4);
+            
+            LabShowX(new Label[] { ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1 });
+            ImgShowX(new Image[] { AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg });
+            BarShowX(new ProgressBar[] { NextExpBar, BeforeHPbar, BeforeAPbar });
+            WidelyUsedAnyTimer(out timer12, Levelling_Time_Tick40, new TimeSpan(0, 0, 0, 0, 25));
+            WidelyUsedAnyTimer(out timer, AddingMaterials_Time_Tick42, new TimeSpan(0, 0, 0, 0, 25));
+            RefreshAllHPAP();
             ButtonHide(textOk2);
-            //BattleText2.Content = "Рэй получает уровень " + Super1.CurrentLevel + "!";
-            //BattleText1.Margin = new Thickness(473*Adoptation.WidthAdBack, 15 * Adoptation.HeightAdBack, 0, 0);
-            //BattleText1.FontSize = 60 * Adoptation.WidthAdBack;
-            //BattleText1.Content = "Новый\nуровень!";
-            /*switch (Super1.CurrentLevel)
-            {
-                case 2:
-                    BattleText3.Content = "Изучено:\nЛечение";
-                    LabShow(BattleText3);
-                    break;
-                case 3:
-                    BattleText3.Content = "Изучено:\nФакел";
-                    LabShow(BattleText3);
-                    break;
-                case 4:
-                    BattleText3.Content = "Изучено:\nИсцеление";
-                    LabShow(BattleText3);
-                    break;
-                case 6:
-                    BattleText3.Content = "Изучено:\nКнут";
-                    LabShow(BattleText3);
-                    break;
-                case 7:
-                    BattleText3.Content = "Изучено:\nСупер";
-                    LabShow(BattleText3);
-                    break;
-                default:
-                    break;
-            }
-            Super1.MaxHP = Super1.MaxHPNxt[Super1.CurrentLevel - 1];
-            Super1.MaxAP = Super1.MaxAPNxt[Super1.CurrentLevel - 1];
-            Super1.Attack = Super1.AttackNxt[Super1.CurrentLevel - 1];
-            Super1.Defence = Super1.DefenseNxt[Super1.CurrentLevel - 1];
-            Super1.Speed = Super1.SpeedNxt[Super1.CurrentLevel - 1];
-            Super1.Special = Super1.SpecialNxt[Super1.CurrentLevel - 1];*/
-            //ATK.Content = "ОЗ +" + (Super1.MaxHP - Super1.MaxHPNxt[Super1.CurrentLevel - 2]) + "\n" + "АТК +" + (Super1.Attack - Super1.AttackNxt[Super1.CurrentLevel - 2]) + "\n" + "ЗЩТ +" + (Super1.Defence - Super1.DefenseNxt[Super1.CurrentLevel - 2]);
-            //ATK.Margin = new Thickness(873*Adoptation.WidthAdBack, 20 * Adoptation.HeightAdBack, 0, 0);
-            //LabShow(ATK);
-            //SP.Content = "ОД +" + (Super1.MaxAP - Super1.MaxAPNxt[Super1.CurrentLevel - 2]) + "\n" + "СК. +" + (Super1.Speed - Super1.SpeedNxt[Super1.CurrentLevel - 2]) + "\n" + "СП. +" + (Super1.Special - Super1.SpecialNxt[Super1.CurrentLevel - 2]);
-            //SP.Margin = new Thickness(1073 * Adoptation.WidthAdBack, 20 * Adoptation.HeightAdBack, 0, 0);
-            //LabShow(SP);
-            //ButtonShow(TextOk1);
-            //SEF(new Uri(@"LevelUp.mp3", UriKind.RelativeOrAbsolute));
-            // Exp = 0;
             timer2.Stop();
             Byte item = 0;
             if (Sets.ItemsDropRate[0] != 0)
@@ -4468,6 +3862,7 @@ namespace WpfApp1
             LabHideX(new Label[] { HPenemy, BattleText1 });
             ImgHideX(new Image[] { EnemyImg, TrgtImg });
             BtnHideX(new Button[] { Fight, ACT1, ACT2, Cancel2, Back1 });
+            BtnShow(Back2);
             InBattleHighSkillsMenu();
         }
         private void CheckFoeCounts(in Byte selected, in string foestatus)
@@ -4488,12 +3883,9 @@ namespace WpfApp1
         }
         private void ACT(in Byte a1)
         {
-            string spdr = "Паук";
-            string mum = "Мумия";
-            string zomb = "Зомби";
-            string defd = "Страж";
+            string[] EnemyNames = { "Паук", "Мумия", "Зомби", "Страж" };
             UInt16 strength = Super1.Special;
-            if ((a1 == 0) && ((Foe1.EnemyAppears[Sets.SelectedTarget] == "Паук") || (Foe1.EnemyAppears[Sets.SelectedTarget] == "Мумия")))
+            if ((a1 == 0) && ((Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[0]) || (Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[1])))
             {
                 strength = Convert.ToUInt16(strength * 2.5);
             }
@@ -4504,7 +3896,7 @@ namespace WpfApp1
                 else
                     strength = Convert.ToUInt16(strength * 1.25);
             }
-            if ((a1 == 1) && ((Foe1.EnemyAppears[Sets.SelectedTarget] == "Зомби") || (Foe1.EnemyAppears[Sets.SelectedTarget] == "Страж")))
+            if ((a1 == 1) && ((Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[2]) || (Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[3])))
             {
                 strength = Convert.ToUInt16(strength * 3);
             }
@@ -4515,18 +3907,10 @@ namespace WpfApp1
                 else
                     strength = Convert.ToUInt16(strength * 1.5);
             }
-            //MediaHide(Trgt);
-            LabHide(BattleText1);
-            //BattleText1.Margin = new Thickness(473 * Adoptation.WidthAdBack, 45 * Adoptation.HeightAdBack, 0, 0);
-            //BattleText1.FontSize = 48 * Adoptation.WidthAdBack;
-            //BattleText1.Content = Foe1.EnemyAppears[Sets.SelectedTarget] + " получает " + strength + " урона!";
-            LabShow(BattleText1);
-            LabHide(HPenemy);
+            LabHideX(new Label[] { HPenemy, BattleText1 });
             BarHide(HPenemyBar);
             ImgHide(EnemyImg);
-            ButtonHide(Fight);
-            ButtonHide(Cancel1);
-            ButtonHide(Cancel2);
+            BtnHideX(new Button[] { Fight, Cancel1, Cancel2 });
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
             if (Foe1.EnemyHP[Sets.SelectedTarget] - strength < 0)
@@ -4542,7 +3926,8 @@ namespace WpfApp1
                 string res= "SpiderDied";
                 res=EnemySounds(Sets.SelectedTarget);
                 SEF(new Uri(@"" + res + ".mp3", UriKind.RelativeOrAbsolute));
-                if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Паук")
+                SuperCheckFoes(Sets.SelectedTarget);
+                /*if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Паук")
                 {
                     Sets.SpiderAlive--;
                     CheckFoeCounts(0, (spdr + ": " + Sets.SpiderAlive));
@@ -4584,15 +3969,11 @@ namespace WpfApp1
                     CheckFoeCounts(3, (defd + ": " + Sets.BonesAlive));
                     if (Sets.BonesAlive == 0)
                     {
-                     //   LabShow(BattleText6);
                         CheckFoeCounts(3, "");
-                    //    EnemyNamesFight[3] = 0;
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
                     }
-                }
-                // ImgHide(EnemyCursor);
-                //BattleText2.Content = Foe1.EnemyAppears[Sets.SelectedTarget] + " погибает!";
-                // LabShow(BattleText2);
+                }*/
+                
             }
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
             {
@@ -4616,7 +3997,7 @@ namespace WpfApp1
                 else
                     if (Foe1.EnemyHP[2] != 0)
                     Sets.SelectedTarget = 2;
-                //Trgt.Margin = new Thickness(x[Sets.SelectedTarget] * Adoptation.WidthAdBack, y[Sets.SelectedTarget] * Adoptation.HeightAdBack, 0, 0);
+                
                 Foe1.EnemiesStillAlive = Convert.ToByte(Foe1.EnemiesStillAlive - 1);
                 if (Foe1.EnemyAppears[0] == "Фараон")
                 {
@@ -4632,23 +4013,16 @@ namespace WpfApp1
         }
         private void ACT1_Click(object sender, RoutedEventArgs e)
         {
-            APbar.Value = APbar.Value - 4;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
+            APbar.Value -= 4;
+            RefreshAllAP();
             ImgHide(TrgtImg);
-            ButtonHide(ACT1);
-            ButtonHide(Cancel2);
+            BtnHideX(new Button[] { ACT1, Cancel2 });
             SelectedTrgt = Sets.SelectedTarget;
             timer9.Stop();
             UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(Torch_Time_Tick13);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
+            WidelyUsedAnyTimer(out timer8, Torch_Time_Tick13, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-            timer10 = new System.Windows.Threading.DispatcherTimer();
-            timer10.Tick += new EventHandler(TorchDmg_Time_Tick20);
-            timer10.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer10.Start();
+            WidelyUsedAnyTimer(out timer10, TorchDmg_Time_Tick20, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             Dj(new Uri(@"Torch.mp3", UriKind.RelativeOrAbsolute));
             Time1.Value = 0;
             ACT(0);
@@ -4656,7 +4030,7 @@ namespace WpfApp1
 
         private void Heal_MouseEnter(object sender, MouseEventArgs e)
         {
-            BattleText2.Content = "Лечит статус, Стоит: 1 ОД";
+            BattleText2.Content = "Лечит статус, Стоит: 3 ОД";
             TextCh1();
         }
 
@@ -4667,26 +4041,17 @@ namespace WpfApp1
 
         private void Heal_Click(object sender, RoutedEventArgs e)
         {
-            //BattleText1.Margin = new Thickness(473 * Adoptation.WidthAdBack, 45 * Adoptation.HeightAdBack, 0, 0);
-            //BattleText1.Content = "Рэй излечивается от яда!";
             LabShow(BattleText1);
             Img5.Source = new BitmapImage(new Uri(@"Person6.png", UriKind.RelativeOrAbsolute));
             Super1.PlayerStatus = 0;
-            APbar.Value -= 1;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
+            APbar.Value -= 3;
+            RefreshAllAP();
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
-
             UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(Heal_Time_Tick12);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
+            WidelyUsedAnyTimer(out timer8, Heal_Time_Tick12, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            timer11 = new System.Windows.Threading.DispatcherTimer();
-            timer11.Tick += new EventHandler(HealPsn_Time_Tick19);
-            timer11.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer11.Start();
+            WidelyUsedAnyTimer(out timer11, HealPsn_Time_Tick19, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             Dj(new Uri(@"Heal.mp3", UriKind.RelativeOrAbsolute));
         }
 
@@ -4705,8 +4070,7 @@ namespace WpfApp1
         {
             SelectTarget();
             AbilitiesMakeDisappear1();
-            ButtonShow(ACT2);
-            ButtonShow(Cancel2);
+            BtnShowX(new Button[] { ACT2, Cancel2 });
         }
 
         private void ACT2_MouseEnter(object sender, MouseEventArgs e)
@@ -4725,21 +4089,14 @@ namespace WpfApp1
         private void ACT2_Click(object sender, RoutedEventArgs e)
         {
             APbar.Value = APbar.Value - 6;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
-            ButtonHide(ACT2);
-            ButtonHide(Cancel2);
+            RefreshAllAP();
+            BtnHideX(new Button[] { ACT2, Cancel2 });
             ImgHide(TrgtImg);
             SelectedTrgt = Sets.SelectedTarget;
             UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(Whip_Time_Tick14);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
+            WidelyUsedAnyTimer(out timer8, Whip_Time_Tick14, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-            timer10 = new System.Windows.Threading.DispatcherTimer();
-            timer10.Tick += new EventHandler(WhipDmg_Time_Tick21);
-            timer10.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer10.Start();
+            WidelyUsedAnyTimer(out timer10, WhipDmg_Time_Tick21, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             Dj(new Uri(@"Whip.mp3", UriKind.RelativeOrAbsolute));
             Time1.Value = 0;
             ACT(1);
@@ -4757,82 +4114,78 @@ namespace WpfApp1
         }
         private void SuperCheckFoes(in Byte seltrg)
         {
-            if (Foe1.EnemyAppears[seltrg] == "Паук")
+            Byte FoeType=0;
+            string FoesCount="";
+            switch (Foe1.EnemyAppears[seltrg])
             {
-                Sets.SpiderAlive--;
-                CheckFoeCounts(0, ("Паук: " + Sets.SpiderAlive));
-                if (Sets.SpiderAlive == 0)
-                {
-                   // LabShow(BattleText3);
-                    CheckFoeCounts(0, "");
-                    Foe1.EnemyAppears[seltrg] = "";
-                }
+                case "Паук":
+                    FoeType = 0;
+                    if (Sets.SpiderAlive == 0) {
+                        Foe1.EnemyAppears[seltrg] = "";
+                    } else {
+                        FoesCount = "Паук: " + Sets.SpiderAlive;
+                        Sets.SpiderAlive--;
+                    }
+                    break;
+                case "Мумия":
+                    FoeType = 1;
+                    if (Sets.MummyAlive == 0) {
+                        Foe1.EnemyAppears[seltrg] = "";
+                    } else {
+                        FoesCount = "Мумия: " + Sets.MummyAlive;
+                        Sets.MummyAlive--;
+                    }
+                    break;
+                case "Зомби":
+                    FoeType = 2;
+                    if (Sets.ZombieAlive == 0) {
+                        Foe1.EnemyAppears[seltrg] = "";
+                    } else {
+                        FoesCount = "Зомби: " + Sets.ZombieAlive;
+                        Sets.ZombieAlive--;
+                    }
+                    break;
+                case "Страж":
+                    FoeType = 3;
+                    if (Sets.BonesAlive == 0)
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                    } else {
+                        FoesCount = "Страж: " + Sets.BonesAlive;
+                        Sets.BonesAlive--;
+                    }
+                    break;
+                default:
+                    FoeType = 0;
+                    if (Sets.SpiderAlive == 0)
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                    }
+                    else
+                    {
+                        FoesCount = "Паук: " + Sets.SpiderAlive;
+                        Sets.SpiderAlive--;
+                    }
+                    break;
             }
-            /* else
-            {
-                BattleText4.Content = seltrg;
-                BattleText5.Content = Foe1.EnemyAppears[seltrg];
-                LabShow(BattleText4);
-                LabShow(BattleText5);
-            }*/
-            if (Foe1.EnemyAppears[seltrg] == "Мумия")
-            {
-                Sets.MummyAlive--;
-                CheckFoeCounts(1, ("Мумия: " + Sets.MummyAlive));
-                if (Sets.MummyAlive == 0)
-                {
-                    CheckFoeCounts(1, "");
-                    //LabShow(BattleText4);
-                    Foe1.EnemyAppears[seltrg] = "";
-                }
-            }
-            if (Foe1.EnemyAppears[seltrg] == "Зомби")
-            {
-                Sets.ZombieAlive--;
-                CheckFoeCounts(2, ("Зомби: " + Sets.ZombieAlive));
-                if (Sets.ZombieAlive == 0)
-                {
-                   // LabShow(BattleText5);
-                    CheckFoeCounts(2, "");
-                    Foe1.EnemyAppears[seltrg] = "";
-                }
-            }
-            if (Foe1.EnemyAppears[seltrg] == "Страж")
-            {
-                Sets.BonesAlive--;
-                CheckFoeCounts(3, ("Страж: " + Sets.BonesAlive));
-                if (Sets.BonesAlive == 0)
-                {
-                  //  LabShow(BattleText6);
-                    CheckFoeCounts(3, "");
-                    Foe1.EnemyAppears[seltrg] = "";
-                }
-            }
+            CheckFoeCounts(FoeType, FoesCount);
+            
         }
         private void Super_Click(object sender, RoutedEventArgs e)
         {
             APbar.Value = APbar.Value - 10;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
-            Int16[] x = { 34, 360, 712 };
-            Int16[] y = { 644, 492, 675 };
+            RefreshAllAP();
             UInt16 strength = Super1.Special;
             if (Foe1.EnemyAppears[Sets.SelectedTarget] != "Фараон")
                 strength = Convert.ToUInt16(strength * 2);
             Dj(new Uri(@"Super.mp3", UriKind.RelativeOrAbsolute));
-            AbilitiesMakeDisappear1();
-            //MediaHide(Trgt);
-            ImgHide(TrgtImg);
-            LabHide(BattleText1);
 
-            //BattleText1.Margin = new Thickness(473*Adoptation.WidthAdBack, 45 * Adoptation.HeightAdBack, 0, 0);
-            //BattleText1.FontSize = 48 * Adoptation.WidthAdBack;
-            //BattleText1.Content = "Все враги получают " + strength + " урона!";
-            LabShow(BattleText1);
+            AbilitiesMakeDisappear1();
+            ImgHide(TrgtImg);
+            LabHideX(new Label[] { BattleText1, HPenemy });
+            BtnHideX(new Button[] { Fight, Cancel1, Cancel2 });
             BarHide(HPenemyBar);
-            LabHide(HPenemy);
-            ButtonHide(Fight);
-            ButtonHide(Cancel1);
-            ButtonHide(Cancel2);
+            LabShow(BattleText1);
             SelectedTrgt = 4;
             Time1.Value = 0;
             
@@ -4868,59 +4221,19 @@ namespace WpfApp1
                 }
                 else if (Foe1.EnemyAppears[2] != "")
                     Foe1.EnemyHP[2] = Convert.ToUInt16(Foe1.EnemyHP[2] - strength);
-                //BattleText2.Content = "Все враги погибают!";
-                //BattleText2.IsEnabled = true;
-                //BattleText2.Visibility = Visibility.Visible;
-                //Foe1.EnemiesStillAlive = 0;
+                
                 if (Foe1.EnemyHP[0] != 0)
                     Sets.SelectedTarget = 0;
                 else if (Foe1.EnemyHP[1] != 0)
                     Sets.SelectedTarget = 1;
                 else if (Foe1.EnemyHP[2] != 0)
                     Sets.SelectedTarget = 2;
-                //Trgt.Margin = new Thickness(x[Sets.SelectedTarget] * Adoptation.WidthAdBack, y[Sets.SelectedTarget] * Adoptation.HeightAdBack, 0, 0);
-                /*BattleText3.Content = "";
-                BattleText4.Content = "";
-                BattleText5.Content = "";
-                BattleText6.Content = "";
-                //LabHide(BattleText6);
-                //LabHide(BattleText5);
-                //LabHide(BattleText4);
-                //LabHide(BattleText3);
-                Foe1.EnemyName[0] = "";
-                Foe1.EnemyName[1] = "";
-                Foe1.EnemyName[2] = "";*/
-                /*if (Sets.BonesAlive != 0)
-                {
-                    Sets.BonesAlive = 0;
-                }
-                if (Sets.SpiderAlive != 0)
-                {
-                    Sets.SpiderAlive = 0;
-                }
-                if (Sets.ZombieAlive != 0)
-                {
-                    Sets.ZombieAlive = 0;
-                }
-                if (Sets.MummyAlive != 0)
-                {
-                    Sets.MummyAlive = 0;
-                }*/
+
                 Time1.Value = 0;
                 UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-                timer8 = new System.Windows.Threading.DispatcherTimer();
-                timer8.Tick += new EventHandler(Super_Time_Tick15);
-                timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer8.Start();
+                WidelyUsedAnyTimer(out timer8, Super_Time_Tick15, new TimeSpan(0, 0, 0, 0, GameSpeed1));
                 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-                timer10 = new System.Windows.Threading.DispatcherTimer();
-                timer10.Tick += new EventHandler(SuperDmg_Time_Tick22);
-                timer10.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer10.Start();
-                //ImgHide(EnemyCursor);
-                //
-                //ImgHide(Img7);
-                //ImgHide(Img8);
+                WidelyUsedAnyTimer(out timer10, SuperDmg_Time_Tick22, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             }
             else
             {
@@ -4931,21 +4244,15 @@ namespace WpfApp1
 
                 if (Foe1.EnemyHP[0] == 0)
                 {
-                    //ImgHide(EnemyCursor);
                     ImgHide(Img6);
                     Time1.Value = 0;
                     Foe1.EnemiesStillAlive = 0;
                 }
                 UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
                 Dj(new Uri(@"DefeatPharaoh.mp3", UriKind.RelativeOrAbsolute));
-                timer8 = new System.Windows.Threading.DispatcherTimer();
-                timer8.Tick += new EventHandler(Super_Time_Tick15);
-                timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer8.Start();
-                timer10 = new System.Windows.Threading.DispatcherTimer();
-                timer10.Tick += new EventHandler(SuperDmg_Time_Tick22);
-                timer10.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-                timer10.Start();
+                WidelyUsedAnyTimer(out timer8, Super_Time_Tick15, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+                GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
+                WidelyUsedAnyTimer(out timer10, SuperDmg_Time_Tick22, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             }
         }
 
@@ -4968,22 +4275,7 @@ namespace WpfApp1
             ButtonShow(Back2);
             LabShow(ItemText);
             ImgShow(ItemsCountImg);
-            if (BAG.AntidoteITM>= 1)
-            {
-                ButtonShow(Antidote1);
-            }
-            if (BAG.FusedITM >= 1)
-            {
-                ButtonShow(Fused1);
-            }
-            if (BAG.BandageITM >= 1)
-            {
-                ButtonShow(Bandage1);
-            }
-            if (BAG.EtherITM >= 1)
-            {
-                ButtonShow(Ether);
-            }
+            CheckAccessItems(new Byte[] { BAG.AntidoteITM, BAG.FusedITM, BAG.BandageITM, BAG.EtherITM }, new Button[] { Antidote1, Fused1, Bandage1, Ether });
             Dj(new Uri(@"ItemsOpen.mp3", UriKind.RelativeOrAbsolute));
         }
 
@@ -5000,11 +4292,7 @@ namespace WpfApp1
 
         private void MenuItemsHide1()
         {
-            ButtonHide(Antidote1);
-            ButtonHide(Fused1);
-            ButtonHide(Bandage1);
-            ButtonHide(Ether);
-            ButtonHide(Back2);
+            BtnHideX(new Button[] { Antidote1, Fused1, Bandage1 , Ether, Back2 });
         }
         private void Back2_Click(object sender, RoutedEventArgs e)
         {
@@ -5024,16 +4312,10 @@ namespace WpfApp1
             BAG.AntidoteITM -= 1;
             Time1.Value = 0;
 
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(Items_Time_Tick10);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
+            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);            
+            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            timer11 = new System.Windows.Threading.DispatcherTimer();
-            timer11.Tick += new EventHandler(Antidote_Time_Tick26);
-            timer11.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer11.Start();
+            WidelyUsedAnyTimer(out timer11, Antidote_Time_Tick26, new TimeSpan(0, 0, 0, 0, GameSpeed1));            
             Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
         }
 
@@ -5072,24 +4354,18 @@ namespace WpfApp1
                 HPbar.Value = HPbar.Maximum;
             else
                 HPbar.Value += 80;
+           
             if ((APbar.Value + 80) > APbar.Maximum)
                 APbar.Value = APbar.Maximum;
             else
                 APbar.Value += 80;
-            HP.Content = HPbar.Value + "/" + HPbar.Maximum;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
+            RefreshAllHPAP();
             BAG.FusedITM -= 1;
             Time1.Value = 0;
             UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(Items_Time_Tick10);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
+            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));            
             GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            timer11 = new System.Windows.Threading.DispatcherTimer();
-            timer11.Tick += new EventHandler(Fused_Time_Tick25);
-            timer11.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer11.Start();
+            WidelyUsedAnyTimer(out timer11, Fused_Time_Tick25, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
         }
 
@@ -5119,15 +4395,9 @@ namespace WpfApp1
             BAG.BandageITM -= 1;
             Time1.Value = 0;
             UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(Items_Time_Tick10);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
+            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            timer11 = new System.Windows.Threading.DispatcherTimer();
-            timer11.Tick += new EventHandler(Bandage_Time_Tick23);
-            timer11.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer11.Start();
+            WidelyUsedAnyTimer(out timer11, Bandage_Time_Tick23, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
         }
 
@@ -5143,7 +4413,7 @@ namespace WpfApp1
             ItemText.Content = "";
             DisableBattleText();
         }
-
+        
         private void Ether_Click(object sender, RoutedEventArgs e)
         {
             LabHide(ItemText);
@@ -5153,19 +4423,13 @@ namespace WpfApp1
                 APbar.Value = APbar.Maximum;
             else
                 APbar.Value += 50;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
+            RefreshAllAP();
             BAG.EtherITM -= 1;
             Time1.Value = 0;
             UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            timer8 = new System.Windows.Threading.DispatcherTimer();
-            timer8.Tick += new EventHandler(Items_Time_Tick10);
-            timer8.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer8.Start();
+            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            timer11 = new System.Windows.Threading.DispatcherTimer();
-            timer11.Tick += new EventHandler(Ether_Time_Tick24);
-            timer11.Interval = new TimeSpan(0, 0, 0, 0, GameSpeed1);
-            timer11.Start();
+            WidelyUsedAnyTimer(out timer11, Ether_Time_Tick24, new TimeSpan(0, 0, 0, 0, GameSpeed1));            
             Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
         }
         private void ShowEquipAndStats()
@@ -5173,7 +4437,7 @@ namespace WpfApp1
             ImgShowX(new Image[] { EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg });
             LabShowX(new Label[] { ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText });
         }
-        
+
         private void MenuHpApExp()
         {
             HPbar1.Width = HPbar.Width * 2;
@@ -5186,8 +4450,7 @@ namespace WpfApp1
             ExpBar1.Maximum = NextExpBar.Maximum;
             ExpBar1.Value = NextExpBar.Value;
             Exp1.Content = ExpText.Content;
-            HP1.Content = HPbar1.Value + "/" + HPbar1.Maximum;
-            AP1.Content = APbar1.Value + "/" + APbar1.Maximum;
+            RefreshAllHPAP();
             if (Super1.PlayerStatus == 0)
             {
                 Icon0.Source = new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute));
@@ -5279,23 +4542,18 @@ namespace WpfApp1
             if (((Super1.Special * 2) + HPbar.Value) >= HPbar.Maximum)
             {
                 HPbar.Value = HPbar.Maximum;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
                 HPbar1.Value = HPbar.Value;
-                HP1.Content = HPbar1.Value + "/" + HPbar1.Maximum;
             }
             else
             {
                 HPbar.Value = HPbar.Value + Super1.Special * 2;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
                 HPbar1.Value = HPbar.Value;
-                HP1.Content = HPbar1.Value + "/" + HPbar1.Maximum;
             }
             APbar.Value -= 2;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
             APbar1.Value = APbar.Value;
-            AP1.Content = APbar1.Value + "/" + APbar1.Maximum;
             if (APbar1.Value < 2)
                 Cure1.IsEnabled = false;
+            RefreshAllHPAP();
         }
 
         private void Heal1_Click(object sender, RoutedEventArgs e)
@@ -5303,17 +4561,14 @@ namespace WpfApp1
             Dj(new Uri(@"Heal.mp3", UriKind.RelativeOrAbsolute));
             Super1.PlayerStatus = 0;
             StatusP.Content = "Статус: здоров";
-            Icon0.Source = new BitmapImage(new Uri(@"Person6.png", UriKind.RelativeOrAbsolute));
             APbar.Value -= 1;
-            AP.Content = APbar.Value + "/" + APbar.Maximum;
             APbar1.Value = APbar.Value;
-            AP1.Content = APbar1.Value + "/" + APbar1.Maximum;
+            RefreshAllAP();
             if (APbar1.Value < 1)
                 Heal1.IsEnabled = false;
             if (Super1.PlayerStatus == 0)
             {
-                Icon0.Source = new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute));
-                Img5.Source = new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute));
+                FastImgChange(new Image[] { Icon0, Img5 }, new BitmapImage[] { new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute)) });
             }
             else
             {
@@ -5338,6 +4593,16 @@ namespace WpfApp1
                 {
                     ButtonShow(btn[i]);
                     LabShow(lab[i]);
+                }
+            }
+        }
+        private void CheckAccessItems(in Byte[] bag, Button[] btn)
+        {
+            for (Byte i = 0; i < btn.Length; i++)
+            {
+                if (bag[i] >= 1)
+                {
+                    ButtonShow(btn[i]);
                 }
             }
         }
@@ -5387,17 +4652,14 @@ namespace WpfApp1
             if (50 + HPbar.Value >= HPbar.Maximum)
             {
                 HPbar.Value = HPbar.Maximum;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
                 HPbar1.Value = HPbar.Value;
-                HP1.Content = HPbar1.Value + "/" + HPbar1.Maximum;
             }
             else
             {
                 HPbar.Value = HPbar.Value + 50;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
                 HPbar1.Value = HPbar.Value;
-                HP1.Content = HPbar1.Value + "/" + HPbar1.Maximum;
             }
+            RefreshAllHP();
             if (BAG.BandageITM < 1)
             {
                 LabHide(BandageText);
@@ -5429,17 +4691,14 @@ namespace WpfApp1
             if (50 + APbar.Value >= APbar.Maximum)
             {
                 APbar.Value = APbar.Maximum;
-                AP.Content = APbar.Value + "/" + APbar.Maximum;
                 APbar1.Value = APbar.Value;
-                AP1.Content = APbar1.Value + "/" + APbar1.Maximum;
             }
             else
             {
                 APbar.Value = APbar.Value + 50;
-                AP.Content = APbar.Value + "/" + APbar.Maximum;
                 APbar1.Value = APbar.Value;
-                AP1.Content = APbar1.Value + "/" + APbar1.Maximum;
             }
+            RefreshAllAP();
             if (BAG.EtherITM < 1)
             {
                 LabHide(EtherText);
@@ -5473,15 +4732,15 @@ namespace WpfApp1
             if (BAG.AntidoteITM < 1)
             {
                 LabHide(AntidoteText);
-                Antidote.Visibility = Visibility.Hidden;
+                ButtonHide(Antidote);
                 CountText.Content = "";
             }
             else
                 CountText.Content = "Всего: " + BAG.AntidoteITM;
+
             if (Super1.PlayerStatus == 0)
             {
-                Icon0.Source = new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute));
-                Img5.Source = new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute));
+                FastImgChange(new Image[] { Icon0, Img5 }, new BitmapImage[] { new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute)) });
             }
             else
             {
@@ -5496,31 +4755,24 @@ namespace WpfApp1
             if (80 + HPbar.Value >= HPbar.Maximum)
             {
                 HPbar.Value = HPbar.Maximum;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
                 HPbar1.Value = HPbar.Value;
-                HP1.Content = HPbar1.Value + "/" + HPbar1.Maximum;
             }
             else
             {
                 HPbar.Value = HPbar.Value + 80;
-                HP.Content = HPbar.Value + "/" + HPbar.Maximum;
                 HPbar1.Value = HPbar.Value;
-                HP1.Content = HPbar1.Value + "/" + HPbar1.Maximum;
             }
             if (80 + APbar.Value >= APbar.Maximum)
             {
                 APbar.Value = APbar.Maximum;
-                AP.Content = APbar.Value + "/" + APbar.Maximum;
                 APbar1.Value = APbar.Value;
-                AP1.Content = APbar1.Value + "/" + APbar1.Maximum;
             }
             else
             {
                 APbar.Value = APbar.Value + 80;
-                AP.Content = APbar.Value + "/" + APbar.Maximum;
                 APbar1.Value = APbar.Value;
-                AP1.Content = APbar1.Value + "/" + APbar1.Maximum;
             }
+            RefreshAllHPAP();
             if (BAG.FusedITM < 1)
             {
                 LabHide(FusedText);
@@ -5537,7 +4789,21 @@ namespace WpfApp1
             CountText.Content = "Всего: " + BAG.FusedITM;
             LabShow(CountText);
         }
-
+        private void RefreshAllAP()
+        {
+            AP.Content = APbar.Value + "/" + APbar.Maximum;
+            AP1.Content = APbar1.Value + "/" + APbar1.Maximum;
+        }
+        private void RefreshAllHP()
+        {
+            HP.Content = HPbar.Value + "/" + HPbar.Maximum;
+            HP1.Content = HPbar1.Value + "/" + HPbar1.Maximum;
+        }
+        private void RefreshAllHPAP()
+        {
+            RefreshAllHP();
+            RefreshAllAP();
+        }
         private void Fused_MouseLeave(object sender, MouseEventArgs e)
         {
             Describe1.Content = "";
@@ -5566,10 +4832,17 @@ namespace WpfApp1
             LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 2, 4, Convert.ToByte(HPbar1.GetValue(Grid.RowProperty)), Convert.ToByte(APbar1.GetValue(Grid.RowProperty)), Convert.ToByte(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 7, 7, Convert.ToByte(Convert.ToInt32(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(HPbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(APbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(ExpBar1.Width) / 32)) });
             LabShowX(new Label[] { HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD });
             BtnShowX(new Button[] { Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4 });
-            Equip.IsEnabled = false;
+            FastEnableDisableBtn(false, new Button[] { Equip, Remove1, Remove2, Remove3, Remove4, Equip1, Equip2, Equip3, Equip4 });
             Describe2.Content = "Снаряжение героя";
             Describe1.Content = "Отличное оснащение даёт преимущество в бою.\n";
             LabShow(Describe1);
+        }
+        private void FastEnableDisableBtn(Boolean enabled, Button[] buttons)
+        {
+            foreach(Button btn in buttons)
+            {
+                btn.IsEnabled = enabled;
+            }
         }
         private void Equip_Click(object sender, RoutedEventArgs e)
         {
@@ -5580,43 +4853,34 @@ namespace WpfApp1
             MegaHide();
             HeroEquip();
             Describe1.Content = "";
-            Equip.IsEnabled = false;
-            Remove1.IsEnabled = false;
-            Remove2.IsEnabled = false;
-            Remove3.IsEnabled = false;
-            Remove4.IsEnabled = false;
-            Equip1.IsEnabled = false;
-            Equip2.IsEnabled = false;
-            Equip3.IsEnabled = false;
-            Equip4.IsEnabled = false;
             ShowEquipAndStats();
             EquipWatch();
             LabHide(Describe1);
         }
         private void EquipWatch()
         {
-            if ((BAG.Hands) && (Super1.PlayerEQ[0] == 0))
+            if (BAG.Hands && (Super1.PlayerEQ[0] == 0))
                 Equip1.IsEnabled = true;
             Equip1.Visibility = Visibility.Visible;
-            if ((BAG.Jacket) && (Super1.PlayerEQ[1] == 0))
+            if (BAG.Jacket && (Super1.PlayerEQ[1] == 0))
                 Equip2.IsEnabled = true;
             Equip2.Visibility = Visibility.Visible;
-            if ((BAG.Legs) && (Super1.PlayerEQ[2] == 0))
+            if (BAG.Legs && (Super1.PlayerEQ[2] == 0))
                 Equip3.IsEnabled = true;
             Equip3.Visibility = Visibility.Visible;
-            if ((BAG.Boots) && (Super1.PlayerEQ[3] == 0))
+            if (BAG.Boots && (Super1.PlayerEQ[3] == 0))
                 Equip4.IsEnabled = true;
             Equip4.Visibility = Visibility.Visible;
-            if ((!BAG.Hands) && (Super1.PlayerEQ[0] != 0))
+            if (!BAG.Hands && (Super1.PlayerEQ[0] != 0))
                 Remove1.IsEnabled = true;
             Remove1.Visibility = Visibility.Visible;
-            if ((!BAG.Jacket) && (Super1.PlayerEQ[1] != 0))
+            if (!BAG.Jacket && (Super1.PlayerEQ[1] != 0))
                 Remove2.IsEnabled = true;
             Remove2.Visibility = Visibility.Visible;
-            if ((!BAG.Legs) && (Super1.PlayerEQ[2] != 0))
+            if (!BAG.Legs && (Super1.PlayerEQ[2] != 0))
                 Remove3.IsEnabled = true;
             Remove3.Visibility = Visibility.Visible;
-            if ((!BAG.Boots) && (Super1.PlayerEQ[3] != 0))
+            if (!BAG.Boots && (Super1.PlayerEQ[3] != 0))
                 Remove4.IsEnabled = true;
             Remove4.Visibility = Visibility.Visible;
         }
@@ -5683,35 +4947,22 @@ namespace WpfApp1
         {
             if (Sets.EquipmentClass == 0)
             {
-                Equip1.IsEnabled = false;
-                EquipH.Content = "Др. кастет";
-                Super1.PlayerEQ[0] = 10;
-                BAG.Hands = false;
+                OnEquiped(Equip1, EquipH, "Древний кастет", 0, 10);
             }
             if (Sets.EquipmentClass == 1)
             {
-                Equip2.IsEnabled = false;
-                EquipB.Content = "Ч. кожак";
-                Super1.PlayerEQ[1] = 5;
-                BAG.Jacket = false;
+                OnEquiped(Equip2, EquipB, "Чёрный кожак", 1, 5);
             }
             if (Sets.EquipmentClass == 2)
             {
-                Equip3.IsEnabled = false;
-                EquipL.Content = "Штаны С.";
-                Super1.PlayerEQ[2] = 4;
-                BAG.Legs = false;
+                OnEquiped(Equip3, EquipL, "Штаны стервятника", 2, 4);
             }
             if (Sets.EquipmentClass == 3)
             {
-                Equip4.IsEnabled = false;
-                EquipD.Content = "Б. обувь";
-                Super1.PlayerEQ[3] = 1;
-                BAG.Boots = false;
+                OnEquiped(Equip4, EquipD, "Бинтовая обувь", 3, 1);
             }
             StatsMeaning();
-            ButtonHide(Equipments);
-            ButtonHide(CancelEq);
+            BtnHideX(new Button[] { Equipments, CancelEq });
             EquipWatch();
         }
 
@@ -5750,9 +5001,7 @@ namespace WpfApp1
 
         private void CancelEq_Click(object sender, RoutedEventArgs e)
         {
-            ButtonHide(Equipments);
-            ButtonHide(Equipments4);
-            ButtonHide(CancelEq);
+            BtnHideX(new Button[] { Equipments, Equipments4, CancelEq });
         }
 
         private void HeroTasks()
@@ -5765,35 +5014,28 @@ namespace WpfApp1
             RightPanelMenuTurnON();
             LabShow(Describe2);
             Tasks.IsEnabled = false;
-            var uriSource2 = new Uri(@"ActiveTask.png", UriKind.RelativeOrAbsolute);
-            var uriSource3 = new Uri(@"CompletedTask.png", UriKind.RelativeOrAbsolute);
+            Uri[] uriSources = new Uri[] { new Uri(@"ActiveTask.png", UriKind.RelativeOrAbsolute), new Uri(@"CompletedTask.png", UriKind.RelativeOrAbsolute) };
             switch (Sets.MenuTask)
             {
                 case 0:
                     LabShow(Task1);
                     ImgShow(Task1Img);
-                    Task1Img.Source = new BitmapImage(uriSource2);
+                    Task1Img.Source = new BitmapImage(uriSources[0]);
                     break;
                 case 1:
                     LabShowX(new Label[] { Task1, Task2 });
                     ImgShowX(new Image[] { Task1Img, Task2Img });
-                    Task1Img.Source = new BitmapImage(uriSource3);
-                    Task2Img.Source = new BitmapImage(uriSource2);
+                    FastImgChange(new Image[] { Task1Img, Task2Img }, new BitmapImage[] { new BitmapImage(uriSources[1]), new BitmapImage(uriSources[0]) });
                     break;
                 case 2:
                     LabShowX(new Label[] { Task1, Task2, Task3 });
                     ImgShowX(new Image[] { Task1Img, Task2Img, Task3Img });
-                    Task1Img.Source = new BitmapImage(uriSource3);
-                    Task2Img.Source = new BitmapImage(uriSource3);
-                    Task3Img.Source = new BitmapImage(uriSource2);
+                    FastImgChange(new Image[] { Task1Img, Task2Img, Task3Img }, new BitmapImage[] { new BitmapImage(uriSources[1]), new BitmapImage(uriSources[1]), new BitmapImage(uriSources[0]) });
                     break;
                 case 3:
                     LabShowX(new Label[] { Task1, Task2, Task3, Task4 });
                     ImgShowX(new Image[] { Task1Img, Task2Img, Task3Img, Task4Img });
-                    Task1Img.Source = new BitmapImage(uriSource3);
-                    Task2Img.Source = new BitmapImage(uriSource3);
-                    Task3Img.Source = new BitmapImage(uriSource3);
-                    Task4Img.Source = new BitmapImage(uriSource2);
+                    FastImgChange(new Image[] { Task1Img, Task2Img, Task3Img, Task4Img }, new BitmapImage[] { new BitmapImage(uriSources[1]), new BitmapImage(uriSources[1]), new BitmapImage(uriSources[1]), new BitmapImage(uriSources[0]) });
                     break;
                 default:
                     LabShow(Task1);
@@ -5828,64 +5070,52 @@ namespace WpfApp1
             RightPanelMenuTurnON();
             Info.IsEnabled = false;
             GameMenu.InfoChange1 = 0;
-            InfoHeaderText1.Content = GameMenu.HelpInfo1[0, GameMenu.InfoChange1];
-            InfoHeaderText2.Content = GameMenu.HelpInfo1[1, GameMenu.InfoChange1];
-            InfoHeaderText3.Content = GameMenu.HelpInfo1[2, GameMenu.InfoChange1];
-            InfoText1.Text = GameMenu.HelpInfo2[0, GameMenu.InfoChange1];
-            InfoText2.Text = GameMenu.HelpInfo2[1, GameMenu.InfoChange1];
-            InfoText3.Text = GameMenu.HelpInfo2[2, GameMenu.InfoChange1];
-            LabShow(Describe2);
+            FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { GameMenu.HelpInfo2[0, GameMenu.InfoChange1], GameMenu.HelpInfo2[1, GameMenu.InfoChange1], GameMenu.HelpInfo2[2, GameMenu.InfoChange1] }, new string[] { GameMenu.HelpInfo1[0, GameMenu.InfoChange1], GameMenu.HelpInfo1[1, GameMenu.InfoChange1], GameMenu.HelpInfo1[2, GameMenu.InfoChange1] });
             TxtShowX(new TextBlock[] { InfoText1, InfoText2, InfoText3 });
-            //LabShow(InfoText1);
-            //LabShow(InfoText2);
-            //LabShow(InfoText3);
-            LabShow(InfoHeaderText1);
-            LabShow(InfoHeaderText2);
-            LabShow(InfoHeaderText3);
-            LabShow(InfoIndex);
+            LabShowX(new Label[] { Describe2, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex });
             ButtonShow(InfoIndexPlus);
             InfoIndex.Content = (GameMenu.InfoChange1 + 1) + "/19";
-            //Describe1.Content = "Подсказка: во время сражения с превосходящим по силе оппонентом лучше\nотступать.";
-            //LabShow(Describe1);
+        }
+        private void FastInfoChange(TextBlock[] Texts, Label[] Headers, in string[] text, in string[] content)
+        {
+            for(Byte i=0; i < Headers.Length; i++)
+            {
+                Headers[i].Content = content[i];
+                Texts[i].Text = text[i];
+            }
+        }
+
+        private void FastImgChange(Image[] ImageArray, BitmapImage[] bitmapImage)
+        {
+            for (Byte i=0;i<ImageArray.Length;i++)
+            {
+                ImageArray[i].Source = bitmapImage[i];
+            }
         }
 
         private void InfoIndexPlus_Click(object sender, RoutedEventArgs e)
         {
             GameMenu.InfoChange1 += 1;
-            InfoHeaderText1.Content = GameMenu.HelpInfo1[0, GameMenu.InfoChange1];
-            InfoHeaderText2.Content = GameMenu.HelpInfo1[1, GameMenu.InfoChange1];
-            InfoHeaderText3.Content = GameMenu.HelpInfo1[2, GameMenu.InfoChange1];
-            InfoText1.Text = GameMenu.HelpInfo2[0, GameMenu.InfoChange1];
-            InfoText2.Text = GameMenu.HelpInfo2[1, GameMenu.InfoChange1];
-            InfoText3.Text = GameMenu.HelpInfo2[2, GameMenu.InfoChange1];
+            FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { GameMenu.HelpInfo2[0, GameMenu.InfoChange1], GameMenu.HelpInfo2[1, GameMenu.InfoChange1], GameMenu.HelpInfo2[2, GameMenu.InfoChange1] }, new string[] { GameMenu.HelpInfo1[0, GameMenu.InfoChange1], GameMenu.HelpInfo1[1, GameMenu.InfoChange1], GameMenu.HelpInfo1[2, GameMenu.InfoChange1] });
             InfoIndex.Content = (GameMenu.InfoChange1 + 1) + "/19";
             ButtonShow(InfoIndexMinus);
             if (GameMenu.InfoChange1 >= 18)
-            {
                 ButtonHide(InfoIndexPlus);
-            }
         }
 
         private void InfoIndexMinus_Click(object sender, RoutedEventArgs e)
         {
             GameMenu.InfoChange1 -= 1;
-            InfoHeaderText1.Content = GameMenu.HelpInfo1[0, GameMenu.InfoChange1];
-            InfoHeaderText2.Content = GameMenu.HelpInfo1[1, GameMenu.InfoChange1];
-            InfoHeaderText3.Content = GameMenu.HelpInfo1[2, GameMenu.InfoChange1];
-            InfoText1.Text = GameMenu.HelpInfo2[0, GameMenu.InfoChange1];
-            InfoText2.Text = GameMenu.HelpInfo2[1, GameMenu.InfoChange1];
-            InfoText3.Text = GameMenu.HelpInfo2[2, GameMenu.InfoChange1];
+            FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { GameMenu.HelpInfo2[0, GameMenu.InfoChange1], GameMenu.HelpInfo2[1, GameMenu.InfoChange1], GameMenu.HelpInfo2[2, GameMenu.InfoChange1] }, new string[] { GameMenu.HelpInfo1[0, GameMenu.InfoChange1], GameMenu.HelpInfo1[1, GameMenu.InfoChange1], GameMenu.HelpInfo1[2, GameMenu.InfoChange1] });
             InfoIndex.Content = (GameMenu.InfoChange1 + 1) + "/19";
             ButtonShow(InfoIndexPlus);
             if (GameMenu.InfoChange1 <= 0)
-            {
                 ButtonHide(InfoIndexMinus);
-            }
         }
 
         private void Info_MouseEnter(object sender, MouseEventArgs e)
         {
-            Describe2.Content = "Посмотреть справку\n(Что мне делать?)";
+            Describe2.Content = "Посмотреть справку (Что делать?)";
         }
 
         private void Info_MouseLeave(object sender, MouseEventArgs e)
@@ -5898,44 +5128,31 @@ namespace WpfApp1
             LabShow(Describe1);
             if (Sets.EquipmentClass == 0)
             {
-                Describe1.Content = "Прочный костяной кастет. Одно из лучших средств показать свою мощь!\n";
-                AddATK1.Content = "+10";
-                LabShow(AddATK1);
-                AddATK1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+                EquipCollectInfo("Прочный костяной кастет. Одно из лучших средств показать свою мощь!", AddATK1, "+10");
             }
             if (Sets.EquipmentClass == 1)
             {
-                Describe1.Content = "Черная кожаная куртка. Никто не ценит ничего так сильно, как надёжный кожак\nв жуткую погоду.\n";
-                AddDEF1.Content = "+5";
-                LabShow(AddDEF1);
-                AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+                EquipCollectInfo("Черная кожаная куртка. Никто не ценит ничего так сильно, как\nнадёжный кожак в жуткую погоду.", AddDEF1, "+5");
             }
             if (Sets.EquipmentClass == 2)
             {
-                Describe1.Content = "Штаны из перьев стервятника. Вполне сгодится и на огородное пугало...\n";
-                AddDEF1.Content = "+4";
-                LabShow(AddDEF1);
-                AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+                EquipCollectInfo("Штаны из перьев стервятника. Вполне сгодится и на огородное пугало...", AddDEF1, "+4");
             }
             if (Sets.EquipmentClass == 3)
             {
-                Describe1.Content = "Бинтовая обувь. Спасает от ужасной жары здешних песков как никогда.\n";
-                AddDEF1.Content = "+1";
-                LabShow(AddDEF1);
-                AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+                EquipCollectInfo("Бинтовая обувь. Спасает от ужасной жары здешних песков как никогда.", AddDEF1, "+1");
             }
         }
 
         private void Equipments_MouseLeave(object sender, MouseEventArgs e)
         {
             Describe1.Content = "";
-            LabHide(AddATK1);
-            LabHide(AddDEF1);
+            LabHideX(new Label[] { AddATK1, AddDEF1 });
         }
 
         private void PharaohBattle_MediaEnded(object sender, RoutedEventArgs e)
         {
-            Img2.Visibility = Visibility.Hidden;
+            ImgHide(Img2);
             Sound1.Stop();
             MediaHide(PharaohBattle);
             Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
@@ -5944,8 +5161,8 @@ namespace WpfApp1
 
         private void TheEnd_MediaEnded(object sender, RoutedEventArgs e)
         {
-            var uriSource = new Uri(@"Final1.mp4", UriKind.RelativeOrAbsolute);
-            var uriSource1 = new Uri(@"Titres3.mp4", UriKind.RelativeOrAbsolute);
+            Uri uriSource = new Uri(@"Final1.mp4", UriKind.RelativeOrAbsolute);
+            Uri uriSource1 = new Uri(@"Titres3.mp4", UriKind.RelativeOrAbsolute);
             if (TheEnd.Source == uriSource1)
                 Form1.Close();
             else
@@ -5954,21 +5171,15 @@ namespace WpfApp1
                 {
                     HideFightIconPersActions();
                     WonOrDied();
-                    TheEnd.Stop();
-                    TheEnd.Source = uriSource;
-                    TheEnd.Position = new TimeSpan(0, 0, 0, 0, 0);
+                    MediaShowAdvanced(TheEnd, new Uri(@"Final1.mp4", UriKind.RelativeOrAbsolute), new TimeSpan(0, 0, 0, 0, 0));
                     HeyPlaySomething(new Uri(@"Final1.mp3", UriKind.RelativeOrAbsolute));
-                    TheEnd.Play();
                 }
                 else
                 {
                     if (TheEnd.Source != uriSource1)
                     {
-                        TheEnd.Stop();
-                        TheEnd.Source = uriSource1;
-                        TheEnd.Position = new TimeSpan(0, 0, 0, 0, 0);
+                        MediaShowAdvanced(TheEnd, new Uri(@"Titres3.mp4", UriKind.RelativeOrAbsolute), new TimeSpan(0, 0, 0, 0, 0));
                         HeyPlaySomething(new Uri(@"Titres.mp3", UriKind.RelativeOrAbsolute));
-                        TheEnd.Play();
                     }
                 }
             }
@@ -6280,10 +5491,7 @@ namespace WpfApp1
 
         private void TimerTurnOn_Unchecked(object sender, RoutedEventArgs e)
         {
-            TimeRecord = new System.Windows.Threading.DispatcherTimer();
-            TimeRecord.Tick += new EventHandler(WorldRecord);
-            TimeRecord.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            TimeRecord.Start();
+            WidelyUsedAnyTimer(out TimeRecord, WorldRecord, new TimeSpan(0, 0, 0, 0, 1));
         }
 
         private void Cure1_MouseEnter(object sender, MouseEventArgs e)
@@ -6340,40 +5548,28 @@ namespace WpfApp1
         {
             LabHide(AbilsCost);
         }
+        
 
         private void Equipments4_Click(object sender, RoutedEventArgs e)
         {
             if (Sets.EquipmentClass == 0)
             {
-                Equip1.IsEnabled = false;
-                EquipH.Content = "Миниган";
-                Super1.PlayerEQ[0] = 165;
-                BAG.Hands = false;
+                OnEquiped(Equip1, EquipH, "Миниган XM214-A", 0, 165);
             }
             if (Sets.EquipmentClass == 1)
             {
-                Equip2.IsEnabled = false;
-                EquipB.Content = "Футболка крутого";
-                Super1.PlayerEQ[1] = 85;
-                BAG.Jacket = false;
+                OnEquiped(Equip2, EquipB, "Футболка крутого", 1, 85);
             }
             if (Sets.EquipmentClass == 2)
             {
-                Equip3.IsEnabled = false;
-                EquipL.Content = "Штаны серьёзного";
-                Super1.PlayerEQ[2] = 55;
-                BAG.Legs = false;
+                OnEquiped(Equip3, EquipL, "Штаны серьёзного", 2, 55);
             }
             if (Sets.EquipmentClass == 3)
             {
-                Equip4.IsEnabled = false;
-                EquipD.Content = "Армейские ботинки";
-                Super1.PlayerEQ[3] = 25;
-                BAG.Boots = false;
+                OnEquiped(Equip4, EquipD, "Армейские ботинки", 3, 25);
             }
             StatsMeaning();
-            ButtonHide(Equipments4);
-            ButtonHide(CancelEq);
+            BtnHideX(new Button[] { Equipments4, CancelEq });
             EquipWatch();
         }
 
@@ -6382,39 +5578,75 @@ namespace WpfApp1
             LabShow(Describe1);
             if (Sets.EquipmentClass == 0)
             {
-                Describe1.Content = "Размер не имеет значение, главное как его используют\n";
-                AddATK1.Content = "+165";
-                LabShow(AddATK1);
-                AddATK1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+                EquipCollectInfo("Футболка для настоящих ценителей", AddATK1, "+165");
             }
             if (Sets.EquipmentClass == 1)
             {
-                Describe1.Content = "Футболка для настоящих ценителей";
-                AddDEF1.Content = "+85";
-                LabShow(AddDEF1);
-                AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+                EquipCollectInfo("Футболка для настоящих ценителей", AddDEF1, "+85");
             }
             if (Sets.EquipmentClass == 2)
             {
-                Describe1.Content = "Штаны серьёзных намерений\n";
-                AddDEF1.Content = "+55";
-                LabShow(AddDEF1);
-                AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+                EquipCollectInfo("Штаны серьёзных намерений", AddDEF1, "+55");
             }
             if (Sets.EquipmentClass == 3)
             {
-                Describe1.Content = "Прочные сапоги из натуральной дублёной кожи\n";
-                AddDEF1.Content = "+25";
-                LabShow(AddDEF1);
-                AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+                EquipCollectInfo("Прочные сапоги из натуральной дублёной кожи\n",AddDEF1,"+25");
             }
         }
+
+        
 
         private void Equipments4_MouseLeave(object sender, MouseEventArgs e)
         {
             Describe1.Content = "";
-            LabHide(AddATK1);
-            LabHide(AddDEF1);
+            LabHideX(new Label[] { AddATK1, AddDEF1 });            
+        }
+
+        private void EquipCollectInfo(string describe, Label Stat, string statrise)
+        {
+            Describe1.Content = describe;
+            LabShow(Stat);
+            Stat.Content = statrise;
+            Stat.Foreground = new SolidColorBrush(Color.FromRgb(255, 210, 6));
+        }
+
+        private void OnEquiped(Button EquipButton, Label Equips, in string equipment, in Byte ArmClass, in Byte EqPower)
+        {
+            EquipButton.IsEnabled = false;
+            Equips.Content = equipment;
+            Super1.PlayerEQ[ArmClass] = EqPower;
+            switch (ArmClass)
+            {
+                case 0:
+                    BAG.Hands = false;
+                    break;
+                case 1:
+                    BAG.Jacket = false;
+                    break;
+                case 2:
+                    BAG.Legs = false;
+                    break;
+                case 3:
+                    BAG.Boots = false;
+                    break;
+                default:
+                    BAG.Hands = false;
+                    break;
+            }
+        }
+        private void WidelyUsedAnyTimer(out System.Windows.Threading.DispatcherTimer timer, EventHandler SomeEvent, TimeSpan timeSpan)
+        {
+            timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Tick += new EventHandler(SomeEvent);
+            timer.Interval = timeSpan;
+            timer.Start();
+        }
+        private void MediaShowAdvanced(MediaElement Media, Uri Source, TimeSpan timeSpan)
+        {
+            Media.Stop();
+            Media.Source = Source;
+            Media.Position = timeSpan;
+            Media.Play();
         }
     }
 }
