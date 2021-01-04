@@ -91,3 +91,10 @@ D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\TorchIcon.avi
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\TorchPerson2.avi
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\IconSuper2.avi
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\System.Data.SqlClient.dll
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.csproj.CopyComplete

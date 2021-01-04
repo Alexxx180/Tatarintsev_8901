@@ -90,6 +90,7 @@
     <None Remove="PersonHurts1.png" />
     <None Remove="Pharaoh.png" />
     <None Remove="PharaohModel.png" />
+    <None Remove="SafeArea.png" />
     <None Remove="SettingsButton.png" />
     <None Remove="SettingsButton1.png" />
     <None Remove="SkillsAfterImg.png" />
@@ -122,6 +123,8 @@
     <None Remove="WalkU1.png" />
     <None Remove="WalkU2.png" />
     <None Remove="Wall1.jpg" />
+    <None Remove="Wanted.png" />
+    <None Remove="Wanted2.png" />
     <None Remove="WhipImg.png" />
     <None Remove="Zombie.png" />
   </ItemGroup>
@@ -152,6 +155,7 @@
     <Resource Include="Menu3.png" />
     <Resource Include="PersonHurts1.png" />
     <Resource Include="PharaohModel.png" />
+    <Resource Include="SafeArea.png" />
     <Resource Include="SettingsButton.png" />
     <Resource Include="SettingsButton1.png" />
     <Resource Include="SkillsAfterImg.png" />
@@ -184,6 +188,10 @@
       <VersionMinor>4</VersionMinor>
       <WrapperTool>tlbimp</WrapperTool>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -378,6 +386,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Wall1.jpg" />
+    <Resource Include="Wanted.png" />
+    <Resource Include="Wanted2.png" />
     <Resource Include="WhipImg.png" />
     <Resource Include="Zombie.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

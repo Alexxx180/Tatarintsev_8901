@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data;
+using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace WpfApp1
 {
@@ -88,7 +91,8 @@ namespace WpfApp1
             Defence = 15;
             Speed = 15;
             Special = 25;
-            
+            Learned = 0;
+
             //[EN] PLAYER LEVEL UP STATS
             //[RU] СТАТУС ИГРОКА ПРИ ПОВЫШЕНИИ УРОВНЯ
             MaxHPNxt = new UInt16[] { 100, 110, 121, 132, 145, 159, 174, 192, 221, 250 };
@@ -114,6 +118,7 @@ namespace WpfApp1
         public Byte Defence { get; set; }
         public Byte Speed { get; set; }
         public Byte Special { get; set; }
+        public Byte Learned { get; set; }
         public Byte CurrentLevel { get; set; }
         public Byte PlayerStatus { get; set; }
         public Byte DefenseState { get; set; }
@@ -159,12 +164,20 @@ namespace WpfApp1
             AntidoteITM = 0;
             EtherITM = 0;
             FusedITM = 0;
+            HerbsITM = 0;
+            SleepBagITM = 0;
+            Ether2ITM = 0;
+            ElixirITM = 0;
             Materials = 0;
         }
         public Byte BandageITM { get; set; }
         public Byte AntidoteITM { get; set; }
         public Byte EtherITM { get; set; }
         public Byte FusedITM { get; set; }
+        public Byte HerbsITM { get; set; }
+        public Byte Ether2ITM { get; set; }
+        public Byte SleepBagITM { get; set; }
+        public Byte ElixirITM { get; set; }
         public Boolean Hands { get; set; }
         public Boolean[] Weapon { get; set; }
         public Boolean Jacket { get; set; }
@@ -240,6 +253,7 @@ namespace WpfApp1
         {
             EquipmentClass = 0;
             MenuTask = 0;
+            MiniTask = false;
             TableEN = true;
             LockIndex = 3;
             StepsToBattle = 20;
@@ -261,6 +275,7 @@ namespace WpfApp1
         public Int32 Rnd2 { get; set; }
         public Byte EquipmentClass { get; set; }
         public Byte MenuTask { get; set; }
+        public Boolean MiniTask { get; set; }
         public Byte SpiderAlive { get; set; }
         public Byte MummyAlive { get; set; }
         public Byte ZombieAlive { get; set; }
@@ -293,14 +308,80 @@ namespace WpfApp1
             Form1.WindowStyle = WindowStyle.None;
             Form1.WindowState = WindowState.Maximized;
 
+            
+
             WidelyUsedAnyTimer(out TimeRecord,WorldRecord, new TimeSpan(0, 0, 0, 0, 1));
             HeyPlaySomething(new Uri(@"Begin2.mp3", UriKind.RelativeOrAbsolute));
             CheckScreenProperties();
 
-            //[EN] Working with directories (for commercial and private purposes)
-            //[RU] Работа с директориями (для коммерческих и личных целей).
-            //Environment.CurrentDirectory();
+            try
+            {
+                SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+
+                SqlCommand cmd = new SqlCommand("CheckLogin", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection.Open();
+                SqlDataReader sqlDataReader = cmd.ExecuteReader();
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        Logins.Add(sqlDataReader.GetValue(0).ToString());
+                    }
+                }
+                string slct = "";
+                cmd.Connection.Close();
+                cmd = new SqlCommand("CheckSelected", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection.Open();
+                sqlDataReader = cmd.ExecuteReader();
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        slct=sqlDataReader.GetValue(0).ToString();
+                    }
+                }
+                cmd = new SqlCommand("CheckSelected", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection.Close();
+                if (Logins.Count > 0)
+                {
+                    if (slct == "")
+                        MainLogin = Logins[0];
+                    else
+                        MainLogin = slct;
+                } else                
+                    MainLogin = "????";
+                CurrentPlayer.Content = MainLogin;
+                if (MainLogin != "????")
+                {
+                    cmd = new SqlCommand("CheckPlayer", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                    cmd.Connection.Open();
+                    sqlDataReader = cmd.ExecuteReader();
+                    if (sqlDataReader.HasRows)
+                    {
+                        while (sqlDataReader.Read())
+                        {
+                            slct = sqlDataReader.GetValue(2).ToString();
+                        }
+                    }
+                    if (slct != "1")
+                        Continue.IsEnabled = true;
+                    cmd.Connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something get wrong"+ex);
+            }
         }
+
+        public static List<string> Logins = new List<string>();
+        public static string MainLogin="????";
+
         public static UInt16[] TimeWorldRecord = new UInt16[] { 0, 0, 0, 0 };
         private void WorldRecord(object sender, EventArgs e)
         {
@@ -688,6 +769,22 @@ namespace WpfApp1
         {
             //[EN] Return to normal stats
             //[RU] Возврат к исходным значениям.
+            BtnHideX(new Button[] { AddProfile, DeleteProfile });
+            LabHideX(new Label[] { Player1, Player2, Player3, Player4, Player5, Player6, CurrentPlayer });
+            ImgHide(AutorizeImg);
+            ButtonHide(Continue);
+            TBoxHide(AddPlayer);
+
+
+            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+
+            SqlCommand cmd = new SqlCommand("NewGameStart", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+
             SetEnemies();
             Exp = 0;
             Foe1.EnemyAppears[0] = "";
@@ -850,7 +947,7 @@ namespace WpfApp1
               {  1,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1 },
               {  1,0,1,0,1,0,1,0,1,0,1,0,0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1 },
               {  1,0,1,0,1,0,1,0,1,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1 },
-              {  1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1,1,0,1,0,0,1,0,1,0,1,0,1,1,1,1,1,0,0,1,1,1,1,1,0,1,1,0,0,0,1,0,0,0,0,0,0,1 },
+              {  1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1,1,0,1,0,0,1,150,1,0,1,0,1,1,1,1,1,0,0,1,1,1,1,1,0,1,1,0,0,0,1,0,0,0,0,0,0,1 },
               {  1,0,1,1,131,1,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1 },
               {  1,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,1,1,1,1,1,1,132,1,1,0,1,1,1,0,0,1,0,0,1,1,1,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,1 },
               {  1,0,0,0,0,0,1,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,1 },
@@ -950,7 +1047,7 @@ namespace WpfApp1
             LocksAllTurnOn1();
             MediaHide(Med1);
             ButtonHide(Skip1);
-            ImgShowX(new Image[] { Img1, TableMessage1, Threasure1, Img2 });
+            ImgShowX(new Image[] { Img1, TableMessage1, Threasure1, Img2, SaveProgress });
             Img1.Source = new BitmapImage(new Uri(@"Loc1_2.jpg", UriKind.RelativeOrAbsolute));
             HeyPlaySomething(new Uri(@"Main_theme.mp3", UriKind.RelativeOrAbsolute));
         }
@@ -996,9 +1093,11 @@ namespace WpfApp1
                 }
             }
             if ((Foe1.EnemyAppears[0] == "Фараон") || (Foe1.EnemyAppears[0] == "Угх-зан I"))
-                ImgGrid(TrgtImg, (byte)((Int32)TrgtImg.GetValue(Grid.RowProperty) - 5), (byte)(Int32)TrgtImg.GetValue(Grid.ColumnProperty));
-            ImgGrid(TrgtImg, grRow[Sets.SelectedTarget], grColumn[Sets.SelectedTarget]);
+                ImgGrid(TrgtImg, (byte)((Int32)grRow[Sets.SelectedTarget] - 5), (byte)(Int32)grColumn[Sets.SelectedTarget]);
+            else
+                ImgGrid(TrgtImg, grRow[Sets.SelectedTarget], grColumn[Sets.SelectedTarget]);
             HPenemyBar.Value = Foe1.EnemyHP[Sets.SelectedTarget];
+            HPenemy.Content = HPenemyBar.Value + "/" + HPenemyBar.Maximum;
             RefreshAllHP();
             LabShowX(new Label[] { HPenemy, BattleText1 });
         }
@@ -1139,7 +1238,7 @@ namespace WpfApp1
                     else
                         Img2.Source = new BitmapImage(new Uri(@"WalkU1.png", UriKind.RelativeOrAbsolute));
 
-                    if ((MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 191))
+                    if ((MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 191) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 150))
                     {
                         Adoptation.ImgYbounds -= 1;
                         Img2.SetValue(Grid.RowProperty, Adoptation.ImgYbounds);
@@ -1149,6 +1248,14 @@ namespace WpfApp1
                             Sets.StepsToBattle--;
                             MediaShow(Med2);
                             Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
+                        }
+                        if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 150)
+                        {
+                            if (MainLogin!="????")
+                            {
+                                SaveGame();
+                                SEF(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SaveSound.mp3", UriKind.RelativeOrAbsolute));
+                            }
                         }
                     }
                     TablesSetInfo();
@@ -1170,7 +1277,7 @@ namespace WpfApp1
                     }
                     else
                         Img2.Source = new BitmapImage(new Uri(@"person4.png", UriKind.RelativeOrAbsolute));
-                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 191))
+                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 191) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds-1] == 150))
                     {
                         Adoptation.ImgXbounds -= 1;
                         Img2.SetValue(Grid.ColumnProperty, Adoptation.ImgXbounds);
@@ -1182,6 +1289,14 @@ namespace WpfApp1
                             Sets.SpecialBattle = 200;
                             Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
                             MediaShow(Med2);
+                        }
+                        if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 150)
+                        {
+                            if (MainLogin != "????")
+                            {
+                                SaveGame();
+                                SEF(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SaveSound.mp3", UriKind.RelativeOrAbsolute));
+                            }
                         }
                     }
                     TablesSetInfo();
@@ -1204,7 +1319,7 @@ namespace WpfApp1
                     else
                         Img2.Source = new BitmapImage(new Uri(@"WalkD1.png", UriKind.RelativeOrAbsolute));
 
-                    if ((MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 191))
+                    if ((MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 191) || (MapScheme[Adoptation.ImgYbounds+1, Adoptation.ImgXbounds] == 150))
                     {
                         Adoptation.ImgYbounds += 1;
                         Img2.SetValue(Grid.RowProperty, Adoptation.ImgYbounds);
@@ -1216,6 +1331,14 @@ namespace WpfApp1
                             Sets.SpecialBattle = 200;
                             Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
                             MediaShow(Med2);
+                        }
+                        if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 150)
+                        {
+                            if (MainLogin != "????")
+                            {
+                                SaveGame();
+                                SEF(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SaveSound.mp3", UriKind.RelativeOrAbsolute));
+                            }
                         }
                     }
                     TablesSetInfo();
@@ -1238,7 +1361,7 @@ namespace WpfApp1
                     else
                         Img2.Source = new BitmapImage(new Uri(@"person3.png", UriKind.RelativeOrAbsolute));
 
-                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 191))
+                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 191)|| (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds+1] == 150))
                     {
                         Adoptation.ImgXbounds += 1;
                         Img2.SetValue(Grid.ColumnProperty, Adoptation.ImgXbounds);
@@ -1250,6 +1373,14 @@ namespace WpfApp1
                             Sets.SpecialBattle = 200;
                             Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
                             MediaShow(Med2);
+                        }
+                    }
+                    if (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 150)
+                    {
+                        if (MainLogin != "????")
+                        {
+                            SaveGame();
+                            SEF(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SaveSound.mp3", UriKind.RelativeOrAbsolute));
                         }
                     }
                     TablesSetInfo();
@@ -1881,7 +2012,7 @@ namespace WpfApp1
             Lab2.Foreground = Brushes.Yellow;
 
             LabShowX(new Label[] { LevelText, Lab2, HP, AP, HPtext, APtext });
-            ImgHideX(new Image[] { Threasure1, Img1, Img2, PharaohAppears });
+            ImgHideX(new Image[] { Threasure1, Img1, Img2, PharaohAppears, SaveProgress });
             ImgShowX(new Image[] { Img3, Img4, Img5, TimeTurnImg });
             BarShowX(new ProgressBar[] { HPbar, APbar, Time1 });
             MediaHide(Med2);
@@ -2044,6 +2175,7 @@ namespace WpfApp1
             BarShow(HPenemyBar);
             ImgShowX(new Image[] { EnemyImg, TrgtImg });
             HPenemyBar.Value = Foe1.EnemyHP[Sets.SelectedTarget];
+            HPenemy.Content = HPenemyBar.Value + "/" + HPenemyBar.Maximum;
             RefreshAllHP();
             InfoAboutEnemies();
             UInt16 GameSpeed1 = Convert.ToUInt16(100 / GameSpeed.Value);
@@ -2076,7 +2208,7 @@ namespace WpfApp1
                 Foe1.EnemyHP[2] = 0;
                 Exp = 0;
 
-                ImgShowX(new Image[] { Img1, Img2, Threasure1 });
+                ImgShowX(new Image[] { Img1, Img2, Threasure1, SaveProgress });
                 ImgHideX(new Image[] { Img3, Img4, Img5, Img6, Img7, Img8, TimeTurnImg });
                 BarHideX(new ProgressBar[] { HPbar, APbar, NextExpBar, Time1 });
                 LabHideX(new Label[] { HP, AP, Lab2, HPtext, APtext, LevelText, ExpText, BattleText3, BattleText4, BattleText5, BattleText6 });
@@ -2142,7 +2274,7 @@ namespace WpfApp1
             HP.Foreground = Brushes.White;
             if (Sets.SpecialBattle == 200)
             {
-                FastImgChange(new Image[] { Img4, Img5 }, new BitmapImage[] { new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute)) });
+                FastImgChange(new Image[] { Img4, Img5 }, new BitmapImage[] { new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSam.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSam.png", UriKind.RelativeOrAbsolute)) });
                 if (HPbar.Value + 40 < HPbar.Maximum)
                     HPbar.Value += 40;
                 else
@@ -2175,8 +2307,8 @@ namespace WpfApp1
                     uriSources[1] = new Uri(@"IconPoisoned.png", UriKind.RelativeOrAbsolute);
                 if (Sets.SpecialBattle == 200)
                 {
-                    uriSources[0] = new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute);
-                    uriSources[1] = new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute);
+                    uriSources[0] = new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSam.png", UriKind.RelativeOrAbsolute);
+                    uriSources[1] = new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSam.png", UriKind.RelativeOrAbsolute);
                 }
                 FastImgChange(new Image[] { Img4, Img5 }, new BitmapImage[] { new BitmapImage(uriSources[0]), new BitmapImage(uriSources[1]) });
                 FightMenuBack();
@@ -2296,6 +2428,10 @@ namespace WpfApp1
                     WidelyUsedAnyTimer(out timer3, DamageTime_Tick3, new TimeSpan(0, 0, 0, 0, GameSpeed1));
                     timer3.IsEnabled = true;
                 }
+                else
+                {
+                    HP.Foreground = Brushes.White;
+                }
             
                 if (timer4 == null)
                 {
@@ -2306,6 +2442,10 @@ namespace WpfApp1
                 {
                     WidelyUsedAnyTimer(out timer4, HurtTime_Tick4, new TimeSpan(0, 0, 0, 0, GameSpeed1));
                     timer4.IsEnabled = true;
+                }
+                else
+                {
+                    HP.Foreground = Brushes.White;
                 }
             }
             GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
@@ -2725,7 +2865,15 @@ namespace WpfApp1
             }
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
             {
-                string res = EnemySounds(Sets.SelectedTarget);
+                string res = "SpiderDied";
+                try
+                {
+                    res = EnemySounds(Sets.SelectedTarget);
+                }
+                catch
+                {
+                    res = "SpiderDied";
+                }
                 SEF(new Uri(@"" + res + ".mp3", UriKind.RelativeOrAbsolute));
             }
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
@@ -3087,7 +3235,7 @@ namespace WpfApp1
                 if (Sets.SpecialBattle!=200)
                     Img4.Source = new BitmapImage(new Uri("/pers5.png", UriKind.RelativeOrAbsolute));
                 else
-                    Img4.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\SeriousSam.png", UriKind.RelativeOrAbsolute));
+                    Img4.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSam.png", UriKind.RelativeOrAbsolute));
                 if (Sets.SpecialBattle != 200)
                 {
                     if (Super1.PlayerStatus == 1)
@@ -3097,7 +3245,7 @@ namespace WpfApp1
                 }
                 else
                 {
-                    Img5.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\IconSeriousSam.png", UriKind.RelativeOrAbsolute));
+                    Img5.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSam.png", UriKind.RelativeOrAbsolute));
                 }
                 AfterAction();
                 timer8.Stop();
@@ -3159,7 +3307,7 @@ namespace WpfApp1
                     LocksAllTurnOn1();
                     break;
             }
-            ImgShowX(new Image[] { Threasure1, Img2 });
+            ImgShowX(new Image[] { Threasure1, Img2, SaveProgress });
             ChestsAllTurnOn1();
             TablesAllTurnOn1();
             if (Sets.TableEN)
@@ -3862,7 +4010,7 @@ namespace WpfApp1
             LabHideX(new Label[] { HPenemy, BattleText1 });
             ImgHideX(new Image[] { EnemyImg, TrgtImg });
             BtnHideX(new Button[] { Fight, ACT1, ACT2, Cancel2, Back1 });
-            BtnShow(Back2);
+            ButtonShow(Back2);
             InBattleHighSkillsMenu();
         }
         private void CheckFoeCounts(in Byte selected, in string foestatus)
@@ -3924,7 +4072,14 @@ namespace WpfApp1
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
             {
                 string res= "SpiderDied";
-                res=EnemySounds(Sets.SelectedTarget);
+                try
+                {
+                    res = EnemySounds(Sets.SelectedTarget);
+                }
+                catch
+                {
+                    res = "SpiderDied";
+                }
                 SEF(new Uri(@"" + res + ".mp3", UriKind.RelativeOrAbsolute));
                 SuperCheckFoes(Sets.SelectedTarget);
                 /*if (Foe1.EnemyAppears[Sets.SelectedTarget] == "Паук")
@@ -4114,57 +4269,72 @@ namespace WpfApp1
         }
         private void SuperCheckFoes(in Byte seltrg)
         {
-            Byte FoeType=0;
+            Byte FoeType = 0;
             string FoesCount="";
             switch (Foe1.EnemyAppears[seltrg])
             {
                 case "Паук":
                     FoeType = 0;
-                    if (Sets.SpiderAlive == 0) {
+                    if (Sets.SpiderAlive-1 == 0) {
                         Foe1.EnemyAppears[seltrg] = "";
+                        Sets.SpiderAlive = 0;
+                        FoesCount = "";
                     } else {
-                        FoesCount = "Паук: " + Sets.SpiderAlive;
+                        Foe1.EnemyAppears[seltrg] = "";
                         Sets.SpiderAlive--;
+                        FoesCount = "Паук: " + Sets.SpiderAlive;
                     }
                     break;
                 case "Мумия":
                     FoeType = 1;
-                    if (Sets.MummyAlive == 0) {
+                    if (Sets.MummyAlive-1 == 0) {
                         Foe1.EnemyAppears[seltrg] = "";
+                        Sets.MummyAlive = 0;
+                        FoesCount = "";
                     } else {
-                        FoesCount = "Мумия: " + Sets.MummyAlive;
+                        Foe1.EnemyAppears[seltrg] = "";
                         Sets.MummyAlive--;
+                        FoesCount = "Мумия: " + Sets.MummyAlive;
                     }
                     break;
                 case "Зомби":
                     FoeType = 2;
-                    if (Sets.ZombieAlive == 0) {
+                    if (Sets.ZombieAlive-1 == 0) {
                         Foe1.EnemyAppears[seltrg] = "";
+                        Sets.ZombieAlive = 0;
+                        FoesCount = "";
                     } else {
-                        FoesCount = "Зомби: " + Sets.ZombieAlive;
+                        Foe1.EnemyAppears[seltrg] = "";
                         Sets.ZombieAlive--;
+                        FoesCount = "Зомби: " + Sets.ZombieAlive;
                     }
                     break;
                 case "Страж":
                     FoeType = 3;
-                    if (Sets.BonesAlive == 0)
+                    if (Sets.BonesAlive-1 == 0)
                     {
                         Foe1.EnemyAppears[seltrg] = "";
+                        Sets.BonesAlive = 0;
+                        FoesCount = "";
                     } else {
-                        FoesCount = "Страж: " + Sets.BonesAlive;
+                        Foe1.EnemyAppears[seltrg] = "";
                         Sets.BonesAlive--;
+                        FoesCount = "Страж: " + Sets.BonesAlive;
                     }
                     break;
                 default:
                     FoeType = 0;
-                    if (Sets.SpiderAlive == 0)
+                    if (Sets.SpiderAlive-1 == 0)
                     {
                         Foe1.EnemyAppears[seltrg] = "";
+                        Sets.SpiderAlive = 0;
+                        FoesCount = "";
                     }
                     else
                     {
-                        FoesCount = "Паук: " + Sets.SpiderAlive;
+                        Foe1.EnemyAppears[seltrg] = "";
                         Sets.SpiderAlive--;
+                        FoesCount = "Паук: " + Sets.SpiderAlive;
                     }
                     break;
             }
@@ -5647,6 +5817,835 @@ namespace WpfApp1
             Media.Source = Source;
             Media.Position = timeSpan;
             Media.Play();
+        }
+
+        private void CurrentPlayer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (AutorizeImg.Source.ToString().Contains("Wanted2.png"))
+            {
+                BtnHideX(new Button[] { AddProfile, DeleteProfile });
+                LabHideX(new Label[] { Player1, Player2, Player3, Player4, Player5, Player6 });
+                TBoxHide(AddPlayer);
+                AutorizeImg.Source = new BitmapImage(new Uri("Wanted.png", UriKind.RelativeOrAbsolute));
+            }
+            else
+            {
+                AutorizeImg.Source = new BitmapImage(new Uri("Wanted2.png", UriKind.RelativeOrAbsolute));
+                CheckRecords();
+            }
+        }
+        private void TBoxShow(TextBox tbx)
+        {
+            tbx.Visibility = Visibility.Visible;
+            tbx.IsEnabled = true;
+        }
+
+        private void TBoxHide(TextBox tbx)
+        {
+            tbx.Visibility = Visibility.Hidden;
+            tbx.IsEnabled = false;
+        }
+
+        private void AddProfile_Click(object sender, RoutedEventArgs e)
+        {
+            if ((AddPlayer.Text == "Никем быть нельзя!") || (AddPlayer.Text == "Один уже есть"))
+            {
+                AddPlayer.Text = "";
+            }
+            if (AddPlayer.Text!="")
+            {
+                foreach (string str in Logins)
+                {
+                    if (AddPlayer.Text==str)
+                    {
+                        AddPlayer.Text = "Один уже есть";
+                        return;
+                    }
+                }
+                try
+                {
+                    //@"Server=SASHA\SQLEXPRESS;Database=DesertRageGame;Trusted_Connection=Yes"
+                    //"Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True"
+                    SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+
+                    SqlCommand cmd = new SqlCommand("AddNewProfile", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = AddPlayer.Text;
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                    cmd.Connection.Close();
+                    cmd = new SqlCommand("CheckLogin", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    //cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value="CAHEK";
+                    cmd.Connection.Open();
+                    SqlDataReader sqlDataReader = cmd.ExecuteReader();
+                    Logins = new List<string>();
+                    if (sqlDataReader.HasRows)
+                    {
+                        while (sqlDataReader.Read())
+                        {
+                            Logins.Add(sqlDataReader.GetValue(0).ToString());
+                        }
+                    }
+                    cmd.Connection.Close();
+                    if (Logins.Count > 0)
+                    {
+                        CurrentPlayer.Content = Logins[0];
+                    }
+                    else
+                    {
+                        CurrentPlayer.Content = "????";
+                    }
+                    TBoxHide(AddPlayer);
+                    ButtonHide(AddProfile);
+                    AddPlayer.Text = "";
+                    CheckRecords();
+                    //throw new Exception("Success");
+                    //cmd.Parameters.Add("@...", SqlDbType.VarChar).Value=Name.Text;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Something get wrong" + ex);
+                }
+            }
+            else
+            {
+                AddPlayer.Text = "Никем быть нельзя!";
+            }
+        }
+        private void AddPlayer_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if ((AddPlayer.Text == "Никем быть нельзя!") || (AddPlayer.Text == "Один уже есть"))
+            {
+                AddPlayer.Text = "";
+            }
+            Regex regex = new Regex("[^0-9a-zA-Z]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        public static Byte ProfileSelected = 0;
+        private void CheckRecords()
+        {
+            Label[] Profiles = new Label[] { Player1, Player2, Player3, Player4, Player5, Player6 };
+            Byte[] RowGrid = new Byte[] { 3, 5, 7, 9, 11, 13 };
+            Byte rem = 0;
+            if (Logins.Count < 6)
+            {
+                for (Byte i = 0; i < Logins.Count; i++)
+                {
+                    Profiles[i].Content = Logins[i];
+                    LabShow(Profiles[i]);
+                    BtnGrid(AddProfile, RowGrid[i], 0);
+                    rem++;
+                }
+                Grid.SetRow(AddPlayer, RowGrid[rem]);
+                Grid.SetRow(AddProfile, RowGrid[rem]);
+                rem = 0;
+                ButtonShow(AddProfile);
+                TBoxShow(AddPlayer);
+            }
+            else
+            {
+                for (Byte i = 0; i < Logins.Count; i++)
+                {
+                    Profiles[i].Content = Logins[i];
+                    LabShow(Profiles[i]);
+                }
+            }
+        }
+
+        private void Player1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //Byte[] RowGrid = new Byte[] { 5, 7, 9, 11, 13 };
+            MainLogin = Logins[0];
+            CurrentPlayer.Content = MainLogin;
+            BtnGrid(DeleteProfile, 3, 0);
+            ButtonShow(DeleteProfile);
+            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+            if (MainLogin != "????")
+            {
+                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Connection.Open();
+                SqlDataReader sqlDataReader = cmd.ExecuteReader();
+                string slct = "";
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        slct = sqlDataReader.GetValue(2).ToString();
+                    }
+                }
+                if (slct != "1")
+                    Continue.IsEnabled = true;
+                else
+                    Continue.IsEnabled = false;
+                cmd.Connection.Close();
+            }
+        }
+
+        private void Player2_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MainLogin = Logins[1];
+            CurrentPlayer.Content = MainLogin;
+            BtnGrid(DeleteProfile, 5, 0);
+            ButtonShow(DeleteProfile);
+            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+            if (MainLogin != "????")
+            {
+                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Connection.Open();
+                SqlDataReader sqlDataReader = cmd.ExecuteReader();
+                string slct = "";
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        slct = sqlDataReader.GetValue(2).ToString();
+                    }
+                }
+                if (slct != "1")
+                    Continue.IsEnabled = true;
+                else
+                    Continue.IsEnabled = false;
+                cmd.Connection.Close();
+            }
+        }
+
+        private void Player3_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MainLogin = Logins[2];
+            CurrentPlayer.Content = MainLogin;
+            BtnGrid(DeleteProfile, 7, 0);
+            ButtonShow(DeleteProfile);
+            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+            if (MainLogin != "????")
+            {
+                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Connection.Open();
+                SqlDataReader sqlDataReader = cmd.ExecuteReader();
+                string slct = "";
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        slct = sqlDataReader.GetValue(2).ToString();
+                    }
+                }
+                if (slct != "1")
+                    Continue.IsEnabled = true;
+                else
+                    Continue.IsEnabled = false;
+                cmd.Connection.Close();
+            }
+        }
+
+        private void Player4_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MainLogin = Logins[3];
+            CurrentPlayer.Content = MainLogin;
+            BtnGrid(DeleteProfile, 9, 0);
+            ButtonShow(DeleteProfile);
+            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+            if (MainLogin != "????")
+            {
+                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Connection.Open();
+                SqlDataReader sqlDataReader = cmd.ExecuteReader();
+                string slct = "";
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        slct = sqlDataReader.GetValue(2).ToString();
+                    }
+                }
+                if (slct != "1")
+                    Continue.IsEnabled = true;
+                else
+                    Continue.IsEnabled = false;
+                cmd.Connection.Close();
+            }
+        }
+
+        private void Player5_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MainLogin = Logins[4];
+            CurrentPlayer.Content = MainLogin;
+            BtnGrid(DeleteProfile, 11, 0);
+            ButtonShow(DeleteProfile);
+            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+            if (MainLogin != "????")
+            {
+                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Connection.Open();
+                SqlDataReader sqlDataReader = cmd.ExecuteReader();
+                string slct = "";
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        slct = sqlDataReader.GetValue(2).ToString();
+                    }
+                }
+                if (slct != "1")
+                    Continue.IsEnabled = true;
+                else
+                    Continue.IsEnabled = false;
+                cmd.Connection.Close();
+            }
+        }
+
+        private void Player6_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MainLogin = Logins[5];
+            CurrentPlayer.Content = MainLogin;
+            BtnGrid(DeleteProfile, 13, 0);
+            ButtonShow(DeleteProfile);
+            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+            if (MainLogin != "????")
+            {
+                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Connection.Open();
+                SqlDataReader sqlDataReader = cmd.ExecuteReader();
+                string slct = "";
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        slct = sqlDataReader.GetValue(2).ToString();
+                    }
+                }
+                if (slct != "1")
+                    Continue.IsEnabled = true;
+                else
+                    Continue.IsEnabled = false;
+                cmd.Connection.Close();
+            }
+        }
+
+        private void Player1_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ButtonHide(DeleteProfile);
+        }
+
+        private void CancelDelete(object sender, MouseEventArgs e)
+        {
+            ButtonHide(DeleteProfile);
+        }
+
+        private void DeleteProfile_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonHide(DeleteProfile);
+            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+
+            SqlCommand cmd = new SqlCommand("DeleteProfile", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            for (Byte i = 0; i < Logins.Count; i++) { 
+                if (Logins[i]==MainLogin)
+                {
+                    Logins.RemoveAt(i);
+                }
+            }
+            if (Logins.Count>0)
+            {
+                MainLogin = Logins[0];
+            }
+            else
+            {
+                MainLogin = "????";
+            }
+            CurrentPlayer.Content = MainLogin;
+            LabHideX(new Label[] { Player1, Player2, Player3, Player4, Player5, Player6 });
+            CheckRecords();
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+        }
+
+        private void AddPlayer_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if ((AddPlayer.Text == "Никем быть нельзя!") || (AddPlayer.Text == "Один уже есть"))
+            {
+                AddPlayer.Text = "";
+            }
+        }
+
+        private void AddPlayer_MouseEnter2(object sender, RoutedEventArgs e)
+        {
+            if ((AddPlayer.Text == "Никем быть нельзя!") || (AddPlayer.Text == "Один уже есть"))
+            {
+                AddPlayer.Text = "";
+            }
+        }
+
+        private void SaveGame()
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+
+                SqlCommand cmd = new SqlCommand("GetNewItemsBag", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@BAN", SqlDbType.TinyInt).Value = BAG.BandageITM;
+                cmd.Parameters.Add("@ETR", SqlDbType.TinyInt).Value = BAG.EtherITM;
+                cmd.Parameters.Add("@ANT", SqlDbType.TinyInt).Value = BAG.AntidoteITM;
+                cmd.Parameters.Add("@FUS", SqlDbType.TinyInt).Value = BAG.FusedITM;
+                cmd.Parameters.Add("@HRB", SqlDbType.TinyInt).Value = BAG.HerbsITM;
+                cmd.Parameters.Add("@ER2", SqlDbType.TinyInt).Value = BAG.Ether2ITM;
+                cmd.Parameters.Add("@SLB", SqlDbType.TinyInt).Value = BAG.SleepBagITM;
+                cmd.Parameters.Add("@ELX", SqlDbType.TinyInt).Value = BAG.ElixirITM;
+                cmd.Parameters.Add("@MAT", SqlDbType.TinyInt).Value = BAG.Materials;
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+                cmd.Connection.Close();
+
+                cmd = new SqlCommand("GetNewSettings", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@MUS", SqlDbType.TinyInt).Value = Convert.ToByte(MusicLoud.Value*100);
+                cmd.Parameters.Add("@SND", SqlDbType.TinyInt).Value = Convert.ToByte(SoundsLoud.Value * 100);
+                cmd.Parameters.Add("@NS", SqlDbType.TinyInt).Value = Convert.ToByte(NoiseLoud.Value * 100);
+                cmd.Parameters.Add("@FS", SqlDbType.TinyInt).Value = Convert.ToByte(GameSpeed.Value * 100);
+                cmd.Parameters.Add("@BR", SqlDbType.TinyInt).Value = Convert.ToByte(Brightness.Value * 100);
+                if (TimerTurnOn.IsChecked.Value)
+                    cmd.Parameters.Add("@TMR", SqlDbType.Bit).Value = 1;
+                else
+                    cmd.Parameters.Add("@TMR", SqlDbType.Bit).Value = 0;
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+                cmd.Connection.Close();
+
+                cmd = new SqlCommand("GetNewEquip", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@WPN", SqlDbType.TinyInt).Value = Super1.PlayerEQ[0];
+                cmd.Parameters.Add("@ARR", SqlDbType.TinyInt).Value = Super1.PlayerEQ[1];
+                cmd.Parameters.Add("@PNT", SqlDbType.TinyInt).Value = Super1.PlayerEQ[2];
+                cmd.Parameters.Add("@BOO", SqlDbType.TinyInt).Value = Super1.PlayerEQ[3];
+                Byte[] CipherValue= new Byte[] { 1,2,4,8 };
+                cmd.Parameters.Add("@WPS", SqlDbType.TinyInt).Value = Encoder(CipherValue, BAG.Weapon, Convert.ToByte(BAG.Weapon.Length));
+                cmd.Parameters.Add("@ARS", SqlDbType.TinyInt).Value = Encoder(CipherValue, BAG.Armor, Convert.ToByte(BAG.Armor.Length));
+                cmd.Parameters.Add("@PTS", SqlDbType.TinyInt).Value = Encoder(CipherValue, BAG.Pants, Convert.ToByte(BAG.Pants.Length));
+                cmd.Parameters.Add("@BTS", SqlDbType.TinyInt).Value = Encoder(CipherValue, BAG.ArmBoots, Convert.ToByte(BAG.ArmBoots.Length));
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+                cmd.Connection.Close();
+
+                cmd = new SqlCommand("GetNewParams", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LV", SqlDbType.TinyInt).Value = Super1.CurrentLevel;
+                cmd.Parameters.Add("@LC", SqlDbType.TinyInt).Value = Sets.MenuTask;
+                cmd.Parameters.Add("@HP", SqlDbType.SmallInt).Value = HPbar.Value;
+                cmd.Parameters.Add("@AP", SqlDbType.SmallInt).Value = APbar.Value;
+                cmd.Parameters.Add("@XP", SqlDbType.SmallInt).Value = NextExpBar.Value;
+                cmd.Parameters.Add("@TK", SqlDbType.TinyInt).Value = 0;
+                cmd.Parameters.Add("@LN", SqlDbType.TinyInt).Value = 0;
+                cmd.Parameters.Add("@TR", SqlDbType.Bit).Value = 1;
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+                cmd.Connection.Close();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something get wrong" + ex);
+            }
+        }
+        private Byte Encoder(in Byte[] CipherValues, in Boolean[] ToEncode, in Byte length)
+        {
+            Byte Cipher = 0;
+            for (Byte i = 0; i < length; i++)
+            {
+                if (ToEncode[i])
+                {
+                    Cipher += CipherValues[i];
+                }
+            }
+            return Cipher;
+        }
+        private Boolean[] Decoder(in Byte[] CipherValues, Byte Cipher, in Byte length)
+        {             
+            Lab1.Content = "";
+            Boolean[] Decipher= { false, false, false, false };
+            for (Byte i = length; i > 0; i--)
+            {
+                if (Cipher-CipherValues[i-1]>=0)
+                {
+                    Cipher -= CipherValues[i-1];
+                    Decipher[i-1] = true;
+                }
+                //Lab1.Content = i.ToString();
+            }
+            return Decipher;
+        }
+        private Boolean GetValueFromDecoder(in Boolean[] Things, in Byte If)
+        {
+            foreach (Boolean bl in Things)
+            {
+                if (bl && (If == 0))
+                    return true;
+            }
+            return false;
+        }
+        private void Continue_Click(object sender, RoutedEventArgs e)
+        {
+            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+
+            SqlCommand cmd = new SqlCommand("CheckBAG", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Connection.Open();
+            SqlDataReader sqlDataReader = cmd.ExecuteReader();
+            if (sqlDataReader.HasRows)
+            {
+                while (sqlDataReader.Read())
+                {
+                    BAG.BandageITM = Convert.ToByte(sqlDataReader.GetValue(2).ToString());
+                    BAG.EtherITM = Convert.ToByte(sqlDataReader.GetValue(3).ToString());
+                    BAG.AntidoteITM = Convert.ToByte(sqlDataReader.GetValue(4).ToString());
+                    BAG.FusedITM = Convert.ToByte(sqlDataReader.GetValue(5).ToString());
+                    BAG.HerbsITM = Convert.ToByte(sqlDataReader.GetValue(6).ToString());
+                    BAG.Ether2ITM = Convert.ToByte(sqlDataReader.GetValue(7).ToString());
+                    BAG.SleepBagITM = Convert.ToByte(sqlDataReader.GetValue(8).ToString());
+                    BAG.ElixirITM = Convert.ToByte(sqlDataReader.GetValue(9).ToString());
+                    BAG.Materials = Convert.ToUInt16(sqlDataReader.GetValue(10).ToString());
+                }
+            }
+            cmd.Parameters.Clear();
+            cmd.Connection.Close();
+            cmd = new SqlCommand("CheckEquip", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Connection.Open();
+
+            Byte[] Ciphers = { 0, 0, 0, 0 };
+            sqlDataReader = cmd.ExecuteReader();
+            if (sqlDataReader.HasRows)
+            {
+                while (sqlDataReader.Read())
+                {
+                    Super1.PlayerEQ[0] = Convert.ToByte(sqlDataReader.GetValue(2).ToString());
+                    Super1.PlayerEQ[1] = Convert.ToByte(sqlDataReader.GetValue(3).ToString());
+                    Super1.PlayerEQ[2] = Convert.ToByte(sqlDataReader.GetValue(4).ToString());
+                    Super1.PlayerEQ[3] = Convert.ToByte(sqlDataReader.GetValue(5).ToString());
+                    Ciphers[0] = Convert.ToByte(sqlDataReader.GetValue(6).ToString());
+                    Ciphers[1] = Convert.ToByte(sqlDataReader.GetValue(7).ToString());
+                    Ciphers[2] = Convert.ToByte(sqlDataReader.GetValue(8).ToString());
+                    Ciphers[3] = Convert.ToByte(sqlDataReader.GetValue(9).ToString());
+                }
+            }
+
+            Byte[] CipherValue = new Byte[] { 1, 2, 4, 8 };
+            BAG.Weapon = Decoder(CipherValue, Ciphers[0], Convert.ToByte(BAG.Weapon.Length));
+            BAG.Hands = GetValueFromDecoder(BAG.Weapon, Super1.PlayerEQ[0]);
+
+            BAG.Armor = Decoder(CipherValue, Ciphers[1], Convert.ToByte(BAG.Armor.Length));
+            BAG.Jacket = GetValueFromDecoder(BAG.Armor, Super1.PlayerEQ[1]);
+
+            BAG.Pants = Decoder(CipherValue, Ciphers[2], Convert.ToByte(BAG.Pants.Length));
+            BAG.Legs = GetValueFromDecoder(BAG.Pants, Super1.PlayerEQ[2]);
+
+            BAG.ArmBoots = Decoder(CipherValue, Ciphers[3], Convert.ToByte(BAG.ArmBoots.Length));
+            BAG.Boots = GetValueFromDecoder(BAG.ArmBoots, Super1.PlayerEQ[3]);
+
+            cmd.Parameters.Clear();
+            cmd.Connection.Close();
+           
+            cmd = new SqlCommand("CheckPlayer", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Connection.Open();
+            sqlDataReader = cmd.ExecuteReader();
+            if (sqlDataReader.HasRows)
+            {
+                while (sqlDataReader.Read())
+                {
+                    Super1.CurrentLevel = Convert.ToByte(sqlDataReader.GetValue(1).ToString());
+                    Sets.MenuTask = Convert.ToByte(sqlDataReader.GetValue(2).ToString());
+                    HPbar.Value = Convert.ToUInt16(sqlDataReader.GetValue(3).ToString());
+                    APbar.Value = Convert.ToUInt16(sqlDataReader.GetValue(4).ToString());
+                    NextExpBar.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
+                    NextExpBar.Value = Convert.ToUInt16(sqlDataReader.GetValue(5).ToString());
+                    Sets.MiniTask = Convert.ToBoolean(Convert.ToByte(sqlDataReader.GetValue(6)));
+                    Super1.Learned= Convert.ToByte(sqlDataReader.GetValue(7).ToString());
+                }
+            }
+            HPbar1.Value = HPbar.Value;
+            APbar1.Value = APbar.Value;
+            ExpBar1.Value = NextExpBar.Value;
+            RefreshAllHPAP();
+            
+            cmd.Parameters.Clear();
+            cmd.Connection.Close();
+            cmd = new SqlCommand("CheckParams", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Connection.Open();
+            sqlDataReader = cmd.ExecuteReader();
+            if (sqlDataReader.HasRows)
+            {
+                while (sqlDataReader.Read())
+                {
+                    Super1.MaxHP = Convert.ToUInt16(sqlDataReader.GetValue(1).ToString());
+                    Super1.MaxAP = Convert.ToUInt16(sqlDataReader.GetValue(2).ToString());
+                    Super1.Attack = Convert.ToByte(sqlDataReader.GetValue(3).ToString());
+                    Super1.Defence = Convert.ToByte(sqlDataReader.GetValue(4).ToString());
+                    Super1.Speed = Convert.ToByte(sqlDataReader.GetValue(5).ToString());
+                    Super1.Special = Convert.ToByte(sqlDataReader.GetValue(6).ToString());
+                }
+            }
+
+            cmd.Parameters.Clear();
+            cmd.Connection.Close();
+            cmd = new SqlCommand("CheckSettings", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Connection.Open();
+            sqlDataReader = cmd.ExecuteReader();
+            if (sqlDataReader.HasRows)
+            {
+                while (sqlDataReader.Read())
+                {
+                    //Lab1.Content = Convert.ToDouble(sqlDataReader.GetValue(6))/100;
+                    MusicLoud.Value = Convert.ToDouble(sqlDataReader.GetValue(2)) / 100;
+                    SoundsLoud.Value = Convert.ToDouble(sqlDataReader.GetValue(3)) / 100;
+                    NoiseLoud.Value = Convert.ToDouble(sqlDataReader.GetValue(4)) / 100;
+                    GameSpeed.Value = Convert.ToDouble(sqlDataReader.GetValue(5)) / 100;
+                    Brightness.Value = Convert.ToDouble(sqlDataReader.GetValue(6)) / 100;
+                    TimerTurnOn.IsChecked = Convert.ToBoolean(Convert.ToByte(sqlDataReader.GetValue(7)));
+                }
+            }
+
+            cmd.Parameters.Clear();
+            cmd.Connection.Close();
+
+            Sets.LockIndex = Convert.ToByte(3 - Sets.MenuTask);
+            MapBuild();
+            ContinueQuest();
+        }
+
+        private void ContinueQuest()
+        {
+            TablesAllTurnOn1();
+            ChestsAllTurnOn1();
+            switch (Sets.MenuTask)
+            {
+                case 0:
+                    KeysAllTurnOn1();
+                    LocksAllTurnOn1();
+                    break;
+                case 1:
+                    ImgShowX(new Image[] { KeyImg3, LockImg3, KeyImg2, LockImg2 });
+                    ChangeMapToVoid(101);
+                    ChangeMapToVoid(131);
+                    Sets.EnemyRate++;
+                    break;
+                case 2:
+                    ImgShowX(new Image[] { KeyImg3, LockImg3 });
+                    ChangeMapToVoid(101);
+                    ChangeMapToVoid(102);
+                    ChangeMapToVoid(131);
+                    ChangeMapToVoid(132);
+                    Sets.EnemyRate+=2;
+                    break;
+                case 3:
+                    ChangeMapToVoid(101);
+                    ChangeMapToVoid(102);
+                    ChangeMapToVoid(103);
+                    ChangeMapToVoid(131);
+                    ChangeMapToVoid(132);
+                    ChangeMapToVoid(133);
+                    Sets.EnemyRate += 3;
+                    break;
+            }
+            if (BAG.Weapon[0])
+            {
+                ChangeMapToWall(203);
+                ChestImg3.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestOpened(ver1).png", UriKind.RelativeOrAbsolute));
+            }
+            if (BAG.Armor[0])
+            {
+                ChangeMapToWall(201);
+                ChestImg1.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestOpened(ver1).png", UriKind.RelativeOrAbsolute));
+            }   
+            if (BAG.Pants[0])
+            {
+                ChangeMapToWall(204);
+                ChestImg4.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestOpened(ver1).png", UriKind.RelativeOrAbsolute));
+            }
+            if (BAG.ArmBoots[0])
+            {
+                ChangeMapToWall(202);
+                ChestImg2.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestOpened(ver1).png", UriKind.RelativeOrAbsolute));
+            }
+                
+            //MediaHide(Med1);
+            BtnHideX(new Button[] { Continue, DeleteProfile, AddProfile, Button1 });
+            ImgHide(AutorizeImg);
+            LabHideX(new Label[] { Lab1, CurrentPlayer,Player1, Player2, Player3, Player4, Player5, Player6 });
+            //LabShow(Lab1);
+            TBoxHide(AddPlayer);
+            ImgShowX(new Image[] { Img1, Threasure1, Img2, SaveProgress });
+            Img1.Source = new BitmapImage(new Uri(@"Loc1_2.jpg", UriKind.RelativeOrAbsolute));
+            Adoptation.ImgXbounds = 29;
+            Adoptation.ImgYbounds = 17;
+            ImgGrid(Img2, 17, 29);
+            ImgShow(Img1);
+            HPbar.Maximum = Super1.MaxHP;
+            APbar.Maximum= Super1.MaxAP;
+            HPbar.Width = HPbar.Maximum;
+            APbar.Width = APbar.Maximum;
+            RefreshAllHPAP();
+            if (Super1.CurrentLevel >= 10)
+            {
+                NextExpBar.Value = NextExpBar.Maximum;
+                ExpBar1.Value = ExpBar1.Maximum;
+                ExpText.Content = "Профессионал";
+                Exp1.Content = "Профессионал";
+            } else
+            {
+                ExpBar1.Maximum = Super1.NextLevel[Super1.CurrentLevel-1];
+                ExpBar1.Value = NextExpBar.Value;
+                ExpText.Content = "Опыт "+NextExpBar.Value+"/"+NextExpBar.Maximum;
+                Exp1.Content = "Опыт " + ExpBar1.Value + "/" + ExpBar1.Maximum;
+            }
+
+            //Lab1.Content = BAG.ArmBoots[0];
+            //LabShow(Lab1);
+            //BAG.Weapon[0] = true;
+            //BAG.ArmBoots[0] = true;
+            WeaponCheckPoint();
+            ArmorCheckPoint();
+            PantsCheckPoint();
+            BootsCheckPoint();
+            HeyPlaySomething(new Uri(@"Main_theme.mp3", UriKind.RelativeOrAbsolute));
+        }
+
+        private void WeaponCheckPoint()
+        {
+            switch (Super1.PlayerEQ[0])
+            {
+                case 10:
+                    EquipH.Content = "Костяной кастет";
+                    break;
+                case 50:
+                    EquipH.Content = "Древний кинжал";
+                    break;
+                case 200:
+                    EquipH.Content = "Легендарный меч";
+                    break;
+                case 165:
+                    EquipH.Content = "Миниган XM214-A";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ArmorCheckPoint()
+        {
+            switch (Super1.PlayerEQ[1])
+            {
+                case 5:
+                    EquipB.Content = "Чёрный кожак";
+                    break;
+                case 25:
+                    EquipB.Content = "Древняя броня";
+                    break;
+                case 90:
+                    EquipB.Content = "Броня легенд";
+                    break;
+                case 85:
+                    EquipB.Content = "Футболка крутого";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void PantsCheckPoint()
+        {
+            switch (Super1.PlayerEQ[2])
+            {
+                case 4:
+                    EquipL.Content = "Штаны стервятника";
+                    break;
+                case 20:
+                    EquipL.Content = "Поножи воина";
+                    break;
+                case 65:
+                    EquipL.Content = "Поножи легенды";
+                    break;
+                case 55:
+                    EquipL.Content = "Штаны серьёзного";
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void BootsCheckPoint()
+        {
+            switch (Super1.PlayerEQ[3])
+            {
+                case 1:
+                    EquipD.Content = "Бинтовая обувь";
+                    break;
+                case 5:
+                    EquipD.Content = "Сапоги мужества";
+                    break;
+                case 45:
+                    EquipD.Content = "Легендарная обувь";
+                    break;
+                case 25:
+                    EquipD.Content = "Армейские ботинки";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ChangeMapToVoid(in Byte Condition)
+        {
+            for (Byte i = 0; i < MapScheme.GetLength(0); i++)
+            {
+                for (Byte j = 0; j < MapScheme.GetLength(1); j++)
+                {
+                    if (MapScheme[i, j] == Condition)
+                    {
+                        MapScheme[i, j] = 0;
+                    }
+                }
+            }
+        }
+        private void ChangeMapToWall(in Byte Condition)
+        {
+            for (Byte i = 0; i < MapScheme.GetLength(0); i++)
+            {
+                for (Byte j = 0; j < MapScheme.GetLength(1); j++)
+                {
+                    if (MapScheme[i, j] == Condition)
+                    {
+                        MapScheme[i, j] = 1;
+                    }
+                }
+            }
         }
     }
 }
