@@ -16,7 +16,8 @@ https://github.com/Alexxx180/Tatarintsev_8901/tree/master
 
 2 Что такое git и почему из веток там тоже поделки делают?
 
-|X| Репозиторий Alexxx180/Tatarintsev_8901, ветвь master;
+|X| Репозиторий Alexxx180/Tatarintsev_8901, ветвь master .
+
 [?] Итак, вы видите перед собой сайт git, не сильно интуитивно 
 понятный, да ещё и на английском языке.
 
