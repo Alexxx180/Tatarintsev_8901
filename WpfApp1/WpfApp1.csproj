@@ -14,6 +14,8 @@
     <None Remove="AG.png" />
     <None Remove="AG2.png" />
     <None Remove="AncientArtifact.png" />
+    <None Remove="AncientArtifact2.png" />
+    <None Remove="AncientKnife.png" />
     <None Remove="AntidoteItem.png" />
     <None Remove="ATK.png" />
     <None Remove="ATK2.png" />
@@ -30,8 +32,10 @@
     <None Remove="BonesDied.ogg" />
     <None Remove="Boots.png" />
     <None Remove="Boots2.png" />
+    <None Remove="Boulder.png" />
     <None Remove="CancelImg.png" />
     <None Remove="ChestClosed%28ver1%29.png" />
+    <None Remove="ChestClosed%28ver2%29.png" />
     <None Remove="ChestOpened%28ver1%29.png" />
     <None Remove="CompletedTask.png" />
     <None Remove="Confirm.png" />
@@ -55,9 +59,14 @@
     <None Remove="FightBeforeImg.png" />
     <None Remove="FusedItem.png" />
     <None Remove="GetItemsArmor1.png" />
+    <None Remove="GetItemsArmor2.png" />
     <None Remove="GetItemsCustomBoots1.png" />
+    <None Remove="GetItemsCustomBoots2.png" />
     <None Remove="GetItemsCustomPants1.png" />
+    <None Remove="GetItemsCustomPants2.png" />
+    <None Remove="GetItemsCustomPants4.png" />
     <None Remove="GetItemsCustomWeapon1.png" />
+    <None Remove="GetItemsCustomWeapon2.png" />
     <None Remove="Hands.png" />
     <None Remove="Hands2.png" />
     <None Remove="HealMenu.png" />
@@ -70,6 +79,7 @@
     <None Remove="ItemsCount.png" />
     <None Remove="Jacket.png" />
     <None Remove="Jacket2.png" />
+    <None Remove="Jail1.png" />
     <None Remove="Key.png" />
     <None Remove="KnucledusterItem.png" />
     <None Remove="Learn.png" />
@@ -78,6 +88,7 @@
     <None Remove="LevelUpMenu.jpg" />
     <None Remove="Loc1_1.jpg" />
     <None Remove="Loc1_2.jpg" />
+    <None Remove="Loc2.jpg" />
     <None Remove="Lock.png" />
     <None Remove="Materials.png" />
     <None Remove="Menu.bmp" />
@@ -87,6 +98,7 @@
     <None Remove="New_game_show.heif" />
     <None Remove="New_game_show.jpg" />
     <None Remove="New_game_show.svg" />
+    <None Remove="Pain1.png" />
     <None Remove="pers5.png" />
     <None Remove="person1.png" />
     <None Remove="person2.png" />
@@ -101,6 +113,7 @@
     <None Remove="Regen.png" />
     <None Remove="SafeArea.png" />
     <None Remove="SeriousBoots.png" />
+    <None Remove="SeriousPants.png" />
     <None Remove="SettingsButton.png" />
     <None Remove="SettingsButton1.png" />
     <None Remove="SkillsAfterImg.png" />
@@ -118,6 +131,9 @@
     <None Remove="TableMessage1.png" />
     <None Remove="TableMessage2.png" />
     <None Remove="TableMessage3.png" />
+    <None Remove="TableMessage4.png" />
+    <None Remove="TableMessage5.png" />
+    <None Remove="TableMessage6.png" />
     <None Remove="Target.gif" />
     <None Remove="Target1.png" />
     <None Remove="TaskCompleted.png" />
@@ -145,12 +161,16 @@
 
   <ItemGroup>
     <Resource Include="AG2.png" />
+    <Resource Include="AncientArtifact2.png" />
+    <Resource Include="AncientKnife.png" />
     <Resource Include="ATK2.png" />
     <Resource Include="BackImg.png" />
     <Resource Include="BackToAdventure.png" />
     <Resource Include="BackToAdventure2.png" />
     <Resource Include="Boots2.png" />
+    <Resource Include="Boulder.png" />
     <Resource Include="CancelImg.png" />
+    <Resource Include="ChestClosed(ver2).png" />
     <Resource Include="Confirm.png" />
     <Resource Include="Control.png" />
     <Resource Include="CoolT-shirt.png" />
@@ -163,23 +183,32 @@
     <Resource Include="EscapeBeforeImg.png" />
     <Resource Include="Ether2Item.png" />
     <Resource Include="FightBeforeImg.png" />
+    <Resource Include="GetItemsArmor2.png" />
+    <Resource Include="GetItemsCustomBoots2.png" />
+    <Resource Include="GetItemsCustomPants2.png" />
+    <Resource Include="GetItemsCustomPants4.png" />
+    <Resource Include="GetItemsCustomWeapon2.png" />
     <Resource Include="Hands2.png" />
     <Resource Include="HerbsItem.png" />
     <Resource Include="ItemsBeforeImg.png" />
     <Resource Include="Jacket2.png" />
+    <Resource Include="Jail1.png" />
     <Resource Include="Learn.png" />
     <Resource Include="Legs2.png" />
     <Resource Include="LevelUpMenu.jpg" />
     <Resource Include="Loc1_2.jpg" />
+    <Resource Include="Loc2.jpg" />
     <Resource Include="Materials.png" />
     <Resource Include="Menu2.png" />
     <Resource Include="Menu3.png" />
+    <Resource Include="Pain1.png" />
     <Resource Include="PersonHurts1.png" />
     <Resource Include="PharaohModel.png" />
     <Resource Include="Quake.png" />
     <Resource Include="Regen.png" />
     <Resource Include="SafeArea.png" />
     <Resource Include="SeriousBoots.png" />
+    <Resource Include="SeriousPants.png" />
     <Resource Include="SettingsButton.png" />
     <Resource Include="SettingsButton1.png" />
     <Resource Include="SkillsAfterImg.png" />
@@ -377,6 +406,9 @@
     <Resource Include="TableMessage3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="TableMessage4.png" />
+    <Resource Include="TableMessage5.png" />
+    <Resource Include="TableMessage6.png" />
     <Resource Include="Target.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
