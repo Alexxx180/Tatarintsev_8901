@@ -24,7 +24,140 @@ namespace WpfApp1
     /// [EN] Interaction logic for game triggers.
     /// [RU] Интерактивная логика для внутренних механизмов.
     /// </summary>
-    
+    public class Sql {
+        public Sql()
+        {
+            Con = NewConnection();
+            PlayerLogins = new List<string>();
+        }
+        public SqlConnection NewConnection()
+        {
+            return new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+        }
+        public void NewStoredProcedureBuild(in String ProcedureName)
+        {
+            Cmd = new SqlCommand(ProcedureName, Con);
+            Cmd.CommandType = CommandType.StoredProcedure;
+        }
+        public void NewExecuteNonQueryBuild()
+        {
+            Cmd.Connection.Open();
+            Cmd.ExecuteNonQuery();
+            Cmd.Connection.Close();
+        }
+        public List<string> NewSqlDataReaderBuild(List<string> Lgs)
+        {
+            Cmd.Connection.Open();
+            DataReader = Cmd.ExecuteReader();
+            if (DataReader.HasRows)
+            {
+                while (DataReader.Read())
+                {
+                    Lgs.Add(DataReader.GetValue(0).ToString());
+                }
+            }
+            Cmd.Connection.Close();
+            return Lgs;
+        }
+        public string NewSqlDataReaderBuild(string Selected, in Byte Column)
+        {
+            Cmd.Connection.Open();
+            DataReader = Cmd.ExecuteReader();
+            if (DataReader.HasRows)
+            {
+                while (DataReader.Read())
+                {
+                    Selected = DataReader.GetValue(Column).ToString();
+                }
+            }
+            Cmd.Connection.Close();
+            return Selected;
+        }
+        public Object[] NewSqlDataReaderBuild(in Object[] Values)
+        {
+            Cmd.Connection.Open();
+            DataReader = Cmd.ExecuteReader();
+            if (DataReader.HasRows)
+            {
+                while (DataReader.Read())
+                {
+                    for (Byte i = 0; i < Values.Length; i++)
+                    {
+                        Values[i]=DataReader.GetValue(i);
+                    }
+                }
+            }
+            Cmd.Connection.Close();
+            return Values;
+        }
+        public void AddProcedureParameter(in String ParamName, in String NewStringParam)
+        {
+            Cmd.Parameters.Add(ParamName, SqlDbType.VarChar).Value = NewStringParam;
+        }
+        public void AddProcedureParameter(in String ParamName, in Boolean NewBooleanParam)
+        {
+            Cmd.Parameters.Add(ParamName, SqlDbType.Bit).Value = NewBooleanParam;
+        }
+        public void AddProcedureParameter(in String ParamName, in Byte NewTinyIntParam)
+        {
+            Cmd.Parameters.Add(ParamName, SqlDbType.TinyInt).Value = NewTinyIntParam;
+        }
+        public void AddProcedureParameter(in String ParamName, in UInt16 NewSmallIntParam)
+        {
+            Cmd.Parameters.Add(ParamName, SqlDbType.TinyInt).Value = NewSmallIntParam;
+        }
+        public void AddProcedureParametersX(in String[] ParamNames, in Object[] NewAnyParams)
+        {
+            for (Byte i = 0; i < ParamNames.Length; i++)
+            {
+                if (NewAnyParams.GetType() == typeof(String))
+                    AddProcedureParameter(ParamNames[i], (String)NewAnyParams[i]);
+                if (NewAnyParams.GetType() == typeof(Boolean))
+                    AddProcedureParameter(ParamNames[i], (Boolean)NewAnyParams[i]);
+                if (NewAnyParams.GetType() == typeof(Byte))
+                    AddProcedureParameter(ParamNames[i], (Byte)NewAnyParams[i]);
+                if (NewAnyParams.GetType() == typeof(UInt16))
+                    AddProcedureParameter(ParamNames[i], (UInt16)NewAnyParams[i]);
+            }
+        }
+        private void CheckIfPlayersListIsNotNull()
+        {
+            if (PlayerLogins.Count > 0)
+                PlayerLogins.Clear();
+        }
+        public void NewPlayer(in String NewPlayerLogin)
+        {
+            NewStoredProcedureBuild("AddNewProfile");
+            AddProcedureParameter("@LOGIN", NewPlayerLogin);
+            NewExecuteNonQueryBuild();
+            Cmd.Parameters.Clear();
+        }
+        public void CheckAllRecordedPlayers()
+        {
+            CheckIfPlayersListIsNotNull();
+            NewStoredProcedureBuild("CheckLogin");
+            PlayerLogins=NewSqlDataReaderBuild(new List<string>());
+            Cmd.Parameters.Clear();
+        }
+        public string GetCurrentPlayer()
+        {
+            NewStoredProcedureBuild("CheckSelected");
+            CurrentLogin = (PlayerLogins.Count > 0 ? (NewSqlDataReaderBuild("????", 0) == "????" ? PlayerLogins[0] : NewSqlDataReaderBuild("????", 0)) : "????");
+            Cmd.Parameters.Clear();
+            return CurrentLogin;
+        }
+        public Boolean CheckIfPlayerCanContinue()
+        {
+            NewStoredProcedureBuild("CheckPlayer");
+            AddProcedureParameter("@LOGIN", CurrentLogin);
+            return NewSqlDataReaderBuild("1", 2) != "1";
+        }
+        public SqlCommand Cmd { get; set; }
+        public SqlDataReader DataReader { get; set; }
+        public SqlConnection Con { get; set; }
+        public List<string> PlayerLogins { get; set; }
+        public string CurrentLogin { get; set; }
+    }
     //[EN] Foe class, influence on new enemies.
     //[RU] Класс противник, определяет новых противников возникающих в бою.
     public class Foe
@@ -53,7 +186,7 @@ namespace WpfApp1
             public Byte EnemyAgility { get; set; }
         }
         public void GetStats() {
-            EnemyName = new string[] { "Паук", "Мумия", "Зомби", "Страж","Фараон", "Угх-зан I" };
+            EnemyName = new string[] { "Паук", "Мумия", "Зомби", "Страж", "Фараон", "Угх-зан I" };
             EnemyAppears = new string[] { "", "", "" };
             EnemyTurn = new Byte[] { 60, 30, 0 };
             EnemyHP = new UInt16[] { 0, 0, 0 };
@@ -78,7 +211,7 @@ namespace WpfApp1
             //[EN] Current player's level and exp to the next level
             //[RU] Текущий уровень игрока и количество опыта необходимое для достижения следующего.
             CurrentLevel = 1;
-            NextLevel = new UInt16[] {  15,  24,  38,  61,  98, 112, 150, 177, 200, 250, 420, 770, 1170, 1595, 2045, 2520, 3020, 3620, 4320, 5080, 6020, 7500, 8750, 10000, 0 };
+            NextLevel = new UInt16[] { 15, 24, 38, 61, 98, 112, 150, 177, 200, 250, 420, 770, 1170, 1595, 2045, 2520, 3020, 3620, 4320, 5080, 6020, 7500, 8750, 10000, 0 };
 
             //[EN] Active stats (HP,AP)
             //[RU] Активные параметры (ОЗ, ОД).
@@ -97,12 +230,12 @@ namespace WpfApp1
 
             //[EN] PLAYER LEVEL UP STATS
             //[RU] СТАТУС ИГРОКА ПРИ ПОВЫШЕНИИ УРОВНЯ
-            MaxHPNxt  = new UInt16[] { 100, 110, 121, 132, 145, 159, 174, 192, 221, 250, 282, 312, 350, 391, 436, 485, 532, 582, 633, 686, 741, 800, 862, 930, 999 };
-            MaxAPNxt  = new UInt16[] {  40,  44,  48,  53,  58,  64,  70,  77,  85, 100, 121, 147, 200, 267, 342, 395, 478, 540, 570, 600, 785, 840, 890, 940, 999 };
-            AttackNxt   = new Byte[] {  25,  28,  31,  34,  40,  45,  52,  63,  70,  85, 102, 109, 116, 124, 132, 141, 150, 160, 171, 182, 194, 206, 219, 230, 255 };
-            DefenseNxt  = new Byte[] {  15,  17,  19,  21,  25,  30,  33,  37,  45,  50,  66,  81,  88,  96, 110, 119, 136, 146, 157, 175, 187, 199, 211, 225, 255 };
-            SpeedNxt    = new Byte[] {  15,  17,  19,  21,  23,  25,  28,  31,  35,  39,  40,  42,  45,  48,  53,  61,  74,  95, 116, 137, 158, 179, 200, 221, 255 };
-            SpecialNxt  = new Byte[] {  25,  30,  35,  40,  45,  50,  60,  65,  75, 100, 105, 110, 120, 125, 130, 140, 145, 160, 175, 185, 200, 210, 225, 240, 255 };
+            MaxHPNxt = new UInt16[] { 100, 110, 121, 132, 145, 159, 174, 192, 221, 250, 282, 312, 350, 391, 436, 485, 532, 582, 633, 686, 741, 800, 862, 930, 999 };
+            MaxAPNxt = new UInt16[] { 40, 44, 48, 53, 58, 64, 70, 77, 85, 100, 121, 147, 200, 267, 342, 395, 478, 540, 570, 600, 785, 840, 890, 940, 999 };
+            AttackNxt = new Byte[] { 25, 28, 31, 34, 40, 45, 52, 63, 70, 85, 102, 109, 116, 124, 132, 141, 150, 160, 171, 182, 194, 206, 219, 230, 255 };
+            DefenseNxt = new Byte[] { 15, 17, 19, 21, 25, 30, 33, 37, 45, 50, 66, 81, 88, 96, 110, 119, 136, 146, 157, 175, 187, 199, 211, 225, 255 };
+            SpeedNxt = new Byte[] { 15, 17, 19, 21, 23, 25, 28, 31, 35, 39, 40, 42, 45, 48, 53, 61, 74, 95, 116, 137, 158, 179, 200, 221, 255 };
+            SpecialNxt = new Byte[] { 25, 30, 35, 40, 45, 50, 60, 65, 75, 100, 105, 110, 120, 125, 130, 140, 145, 160, 175, 185, 200, 210, 225, 240, 255 };
 
             //[EN] PLAYER CURRENT EQUIP
             //[RU] ТЕКУЩАЯ ЭКИПИРОВКА
@@ -113,7 +246,25 @@ namespace WpfApp1
             DefenseState = 1;
             PlayerStatus = 0;
         }
-
+        public void SetStats(in Byte Level)
+        {
+            MaxHP = MaxHPNxt[Level];
+            MaxAP = MaxAPNxt[Level];
+            Attack = AttackNxt[Level];
+            Defence = DefenseNxt[Level];
+            Speed = SpeedNxt[Level];
+            Special = SpecialNxt[Level];
+        }
+        public void SetStats(in Byte Level, in UInt16 MaxHp, in UInt16 MaxAp, in Byte Power, in Byte Defense, in Byte Agility, in Byte Ability)
+        {
+            CurrentLevel = Level;
+            MaxHP = MaxHp;
+            MaxAP = MaxAp;
+            Attack = Power;
+            Defence = Defense;
+            Speed = Agility;
+            Special = Ability;
+        }
         public UInt16 MaxHP { get; set; }
         public UInt16 MaxAP { get; set; }
         public UInt16 CurrentHP { get; set; }
@@ -174,6 +325,47 @@ namespace WpfApp1
             ElixirITM = 0;
             Materials = 0;
         }
+        public void ItemsSet(in Byte Bandages, in Byte Antidote, in Byte Ether, in Byte Fused, in Byte Herbs, in Byte SleepBags, in Byte Ethers2, in Byte Elixir, in Byte Materia) {
+            BandageITM = Bandages;
+            AntidoteITM = Antidote;
+            EtherITM = Ether;
+            FusedITM = Fused;
+            HerbsITM = Herbs;
+            SleepBagITM = SleepBags;
+            Ether2ITM = Ethers2;
+            ElixirITM = Elixir;
+            Materials = Materia;
+        }
+        public void ItemsSet(in Byte Bandages, in Byte Antidote, in Byte Ether, in Byte Fused, in Byte Herbs, in Byte SleepBags, in Byte Ethers2, in Byte Elixir)
+        {
+            BandageITM = Bandages;
+            AntidoteITM = Antidote;
+            EtherITM = Ether;
+            FusedITM = Fused;
+            HerbsITM = Herbs;
+            SleepBagITM = SleepBags;
+            Ether2ITM = Ethers2;
+            ElixirITM = Elixir;
+        }
+        public void EquipWearSet(in Boolean hands, in Boolean jacket, in Boolean legs, in Boolean boots)
+        {
+            Hands = hands;
+            Jacket = jacket;
+            Legs = legs;
+            Boots = boots;
+        }
+        public void EquipKindsSet(in Boolean[] weapon, in Boolean[] armor, in Boolean[] pants, in Boolean[] armboots)
+        {
+            Weapon = weapon;
+            Armor = armor;
+            Pants = pants;
+            ArmBoots = armboots;
+        }
+        public void EquipAllSet(in Boolean hands, in Boolean jacket, in Boolean legs, in Boolean boots, in Boolean[] weapon, in Boolean[] armor, in Boolean[] pants, in Boolean[] armboots)
+        {
+            EquipWearSet(hands, jacket, legs, boots);
+            EquipKindsSet(weapon, armor, pants, armboots);
+        }
         public Byte BandageITM { get; set; }
         public Byte AntidoteITM { get; set; }
         public Byte EtherITM { get; set; }
@@ -208,7 +400,7 @@ namespace WpfApp1
             HelpInfo1 = new string[,]{ {"Введение","Древние - кто они?","Приключение","Управление","Сражение","Цель боя","Очки здоровья, ОЗ","Урон","Оборона","Побег","Статус","Показатели","Скорость (СКР)","Больше чем бой","Настройки","Проходы","Сундуки","Сила земли","Сцены" },
             {"Неизвестный...","Предыстория","Розыск","Меню/Выход","Противники","Ходы","Очки действий, ОД","Бой","Умения","Результаты","Уровень","Атака (АТК)","Спец. (СПЦ)","Реестр противников","Разработал","Стены","Опасности","Погостить пришёл","Благодарности" },
             {"Древние святыни","Артефакты","Главы","Взаимодействие","Боссы","Действия","АВШ","Выбор","Предметы","Прирост","Опыт","Защита (ЗЩТ)","Время игры","Задачи","До новых встреч","Замки","Цветные камушки","Секреты","Финансы" } };
-            
+
             HelpInfo2 = new string[,] { {"Добро пожаловать, искатели\nприключений! Приветствуем\nвас в кратком своде правил.","Древние - люди, что когда-то\nобладали технологиями, кото-\nрые нам и не снились.","Вам доступно создание\nнового или загрузка старого\nприключения если оно было","Клавиатура обязательна\nПередвижение - WASD,\nВзаимодействие - E","Во время передвижения, на\nвас могут напасть. Не бой-\nтесь сражаться за правое!","Во время сражения нужно\nубрать всех противников и\nбоссов с поля, не погибнув.","Определяют какое количе-\nство урона персонаж может\nвзять, прежде чем умереть.","Числом определяет силу, с\nкоторой бьёт герой или враг,\nприближает к гибели.","Повышает защиту героя в\nдва раза до следующего\nхода.","Существует альтернативный\nспособ выйти из сражения -\nизбежать этим действием.","Выводит состояние героя,\nпри отравлении персонаж\nбудет терять ОЗ.","Влияют на выживаемость\nгероя, каждый отвечает за\nчто-то своё.","Влияет на скорость заполне-\nния АВШ и возможность\nсбежать из боя.","Умения доступны вне боя, а\nещё каждое из них можно\n\"пожамкать\" ^_^.","Не так-то просто справляться\nс шумом? Слишком яркое\nизображение? Не вопрос!","Место, по которому может\nходить герой, обычная\nплита.","Там хранится всевозможное\nоружие и броня древних.\nПочему бы и не одолжить?","Источники, бьющие прямо\nиз огненных песков лечат\nвсе недомогания.","Как никогда лучше показы-\nвают происходящее в\nсамом эпицентре событий." },
             {"Вы играете за одарённого\nархеолога Рэя, его целью\nявляется поиск артефактов.","После глупых войн и жажды\nвласти, люди истратили нас-\n","Здесь находятся все\nискатели! Можно разделять\nпрогресс с друзьями","Клавиатура обязательна\nОткрыть меню - Left CTRL\nВыйти из игры - ESC","Монстры и прочие чудища,\nвышедшие из под контроля\nжаждут вашей гибели","Действия героя и врагов\nраспределены: они могут\nвыполнять их спустя время","От ОД зависит доступ к осо-\nбым действиям - умениям,\nвызывающие эффекты","Опция позволяющая физи-\nчески атаковать врага\nгерою, зависит от АТК.","Каждое умение тратит ОД и\nможет оказывать эффект\nкак на врага, так и на героя.","Победив, вы получаете\nопыт, материалы и ве-\nщи в конце сражения.","Показывает потенциал\nперсонажа, от него за-\nвисят все показатели.","Урон, наносимый героем\nпри обычной атаке. Может\nбыть увеличена оружием.","Специальное влияет на силу\nэффектов от использования\nумений персонажа.","После открытия умения \"Из-\nучение\", вы сможете смот-\nреть показатели врагов","Прошу любить и жаловать:\nТатаринцев Александр,\nвыступал в роли FullStack.","Препятствия, через которые\nнельзя передвигаться. Из\nних составлены лабиринты.","Какое приключение не обо-\nйдётся без опасностей?\nВсё как положено.","-Алло, это кто?\n-Сэм.\n-Шутник, Сэм, это я.","Посвящается (Вы лучшие):\nМасленников Денис,\nМасленникова Татьяна" },
             {"Основными местами для\nпоиска сокровищ стали\nсооружения древних.","Артефакты содержат посла-\nния, лежащие в основе\nключа к мудрости веков","Приключение рассказывает\nисторию, основные события\nкоторой показаны в главах","Все нажатия на кнопки\nосуществляются с помощью\nлевой кнопки мыши (ЛКМ)","Древние стражи и могучие\nвластители, пробудившиеся\nото сна ждут боя.","Совокупность опций возни-\nкающих около персонажа.\nНужны для победы в бою.","Активная временная шкала\nпосле заполнения, даёт ход\nгерою, отображая действия.","Для выбора зоны пораже-\nния. Отмена - вернуться к\nпредыдущим опциям","Использование предметов,\nполученных после боя или\nсозданных материалами.","При повышении уровня, по-\nказатели героя вырастут,\nоблегчая новые задачи.","При сборе достаточного\nколичества - повышает\nуровень.","Снижает урон, получаемый\nот врагов. Может быть\nувеличена доспехами.","Всему своё время и приклю-\nчение - не исключение, бе-\nрегите глаза, друзья!","Для понимания основной\nцели - она разбита на\nзадачи.","Надеюсь данное руководст-\nво было вам полезно, даль-\nше для общего развития =)","Закрытые проходы, веду-\nщие через путь к выходу\nк артефактам. ","Артефакты - ключи, ведущие\nк сокровищам, эта основная\nцель приключения.","Каждое сооружение хранит\nсвои секреты. Сможете ли\nвы отыскать их все?","А в плане денег - у нас нет\nденег. Поможете ли доброй\nкопеечкой? 89212049320" } };
@@ -290,11 +482,6 @@ namespace WpfApp1
         public Byte[] ItemsDropRate { get; set; }
     }
 
-    /* [EN] Initialize locations for future
-     * [RU] Инициализация локаций на будущее
-    public static int[] Xcoordinate = { -1517 };
-    public static int[] Ycoordinate = { 60 };*/
-
     /// <summary>
     /// [EN] Interaction logic for MainWindow.xaml
     /// [RU] Интерактивная логика для ГлавногоЭкрана.xaml
@@ -315,71 +502,19 @@ namespace WpfApp1
 
             try
             {
-                SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-
-                SqlCommand cmd = new SqlCommand("CheckLogin", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Connection.Open();
-                SqlDataReader sqlDataReader = cmd.ExecuteReader();
-                if (sqlDataReader.HasRows)
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        Logins.Add(sqlDataReader.GetValue(0).ToString());
-                    }
-                }
-                string slct = "";
-                cmd.Connection.Close();
-                cmd = new SqlCommand("CheckSelected", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Connection.Open();
-                sqlDataReader = cmd.ExecuteReader();
-                if (sqlDataReader.HasRows)
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        slct = sqlDataReader.GetValue(0).ToString();
-                    }
-                }
-                cmd = new SqlCommand("CheckSelected", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Connection.Close();
-                if (Logins.Count > 0)
-                {
-                    if (slct == "")
-                        MainLogin = Logins[0];
-                    else
-                        MainLogin = slct;
-                } else
-                    MainLogin = "????";
-                CurrentPlayer.Content = MainLogin;
-                if (MainLogin != "????")
-                {
-                    cmd = new SqlCommand("CheckPlayer", con);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
-                    cmd.Connection.Open();
-                    sqlDataReader = cmd.ExecuteReader();
-                    if (sqlDataReader.HasRows)
-                    {
-                        while (sqlDataReader.Read())
-                        {
-                            slct = sqlDataReader.GetValue(2).ToString();
-                        }
-                    }
-                    if (slct != "1")
-                        Continue.IsEnabled = true;
-                    cmd.Connection.Close();
-                }
+                DataBaseMSsql.CheckAllRecordedPlayers();
+                CurrentPlayer.Content = DataBaseMSsql.GetCurrentPlayer();
+                Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue();
             }
             catch (Exception ex)
             {
-                throw new Exception("Something get wrong" + ex);
+                throw new Exception("Something get wrong, Read this: " + ex);
             }
         }
 
-        public static List<string> Logins = new List<string>();
-        public static string MainLogin = "????";
+        Sql DataBaseMSsql = new Sql();
+        //public static List<string>DataBaseMSsql.PlayerLogins = new List<string>();
+        //public static string DataBaseMSsql.CurrentLogin = "????";
 
         public static UInt16[] TimeWorldRecord = new UInt16[] { 0, 0, 0, 0 };
         private void WorldRecord(object sender, EventArgs e)
@@ -510,8 +645,6 @@ namespace WpfApp1
             SecretBOSS1.GetStats();
             SecretBOSS1.PreStats(50, 0, 50, 1, 350);
         }
-
-
         private void SEF(Uri sound)
         {
             Sound3.Stop();
@@ -625,6 +758,124 @@ namespace WpfApp1
                 SldHide(sld);
             }
         }
+
+        private void AnyHide(Object Element)
+        {
+            switch (Element.GetType().ToString())
+            {
+                case "System.Windows.Controls.Label":
+                    LabHide((Label)Element);
+                    break;
+                case "System.Windows.Controls.Button":
+                    ButtonHide((Button)Element);
+                    break;
+                case "System.Windows.Controls.Image":
+                    ImgHide((Image)Element);
+                    break;
+                case "System.Windows.Controls.TextBlock":
+                    TxtHide((TextBlock)Element);
+                    break;
+                case "System.Windows.Controls.Slider":
+                    SldHide((Slider)Element);
+                    break;
+                case "System.Windows.Controls.CheckBox":
+                    ChbHide((CheckBox)Element);
+                    break;
+                case "System.Windows.Controls.MediaElement":
+                    MediaHide((MediaElement)Element);
+                    break;
+                case "System.Windows.Controls.ProgressBar":
+                    BarHide((ProgressBar)Element);
+                    break;
+                case "System.Windows.Controls.TextBox":
+                    TBoxHide((TextBox)Element);
+                    break;
+            }
+        }
+        private void AnyShow(Object Element)
+        {
+            switch (Element.GetType().ToString())
+            {
+                case "System.Windows.Controls.Label":
+                    LabShow((Label)Element);
+                    break;
+                case "System.Windows.Controls.Button":
+                    ButtonShow((Button)Element);
+                    break;
+                case "System.Windows.Controls.Image":
+                    ImgShow((Image)Element);
+                    break;
+                case "System.Windows.Controls.TextBlock":
+                    TxtShow((TextBlock)Element);
+                    break;
+                case "System.Windows.Controls.Slider":
+                    SldShow((Slider)Element);
+                    break;
+                case "System.Windows.Controls.CheckBox":
+                    ChbShow((CheckBox)Element);
+                    break;
+                case "System.Windows.Controls.MediaElement":
+                    MediaShow((MediaElement)Element);
+                    break;
+                case "System.Windows.Controls.ProgressBar":
+                    BarShow((ProgressBar)Element);
+                    break;
+                case "System.Windows.Controls.TextBox":
+                    TBoxShow((TextBox)Element);
+                    break;
+            }
+        }
+        private void AnyGrid(Object Element, in Byte row, in Byte column)
+        {
+            switch (Element.GetType().ToString())
+            {
+                case "System.Windows.Controls.Label":
+                    LabGrid((Label)Element, row, column);
+                    break;
+                case "System.Windows.Controls.Button":
+                    BtnGrid((Button)Element, row, column);
+                    break;
+                case "System.Windows.Controls.Image":
+                    ImgGrid((Image)Element, row, column);
+                    break;
+                /*case "System.Windows.Controls.TextBlock":
+                    TxtGrid((TextBlock)Element, rows, columns);
+                    break;
+                case "System.Windows.Controls.Slider":
+                    SldGrid((Slider)Element, rows, columns);
+                    break;
+                case "System.Windows.Controls.CheckBox":
+                    ChbGrid((CheckBox)Element, rows, columns);
+                    break;*/
+                case "System.Windows.Controls.MediaElement":
+                    MedGrid((MediaElement)Element, row, column);
+                    break;
+                case "System.Windows.Controls.ProgressBar":
+                    BarGrid((ProgressBar)Element, row, column);
+                    break;
+            }
+        }
+        private void AnyHideX(params Object[] Elements)
+        {
+            foreach (Object Element in Elements)
+            {
+                AnyHide(Element);
+            }
+        }
+        private void AnyShowX(params Object[] Elements)
+        {
+            foreach (Object Element in Elements)
+            {
+                AnyShow(Element);
+            }
+        }
+        private void AnyGridX(Object[] Elements, in Byte[] rows, in Byte[] columns)
+        {
+            for (Byte i = 0; i < Elements.Length; i++)
+            {
+                AnyGrid(Elements[i], rows[i], columns[i]);
+            }
+        }
         private void Adaptate()
         {
             ///In Game with player start
@@ -637,7 +888,7 @@ namespace WpfApp1
             Image[] ImgMS = { Icon0, ATKImg, DEFImg, AGImg, SPImg, EquipHImg, EquipBImg, EquipLImg, EquipDImg, Task1Img, Task2Img, Task3Img, Task4Img, Img4, Img5, ItemsCountImg, Img6, Img7, Img8, ChestImg4, ChestImg3, ChestImg2, ChestImg1, LockImg3, LockImg2, LockImg1, KeyImg3, KeyImg2, KeyImg1, Threasure1, Table1, Table2, Table3, TableMessage1, ChestMessage1 };
             ProgressBar[] StBarMS = { HPbar1, APbar1, ExpBar1 };
             ProgressBar[] BarMS = { HPbar, APbar, NextExpBar, Time1, HPenemyBar };
-            MediaElement[] MedMS = { PharaohBattle, Med3, Med4, Trgt };
+            MediaElement[] MedMS = { PharaohBattle, Trgt };
             //Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, ATK1, DEF1, AG1, SP1, EquipText, EquipH, EquipB, EquipL, EquipD, Exp1,
             foreach (Button btn in BtnWFM)
             {
@@ -770,18 +1021,14 @@ namespace WpfApp1
         {
             //[EN] Return to normal stats
             //[RU] Возврат к исходным значениям.
-            BtnHideX(new Button[] { AddProfile, DeleteProfile });
-            LabHideX(new Label[] { Player1, Player2, Player3, Player4, Player5, Player6, CurrentPlayer });
-            ImgHide(AutorizeImg);
-            ButtonHide(Continue);
-            TBoxHide(AddPlayer);
+            AnyHideX(AddProfile, DeleteProfile, Player1, Player2, Player3, Player4, Player5, Player6, CurrentPlayer, AutorizeImg, Continue, AddPlayer);
 
 
             SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
 
             SqlCommand cmd = new SqlCommand("NewGameStart", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
@@ -792,44 +1039,29 @@ namespace WpfApp1
             Foe1.EnemyAppears[1] = "";
             Foe1.EnemyAppears[2] = "";
             Foe1.EnemiesStillAlive = 0;
+
             Sets.SpiderAlive = 0;
             Sets.MummyAlive = 0;
             Sets.ZombieAlive = 0;
             Sets.BonesAlive = 0;
+
             PharaohAppears.Opacity = 0.1;
-            ImgGrid(PharaohAppears, 8, 36);
             Sets.SpecialBattle = 0;
-            Adoptation.ImgXbounds = 18;
-            Adoptation.ImgYbounds = 34;
-            Super1.CurrentLevel = 1;
-            Super1.MaxHP = 999;
-            Super1.MaxAP = 999;
+
+
+
+            MapBuild(0);
+            ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress, PharaohAppears }, new Byte[] { 27, 24, 7, 9, 33, 25, 10, 4, 17, 8 }, new Byte[] { 19, 11, 21, 20, 18, 13, 38, 36, 29, 36 });
+            Super1.SetStats(25, 999, 999, 255, 255, 255, 255);
             Super1.CurrentHP = 999;
             Super1.CurrentAP = 999;
-
+            PlayerSetLocation(34, 18);
             MaxAndWidthHPcalculate();
             MaxAndWidthAPcalculate();
             CurrentHPcalculate();
             CurrentAPcalculate();
-            MapBuild(0);
-            ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4 }, new Byte[] { 27, 24, 7, 9 }, new Byte[] { 19, 11, 21, 20 });
-            ImgGridX(new Image[] { Table1, Table2, Table3 }, new Byte[] { 33, 25, 10 }, new Byte[] { 18, 13, 38 });
-            ImgGridX(new Image[] { Threasure1, SaveProgress }, new Byte[] { 4, 17 }, new Byte[] { 36, 29 });
-
-            Super1.CurrentLevel = 25;
-            Super1.Attack = 255;
-            Super1.Defence = 255;
-            Super1.Speed = 255;
-            Super1.Special = 255;
-            BAG.Hands = false;
-            BAG.Jacket = false;
-            BAG.Legs = false;
-            BAG.Boots = false;
-            BAG.AntidoteITM = 10;
-            BAG.BandageITM = 10;
-            BAG.EtherITM = 10;
-            BAG.FusedITM = 10;
-            BAG.Materials = 0;
+            BAG.EquipWearSet(false, false, false, false);
+            BAG.ItemsSet(10, 10, 10, 10, 0, 0, 0, 0, 0);
             Sets.MenuTask = 0;
             Uri uriSourceCH = new Uri(@"ChestClosed(ver1).png", UriKind.RelativeOrAbsolute);
             FastImgChange(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4 }, new BitmapImage[] { new BitmapImage(uriSourceCH), new BitmapImage(uriSourceCH), new BitmapImage(uriSourceCH), new BitmapImage(uriSourceCH) });
@@ -1020,7 +1252,7 @@ namespace WpfApp1
                 default:
                     break;
             }
-            
+
         }
         private void Med1_MediaFailed(object sender, ExceptionRoutedEventArgs e)
         {
@@ -1033,63 +1265,25 @@ namespace WpfApp1
         }
 
         //[EN] Activate/Deactivate all .. | [RU] Активировать/Деактивировать все...
-        //[EN] chests/
-        //[RU] сундуки/
-        private void ChestsAllTurnOn1()
+        //[EN] Chests+Tables/
+        //[RU] Сундуки+Таблички/
+        private void ChestsAndTablesAllTurnOn1()
         {
-            ImgShow(ChestImg1);
-            ImgShow(ChestImg2);
-            ImgShow(ChestImg3);
-            ImgShow(ChestImg4);
+            ImgShowX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3 });
         }
-        private void ChestsAllTurnOff1()
+        private void ChestsAndTablesAllTurnOff1()
         {
-            ImgHide(ChestImg1);
-            ImgHide(ChestImg2);
-            ImgHide(ChestImg3);
-            ImgHide(ChestImg4);
+            ImgHideX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3 });
         }
         //[EN] keys/
         //[RU] ключи/
-        private void KeysAllTurnOn1()
+        private void Map1ModelsAllTurnOn1()
         {
-            ImgShow(KeyImg1);
-            ImgShow(KeyImg2);
-            ImgShow(KeyImg3);
+            ImgShowX(new Image[] { KeyImg1, KeyImg2, KeyImg3, LockImg1, LockImg2, LockImg3 });
         }
-        private void KeysAllTurnOff1()
+        private void Map1ModelsAllTurnOff1()
         {
-            ImgHide(KeyImg1);
-            ImgHide(KeyImg2);
-            ImgHide(KeyImg3);
-        }
-        //[EN] Locks/
-        //[RU] замки/
-        private void LocksAllTurnOn1()
-        {
-            ImgShow(LockImg1);
-            ImgShow(LockImg2);
-            ImgShow(LockImg3);
-        }
-        private void LocksAllTurnOff1()
-        {
-            ImgHide(LockImg1);
-            ImgHide(LockImg2);
-            ImgHide(LockImg3);
-        }
-        //[EN] Tables/
-        //[RU] таблички/
-        private void TablesAllTurnOn1()
-        {
-            ImgShow(Table1);
-            ImgShow(Table2);
-            ImgShow(Table3);
-        }
-        private void TablesAllTurnOff1()
-        {
-            ImgHide(Table1);
-            ImgHide(Table2);
-            ImgHide(Table3);
+            ImgHideX(new Image[] { LockImg1, LockImg2, LockImg3, KeyImg1, KeyImg2, KeyImg3 });
         }
 
         //[EN] After game intro has been ended
@@ -1207,10 +1401,10 @@ namespace WpfApp1
         private void BallRoll(object sender, EventArgs e)
         {
             Byte[] MapModel = CheckModelCoord(7);
-            if ((MapModel[0]==Adoptation.ImgYbounds) && (MapModel[1] == Adoptation.ImgXbounds))
+            if ((MapModel[0] == Adoptation.ImgYbounds) && (MapModel[1] == Adoptation.ImgXbounds))
             {
                 ImgShow(PainImg);
-                if (Super1.CurrentHP-50>=0)
+                if (Super1.CurrentHP - 50 >= 0)
                 {
                     Super1.CurrentHP -= 50;
                 }
@@ -1226,7 +1420,7 @@ namespace WpfApp1
                 MapModel[0]++;
                 ReplaceModel(MapModel[0], MapModel[1], 7);
                 ImgGrid(Boulder1, MapModel[0], MapModel[1]);
-                Boulder1.RenderTransform = new RotateTransform(45* MapModel[0], 16, 15);
+                Boulder1.RenderTransform = new RotateTransform(45 * MapModel[0], 16, 15);
             }
             else
             {
@@ -1245,33 +1439,28 @@ namespace WpfApp1
                     ImgShow(PainImg);
                     break;
                 case 104:
-                    ChangeMapToVoid(104);
-                    ChangeMapToVoid(134);
+                    ChangeMapToVoidOrWallX(new Byte[] { 104, 134 }, 0);
                     ImgHide(JailImg1);
                     break;
                 case 105:
-                    ChangeMapToVoid(105);
-                    ChangeMapToVoid(135);
+                    ChangeMapToVoidOrWallX(new Byte[] { 105, 135 }, 0);
                     ImgHideX(new Image[] { JailImg2, JailImg3 });
-                    WidelyUsedAnyTimer(out timer,new EventHandler(BallRoll), new TimeSpan(0,0,0,1));
+                    WidelyUsedAnyTimer(out timer, new EventHandler(BallRoll), new TimeSpan(0, 0, 0, 1));
                     break;
                 case 106:
-                    ChangeMapToVoid(106);
-                    ChangeMapToVoid(136);
+                    ChangeMapToVoidOrWallX(new Byte[] { 106, 136 }, 0);
                     ImgHide(JailImg5);
                     break;
                 case 107:
-                    ChangeMapToVoid(107);
-                    ChangeMapToVoid(137);
+                    ChangeMapToVoidOrWallX(new Byte[] { 107, 137 }, 0);
                     ImgHide(JailImg6);
                     break;
                 case 108:
-                    ChangeMapToVoid(108);
-                    ChangeMapToVoid(138);
+                    ChangeMapToVoidOrWallX(new Byte[] { 108, 138 }, 0);
                     ImgHide(JailImg7);
                     break;
                 case 150:
-                    if (MainLogin != "????")
+                    if (DataBaseMSsql.CurrentLogin != "????")
                     {
                         SaveGame();
                         SEF(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SaveSound.mp3", UriKind.RelativeOrAbsolute));
@@ -1514,7 +1703,7 @@ namespace WpfApp1
                     else
                         Img2.Source = new BitmapImage(new Uri(@"WalkU1.png", UriKind.RelativeOrAbsolute));
 
-                    if ((MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 191) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 150) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 6) || ((MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] >= 104)&&(MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] <= 120)))
+                    if ((MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 191) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 150) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 6) || ((MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] >= 104) && (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] <= 120)))
                     {
                         Adoptation.ImgYbounds -= 1;
                         Img2.SetValue(Grid.RowProperty, Adoptation.ImgYbounds);
@@ -1539,7 +1728,7 @@ namespace WpfApp1
                     }
                     else
                         Img2.Source = new BitmapImage(new Uri(@"person4.png", UriKind.RelativeOrAbsolute));
-                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 191) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 150) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 6) || ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds-1] >= 104) && (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds-1] <= 120)))
+                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 191) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 150) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 6) || ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] >= 104) && (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] <= 120)))
                     {
                         Adoptation.ImgXbounds -= 1;
                         Img2.SetValue(Grid.ColumnProperty, Adoptation.ImgXbounds);
@@ -1591,7 +1780,7 @@ namespace WpfApp1
                     else
                         Img2.Source = new BitmapImage(new Uri(@"person3.png", UriKind.RelativeOrAbsolute));
 
-                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 191) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 150) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 6) || ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds+1] >= 104) && (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds+1] <= 120)))
+                    if ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 191) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 150) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 6) || ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] >= 104) && (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] <= 120)))
                     {
                         Adoptation.ImgXbounds += 1;
                         Img2.SetValue(Grid.ColumnProperty, Adoptation.ImgXbounds);
@@ -1610,7 +1799,7 @@ namespace WpfApp1
                 }
                 if (e.Key == Key.E)
                 {
-                    
+
                     Uri DoorSound1 = new Uri(@"DoorOpened1.mp3", UriKind.RelativeOrAbsolute);
                     Uri ChestSound1 = new Uri(@"ChestOpened1.mp3", UriKind.RelativeOrAbsolute);
                     Uri BossSound1 = new Uri(@"Horror.mp3", UriKind.RelativeOrAbsolute);
@@ -1618,16 +1807,6 @@ namespace WpfApp1
                     Uri[,] EquipmentAll = new Uri[,] { { new Uri(@"GetItemsCustomWeapon1.png", UriKind.RelativeOrAbsolute), new Uri(@"GetItemsArmor1.png", UriKind.RelativeOrAbsolute), new Uri(@"GetItemsCustomPants1.png", UriKind.RelativeOrAbsolute), new Uri(@"GetItemsCustomBoots1.png", UriKind.RelativeOrAbsolute) },
                         {new Uri(@"GetItemsCustomWeapon2.png", UriKind.RelativeOrAbsolute), new Uri(@"GetItemsArmor2.png", UriKind.RelativeOrAbsolute), new Uri(@"GetItemsCustomPants2.png", UriKind.RelativeOrAbsolute), new Uri(@"GetItemsCustomBoots2.png", UriKind.RelativeOrAbsolute) } };
                     Uri SecretEquip = new Uri(@"GetItemsCustomPants4.png", UriKind.RelativeOrAbsolute);
-                    /*ImgShrink(TrgtImg, 475, 475);
-                    Sets.SpecialBattle = 1;
-                    Img2.IsEnabled = false;
-                    Sound1.Stop();
-                    ImgShow(PharaohAppears);
-                    BossAppear1 = new System.Windows.Threading.DispatcherTimer();
-                    BossAppear1.Tick += new EventHandler(PharaohAppear_Time51);
-                    BossAppear1.Interval = new TimeSpan(0, 0, 0, 0, 20);;
-                    BossAppear1.Start();
-                    Dj(BossSound1);*/
                     Byte Interaction = 0;
                     Int32[] LocItem = new Int32[] { 0, 0 };
                     if (Img2.Source.ToString().Contains("person3.png"))
@@ -1770,7 +1949,7 @@ namespace WpfApp1
                             ImgShow(ChestMessage1);
                             ChestMessage1.Source = new BitmapImage(EquipmentAll[CurrentLocation, 2]);
                             ChestImg4.Source = new BitmapImage(uriSourceCH);
-                            if (Super1.PlayerEQ[2]==0)
+                            if (Super1.PlayerEQ[2] == 0)
                                 BAG.Legs = true;
                             BAG.Pants[1] = true;
                             SEF(ChestSound1);
@@ -1804,7 +1983,7 @@ namespace WpfApp1
                                 BAG.Jacket = true;
                             BAG.Armor[1] = true;
                             SEF(ChestSound1);
-                            ImgGrid(ChestMessage1, Convert.ToByte(Convert.ToByte(ChestImg1.GetValue(Grid.RowProperty))-5), Convert.ToByte(Convert.ToByte(ChestImg1.GetValue(Grid.ColumnProperty)) - 3));
+                            ImgGrid(ChestMessage1, Convert.ToByte(Convert.ToByte(ChestImg1.GetValue(Grid.RowProperty)) - 5), Convert.ToByte(Convert.ToByte(ChestImg1.GetValue(Grid.ColumnProperty)) - 3));
                             break;
                         case 209:
                             break;
@@ -1865,10 +2044,9 @@ namespace WpfApp1
                     }
                     else
                     {
-                        ImgHide(Menu1);
-                        ImgShowX(new Image[] { Img2, Img1 });
-                        BtnHideX(new Button[] { Status, Abils, Items0, Equip, Tasks, Info, Settings });
                         MegaHide();
+                        AnyHideX(Menu1, Status, Abils, Items0, Equip, Tasks, Info, Settings);
+                        AnyShowX(Img2, Img1);
                     }
             }
             if (e.Key == Key.Escape)
@@ -1895,127 +2073,91 @@ namespace WpfApp1
             StatsMeaning();
             MenuHpApExp();
         }
-
+        private void FastTextChange(Label[] Labs, in String[] texts)
+        {
+            for (Byte i = 0; i < Labs.Length; i++)
+            {
+                Labs[i].Content = texts[i];
+            }
+        }
         private void HeroStatus()
         {
             StatusCalculate();
-            ImgShowX(new Image[] { Menu1, Img2, Img1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg });
+            AnyShowX(Menu1, Img2, Img1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, HPbar1, APbar1, ExpBar1, Name0, Level0, StatusP, Exp1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, DescribeHeader, Describe1);
+            AnyGridX(new Object[] { HPbar1, APbar1, StatusP, HPtext1, APtext1 }, new Byte[] { 7, 9, 2, 7, 9 }, new Byte[] { 11, 11, 14, 2, 2 });
+            LabGridX(new Label[] { HP1, AP1, Exp1 }, new byte[] { Convert.ToByte(HPbar1.GetValue(Grid.RowProperty)), Convert.ToByte(APbar1.GetValue(Grid.RowProperty)), Convert.ToByte(ExpBar1.GetValue(Grid.RowProperty)) }, new byte[] { Convert.ToByte(Convert.ToInt32(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(HPbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(APbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(ExpBar1.Width) / 32)) });
             RightPanelMenuTurnON();
-            BarShowX(new ProgressBar[] { HPbar1, APbar1, ExpBar1 });
-            LabShowX(new Label[] { Name0, Level0, StatusP, Exp1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD });
             if (!TimerTurnOn.IsChecked.Value)
             {
                 LabShow(TimeRecordText);
             }
-            BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 7, 9 }, new Byte[] { 11, 11 });
-            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 7, 9, Convert.ToByte(HPbar1.GetValue(Grid.RowProperty)), Convert.ToByte(APbar1.GetValue(Grid.RowProperty)), Convert.ToByte(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 2, 2, Convert.ToByte(Convert.ToInt32(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(HPbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(APbar1.Width) / 32)), Convert.ToByte(Convert.ToInt32(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Convert.ToInt32(ExpBar1.Width) / 32)) });
-            Img2.SetValue(Grid.RowProperty, Adoptation.ImgYbounds);
+            PlayerSetLocation(Convert.ToByte(Adoptation.ImgYbounds), Convert.ToByte(Adoptation.ImgXbounds));
             Status.IsEnabled = false;
-            Describe2.Content = "Статус героя";
-            Describe1.Content = "ОЗ имеет тенденцию падать до 0. Враги только этого и добиваются.\nПохоже им уже давно пора задать трёпку.";
-            LabShow(DescribeHeader);
-            LabShow(Describe1);
+            FastTextChange(new Label[] { Describe1, Describe2 }, new String[] { "ОЗ имеет тенденцию падать до 0. Враги только этого и добиваются.\nПохоже им уже давно пора задать трёпку.", "Статус героя" });
         }
 
         private void ImgShowX(in Image[] ImagesArray)
         {
             foreach (Image img in ImagesArray)
-            {
                 ImgShow(img);
-            }
         }
-
         private void LabShowX(in Label[] LabelArray)
         {
             foreach (Label Lab in LabelArray)
-            {
                 LabShow(Lab);
-            }
         }
-
         private void BarShowX(in ProgressBar[] ProgressBarArray)
         {
             foreach (ProgressBar Bar in ProgressBarArray)
-            {
                 BarShow(Bar);
-            }
         }
         private void BtnShowX(in Button[] ButtonArray)
         {
             foreach (Button Btn in ButtonArray)
-            {
                 ButtonShow(Btn);
-            }
         }
-
         private void ImgGridX(in Image[] ImageArray, in Byte[] rows, in Byte[] cols)
         {
             for (Byte i = 0; i < ImageArray.Length; i++)
-            {
                 ImgGrid(ImageArray[i], rows[i], cols[i]);
-            }
         }
         private void LabGridX(in Label[] LabelArray, in Byte[] rows, in Byte[] cols)
         {
             for (Byte i = 0; i < LabelArray.Length; i++)
-            {
                 LabGrid(LabelArray[i], rows[i], cols[i]);
-            }
         }
         private void BarGridX(in ProgressBar[] ProgressBarArray, in Byte[] rows, in Byte[] cols)
         {
             for (Byte i = 0; i < ProgressBarArray.Length; i++)
-            {
                 BarGrid(ProgressBarArray[i], rows[i], cols[i]);
-            }
         }
         private void BtnGridX(in Button[] ButtonArray, in Byte[] rows, in Byte[] cols)
         {
             for (Byte i = 0; i < ButtonArray.Length; i++)
-            {
                 BtnGrid(ButtonArray[i], rows[i], cols[i]);
-            }
         }
         private void LabHideX(Label[] LabelArray)
         {
             foreach (Label Lab in LabelArray)
-            {
                 LabHide(Lab);
-            }
         }
         private void ImgHideX(Image[] ImageArray)
         {
             foreach (Image Img in ImageArray)
-            {
                 ImgHide(Img);
-            }
         }
         private void MegaHide()
         {
-            TxtHideX(new TextBlock[] { InfoText1, InfoText2, InfoText3 });
-            SldHideX(new Slider[] { MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness });
-            ChbHide(TimerTurnOn);
-            LabHideX(new Label[] { DescribeHeader, MusicText, SoundsText, NoiseText, GameSpeedText, BrightnessText, MusicPercent, SoundsPercent, NoisePercent, BrightnessPercent, GameSpeedX, TimeRecordText, HerbsText, Ether2OutText, SleepBagText, ElixirText });
-            Image[] MegaHIDEImg = { Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, Task1Img, Task2Img, Task3Img, Task4Img, MaterialsCraftImg };
-            ProgressBar[] MegaHIDEBar = { HPbar1, APbar1, ExpBar1 };
-            Label[] MegaHIDELab = { Name0, StatusP, Exp1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, AbilsCost, HealCost, CountText, CostText, FightSkills, MiscSkills, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, Level0, AntidoteText, EtherText, BandageText, FusedText, MaterialsCraft };
-            Button[] MegaHIDEButton = { Ether1, Bandage, Antidote, Cure1, Fused, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, Equipments, CancelEq, InfoIndexPlus, InfoIndexMinus, CraftSwitch, CraftAntidote, CraftBandage, CraftFused, CraftEther };
-            foreach (Image Img in MegaHIDEImg) {
-                ImgHide(Img);
-            }
-            foreach (ProgressBar Bar in MegaHIDEBar)
-            {
-                BarHide(Bar);
-            }
-            foreach (Label Lab in MegaHIDELab)
-            {
-                LabHide(Lab);
-            }
-            foreach (Button Btn in MegaHIDEButton)
-            {
-                ButtonHide(Btn);
-            }
-            BtnHideX(new Button[] { Torch1, Whip1, Super0, Heal1, Cure2Out, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1, BuffUp1, ToughenUp1, Regen1, Control1, Herbs1, Ether2Out, SleepBag1, Elixir1, CraftBedbag, CraftElixir, CraftHerbs, CraftPerfboots, CraftEther2 });
+            AnyHideX(InfoText1, InfoText2, InfoText3, MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness, TimerTurnOn, DescribeHeader,
+                MusicText, SoundsText, NoiseText, GameSpeedText, BrightnessText, MusicPercent, SoundsPercent, NoisePercent, BrightnessPercent, GameSpeedX,
+                TimeRecordText, HerbsText, Ether2OutText, SleepBagText, ElixirText, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg,
+                SPImg, Task1Img, Task2Img, Task3Img, Task4Img, MaterialsCraftImg, HPbar1, APbar1, ExpBar1, Name0, StatusP, Exp1, HPtext1, APtext1, HP1, AP1,
+                Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD,
+                AbilsCost, HealCost, CountText, CostText, FightSkills, MiscSkills, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3,
+                InfoIndex, Level0, AntidoteText, EtherText, BandageText, FusedText, MaterialsCraft, Ether1, Bandage, Antidote, Cure1, Fused, Equip1, Equip2,
+                Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, Equipments, CancelEq, InfoIndexPlus, InfoIndexMinus, CraftSwitch, CraftAntidote,
+                CraftBandage, CraftFused, CraftEther, Torch1, Whip1, Super0, Heal1, Cure2Out, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1,
+                BuffUp1, ToughenUp1, Regen1, Control1, Herbs1, Ether2Out, SleepBag1, Elixir1, CraftBedbag, CraftElixir, CraftHerbs, CraftPerfboots, CraftEther2);
         }
 
         public static Byte[] EnemyNamesFight = new Byte[] { 0, 0, 0, 0 };
@@ -2283,16 +2425,11 @@ namespace WpfApp1
             speed = 0;
             Lab2.Foreground = Brushes.Yellow;
 
-            LabShowX(new Label[] { LevelText, Lab2, HP, AP, HPtext, APtext });
-            ImgHideX(new Image[] { Threasure1, Img1, Img2, PharaohAppears, SaveProgress, JailImg1, JailImg2, JailImg3, JailImg4, JailImg5, JailImg6, JailImg7, Boulder1 });
-            ImgShowX(new Image[] { Img3, Img4, Img5, TimeTurnImg });
-            BarShowX(new ProgressBar[] { HPbar, APbar, Time1 });
-            MediaHide(Med2);
+            AnyShowX(LevelText, Lab2, HP, AP, HPtext, APtext, Img3, Img4, Img5, TimeTurnImg, HPbar, APbar, Time1);
+            AnyHideX(Threasure1, Med2, Img1, Img2, PharaohAppears, SaveProgress, JailImg1, JailImg2, JailImg3, JailImg4, JailImg5, JailImg6, JailImg7, Boulder1);
 
-            TablesAllTurnOff1();
-            ChestsAllTurnOff1();
-            KeysAllTurnOff1();
-            LocksAllTurnOff1();
+            Map1ModelsAllTurnOff1();
+            ChestsAndTablesAllTurnOff1();
             if (Sets.SpecialBattle != 200)
                 FightMenuBack();
             ImgGrid(Img6, 23, 2);
@@ -2448,9 +2585,7 @@ namespace WpfApp1
                 HPenemyBar.Maximum = 350;
                 EnemyImg.Source = new BitmapImage(EnemySource[5]);
             }
-            LabShow(HPenemy);
-            BarShow(HPenemyBar);
-            ImgShowX(new Image[] { EnemyImg, TrgtImg });
+            AnyShowX(HPenemy, HPenemyBar, EnemyImg, TrgtImg);
             HPenemyBar.Value = Foe1.EnemyHP[Sets.SelectedTarget];
             HPenemy.Content = HPenemyBar.Value + "/" + HPenemyBar.Maximum;
             RefreshAllHP();
@@ -2458,14 +2593,9 @@ namespace WpfApp1
             UInt16 GameSpeed1 = Convert.ToUInt16(100 / GameSpeed.Value);
             WidelyUsedAnyTimer(out timer9, Target_Time_Tick16, new TimeSpan(0, 0, 0, 0, GameSpeed1));
         }
-
-        private void Med3_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            AfterAction();
-        }
         private void CheckMapIfModelExistsX(in Byte[] Models, in Image[] images)
         {
-            for (Byte i=0;i<Models.Length;i++)
+            for (Byte i = 0; i < Models.Length; i++)
             {
                 if (CheckMapIfModelExists(Models[i]))
                 {
@@ -2509,19 +2639,16 @@ namespace WpfApp1
                 Foe1.EnemyHP[1] = 0;
                 Foe1.EnemyHP[2] = 0;
                 Exp = 0;
-                
+
+                AnyHideX(Img3, Img4, Img5, Img6, Img7, Img8, TimeTurnImg, HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, NextExpBar, Time1, HP, AP, Lab2, HPtext, APtext, LevelText, ExpText, BattleText3, BattleText4, BattleText5, BattleText6);
                 ImgShowX(new Image[] { Img1, Img2, Threasure1, SaveProgress });
-                ImgHideX(new Image[] { Img3, Img4, Img5, Img6, Img7, Img8, TimeTurnImg });
-                BarHideX(new ProgressBar[] { HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, NextExpBar, Time1 });
-                LabHideX(new Label[] { HP, AP, Lab2, HPtext, APtext, LevelText, ExpText, BattleText3, BattleText4, BattleText5, BattleText6 });
                 CheckMapIfModelExistsX(new Byte[] { 104, 105, 105, 106, 107, 108 }, new Image[] { JailImg1, JailImg2, JailImg3, JailImg5, JailImg6, JailImg7 });
-                
+
                 speed = 0;
                 timer2.Stop();
                 Sound1.Stop();
 
-                ChestsAllTurnOn1();
-                TablesAllTurnOn1();
+                ChestsAndTablesAllTurnOn1();
                 if (Sets.TableEN)
                     ImgShow(TableMessage1);
 
@@ -2558,13 +2685,12 @@ namespace WpfApp1
                         APRegenerate.Stop();
                     }
                 }
-                ChestsAllTurnOn1();
-                TablesAllTurnOn1();
+                ChestsAndTablesAllTurnOn1();
                 if (CheckMapIfModelExists(7))
                 {
                     ImgShow(Boulder1);
                 }
-                if (CurrentLocation==1)
+                if (CurrentLocation == 1)
                     ImgShowX(new Image[] { SecretChestImg1, SecretChestImg2, JailImg4 });
                 Sound1.Stop();
                 SEF(new Uri(@"YouWon.mp3", UriKind.RelativeOrAbsolute));
@@ -3124,26 +3250,6 @@ namespace WpfApp1
             WidelyUsedAnyTimer(out timer8, Escape_Time_Tick9, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             Dj(new Uri(@"Escape.mp3", UriKind.RelativeOrAbsolute));
         }
-
-        private void Med4_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            Med4Stop();
-        }
-
-        private void Med4Stop()
-        {
-            Med4.Position = new TimeSpan(0, 0, 0, 0, 0);
-            MediaHide(Med4);
-            if (!Img2.IsEnabled)
-            {
-                if (Super1.PlayerStatus == 0)
-                {
-                    Img5.Source = new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute));
-                }
-                if (Super1.CurrentHP > 0)
-                    ImgShow(Img5);
-            }
-        }
         private void FightMenuBack()
         {
             BtnShowX(new Button[] { Button2, Button3 });
@@ -3172,7 +3278,7 @@ namespace WpfApp1
             ImgHideX(new Image[] { TrgtImg, EnemyImg });
             UInt16 strength = Convert.ToUInt16(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0]);
             Byte PharaohAura = 0;
-            LabHide(BattleText1);
+
             SelectedTrgt = Sets.SelectedTarget;
             UInt16 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
             WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, GameSpeed1));
@@ -3181,10 +3287,8 @@ namespace WpfApp1
             {
                 PharaohAura = 25;
             }
+            AnyHideX(BattleText1, HPenemyBar, HPenemy, Fight, Cancel1);
             LabShow(BattleText1);
-            BarHide(HPenemyBar);
-            LabHide(HPenemy);
-            BtnHideX(new Button[] { Fight, Cancel1 });
 
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
@@ -3279,80 +3383,7 @@ namespace WpfApp1
 
         public static Byte Actions = 0;
 
-        private void SeriousMinigun_Time_Tick39(object sender, EventArgs e)
-        {
-            string[] SSam = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun14.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun15.png" };
-            string[] IcoSS = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png" };
-            ActionsTickCheck(SSam, IcoSS);
-        }
-        private void SeriousSwitch_Time_Tick45(object sender, EventArgs e)
-        {
-            string[] SSam = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch9.png", };
-            string[] IcoSS = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked10.png", };
-            ActionsTickCheck(SSam, IcoSS);
-        }
-        private void HandAttack_Time_Tick8(object sender, EventArgs e)
-        {
-            string[] HndAt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack10.png" };
-            string[] IcoRg = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage10.png" };
-            ActionsTickCheck(HndAt, IcoRg);
-        }
-
-
-        private void Escape_Time_Tick9(object sender, EventArgs e)
-        {
-            string[] Flee = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png" };
-            string[] IcoEs = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png" };
-            ActionsTickCheck(Flee, IcoEs);
-        }
-
-        private void Items_Time_Tick10(object sender, EventArgs e)
-        {
-            string[] ItmUs = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png" };
-            string[] IcoUs = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed10.png" };
-            ActionsTickCheck(ItmUs, IcoUs);
-        }
-
-        private void Cure_Time_Tick11(object sender, EventArgs e)
-        {
-            string[] Cure = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure10.png" };
-            string[] IcoCr = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure10.png" };
-            ActionsTickCheck(Cure, IcoCr);
-        }
-
-        private void Heal_Time_Tick12(object sender, EventArgs e)
-        {
-            string[] Heal = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal10.png" };
-            string[] IcoHl = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon10.png" };
-            ActionsTickCheck(Heal, IcoHl);
-        }
-
-        private void Torch_Time_Tick13(object sender, EventArgs e)
-        {
-            string[] Torch = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch10.png" };
-            string[] IcoTh = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch10.png" };
-            ActionsTickCheck(Torch, IcoTh);
-        }
-        private void Whip_Time_Tick14(object sender, EventArgs e)
-        {
-            string[] Whip = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip10.png" };
-            string[] IcoWp = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon10.png" };
-            ActionsTickCheck(Whip, IcoWp);
-        }
-
-        private void Super_Time_Tick15(object sender, EventArgs e)
-        {
-            string[] Super = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png" };
-            string[] IcoSr = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png" };
-            ActionsTickCheck(Super, IcoSr);
-        }
-
-        private void Target_Time_Tick16(object sender, EventArgs e)
-        {
-            string[] Trgt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png" };
-            UnlimitedActionsTickCheck(Trgt);
-        }
-
+        
         public static UInt16 FoeDamage = 0;
 
         private void DamageFoe_Time_Tick17(object sender, EventArgs e)
@@ -3432,31 +3463,7 @@ namespace WpfApp1
                 Labs[2].Content = Convert.ToUInt16(supersp);
             FoesKicked();
         }
-        private void Bandage_Time_Tick23(object sender, EventArgs e)
-        {
-            CureHealTxt.Content = "+50";
-            CureOrHeal();
-        }
 
-        private void Ether_Time_Tick24(object sender, EventArgs e)
-        {
-            RecoverAPTxt.Content = "+50";
-            RestoreAP();
-        }
-
-        private void Fused_Time_Tick25(object sender, EventArgs e)
-        {
-            CureHealTxt.Content = "+80";
-            RecoverAPTxt.Content = "+80";
-            CureOrHeal();
-            RestoreAP();
-        }
-
-        private void Antidote_Time_Tick26(object sender, EventArgs e)
-        {
-            CureHealTxt.Content = "-Яд";
-            CureOrHeal();
-        }
 
         public static Byte CureCurrent = 0;
         public static Byte RAPCurrent = 0;
@@ -3615,15 +3622,12 @@ namespace WpfApp1
         private void Cancel1_Click(object sender, RoutedEventArgs e)
         {
             timer9.Stop();
-            BtnHideX(new Button[] { Fight, Cancel1 });
+            AnyHideX(Fight, Cancel1, HPenemy, BattleText1, EnemyImg, TrgtImg, HPenemyBar);
             FightMenuBack();
             if (Sets.SpecialBattle == 200)
             {
                 BtnHideX(new Button[] { Button4, Items, Abilities });
             }
-            LabHideX(new Label[] { HPenemy, BattleText1 });
-            ImgHideX(new Image[] { EnemyImg, TrgtImg });
-            BarHide(HPenemyBar);
         }
 
         private void Win_MediaEnded(object sender, RoutedEventArgs e)
@@ -3636,15 +3640,14 @@ namespace WpfApp1
         {
             WonOrDied();
             Uri[] music = new Uri[] { new Uri(@"Main_theme.mp3", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\WaterTemple_theme.mp3", UriKind.RelativeOrAbsolute) };
-            ImgShowX(new Image[] { Threasure1, Img2, SaveProgress });
             CheckMapIfModelExistsX(new Byte[] { 104, 105, 105, 106, 107, 108 }, new Image[] { JailImg1, JailImg2, JailImg3, JailImg5, JailImg6, JailImg7 });
             if (Sets.TableEN)
                 ImgShow(TableMessage1);
             if (CurrentLocation == 0)
                 Map1EnableModels();
-            MediaHide(Win);
+            ImgShowX(new Image[] { Threasure1, Img2, SaveProgress });
+            AnyHideX(Win, Img5);
             Win.Position = new TimeSpan(0, 0, 0, 0, 0);
-            ImgHide(Img5);
             HeyPlaySomething(music[CurrentLocation]);
         }
         private void Map1EnableModels()
@@ -3660,16 +3663,13 @@ namespace WpfApp1
                     ImgShowX(new Image[] { KeyImg2, LockImg2, KeyImg3, LockImg3 });
                     break;
                 case 3:
-                    KeysAllTurnOn1();
-                    LocksAllTurnOn1();
+                    Map1ModelsAllTurnOn1();
                     break;
                 default:
-                    KeysAllTurnOn1();
-                    LocksAllTurnOn1();
+                    Map1ModelsAllTurnOn1();
                     break;
             }
-            ChestsAllTurnOn1();
-            TablesAllTurnOn1();
+            ChestsAndTablesAllTurnOn1();
         }
         private void Sound2_MediaEnded(object sender, RoutedEventArgs e)
         {
@@ -3685,10 +3685,7 @@ namespace WpfApp1
 
         private void HideAfterBattleMenu()
         {
-            LabHideX(new Label[] { NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1 });
-            ImgHideX(new Image[] { AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg });
-            BarHideX(new ProgressBar[] { AfterHPbar, AfterAPbar, NextExpBar, BeforeHPbar, BeforeAPbar, BeforeHPbarOver333, AfterHPbarOver333, BeforeHPbarOver666, AfterHPbarOver666, BeforeAPbarOver333, AfterAPbarOver333, BeforeAPbarOver666, AfterAPbarOver666 });
-            ButtonHide(TextOk1);
+            AnyHideX(NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1, AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg, AfterHPbar, AfterAPbar, NextExpBar, BeforeHPbar, BeforeAPbar, BeforeHPbarOver333, AfterHPbarOver333, BeforeHPbarOver666, AfterHPbarOver666, BeforeAPbarOver333, AfterAPbarOver333, BeforeAPbarOver666, AfterAPbarOver666, TextOk1);
         }
 
         private void TextOk1_Click(object sender, RoutedEventArgs e)
@@ -3697,8 +3694,7 @@ namespace WpfApp1
             if (Sets.SpecialBattle == 0)
             {
                 MediaShow(Win);
-                LabHideX(new Label[] { BattleText1, BattleText2, BattleText3 });
-                ImgHide(Img1);
+                AnyHideX(BattleText1, BattleText2, BattleText3, Img1);
             }
             else
             {
@@ -3713,13 +3709,11 @@ namespace WpfApp1
                         break;
                     case 200:
                         MediaShow(Win);
-                        LabHideX(new Label[] { BattleText1, BattleText2, BattleText3 });
-                        ImgHide(Img1);
+                        AnyHide(Img1);
                         break;
                     default:
                         MediaShow(Win);
-                        LabHideX(new Label[] { BattleText1, BattleText2, BattleText3 });
-                        ImgHide(Img1);
+                        AnyHide(Img1);
                         break;
                 }
             }
@@ -3737,11 +3731,7 @@ namespace WpfApp1
         private void WonOrDied()
         {
             Sound1.Stop();
-            LabHideX(new Label[] { BattleText1, BattleText2, BattleText3, Lab2, HPtext, APtext, LevelText, HP, AP, ATK });
-            BtnHideX(new Button[] { TextOk1, Button2, Button3, Button4, Items, Abilities, textOk2 });
-            BarHideX(new ProgressBar[] { HPbar, APbar, Time1 });
-            ImgHideX(new Image[] { Img3, Img4, Img5, Img6, Img7, Img8, TimeTurnImg });
-
+            AnyHideX(BattleText1, BattleText2, BattleText3, Lab2, HPtext, APtext, LevelText, HP, AP, ATK, TextOk1, Button2, Button3, Button4, Items, Abilities, textOk2, HPbar, APbar, Time1, Img3, Img4, Img5, Img6, Img7, Img8, TimeTurnImg);
         }
         public void TextCh1()
         {
@@ -3753,99 +3743,73 @@ namespace WpfApp1
             LabHide(BattleText2);
         }
 
-        private void Button4_MouseEnter(object sender, MouseEventArgs e)
+        private void FightStaticButtons_MouseLeave(object sender, MouseEventArgs e)
         {
-            EscapeFromBattleImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\EscapeAfterImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Сбежать из боя";
-            TextCh1();
+            Button[] FightMenu = { Cancel1, Cancel2, Back1, Back2 };
+            for (Byte i = 0; i < FightMenu.Length; i++)
+            {
+                if (sender.Equals(FightMenu[i]))
+                {
+                    LabHide(BattleText2);
+                    break;
+                }
+            }
         }
-
-        private void Button4_MouseLeave(object sender, MouseEventArgs e)
+        private void FightDynamicButtons_MouseLeave(object sender, MouseEventArgs e)
         {
-            EscapeFromBattleImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\EscapeBeforeImg.png", UriKind.RelativeOrAbsolute));
-            DisableBattleText();
+            Button[] FightMenu = { Button2, Button3, Button4, Items, Abilities, Fight, ACT1, ACT2, ACT3 };
+            Image[] images = { FightImg, DefenceImg, EscapeFromBattleImg, ItemsImg, AbilitiesImg, SelectTrgt1Img, SelectTrgt2Img, SelectTrgt3Img, SelectTrgt4Img };
+            BitmapImage[] Btim = { new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\FightBeforeImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\DefenceBeforeImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\EscapeBeforeImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ItemsBeforeImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\SkillsBeforeImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectBeforeImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectBeforeImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectBeforeImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectBeforeImg.png", UriKind.RelativeOrAbsolute)) };
+            for (Byte i = 0; i < FightMenu.Length; i++)
+            {
+                if (sender.Equals(FightMenu[i]))
+                {
+                    images[i].Source = Btim[i];
+                    LabHide(BattleText2);
+                    break;
+                }
+            }
         }
-
-        private void Button3_MouseEnter(object sender, MouseEventArgs e)
+        private void FightDynamicButtons_MouseEnter(object sender, MouseEventArgs e)
         {
-            DefenceImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\DefenceAfterImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Встать в стойку (Защита Х2)";
-            TextCh1();
+            Button[] FightMenu = { Button2, Button3, Button4, Items, Abilities, Fight, ACT1, ACT2, ACT3 };
+            Image[] images = { FightImg, DefenceImg, EscapeFromBattleImg, ItemsImg, AbilitiesImg, SelectTrgt1Img, SelectTrgt2Img, SelectTrgt3Img, SelectTrgt4Img };
+            BitmapImage[] Btim = { new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\FightAfterImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\DefenceAfterImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\EscapeAfterImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ItemsAfterImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\SkillsAfterImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectAfterImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectAfterImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectAfterImg.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectAfterImg.png", UriKind.RelativeOrAbsolute)) };
+            String[] text = { "Атаковать выбранного врага", "Встать в стойку (Защита X2)", "Сбежать из боя", "Посмотреть инвентарь", "Особые умения", "Подтвердить цель", "Поджечь выбранного врага", "Ударить врага хлыстом", "Подстрелить врага" };
+            for (Byte i = 0; i < FightMenu.Length; i++)
+            {
+                if (sender.Equals(FightMenu[i]))
+                {
+                    images[i].Source = Btim[i];
+                    BattleText2.Content = text[i];
+                    LabShow(BattleText2);
+                    break;
+                }
+            }
         }
-
-        private void Button3_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DefenceImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\DefenceBeforeImg.png", UriKind.RelativeOrAbsolute));
-            DisableBattleText();
-        }
-
-        private void Button2_MouseEnter(object sender, MouseEventArgs e)
-        {
-            FightImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\FightAfterImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Атаковать выбранного врага";
-            TextCh1();
-        }
-
-        private void Button2_MouseLeave(object sender, MouseEventArgs e)
-        {
-            FightImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\FightBeforeImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Подтвердить выбор";
-            DisableBattleText();
-        }
-
         private void Cancel1_MouseEnter(object sender, MouseEventArgs e)
         {
             BattleText2.Content = "Отменить нападение";
             TextCh1();
         }
-
-        private void Cancel1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void Fight_MouseEnter(object sender, MouseEventArgs e)
-        {
-            SelectTrgt1Img.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectAfterImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Подтвердить выбор";
-            TextCh1();
-        }
-
-        private void Fight_MouseLeave(object sender, MouseEventArgs e)
-        {
-            SelectTrgt1Img.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectBeforeImg.png", UriKind.RelativeOrAbsolute));
-            if (Foe1.EnemyHP[Sets.SelectedTarget] != 0)
-                DisableBattleText();
-        }
-
         private void HideFightIconPersActions()
         {
-            BarHide(HPenemyBar);
-            LabHideX(new Label[] { BattleText4, BattleText5, BattleText6, HPenemy, ItemText });
-            ImgHideX(new Image[] { ItemsCountImg, Img4, Img5, TrgtImg });
-            BtnHideX(new Button[] { Cure, Heal, Torch, Whip, Super, Back1, Button2, Button3, Button4, Items, Abilities, Fight, Cancel1, ACT1, ACT2, Cancel2 });
+            AnyHideX(HPenemyBar, BattleText4, BattleText5, BattleText6, HPenemy, ItemText, ItemsCountImg, Img4, Img5, TrgtImg, Cure, Heal, Torch, Whip, Super, Back1, Button2, Button3, Button4, Items, Abilities, Fight, Cancel1, ACT1, ACT2, Cancel2);
         }
 
         private void GameOver_MediaEnded(object sender, RoutedEventArgs e)
         {
-            MediaHide(GameOver);
-            GameOver.Stop();
+            AnyHideX(Button2, Button3, Button4, Threasure1, GameOver);
+            AnyShowX(Img1, Button1, Lab1);
+            Map1ModelsAllTurnOff1();
+            ChestsAndTablesAllTurnOff1();
+            HideFightIconPersActions();
+            WonOrDied();
             if (timer != null)
                 timer.Stop();
-            WonOrDied();
-            ChestsAllTurnOff1();
-            KeysAllTurnOff1();
-            LocksAllTurnOff1();
-            TablesAllTurnOff1();
-            ImgHide(Threasure1);
-            HideFightIconPersActions();
-            ImgShow(Img1);
-            ButtonShow(Button1);
-            LabShow(Lab1);
             Sound1.Position = new TimeSpan(0, 0, 0, 0, 0);
             Img1.Source = new BitmapImage(new Uri(@"New_game_show.jpg", UriKind.RelativeOrAbsolute));
             HeyPlaySomething(new Uri(@"Begin2.mp3", UriKind.RelativeOrAbsolute));
-            BtnHideX(new Button[] { Button2, Button3, Button4 });
         }
 
         public static Byte[] AbilityBonuses = new Byte[] { 0, 0, 0, 0 };
@@ -3868,15 +3832,16 @@ namespace WpfApp1
 
         private void Back1_MouseLeave(object sender, MouseEventArgs e)
         {
-            DisableBattleText();
+            LabHide(BattleText2);
         }
-
+        private void PersonTextAnimationStart(in EventHandler PersonAction, in EventHandler IconAction, in UInt16 PersonSpeed, in UInt16 IconSpeed)
+        {
+            WidelyUsedAnyTimer(out timer8, PersonAction, new TimeSpan(0, 0, 0, 0, PersonSpeed));
+            WidelyUsedAnyTimer(out timer11, IconAction, new TimeSpan(0, 0, 0, 0, IconSpeed));
+        }
         private void Cure_Click(object sender, RoutedEventArgs e)
         {
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Cure_Time_Tick11, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer11, CureHP_Time_Tick18, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+            PersonTextAnimationStart(Cure_Time_Tick11, CureHP_Time_Tick18, Convert.ToUInt16(25 / GameSpeed.Value), Convert.ToUInt16(75 / GameSpeed.Value));
             Dj(new Uri(@"Cure.mp3", UriKind.RelativeOrAbsolute));
             if (((Super1.Special * 2) + Super1.CurrentHP) >= Super1.MaxHP)
             {
@@ -3894,22 +3859,10 @@ namespace WpfApp1
             Time1.Value = 0;
         }
 
-        private void Cure_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Восстановление ОЗ, [-2 ОД]";
-            TextCh1();
-        }
-
-        private void Cure_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
         private void Abilities_Click(object sender, RoutedEventArgs e)
         {
             CheckAccessAbilities(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control }, new Byte[] { 2, 21, 4, 16, 14, 20, 25 }, new Byte[] { 5, 10, 3, 12, 8, 15, 0 });
-            ButtonShow(SwitchAbils);
-            ButtonShow(Back1);
+            BtnShowX(new Button[] { SwitchAbils, Back1 });
             if (APRegenerate != null)
                 if (APRegenerate.IsEnabled)
                     Control.IsEnabled = false;
@@ -3923,24 +3876,9 @@ namespace WpfApp1
             ToNextImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ToNext.png", UriKind.RelativeOrAbsolute));
             FightMenuMakesDisappear();
         }
-
-        private void Abilities_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilitiesImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\SkillsAfterImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Особые умения";
-            TextCh1();
-        }
-
-        private void Abilities_MouseLeave(object sender, MouseEventArgs e)
-        {
-            AbilitiesImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\SkillsBeforeImg.png", UriKind.RelativeOrAbsolute));
-            DisableBattleText();
-        }
-
         private void LevelUpShow()
         {
-            LabShowX(new Label[] { NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP });
-            ImgShowX(new Image[] { AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg });
+            AnyShowX(NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg);
             if (AfterAPbar.Width < 333)
             {
                 BarShow(AfterAPbar);
@@ -4127,13 +4065,6 @@ namespace WpfApp1
                         NextExpBar.Value = 0;
                         ExpText.Content = "Опыт " + NextExpBar.Value + "/" + NextExpBar.Maximum;
                         AfterLevel.Content = "Уровень " + Super1.CurrentLevel;
-
-                        /*CurrentNextParams[0] = Super1.Attack;
-                        CurrentNextParams[1] = Super1.Defence;
-                        CurrentNextParams[2] = Super1.Speed;
-                        CurrentNextParams[3] = Super1.Special;
-                        CurrentNextHPAP[0] = Super1.MaxHP;
-                        CurrentNextHPAP[1] = Super1.MaxAP;*/
 
                         AddHP.Content = "+" + (Super1.MaxHP - CurrentNextHPAP[0]);
                         AddAP.Content = "+" + (Super1.MaxAP - CurrentNextHPAP[1]);
@@ -4349,17 +4280,13 @@ namespace WpfApp1
             MaterialsOnHand.Content = BAG.Materials;
             MaterialsAdd.Content = "+" + Mat;
             AfterLevel.Content = "Уровень " + Super1.CurrentLevel;
-            LabHideX(new Label[] { BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6 });
+            AnyHideX(HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, textOk2);
+            AnyShowX(ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg, NextExpBar, BeforeHPbar, BeforeAPbar);
             ItemsGetSlot1.Content = "";
 
-            LabShowX(new Label[] { ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1 });
-            ImgShowX(new Image[] { AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg });
-            BarShowX(new ProgressBar[] { NextExpBar, BeforeHPbar, BeforeAPbar });
-            BarHideX(new ProgressBar[] { HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666 });
             WidelyUsedAnyTimer(out timer12, Levelling_Time_Tick40, new TimeSpan(0, 0, 0, 0, 0));
-            WidelyUsedAnyTimer(out timer, AddingMaterials_Time_Tick42, new TimeSpan(0, 0, 0, 0, 5));
+            WidelyUsedAnyTimer(out timer, AddingMaterials_Time_Tick42, new TimeSpan(0, 0, 0, 0, 1));
             RefreshAllHPAP();
-            ButtonHide(textOk2);
             timer2.Stop();
             Byte item = 0;
             if (Sets.ItemsDropRate[0] != 0)
@@ -4448,42 +4375,6 @@ namespace WpfApp1
             }
             WonOrDied();
         }
-
-        private void Torch_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Подожжёт врагов, [-4 ОД]";
-            TextCh1();
-        }
-
-        private void Torch_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void ACT1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            SelectTrgt2Img.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectAfterImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Поджечь выбранного врага";
-            TextCh1();
-        }
-
-        private void ACT1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            SelectTrgt2Img.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectBeforeImg.png", UriKind.RelativeOrAbsolute));
-            DisableBattleText();
-        }
-
-        private void Cancel2_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Обратно к умениям";
-            TextCh1();
-        }
-
-        private void Cancel2_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
         private void Torch_Click(object sender, RoutedEventArgs e)
         {
             SelectTarget();
@@ -4522,10 +4413,7 @@ namespace WpfApp1
         private void Cancel2_Click(object sender, RoutedEventArgs e)
         {
             timer9.Stop();
-            BarHide(HPenemyBar);
-            LabHideX(new Label[] { HPenemy, BattleText1 });
-            ImgHideX(new Image[] { EnemyImg, TrgtImg });
-            BtnHideX(new Button[] { Fight, ACT1, ACT2, ACT3, Cancel2, Cancel1 });
+            AnyHideX(HPenemyBar, HPenemy, BattleText1, EnemyImg, TrgtImg, Fight, ACT1, ACT2, ACT3, Cancel2, Cancel1);
             ButtonShow(Back1);
             InBattleHighSkillsMenu();
         }
@@ -4571,10 +4459,7 @@ namespace WpfApp1
                 else
                     strength = Convert.ToUInt16(strength * 1.5);
             }
-            LabHideX(new Label[] { HPenemy, BattleText1 });
-            BarHide(HPenemyBar);
-            ImgHide(EnemyImg);
-            BtnHideX(new Button[] { Fight, Cancel1, Cancel2 });
+            AnyHideX(HPenemy, BattleText1, HPenemyBar, EnemyImg, Fight, Cancel1, Cancel2);
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
             if (Foe1.EnemyHP[Sets.SelectedTarget] - strength < 0)
@@ -4699,18 +4584,6 @@ namespace WpfApp1
             Time1.Value = 0;
             ACT(0);
         }
-
-        private void Heal_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Восстановление статуса, [-3 ОД]";
-            TextCh1();
-        }
-
-        private void Heal_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
         private void Heal_Click(object sender, RoutedEventArgs e)
         {
             LabShow(BattleText1);
@@ -4727,38 +4600,12 @@ namespace WpfApp1
             WidelyUsedAnyTimer(out timer11, HealPsn_Time_Tick19, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             Dj(new Uri(@"Heal.mp3", UriKind.RelativeOrAbsolute));
         }
-
-        private void Whip_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Дробит кости, [-6 ОД]";
-            TextCh1();
-        }
-
-        private void Whip_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
         private void Whip_Click(object sender, RoutedEventArgs e)
         {
             SelectTarget();
             AbilitiesMakeDisappear1();
             BtnShowX(new Button[] { ACT2, Cancel2 });
         }
-
-        private void ACT2_MouseEnter(object sender, MouseEventArgs e)
-        {
-            SelectTrgt3Img.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectAfterImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Ударить врага хлыстом";
-            TextCh1();
-        }
-
-        private void ACT2_MouseLeave(object sender, MouseEventArgs e)
-        {
-            SelectTrgt3Img.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectBeforeImg.png", UriKind.RelativeOrAbsolute));
-            DisableBattleText();
-        }
-
         private void ACT2_Click(object sender, RoutedEventArgs e)
         {
             Super1.CurrentAP = Convert.ToUInt16(Super1.CurrentAP - 6);
@@ -4774,17 +4621,6 @@ namespace WpfApp1
             Dj(new Uri(@"Whip.mp3", UriKind.RelativeOrAbsolute));
             Time1.Value = 0;
             ACT(1);
-        }
-
-        private void Super_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Кровавая бойня, [-10 ОД]";
-            TextCh1();
-        }
-
-        private void Super_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
         }
         private void SuperCheckFoes(in Byte seltrg)
         {
@@ -4862,10 +4698,7 @@ namespace WpfApp1
         private void AbilitySupers(in UInt16 strength)
         {
             AbilitiesMakeDisappear1();
-            ImgHide(TrgtImg);
-            LabHideX(new Label[] { BattleText1, HPenemy });
-            BtnHideX(new Button[] { Fight, Cancel1, Cancel2 });
-            BarHide(HPenemyBar);
+            AnyHideX(TrgtImg, BattleText1, HPenemy, Fight, Cancel1, Cancel2, HPenemyBar);
             LabShow(BattleText1);
             SelectedTrgt = 4;
             Time1.Value = 0;
@@ -4943,41 +4776,13 @@ namespace WpfApp1
             GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
             WidelyUsedAnyTimer(out timer10, SuperDmg_Time_Tick22, new TimeSpan(0, 0, 0, 0, GameSpeed1));
         }
-
-        private void Items_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ItemsImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ItemsAfterImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Посмотреть инвентарь";
-            TextCh1();
-        }
-
-        private void Items_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ItemsImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ItemsBeforeImg.png", UriKind.RelativeOrAbsolute));
-            DisableBattleText();
-        }
-
         private void Items_Click(object sender, RoutedEventArgs e)
         {
             FightMenuMakesDisappear();
-            ButtonShow(Back2);
-            LabShow(ItemText);
-            ImgShow(ItemsCountImg);
+            AnyShowX(Back2, ItemText, ItemsCountImg);
             CheckAccessItems(new Byte[] { BAG.AntidoteITM, BAG.FusedITM, BAG.BandageITM, BAG.EtherITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM }, new Button[] { Antidote1, Fused1, Bandage1, Ether, Herbs, Ether2, Elixir });
             Dj(new Uri(@"ItemsOpen.mp3", UriKind.RelativeOrAbsolute));
         }
-
-        private void Back2_DragEnter(object sender, DragEventArgs e)
-        {
-            BattleText2.Content = "Обратно к действиям";
-            TextCh1();
-        }
-
-        private void Back2_DragLeave(object sender, DragEventArgs e)
-        {
-            DisableBattleText();
-        }
-
         private void MenuItemsHide1()
         {
             BtnHideX(new Button[] { Antidote1, Fused1, Bandage1, Ether, Herbs, Ether2, Elixir, Back2 });
@@ -4986,147 +4791,8 @@ namespace WpfApp1
         {
             MenuItemsHide1();
             FightMenuBack();
-            LabHide(ItemText);
-            ImgHide(ItemsCountImg);
+            AnyHideX(ItemText, ItemsCountImg);
             Dj(new Uri(@"ItemsClose.mp3", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Antidote1_Click(object sender, RoutedEventArgs e)
-        {
-            LabHide(ItemText);
-            ImgHide(ItemsCountImg);
-            MenuItemsHide1();
-            Super1.PlayerStatus = 0;
-            BAG.AntidoteITM -= 1;
-            Time1.Value = 0;
-
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer11, Antidote_Time_Tick26, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Antidote1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Избавляет от яда";
-            ItemText.Content = "Всего:" + BAG.AntidoteITM;
-            TextCh1();
-        }
-
-        private void Antidote1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ItemText.Content = "";
-            DisableBattleText();
-        }
-
-        private void Fused1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "+80 ОЗ и ОД";
-            ItemText.Content = "Всего:" + BAG.FusedITM;
-            TextCh1();
-        }
-
-        private void Fused1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ItemText.Content = "";
-            DisableBattleText();
-        }
-
-        private void Fused1_Click(object sender, RoutedEventArgs e)
-        {
-            //BattleText5.Content = APbar.Value;
-            //BattleText6.Content = APbar.Maximum;
-            LabHide(ItemText);
-            ImgHide(ItemsCountImg);
-            MenuItemsHide1();
-            if ((Super1.CurrentHP + 80) > Super1.MaxHP)
-                Super1.CurrentHP = Super1.MaxHP;
-            else
-                Super1.CurrentHP += 80;
-
-            if ((Super1.CurrentAP + 80) > Super1.MaxAP)
-                Super1.CurrentAP = Super1.MaxAP;
-            else
-                Super1.CurrentAP += 80;
-            RefreshAllHPAP();
-            //LabShow(BattleText5);
-            //LabShow(BattleText6);
-            CurrentHPcalculate();
-            CurrentAPcalculate();
-            BAG.FusedITM -= 1;
-            Time1.Value = 0;
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer11, Fused_Time_Tick25, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Bandage1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "+50 ОЗ";
-            ItemText.Content = "Всего:" + BAG.BandageITM;
-            TextCh1();
-        }
-
-        private void Bandage1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ItemText.Content = "";
-            DisableBattleText();
-        }
-
-        private void Bandage1_Click(object sender, RoutedEventArgs e)
-        {
-            LabHide(ItemText);
-            ImgHide(ItemsCountImg);
-            MenuItemsHide1();
-            if ((Super1.CurrentHP + 50) > Super1.MaxHP)
-                Super1.CurrentHP = Super1.MaxHP;
-            else
-                Super1.CurrentHP += 50;
-            RefreshAllHP();
-            CurrentHPcalculate();
-            BAG.BandageITM -= 1;
-            Time1.Value = 0;
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer11, Bandage_Time_Tick23, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Ether_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "+50 ОД";
-            ItemText.Content = "Всего:" + BAG.EtherITM;
-            TextCh1();
-        }
-
-        private void Ether_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ItemText.Content = "";
-            DisableBattleText();
-        }
-
-        private void Ether_Click(object sender, RoutedEventArgs e)
-        {
-            LabHide(ItemText);
-            ImgHide(ItemsCountImg);
-            MenuItemsHide1();
-            if ((Super1.CurrentAP + 50) > Super1.MaxAP)
-                Super1.CurrentAP = Super1.MaxAP;
-            else
-                Super1.CurrentAP += 50;
-            RefreshAllAP();
-            CurrentAPcalculate();
-            BAG.EtherITM -= 1;
-            Time1.Value = 0;
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer11, Ether_Time_Tick24, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
         }
         private void ShowEquipAndStats()
         {
@@ -5325,6 +4991,9 @@ namespace WpfApp1
                 if (bag[i] >= 1)
                 {
                     ButtonShow(btn[i]);
+                } else
+                {
+                    ButtonHide(btn[i]);
                 }
             }
         }
@@ -5907,7 +5576,6 @@ namespace WpfApp1
 
         private void Equipments_MouseLeave(object sender, MouseEventArgs e)
         {
-            //Describe1.Content = "";
             LabHideX(new Label[] { AddATK1, AddDEF1 });
         }
 
@@ -5954,27 +5622,6 @@ namespace WpfApp1
             Sound3.Stop();
             Sound3.Position = new TimeSpan(0, 0, 0, 0, 0);
         }
-
-        private void Med3_MediaFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            AfterAction();
-        }
-
-        private void Med4_MediaFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            Med4Stop();
-        }
-
-        private void Med4_MediaOpened(object sender, RoutedEventArgs e)
-        {
-            ImgHide(Img5);
-        }
-
-        private void Med3_MediaOpened(object sender, RoutedEventArgs e)
-        {
-            ImgHide(Img4);
-        }
-
         private void Win_MediaOpened(object sender, RoutedEventArgs e)
         {
             WonOrDied();
@@ -5988,17 +5635,13 @@ namespace WpfApp1
 
         private void Med1_MediaOpened(object sender, RoutedEventArgs e)
         {
-            ButtonHide(Button1);
-            ImgHide(Img1);
-            LabHide(Lab1);
-            ButtonShow(Skip1);
+            AnyHideX(Button1, Img1, Lab1, Skip1);
         }
 
         private void PharaohBattle_MediaFailed(object sender, ExceptionRoutedEventArgs e)
         {
-            Img2.Visibility = Visibility.Hidden;
+            AnyHideX(PharaohBattle, Img2);
             Sound1.Stop();
-            MediaHide(PharaohBattle);
             Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
             MediaShow(Med2);
         }
@@ -6040,66 +5683,32 @@ namespace WpfApp1
                 BtnHideX(new Button[] { Torch, Whip, Thrower, Super, Tornado, Quake, Learn });
                 CheckAccessAbilities(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control }, new Byte[] { 2, 21, 4, 16, 14, 20, 25 }, new Byte[] { 5, 10, 3, 12, 8, 15, 0 });
                 ButtonShow(SwitchAbils);
-                if (AbilityBonuses[0] > 0)
-                    BuffUp.IsEnabled = false;
-                if (AbilityBonuses[1] > 0)
-                    ToughenUp.IsEnabled = false;
+                BuffUp.IsEnabled = AbilityBonuses[0] == 0;
+                ToughenUp.IsEnabled = AbilityBonuses[1] == 0;
                 if (APRegenerate != null)
-                    if (APRegenerate.IsEnabled)
-                        Control.IsEnabled = false;
+                    Control.IsEnabled = !APRegenerate.IsEnabled;
                 if (HPRegenerate != null)
-                    if (HPRegenerate.IsEnabled)
-                        Regen.IsEnabled = false;
+                    Regen.IsEnabled = !HPRegenerate.IsEnabled;
                 ToNextImg.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ToNext.png", UriKind.RelativeOrAbsolute));
             }
         }
-
-        private void Remove1_MouseLeave(object sender, MouseEventArgs e)
+        private void RemoveButtons_MouseEnter(object sender, MouseEventArgs e)
         {
-            LabHide(AddATK1);
+            Byte[] EquipQuality = { Super1.PlayerEQ[0], Super1.PlayerEQ[1], Super1.PlayerEQ[2], Super1.PlayerEQ[3] };
+            Label[] EquipLabels = { AddATK1, AddDEF1, AddDEF1, AddDEF1 };
+            for (Byte i = 0; i < EquipQuality.Length; i++)
+            {
+                EquipLabels[i].Foreground = new SolidColorBrush(Color.FromRgb(199, 15, 15));
+                EquipLabels[i].Content = "-" + EquipQuality[i];
+                LabShow(EquipLabels[i]);
+            }            
         }
-
-        private void Remove1_MouseEnter(object sender, MouseEventArgs e)
+        private void RemoveButtons_MouseLeave(object sender, MouseEventArgs e)
         {
-            AddATK1.Foreground = new SolidColorBrush(Color.FromRgb(199, 15, 15));
-            AddATK1.Content = "-" + Super1.PlayerEQ[0];
-            LabShow(AddATK1);
-        }
-
-        private void Remove2_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AddDEF1);
-        }
-
-        private void Remove2_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(199, 15, 15));
-            AddDEF1.Content = "-" + Super1.PlayerEQ[1];
-            LabShow(AddDEF1);
-        }
-
-        private void Remove3_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AddDEF1);
-        }
-
-        private void Remove3_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(199, 15, 15));
-            AddDEF1.Content = "-" + Super1.PlayerEQ[2];
-            LabShow(AddDEF1);
-        }
-
-        private void Remove4_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AddDEF1);
-        }
-
-        private void Remove4_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AddDEF1.Foreground = new SolidColorBrush(Color.FromRgb(199, 15, 15));
-            AddDEF1.Content = "-" + Super1.PlayerEQ[3];
-            LabShow(AddDEF1);
+            if (sender.Equals(Remove1))
+                LabHide(AddATK1);
+            else
+                LabHide(AddDEF1);
         }
         private void CheckAccessMaterials(in UInt16[] bag, Button[] btn)
         {
@@ -6124,17 +5733,16 @@ namespace WpfApp1
                 }
             }
         }
+        private void FastBtnsDisable(in Boolean Logic, params Button[] buttons) {
+            foreach (Button btn in buttons)
+            {
+                btn.IsEnabled = false;
+            }
+        }
         private void CraftSwitch_Click(object sender, RoutedEventArgs e)
         {
             if (CraftSwitch.Content.ToString() == "Создание") {
-                Bandage.IsEnabled = false;
-                Ether1.IsEnabled = false;
-                Antidote.IsEnabled = false;
-                Fused.IsEnabled = false;
-                Herbs1.IsEnabled = false;
-                Ether2Out.IsEnabled = false;
-                SleepBag1.IsEnabled = false;
-                Elixir1.IsEnabled = false;
+                FastBtnsDisable(false, Bandage, Ether1, Antidote, Fused, Herbs1, Ether2Out, SleepBag1, Elixir1);
                 LabHideX(new Label[] { AntidoteText, BandageText, EtherText, FusedText, HerbsText, Ether2OutText, SleepBagText, ElixirText });
                 CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
                 if (!BAG.ArmBoots[3])
@@ -6147,60 +5755,15 @@ namespace WpfApp1
                 HeroItems();
             }
         }
-
-        private void CraftFused_Click(object sender, RoutedEventArgs e)
+        private void AbilsMenu_Click(object sender, RoutedEventArgs e)
         {
-            BAG.Materials -= 150;
-            BAG.FusedITM++;
-            CountText.Content = "Всего: " + BAG.FusedITM;
-            MaterialsCraft.Content = BAG.Materials;
-            CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-            TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-        }
-
-        private void CraftEther_Click(object sender, RoutedEventArgs e)
-        {
-            BAG.Materials -= 70;
-            BAG.EtherITM++;
-            CountText.Content = "Всего: " + BAG.EtherITM;
-            MaterialsCraft.Content = BAG.Materials;
-            CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-            TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-        }
-
-        private void CraftBandage_Click(object sender, RoutedEventArgs e)
-        {
-            BAG.Materials -= 20;
-            BAG.BandageITM++;
-            CountText.Content = "Всего: " + BAG.BandageITM;
-            MaterialsCraft.Content = BAG.Materials;
-            CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-            TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-        }
-
-        private void CraftAntidote_Click(object sender, RoutedEventArgs e)
-        {
-            BAG.Materials -= 10;
-            BAG.AntidoteITM++;
-            CountText.Content = "Всего: " + BAG.AntidoteITM;
-            MaterialsCraft.Content = BAG.Materials;
-            CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-            TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-        }
-
-        private void Whip1_Click(object sender, RoutedEventArgs e)
-        {
-            Dj(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Whip.mp3", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Super0_Click(object sender, RoutedEventArgs e)
-        {
-            Dj(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Super.mp3", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Torch1_Click(object sender, RoutedEventArgs e)
-        {
-            Dj(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Torch.mp3", UriKind.RelativeOrAbsolute));
+            Button[] abils = new Button[] { Cure1, Cure2Out, Heal1, Torch1, Whip1, Super0 };
+            Uri[] uris = new Uri[] { new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Cure.mp3", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Cure.mp3", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Heal.mp3", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Torch.mp3", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Whip.mp3", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Super.mp3", UriKind.RelativeOrAbsolute) };
+            for (Byte i=0;i< abils.Length; i++)
+            {
+                if (sender.Equals(abils[i]))
+                    Dj(uris[i]);
+            }
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
@@ -6215,18 +5778,14 @@ namespace WpfApp1
         {
             Sound1.Volume = MusicLoud.Value;
             if (MusicPercent != null)
-            {
                 MusicPercent.Content = Convert.ToByte(Sound1.Volume * 100) + "%";
-            }
         }
 
         private void SoundsLoud_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Sound3.Volume = SoundsLoud.Value;
             if (!Button1.IsEnabled)
-            {
                 SEF(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestOpened1.mp3", UriKind.RelativeOrAbsolute));
-            }
             if (SoundsPercent != null)
                 SoundsPercent.Content = Convert.ToByte(Sound3.Volume * 100) + "%";
 
@@ -6235,10 +5794,8 @@ namespace WpfApp1
         private void NoiseLoud_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Sound2.Volume = NoiseLoud.Value;
-            if (!Button1.IsEnabled)
-            {
+            if (!Button1.IsEnabled)            
                 Dj(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BonesDied.mp3", UriKind.RelativeOrAbsolute));
-            }
             if (NoisePercent != null)
                 NoisePercent.Content = Convert.ToByte(Sound2.Volume * 100) + "%";
 
@@ -6247,9 +5804,7 @@ namespace WpfApp1
         private void GameSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (GameSpeedX != null)
-            {
                 GameSpeedX.Content = "x" + Math.Round(GameSpeed.Value, 2);
-            }
         }
 
         private void Brightness_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -6262,134 +5817,24 @@ namespace WpfApp1
         }
         private void HeroSettings()
         {
-            ImgShow(Menu1);
             RightPanelMenuTurnON();
-            LabShowX(new Label[] { MusicText, SoundsText, NoiseText, GameSpeedText, BrightnessText, MusicPercent, SoundsPercent, NoisePercent, BrightnessPercent, GameSpeedX });
-            SldShowX(new Slider[] { MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness });
+            AnyShowX(MusicText, SoundsText, NoiseText, GameSpeedText, BrightnessText, MusicPercent, SoundsPercent, NoisePercent, BrightnessPercent, GameSpeedX, MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness, DescribeHeader, Describe1, Menu1);
             Describe2.Content = "Настройки";
             Describe1.Content = "Настройки помогают определить предпочтения. Помимо стандартного\nизменения громкости и яркости, вы можете регулировать скорость боя";
-            LabShow(DescribeHeader);
-            LabShow(Describe1);
         }
 
         private void TimerTurnOn_Checked(object sender, RoutedEventArgs e)
         {
             TimeRecord.Stop();
         }
-
         private void TimerTurnOn_Unchecked(object sender, RoutedEventArgs e)
         {
             WidelyUsedAnyTimer(out TimeRecord, WorldRecord, new TimeSpan(0, 0, 0, 0, 1));
         }
-
-        private void Cure1_MouseEnter(object sender, MouseEventArgs e)
+        private void AnyEquipments_MouseLeave(object sender, MouseEventArgs e)
         {
-            AbilsCost.Content = "-5";
-            LabShow(AbilsCost);
-        }
-
-        private void Cure1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void Heal1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-3";
-            LabShow(AbilsCost);
-        }
-
-        private void Heal1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void Torch1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-4";
-            LabShow(AbilsCost);
-        }
-
-        private void Torch1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void Whip1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-6";
-            LabShow(AbilsCost);
-        }
-
-        private void Whip1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void Super0_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-10";
-            LabShow(AbilsCost);
-        }
-
-        private void Super0_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-
-        private void Equipments4_Click(object sender, RoutedEventArgs e)
-        {
-            if (Sets.EquipmentClass == 0)
-            {
-                OnEquiped(Equip1, EquipH, "Миниган XM214-A", 0, 165);
-            }
-            if (Sets.EquipmentClass == 1)
-            {
-                OnEquiped(Equip2, EquipB, "Футболка крутого", 1, 85);
-            }
-            if (Sets.EquipmentClass == 2)
-            {
-                OnEquiped(Equip3, EquipL, "Штаны серьёзного", 2, 55);
-            }
-            if (Sets.EquipmentClass == 3)
-            {
-                OnEquiped(Equip4, EquipD, "Военные ботинки", 3, 25);
-            }
-            StatsMeaning();
-            BtnHideX(new Button[] { Equipments, Equipments2, Equipments4, CancelEq });
-            EquipWatch();
-        }
-
-        private void Equipments4_MouseEnter(object sender, MouseEventArgs e)
-        {
-            LabShow(Describe1);
-            if (Sets.EquipmentClass == 0)
-            {
-                EquipCollectInfo("Футболка для настоящих ценителей", AddATK1, "+165");
-            }
-            if (Sets.EquipmentClass == 1)
-            {
-                EquipCollectInfo("Футболка для настоящих ценителей", AddDEF1, "+85");
-            }
-            if (Sets.EquipmentClass == 2)
-            {
-                EquipCollectInfo("Штаны серьёзных намерений", AddDEF1, "+55");
-            }
-            if (Sets.EquipmentClass == 3)
-            {
-                EquipCollectInfo("Прочные сапоги из натуральной дублёной кожи\n", AddDEF1, "+25");
-            }
-        }
-
-
-
-        private void Equipments4_MouseLeave(object sender, MouseEventArgs e)
-        {
-            //Describe1.Content = "";
             LabHideX(new Label[] { AddATK1, AddDEF1 });
         }
-
         private void EquipCollectInfo(string describe, Label Stat, string statrise)
         {
             Describe1.Content = describe;
@@ -6441,9 +5886,7 @@ namespace WpfApp1
         {
             if (AutorizeImg.Source.ToString().Contains("Wanted2.png"))
             {
-                BtnHideX(new Button[] { AddProfile, DeleteProfile });
-                LabHideX(new Label[] { Player1, Player2, Player3, Player4, Player5, Player6 });
-                TBoxHide(AddPlayer);
+                AnyHideX(AddProfile, DeleteProfile, Player1, Player2, Player3, Player4, Player5, Player6, AddPlayer);
                 AutorizeImg.Source = new BitmapImage(new Uri("Wanted.png", UriKind.RelativeOrAbsolute));
             }
             else
@@ -6463,7 +5906,6 @@ namespace WpfApp1
             tbx.Visibility = Visibility.Hidden;
             tbx.IsEnabled = false;
         }
-
         private void AddProfile_Click(object sender, RoutedEventArgs e)
         {
             if ((AddPlayer.Text == "Никем быть нельзя!") || (AddPlayer.Text == "Один уже есть"))
@@ -6472,7 +5914,7 @@ namespace WpfApp1
             }
             if (AddPlayer.Text != "")
             {
-                foreach (string str in Logins)
+                foreach (string str in DataBaseMSsql.PlayerLogins)
                 {
                     if (AddPlayer.Text == str)
                     {
@@ -6497,29 +5939,26 @@ namespace WpfApp1
                     //cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value="CAHEK";
                     cmd.Connection.Open();
                     SqlDataReader sqlDataReader = cmd.ExecuteReader();
-                    Logins = new List<string>();
+                   DataBaseMSsql.PlayerLogins = new List<string>();
                     if (sqlDataReader.HasRows)
                     {
                         while (sqlDataReader.Read())
                         {
-                            Logins.Add(sqlDataReader.GetValue(0).ToString());
+                           DataBaseMSsql.PlayerLogins.Add(sqlDataReader.GetValue(0).ToString());
                         }
                     }
                     cmd.Connection.Close();
-                    if (Logins.Count > 0)
+                    if (DataBaseMSsql.PlayerLogins.Count > 0)
                     {
-                        CurrentPlayer.Content = Logins[0];
+                        CurrentPlayer.Content =DataBaseMSsql.PlayerLogins[0];
                     }
                     else
                     {
                         CurrentPlayer.Content = "????";
                     }
-                    TBoxHide(AddPlayer);
-                    ButtonHide(AddProfile);
+                    AnyHideX(AddPlayer, AddProfile);
                     AddPlayer.Text = "";
                     CheckRecords();
-                    //throw new Exception("Success");
-                    //cmd.Parameters.Add("@...", SqlDbType.VarChar).Value=Name.Text;
                 }
                 catch (Exception ex)
                 {
@@ -6546,11 +5985,11 @@ namespace WpfApp1
             Label[] Profiles = new Label[] { Player1, Player2, Player3, Player4, Player5, Player6 };
             Byte[] RowGrid = new Byte[] { 3, 5, 7, 9, 11, 13 };
             Byte rem = 0;
-            if (Logins.Count < 6)
+            if (DataBaseMSsql.PlayerLogins.Count < 6)
             {
-                for (Byte i = 0; i < Logins.Count; i++)
+                for (Byte i = 0; i <DataBaseMSsql.PlayerLogins.Count; i++)
                 {
-                    Profiles[i].Content = Logins[i];
+                    Profiles[i].Content =DataBaseMSsql.PlayerLogins[i];
                     LabShow(Profiles[i]);
                     BtnGrid(AddProfile, RowGrid[i], 0);
                     rem++;
@@ -6558,14 +5997,13 @@ namespace WpfApp1
                 Grid.SetRow(AddPlayer, RowGrid[rem]);
                 Grid.SetRow(AddProfile, RowGrid[rem]);
                 rem = 0;
-                ButtonShow(AddProfile);
-                TBoxShow(AddPlayer);
+                AnyShowX(AddProfile, AddPlayer);
             }
             else
             {
-                for (Byte i = 0; i < Logins.Count; i++)
+                for (Byte i = 0; i <DataBaseMSsql.PlayerLogins.Count; i++)
                 {
-                    Profiles[i].Content = Logins[i];
+                    Profiles[i].Content =DataBaseMSsql.PlayerLogins[i];
                     LabShow(Profiles[i]);
                 }
             }
@@ -6573,17 +6011,16 @@ namespace WpfApp1
 
         private void Player1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //Byte[] RowGrid = new Byte[] { 5, 7, 9, 11, 13 };
-            MainLogin = Logins[0];
-            CurrentPlayer.Content = MainLogin;
+            DataBaseMSsql.CurrentLogin =DataBaseMSsql.PlayerLogins[0];
+            CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 3, 0);
             ButtonShow(DeleteProfile);
             SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (MainLogin != "????")
+            if (DataBaseMSsql.CurrentLogin != "????")
             {
                 SqlCommand cmd = new SqlCommand("CheckPlayer", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Connection.Open();
                 SqlDataReader sqlDataReader = cmd.ExecuteReader();
                 string slct = "";
@@ -6604,16 +6041,16 @@ namespace WpfApp1
 
         private void Player2_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MainLogin = Logins[1];
-            CurrentPlayer.Content = MainLogin;
+            DataBaseMSsql.CurrentLogin =DataBaseMSsql.PlayerLogins[1];
+            CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 5, 0);
             ButtonShow(DeleteProfile);
             SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (MainLogin != "????")
+            if (DataBaseMSsql.CurrentLogin != "????")
             {
                 SqlCommand cmd = new SqlCommand("CheckPlayer", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Connection.Open();
                 SqlDataReader sqlDataReader = cmd.ExecuteReader();
                 string slct = "";
@@ -6634,16 +6071,16 @@ namespace WpfApp1
 
         private void Player3_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MainLogin = Logins[2];
-            CurrentPlayer.Content = MainLogin;
+            DataBaseMSsql.CurrentLogin =DataBaseMSsql.PlayerLogins[2];
+            CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 7, 0);
             ButtonShow(DeleteProfile);
             SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (MainLogin != "????")
+            if (DataBaseMSsql.CurrentLogin != "????")
             {
                 SqlCommand cmd = new SqlCommand("CheckPlayer", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Connection.Open();
                 SqlDataReader sqlDataReader = cmd.ExecuteReader();
                 string slct = "";
@@ -6664,16 +6101,16 @@ namespace WpfApp1
 
         private void Player4_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MainLogin = Logins[3];
-            CurrentPlayer.Content = MainLogin;
+            DataBaseMSsql.CurrentLogin =DataBaseMSsql.PlayerLogins[3];
+            CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 9, 0);
             ButtonShow(DeleteProfile);
             SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (MainLogin != "????")
+            if (DataBaseMSsql.CurrentLogin != "????")
             {
                 SqlCommand cmd = new SqlCommand("CheckPlayer", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Connection.Open();
                 SqlDataReader sqlDataReader = cmd.ExecuteReader();
                 string slct = "";
@@ -6694,16 +6131,16 @@ namespace WpfApp1
 
         private void Player5_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MainLogin = Logins[4];
-            CurrentPlayer.Content = MainLogin;
+            DataBaseMSsql.CurrentLogin =DataBaseMSsql.PlayerLogins[4];
+            CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 11, 0);
             ButtonShow(DeleteProfile);
             SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (MainLogin != "????")
+            if (DataBaseMSsql.CurrentLogin != "????")
             {
                 SqlCommand cmd = new SqlCommand("CheckPlayer", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Connection.Open();
                 SqlDataReader sqlDataReader = cmd.ExecuteReader();
                 string slct = "";
@@ -6724,16 +6161,16 @@ namespace WpfApp1
 
         private void Player6_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MainLogin = Logins[5];
-            CurrentPlayer.Content = MainLogin;
+            DataBaseMSsql.CurrentLogin =DataBaseMSsql.PlayerLogins[5];
+            CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 13, 0);
             ButtonShow(DeleteProfile);
             SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (MainLogin != "????")
+            if (DataBaseMSsql.CurrentLogin != "????")
             {
                 SqlCommand cmd = new SqlCommand("CheckPlayer", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Connection.Open();
                 SqlDataReader sqlDataReader = cmd.ExecuteReader();
                 string slct = "";
@@ -6769,22 +6206,22 @@ namespace WpfApp1
 
             SqlCommand cmd = new SqlCommand("DeleteProfile", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
-            for (Byte i = 0; i < Logins.Count; i++) {
-                if (Logins[i] == MainLogin)
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
+            for (Byte i = 0; i <DataBaseMSsql.PlayerLogins.Count; i++) {
+                if (DataBaseMSsql.PlayerLogins[i] == DataBaseMSsql.CurrentLogin)
                 {
-                    Logins.RemoveAt(i);
+                   DataBaseMSsql.PlayerLogins.RemoveAt(i);
                 }
             }
-            if (Logins.Count > 0)
+            if (DataBaseMSsql.PlayerLogins.Count > 0)
             {
-                MainLogin = Logins[0];
+                DataBaseMSsql.CurrentLogin =DataBaseMSsql.PlayerLogins[0];
             }
             else
             {
-                MainLogin = "????";
+                DataBaseMSsql.CurrentLogin = "????";
             }
-            CurrentPlayer.Content = MainLogin;
+            CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             LabHideX(new Label[] { Player1, Player2, Player3, Player4, Player5, Player6 });
             CheckRecords();
             cmd.Connection.Open();
@@ -6816,7 +6253,7 @@ namespace WpfApp1
 
                 SqlCommand cmd = new SqlCommand("GetNewItemsBag", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Parameters.Add("@BAN", SqlDbType.TinyInt).Value = BAG.BandageITM;
                 cmd.Parameters.Add("@ETR", SqlDbType.TinyInt).Value = BAG.EtherITM;
                 cmd.Parameters.Add("@ANT", SqlDbType.TinyInt).Value = BAG.AntidoteITM;
@@ -6833,7 +6270,7 @@ namespace WpfApp1
 
                 cmd = new SqlCommand("GetNewSettings", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Parameters.Add("@MUS", SqlDbType.TinyInt).Value = Convert.ToByte(MusicLoud.Value * 100);
                 cmd.Parameters.Add("@SND", SqlDbType.TinyInt).Value = Convert.ToByte(SoundsLoud.Value * 100);
                 cmd.Parameters.Add("@NS", SqlDbType.TinyInt).Value = Convert.ToByte(NoiseLoud.Value * 100);
@@ -6850,7 +6287,7 @@ namespace WpfApp1
 
                 cmd = new SqlCommand("GetNewEquip", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Parameters.Add("@WPN", SqlDbType.TinyInt).Value = Super1.PlayerEQ[0];
                 cmd.Parameters.Add("@ARR", SqlDbType.TinyInt).Value = Super1.PlayerEQ[1];
                 cmd.Parameters.Add("@PNT", SqlDbType.TinyInt).Value = Super1.PlayerEQ[2];
@@ -6867,7 +6304,7 @@ namespace WpfApp1
 
                 cmd = new SqlCommand("GetNewParams", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
                 cmd.Parameters.Add("@LV", SqlDbType.TinyInt).Value = Super1.CurrentLevel;
                 cmd.Parameters.Add("@LC", SqlDbType.TinyInt).Value = Sets.MenuTask;
                 cmd.Parameters.Add("@HP", SqlDbType.SmallInt).Value = Super1.CurrentHP;
@@ -6909,7 +6346,6 @@ namespace WpfApp1
                     Cipher -= CipherValues[i - 1];
                     Decipher[i - 1] = true;
                 }
-                //Lab1.Content = i.ToString();
             }
             return Decipher;
         }
@@ -6928,7 +6364,7 @@ namespace WpfApp1
 
             SqlCommand cmd = new SqlCommand("CheckBAG", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
             cmd.Connection.Open();
             SqlDataReader sqlDataReader = cmd.ExecuteReader();
             if (sqlDataReader.HasRows)
@@ -6950,7 +6386,7 @@ namespace WpfApp1
             cmd.Connection.Close();
             cmd = new SqlCommand("CheckEquip", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
             cmd.Connection.Open();
 
             Byte[] Ciphers = { 0, 0, 0, 0 };
@@ -6988,7 +6424,7 @@ namespace WpfApp1
 
             cmd = new SqlCommand("CheckPlayer", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
             cmd.Connection.Open();
             sqlDataReader = cmd.ExecuteReader();
             if (sqlDataReader.HasRows)
@@ -7014,7 +6450,7 @@ namespace WpfApp1
             cmd.Connection.Close();
             cmd = new SqlCommand("CheckParams", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
             cmd.Connection.Open();
             sqlDataReader = cmd.ExecuteReader();
             if (sqlDataReader.HasRows)
@@ -7034,14 +6470,13 @@ namespace WpfApp1
             cmd.Connection.Close();
             cmd = new SqlCommand("CheckSettings", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = MainLogin;
+            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
             cmd.Connection.Open();
             sqlDataReader = cmd.ExecuteReader();
             if (sqlDataReader.HasRows)
             {
                 while (sqlDataReader.Read())
                 {
-                    //Lab1.Content = Convert.ToDouble(sqlDataReader.GetValue(6))/100;
                     MusicLoud.Value = Convert.ToDouble(sqlDataReader.GetValue(2)) / 100;
                     SoundsLoud.Value = Convert.ToDouble(sqlDataReader.GetValue(3)) / 100;
                     NoiseLoud.Value = Convert.ToDouble(sqlDataReader.GetValue(4)) / 100;
@@ -7061,56 +6496,43 @@ namespace WpfApp1
             switch (Loc)
             {
                 case 0:
-                    TablesAllTurnOn1();
-                    ChestsAllTurnOn1();
+                    ChestsAndTablesAllTurnOn1();
                     switch (Sets.MenuTask)
                     {
                         case 0:
-                            KeysAllTurnOn1();
-                            LocksAllTurnOn1();
+                            Map1ModelsAllTurnOn1();
                             break;
                         case 1:
                             ImgShowX(new Image[] { KeyImg3, LockImg3, KeyImg2, LockImg2 });
-                            ChangeMapToVoid(101);
-                            ChangeMapToVoid(131);
+                            ChangeMapToVoidOrWallX(new Byte[] { 101, 131 }, 0);
                             Sets.EnemyRate++;
                             break;
                         case 2:
                             ImgShowX(new Image[] { KeyImg3, LockImg3 });
-                            ChangeMapToVoid(101);
-                            ChangeMapToVoid(102);
-                            ChangeMapToVoid(131);
-                            ChangeMapToVoid(132);
+                            ChangeMapToVoidOrWallX(new Byte[] { 101, 131, 102, 132 }, 0);
                             Sets.EnemyRate += 2;
                             break;
                         case 3:
-                            ChangeMapToVoid(101);
-                            ChangeMapToVoid(102);
-                            ChangeMapToVoid(103);
-                            ChangeMapToVoid(131);
-                            ChangeMapToVoid(132);
-                            ChangeMapToVoid(133);
+                            ChangeMapToVoidOrWallX(new Byte[] { 101, 131, 102, 132, 103, 133 }, 0);
                             Sets.EnemyRate += 3;
                             break;
                     }
-                    ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4 }, new Byte[] { 27, 24, 7, 9 }, new Byte[] { 19, 11, 21, 20 });
-                    ImgGridX(new Image[] { Table1, Table2, Table3 }, new Byte[] { 33, 25, 10 }, new Byte[] { 18, 13, 38 });
-                    ImgGridX(new Image[] { Threasure1, SaveProgress }, new Byte[] { 4, 17 }, new Byte[] { 36, 29 });
-                    Adoptation.ImgXbounds = 29;
-                    Adoptation.ImgYbounds = 17;
-                    ImgGrid(Img2, 17, 29);
+                    ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress }, new Byte[] { 27, 24, 7, 9, 33, 25, 10, 4, 17 }, new Byte[] { 19, 11, 21, 20, 18, 13, 38, 36, 29 });
+                    PlayerSetLocation(17, 29);
                     Sets.LockIndex = Convert.ToByte(3 - Sets.MenuTask);
                     break;
                 case 1:
-                    ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4 }, new Byte[] { 9, 21, 10, 8 }, new Byte[] { 8, 10, 24, 35 });
-                    ImgGridX(new Image[] { Table1, Table2, Table3 }, new Byte[] { 29, 22, 22 }, new Byte[] { 49, 23, 2 });
-                    ImgGridX(new Image[] { Threasure1, SaveProgress }, new Byte[] { 16, 28 }, new Byte[] { 4, 20 });
-                    ImgShowX(new Image[] { SecretChestImg1, SecretChestImg2, JailImg4 });
-                    Adoptation.ImgXbounds = 51;
-                    Adoptation.ImgYbounds = 34;
-                    ImgGrid(Img2, 34, 51);
+                    AnyGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress }, new Byte[] { 9, 21, 10, 8, 29, 22, 22, 16, 28 }, new Byte[] { 8, 10, 24, 35, 49, 23, 2, 4, 20 });
+                    AnyShowX(SecretChestImg1, SecretChestImg2, JailImg4);
+                    PlayerSetLocation(34, 51);
                     break;
             }
+        }
+        private void PlayerSetLocation(in Byte row, in Byte column)
+        {
+            Adoptation.ImgYbounds = row;
+            Adoptation.ImgXbounds = column;
+            AnyGrid(Img2, row, column);
         }
         private void ContinueQuest()
         {
@@ -7171,16 +6593,13 @@ namespace WpfApp1
             Img1.Source = location[CurrentLocation];
             HeyPlaySomething(music[CurrentLocation]);
             Threasure1.Source = threasures[CurrentLocation];
-            ChestsAllTurnOn1();
-            TablesAllTurnOn1();
+            ChestsAndTablesAllTurnOn1();
             ImgShowX(new Image[] { Img1, Threasure1, Img2, SaveProgress });
             ContinueCheckPoints();
         }
         private void ContinueCheckPoints()
         {
-            BtnHideX(new Button[] { Continue, DeleteProfile, AddProfile, Button1 });
-            LabHideX(new Label[] { Lab1, CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6 });
-            ImgHide(AutorizeImg);
+            AnyHideX(Lab1, CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6, Continue, DeleteProfile, AddProfile, Button1, AutorizeImg);
             TBoxHide(AddPlayer);
             MaxAndWidthHPcalculate();
             MaxAndWidthAPcalculate();
@@ -7331,6 +6750,16 @@ namespace WpfApp1
                 }
             }
         }
+        private void ChangeMapToVoidOrWallX(in Byte[] Conditions, in Byte Model)
+        {
+            foreach (Byte Condition in Conditions)
+            {
+                if (Model==0)
+                    ChangeMapToVoid(Condition);
+                else
+                    ChangeMapToWall(Condition);
+            }
+        }
         private void ChangeMapToWall(in Byte Condition)
         {
             for (Byte i = 0; i < MapScheme.GetLength(0); i++)
@@ -7344,95 +6773,10 @@ namespace WpfApp1
                 }
             }
         }
-
-        private void Control1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "0";
-            LabShow(AbilsCost);
-        }
-
-        private void Control1_MouseLeave(object sender, MouseEventArgs e)
+        private void AbilsMenu_MouseLeave(object sender, MouseEventArgs e)
         {
             LabHide(AbilsCost);
         }
-
-        private void ToughenUp1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-8";
-            LabShow(AbilsCost);
-        }
-
-        private void ToughenUp1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void BuffUp1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-12";
-            LabShow(AbilsCost);
-        }
-
-        private void BuffUp1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void Regen1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-15";
-            LabShow(AbilsCost);
-        }
-
-        private void Regen1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void Learn1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-2";
-            LabShow(AbilsCost);
-        }
-
-        private void Learn1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void Quake1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-30";
-            LabShow(AbilsCost);
-        }
-
-        private void Quake1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void Tornado1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-20";
-            LabShow(AbilsCost);
-        }
-
-        private void Tornado1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
-        private void Thrower1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-15";
-            LabShow(AbilsCost);
-        }
-
-        private void Thrower1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(AbilsCost);
-        }
-
         private void Cure2_Click(object sender, RoutedEventArgs e)
         {
             Super1.CurrentHP = Super1.MaxHP;
@@ -7504,12 +6848,7 @@ namespace WpfApp1
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
         }
-        private void Toughen_Time_Tick31(object sender, EventArgs e)
-        {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp10.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon10.png" };
-            ActionsTickCheck(Pers, Icon);
-        }
+        
 
         private void Regen_Click(object sender, RoutedEventArgs e)
         {
@@ -7525,37 +6864,7 @@ namespace WpfApp1
             Time1.Value = 0;
         }
 
-        private void Regen_Time_Tick32(object sender, EventArgs e)
-        {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen10.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon10.png" };
-            ActionsTickCheck(Pers, Icon);
-        }
-
-        private void RegenHP_Time_Tick33(object sender, EventArgs e)
-        {
-            if (Super1.CurrentHP < Super1.MaxHP)
-            {
-                Super1.CurrentHP++;
-                CurrentHPcalculate();
-                RefreshAllHP();
-            }
-        }
-        private void ControlAP_Time_Tick34(object sender, EventArgs e)
-        {
-            if (Super1.CurrentAP < Super1.MaxAP)
-            {
-                Super1.CurrentAP++;
-                CurrentAPcalculate();
-                RefreshAllAP();
-            }
-        }
-        private void Control_Time_Tick35(object sender, EventArgs e)
-        {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control10.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon10.png" };
-            ActionsTickCheck(Pers, Icon);
-        }
+        
         private void Control_Click(object sender, RoutedEventArgs e)
         {
             UInt16 GameSpeed1 = Convert.ToUInt16(25/ GameSpeed.Value);
@@ -7589,10 +6898,422 @@ namespace WpfApp1
             Time1.Value = 0;
             ACT(1);
         }
-        private void Thrower_Time_Tick37(object sender, EventArgs e)
+        
+        private void Tornado_Click(object sender, RoutedEventArgs e)
         {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon10.png" };
+            Super1.CurrentAP = Convert.ToUInt16(Super1.CurrentAP - 20);
+            RefreshAllAP();
+            CurrentAPcalculate();
+            UInt16 strength = Convert.ToUInt16(Super1.Special*3);
+            Dj(new Uri(@"Super.mp3", UriKind.RelativeOrAbsolute));
+            AbilitySupers(strength);
+            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
+            WidelyUsedAnyTimer(out timer8, Tornado_Time_Tick38, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+            GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
+            WidelyUsedAnyTimer(out timer10, TornadoDmg_Time_Tick39, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+        }
+        
+
+        private void Quake_Click(object sender, RoutedEventArgs e)
+        {
+            Super1.CurrentAP = Convert.ToUInt16(Super1.CurrentAP - 30);
+            RefreshAllAP();
+            CurrentAPcalculate();
+            UInt16 strength = Convert.ToUInt16(Super1.Special * 4);
+            Dj(new Uri(@"Super.mp3", UriKind.RelativeOrAbsolute));
+            AbilitySupers(strength);
+            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
+            WidelyUsedAnyTimer(out timer8, Quake_Time_Tick43, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+            GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
+            WidelyUsedAnyTimer(out timer10, QuakeDmg_Time_Tick44, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+        }
+
+        
+        private void AbilitiesInFight_MouseLeave(object sender, MouseEventArgs e)
+        {
+            LabHide(BattleText2);
+        }
+        private void AbilitiesInFight_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Button[] buttons = { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake, Learn };
+            String[] ondescr = { "Восстановление ОЗ, [-2 ОД]", "ОЗ 100% мгновенно, [-10 ОД]", "Лечение статуса, [-3 ОД]", "Повышает атаку, [-12 ОД]", "Повышает защиту, [-8 ОД]", "Постепенно ОЗ+, [-15 ОД]", "Постепенно ОД+, [0 ОД]",
+                                 "Поджигает врагов, [-4 ОД]", "Дробит кости, [-6 ОД]", "Подстрелить врага, [-15 ОД]", "Кровавая бойня, [-10 ОД]", "Порезы ветром, [-20 ОД]", "Обвал грудой камней, [-30 ОД]", "Изучить противника, [-2 ОД]" };
+            for (Byte i=0;i<buttons.Length;i++)
+            {
+                if (sender.Equals(buttons[i]))
+                {
+                    BattleText2.Content = ondescr[i];
+                }
+            }
+            LabShow(BattleText2);
+        }
+        private void AbilitiesOutFight_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Button[] buttons = { Cure1, Cure2Out, Heal1, BuffUp1, ToughenUp1, Regen1, Control1, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1 };
+            String[] ondescr = { "-2", "-10", "-3", "-12", "-8", "-15", "0", "-4", "-6", "-15", "-10", "-20", "-30", "-2" };
+            for (Byte i = 0; i < buttons.Length; i++)
+            {
+                if (sender.Equals(buttons[i]))
+                    AbilsCost.Content = ondescr[i];
+            }
+            LabShow(AbilsCost);
+        }
+        private void ItemsOutMenu_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Button[] buttons = { Bandage, Ether1, Antidote, Fused, Herbs1, Ether2Out, SleepBag1, Elixir1 };
+            Button[] buttons2 = { CraftBandage, CraftEther, CraftAntidote, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir };
+            Byte[] counts = { BAG.BandageITM, BAG.EtherITM, BAG.AntidoteITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM };
+            for (Byte i = 0; i < buttons.Length; i++)
+            {
+                if (sender.Equals(buttons[i]) || sender.Equals(buttons2[i]))
+                    CountText.Content = "Всего: " + counts[i];
+            }
+            LabShow(CountText);
+        }
+        private void ItemsOutMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Button[] Items = { Bandage, Ether1, Fused, Herbs1, Ether2Out, Elixir1, SleepBag1 };
+            Byte[] Counts = { BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM, BAG.SleepBagITM };
+            UInt16[] HpFill = { Convert.ToUInt16((Super1.CurrentHP + 50) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 50)), Super1.CurrentHP, Convert.ToUInt16((Super1.CurrentHP + 80) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 80)), Convert.ToUInt16((Super1.CurrentHP + 350) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 350)), Super1.CurrentHP, Super1.MaxHP, Super1.MaxHP };
+            UInt16[] ApFill = { Super1.CurrentAP, Convert.ToUInt16((Super1.CurrentAP + 50) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 50)), Convert.ToUInt16((Super1.CurrentAP + 80) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 80)), Super1.CurrentAP, Convert.ToUInt16((Super1.CurrentAP + 300) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 300)), Super1.MaxAP, Super1.MaxAP };
+            AnyHideX(ItemText, ItemsCountImg);
+            if (sender.Equals(Antidote))
+            {
+                BAG.AntidoteITM--;
+                Super1.PlayerStatus = 0;
+                if (BAG.AntidoteITM <= 0)
+                    ButtonHide(Antidote);
+            }
+            else
+                for (Byte i = 0; i < Items.Length; i++)
+                {
+                    if (sender.Equals(Items[i]))
+                    {
+                        Counts[i]--;
+                        Super1.CurrentHP = HpFill[i];
+                        Super1.CurrentAP = ApFill[i];
+                        RefreshAllHPAP();
+                        MenuHpApExp();
+                        Time1.Value = 0;
+                        CheckAccessItems(Counts, Items);
+                        break;
+                    }
+                }
+            BAG.ItemsSet(Counts[0], BAG.AntidoteITM, Counts[1], Counts[2], Counts[3], Counts[6], Counts[4], Counts[5]);
+            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
+        }
+        private void CraftItems_Click(object sender, RoutedEventArgs e)
+        {
+            Button[] cbuttons = new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir };
+            Byte[] ItemsCount = { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM };
+            UInt16[] MatCosts = new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 };
+            for (Byte i=0;i<cbuttons.Length;i++)
+            {
+                if (sender.Equals(cbuttons[i]))
+                {
+                    BAG.Materials -= MatCosts[i];
+                    ItemsCount[i]++;
+                    CountText.Content = "Всего: " + ItemsCount[i];
+                    MaterialsCraft.Content = BAG.Materials;
+                }
+            }
+            BAG.ItemsSet(ItemsCount[1], ItemsCount[0], ItemsCount[2], ItemsCount[3], ItemsCount[4], ItemsCount[6], ItemsCount[5], ItemsCount[7]);
+            CheckAccessMaterials(MatCosts, cbuttons);
+            TooManyItems(ItemsCount, cbuttons);
+        }
+        private void CraftPerfboots_Click(object sender, RoutedEventArgs e)
+        {
+            BAG.Materials -= 30000;
+            BAG.ArmBoots[3] = true;
+            MaterialsCraft.Content = BAG.Materials;
+            ButtonHide(CraftPerfboots);
+            if (Super1.PlayerEQ[3] == 0)
+                BAG.Boots = true;
+        }
+
+        private void CraftPerfboots_MouseEnter(object sender, MouseEventArgs e)
+        {
+            CountText.Content = "Что это?";
+            LabShow(CountText);
+        }
+        private void ItemsInFight_Click(object sender, RoutedEventArgs e)
+        {
+            Button[] Items = { Bandage1, Ether, Fused1, Herbs, Ether2, Elixir};
+            Byte[] Counts = { BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM };
+            UInt16[] HpFill = { Convert.ToUInt16((Super1.CurrentHP + 50) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 50)), Super1.CurrentHP, Convert.ToUInt16((Super1.CurrentHP + 80) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 80)), Convert.ToUInt16((Super1.CurrentHP + 350) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 350)), Super1.CurrentHP, Super1.MaxHP };
+            UInt16[] ApFill = {  Super1.CurrentAP, Convert.ToUInt16((Super1.CurrentAP + 50) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 50)), Convert.ToUInt16((Super1.CurrentAP + 80) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 80)), Super1.CurrentAP, Convert.ToUInt16((Super1.CurrentAP + 300) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 300)), Super1.MaxAP };
+            EventHandler[] Animate = { Bandage_Time_Tick23, Ether_Time_Tick24, Fused_Time_Tick25, HerbsHP_Time_Tick46, Ether2AP_Time_Tick47, ElixirHPAP_Time_Tick48 };
+            AnyHideX(ItemText, ItemsCountImg);
+            MenuItemsHide1();
+            if (sender.Equals(Antidote))
+            {
+                BAG.AntidoteITM--;
+                Super1.PlayerStatus = 0;
+                PersonTextAnimationStart(Items_Time_Tick10, Antidote_Time_Tick26, Convert.ToUInt16(25 / GameSpeed.Value), Convert.ToUInt16(75 / GameSpeed.Value));
+            }
+            else
+                for (Byte i=0;i<Items.Length;i++)
+                {
+                    if (sender.Equals(Items[i]))
+                    {
+                        Counts[i]--;
+                        Super1.CurrentHP = HpFill[i];
+                        Super1.CurrentAP = ApFill[i];
+                        RefreshAllHPAP();
+                        CurrentHPcalculate();
+                        CurrentAPcalculate();
+                        Time1.Value = 0;
+                        PersonTextAnimationStart(Items_Time_Tick10, Animate[i], Convert.ToUInt16(25 / GameSpeed.Value), Convert.ToUInt16(75 / GameSpeed.Value));
+                        break;
+                    }
+                }
+            BAG.ItemsSet(Counts[0],BAG.AntidoteITM, Counts[1], Counts[2], Counts[3], BAG.SleepBagITM, Counts[4], Counts[5]);
+            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
+        }
+        private void ItemsUseInBattle_MouseEnter(object sender, RoutedEventArgs e)
+        {
+            Button[] cbuttons = new Button[] { Antidote1, Bandage1, Ether,  Fused1, Herbs, Ether2, Elixir };
+            Byte[] ItemsCount = { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM };
+            String[] descrypt = { "Избавляет от яда", "+50 ОЗ", "+50 ОД", "+80 ОЗ и ОД", "+350 ОЗ", "+300 ОД", "100% ОЗ и ОД" };
+            for (Byte i = 0; i < cbuttons.Length; i++)
+            {
+                if (sender.Equals(cbuttons[i]))
+                {
+                    ItemText.Content = "Всего: " + ItemsCount[i];
+                    BattleText2.Content = descrypt[i];
+                    LabShowX(new Label[] { BattleText2, ItemText });
+                }
+            }
+        }
+        private void ItemsUseInBattle_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ItemText.Content = "";
+            LabHideX(new Label[] { ItemText, BattleText2 });
+        }
+        public static Byte CurrentLocation=0;
+        private void ChapterIntroduction_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            switch (Sets.MenuTask)
+            {
+                case 0:
+                    Img1.Source = new BitmapImage(new Uri(@"Loc1_2.jpg", UriKind.RelativeOrAbsolute));
+                    MediaHide(ChapterIntroduction);
+                    ChestsAndTablesAllTurnOn1();
+                    Map1ModelsAllTurnOn1();
+                    HeyPlaySomething(new Uri(@"Main_theme.mp3", UriKind.RelativeOrAbsolute));
+                    ImgShowX(new Image[] { TableMessage1, Threasure1 });
+                    CurrentLocation = 0;
+                    break;
+                case 4:
+                    FastImgChange(new Image[] { Img1, Img3 }, new BitmapImage[] { new BitmapImage(new Uri(@"Loc2.jpg", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\b2.jpg", UriKind.RelativeOrAbsolute)) });
+                    MediaHide(ChapterIntroduction);
+                    CurrentLocation = 1;
+                    SaveGame();
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 10:
+                    MediaShowAdvanced(TheEnd, new Uri(@"Titres3.mp4", UriKind.RelativeOrAbsolute), new TimeSpan(0, 0, 0, 0, 0));
+                    HeyPlaySomething(new Uri(@"Titres.mp3", UriKind.RelativeOrAbsolute));
+                    break;
+                default:
+                    Form1.Close();
+                    break;
+            }
+            ImgShowX(new Image[] { Img1, Img2, SaveProgress });
+        }
+
+        //                           "Закалённый острый кинжал, пробивающий камни насквозь. Крайне\nсмертоносная игрушка."
+        private void AnyEquipments_MouseEnter(object sender, MouseEventArgs e)
+        {
+            LabShow(Describe1);
+            Button[] EquipmentsBt = new Button[] { Equipments, Equipments2, Equipments4 };
+            String[,] Descryption = new String[,] { { "Прочный костяной кастет. Одно из лучших средств показать свою мощь!", "Черная кожаная куртка. Никто не ценит ничего так сильно, как\nнадёжный кожак в жуткую погоду.", "Штаны из перьев стервятника. Вполне сгодится и на огородное пугало...", "Бинтовая обувь. Спасает от ужасной жары здешних песков как никогда." }, { "Закалённый острый кинжал, пробивающий камни насквозь. Крайне\nсмертоносная игрушка.", "Отлично сохранившиеся доспехи древних воинов. Кажется, что\nради хороших вещей древние даже золота не жалели.", "Поножи из могучих раздробленных пластин, защищают даже от\nукуса комара.", "Сапоги прирождённых солдат, покрыты слоём железа и укрепл-\nены пластинами." }, { "Размер не имеет  значения, главное как его используют", "Футболка для настоящих ценителей", "Штаны серьёзных намерений", "Прочные сапоги из натуральной дублёной кожи" } };
+            String[,] ParamsUp = new String[,] { { "+10", "+5", "+4", "+1" }, { "+50", "+25", "+15", "+10" }, { "+165", "+85", "+55", "+25" } };
+            for (Byte i=0;i<EquipmentsBt.Length;i++)
+            {
+                if (sender.Equals(EquipmentsBt[i]))
+                {
+                    switch (Sets.EquipmentClass)
+                    {
+                        case 0:
+                            EquipCollectInfo(Descryption[i,0], AddATK1, ParamsUp[i, 0]);
+                            break;
+                        case 1:
+                            EquipCollectInfo(Descryption[i, 1], AddDEF1, ParamsUp[i, 1]);
+                            break;
+                        case 2:
+                            EquipCollectInfo(Descryption[i, 2], AddDEF1, ParamsUp[i, 2]);
+                            break;
+                        case 3:
+                            EquipCollectInfo(Descryption[i, 3], AddDEF1, ParamsUp[i, 3]);
+                            break;
+                        default:
+                            EquipCollectInfo(Descryption[i, 0], AddATK1, ParamsUp[i, 0]);
+                            break;
+                    }
+                    break;
+                }
+            }
+        }
+        private void AnyEquipments_Click(object sender, RoutedEventArgs e)
+        {
+            LabShow(Describe1);
+            Button[] EquipmentsBt = new Button[] { Equipments, Equipments2, Equipments4 };
+            String[,] Descryption = new String[,] { { "Древний кастет", "Чёрный кожак", "Штаны стервятника", "Бинтовая обувь" }, { "Древний кинжал", "Древняя броня", "Поножи воина", "Сапоги мужества" }, { "Миниган XM214-A", "Футболка крутого", "Штаны серьёзного", "Военные ботинки" } };
+            Byte[,] ParamsUp = new Byte[,] { { 10, 5, 4, 1 }, { 50, 25, 15, 10 }, { 165, 85, 55, 25 } };
+            for (Byte i = 0; i < EquipmentsBt.Length; i++)
+            {
+                if (sender.Equals(EquipmentsBt[i]))
+                {
+                    switch (Sets.EquipmentClass)
+                    {
+                        case 0:
+                            OnEquiped(Equip1, EquipH, Descryption[i, 0], 0, ParamsUp[i, 0]);
+                            break;
+                        case 1:
+                            OnEquiped(Equip2, EquipB, Descryption[i, 1], 1, ParamsUp[i, 1]);
+                            break;
+                        case 2:
+                            OnEquiped(Equip3, EquipL, Descryption[i, 2], 2, ParamsUp[i, 2]);
+                            break;
+                        case 3:
+                            OnEquiped(Equip4, EquipD, Descryption[i, 3], 3, ParamsUp[i, 3]);
+                            break;
+                        default:
+                            OnEquiped(Equip1, EquipH, Descryption[i, 0], 0, ParamsUp[i, 0]);
+                            break;
+                    }
+                    break;
+                }
+            }
+            StatsMeaning();
+            BtnHideX(new Button[] { Equipments, Equipments2, Equipments4, CancelEq });
+            EquipWatch();
+        }
+        
+        private void HandAttack_Time_Tick8(object sender, EventArgs e)
+        {
+            string[] HndAt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack10.png" };
+            string[] IcoRg = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage10.png" };
+            ActionsTickCheck(HndAt, IcoRg);
+        }
+
+
+        private void Escape_Time_Tick9(object sender, EventArgs e)
+        {
+            string[] Flee = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png" };
+            string[] IcoEs = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png" };
+            ActionsTickCheck(Flee, IcoEs);
+        }
+
+        private void Items_Time_Tick10(object sender, EventArgs e)
+        {
+            string[] ItmUs = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png" };
+            string[] IcoUs = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed10.png" };
+            ActionsTickCheck(ItmUs, IcoUs);
+        }
+
+        private void Cure_Time_Tick11(object sender, EventArgs e)
+        {
+            string[] Cure = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure10.png" };
+            string[] IcoCr = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure10.png" };
+            ActionsTickCheck(Cure, IcoCr);
+        }
+
+        private void Heal_Time_Tick12(object sender, EventArgs e)
+        {
+            string[] Heal = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal10.png" };
+            string[] IcoHl = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon10.png" };
+            ActionsTickCheck(Heal, IcoHl);
+        }
+
+        private void Torch_Time_Tick13(object sender, EventArgs e)
+        {
+            string[] Torch = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch10.png" };
+            string[] IcoTh = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch10.png" };
+            ActionsTickCheck(Torch, IcoTh);
+        }
+        private void Whip_Time_Tick14(object sender, EventArgs e)
+        {
+            string[] Whip = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip10.png" };
+            string[] IcoWp = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon10.png" };
+            ActionsTickCheck(Whip, IcoWp);
+        }
+
+        private void Super_Time_Tick15(object sender, EventArgs e)
+        {
+            string[] Super = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png" };
+            string[] IcoSr = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png" };
+            ActionsTickCheck(Super, IcoSr);
+        }
+
+        private void Target_Time_Tick16(object sender, EventArgs e)
+        {
+            string[] Trgt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png" };
+            UnlimitedActionsTickCheck(Trgt);
+        }
+
+        private void Bandage_Time_Tick23(object sender, EventArgs e)
+        {
+            CureHealTxt.Content = "+50";
+            CureOrHeal();
+        }
+
+        private void Ether_Time_Tick24(object sender, EventArgs e)
+        {
+            RecoverAPTxt.Content = "+50";
+            RestoreAP();
+        }
+
+        private void Fused_Time_Tick25(object sender, EventArgs e)
+        {
+            FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "+80", "+80" });
+            CureOrHeal();
+            RestoreAP();
+        }
+
+        private void Antidote_Time_Tick26(object sender, EventArgs e)
+        {
+            CureHealTxt.Content = "-Яд";
+            CureOrHeal();
+        }
+        private void Regen_Time_Tick32(object sender, EventArgs e)
+        {
+            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen10.png" };
+            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon10.png" };
+            ActionsTickCheck(Pers, Icon);
+        }
+        private void Toughen_Time_Tick31(object sender, EventArgs e)
+        {
+            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp10.png" };
+            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon10.png" };
+            ActionsTickCheck(Pers, Icon);
+        }
+        private void RegenHP_Time_Tick33(object sender, EventArgs e)
+        {
+            if (Super1.CurrentHP < Super1.MaxHP)
+            {
+                Super1.CurrentHP++;
+                CurrentHPcalculate();
+                RefreshAllHP();
+            }
+        }
+        private void ControlAP_Time_Tick34(object sender, EventArgs e)
+        {
+            if (Super1.CurrentAP < Super1.MaxAP)
+            {
+                Super1.CurrentAP++;
+                CurrentAPcalculate();
+                RefreshAllAP();
+            }
+        }
+        private void Control_Time_Tick35(object sender, EventArgs e)
+        {
+            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control10.png" };
+            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon10.png" };
             ActionsTickCheck(Pers, Icon);
         }
         private void Thrower_Time_Tick36(object sender, EventArgs e)
@@ -7615,32 +7336,11 @@ namespace WpfApp1
             Labs[SelectedTrgt].Content = Convert.ToUInt16(whipsp);
             FoesKicked();
         }
-
-        private void ACT3_MouseEnter(object sender, MouseEventArgs e)
+        private void Thrower_Time_Tick37(object sender, EventArgs e)
         {
-            SelectTrgt4Img.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectAfterImg.png", UriKind.RelativeOrAbsolute));
-            BattleText2.Content = "Подстрелить врага";
-            TextCh1();
-        }
-
-        private void ACT3_MouseLeave(object sender, MouseEventArgs e)
-        {
-            SelectTrgt4Img.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectBeforeImg.png", UriKind.RelativeOrAbsolute));
-            DisableBattleText();
-        }
-
-        private void Tornado_Click(object sender, RoutedEventArgs e)
-        {
-            Super1.CurrentAP = Convert.ToUInt16(Super1.CurrentAP - 20);
-            RefreshAllAP();
-            CurrentAPcalculate();
-            UInt16 strength = Convert.ToUInt16(Super1.Special*3);
-            Dj(new Uri(@"Super.mp3", UriKind.RelativeOrAbsolute));
-            AbilitySupers(strength);
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Tornado_Time_Tick38, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer10, TornadoDmg_Time_Tick39, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png" };
+            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon10.png" };
+            ActionsTickCheck(Pers, Icon);
         }
         private void Tornado_Time_Tick38(object sender, EventArgs e)
         {
@@ -7650,7 +7350,7 @@ namespace WpfApp1
         }
         private void TornadoDmg_Time_Tick39(object sender, EventArgs e)
         {
-            UInt16 supersp = Convert.ToUInt16(Super1.Special*3);
+            UInt16 supersp = Convert.ToUInt16(Super1.Special * 3);
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             if (Foe1.EnemyHP[0] != 0)
                 Labs[0].Content = Convert.ToUInt16(supersp);
@@ -7660,21 +7360,12 @@ namespace WpfApp1
                 Labs[2].Content = Convert.ToUInt16(supersp);
             FoesKicked();
         }
-
-        private void Quake_Click(object sender, RoutedEventArgs e)
+        private void SeriousMinigun_Time_Tick39(object sender, EventArgs e)
         {
-            Super1.CurrentAP = Convert.ToUInt16(Super1.CurrentAP - 30);
-            RefreshAllAP();
-            CurrentAPcalculate();
-            UInt16 strength = Convert.ToUInt16(Super1.Special * 4);
-            Dj(new Uri(@"Super.mp3", UriKind.RelativeOrAbsolute));
-            AbilitySupers(strength);
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Quake_Time_Tick43, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer10, QuakeDmg_Time_Tick44, new TimeSpan(0, 0, 0, 0, GameSpeed1));
+            string[] SSam = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun14.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun15.png" };
+            string[] IcoSS = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png" };
+            ActionsTickCheck(SSam, IcoSS);
         }
-
         private void Quake_Time_Tick43(object sender, EventArgs e)
         {
             string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake8.png" };
@@ -7693,354 +7384,12 @@ namespace WpfApp1
                 Labs[2].Content = Convert.ToUInt16(supersp);
             FoesKicked();
         }
-
-        private void Quake_MouseEnter(object sender, MouseEventArgs e)
+        
+        private void SeriousSwitch_Time_Tick45(object sender, EventArgs e)
         {
-            BattleText2.Content = "Обвал грудой камней, -30 ОД";
-            TextCh1();
-        }
-
-        private void Quake_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void Tornado_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Порезы ветром, -20 ОД";
-            TextCh1();
-        }
-
-        private void Tornado_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void Thrower_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Подстрелить врага, -15 ОД";
-            TextCh1();
-        }
-
-        private void Thrower_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void Learn_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Изучить противника, -2 ОД";
-            TextCh1();
-        }
-
-        private void Learn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void Control_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Постепенно ОД+, 0 ОД";
-            TextCh1();
-        }
-
-        private void Control_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void Regen_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Постепенно ОЗ+, -15 ОД";
-            TextCh1();
-        }
-
-        private void Regen_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void ToughenUp_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Повышает защиту, -8 ОД";
-            TextCh1();
-        }
-
-        private void BuffUp_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Повышает атаку, -12 ОД";
-            TextCh1();
-        }
-
-        private void ToughenUp_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void BuffUp_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void Cure2_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Восстановление ОЗ 100%, -10 ОД";
-            TextCh1();
-        }
-
-        private void Cure2_MouseLeave(object sender, MouseEventArgs e)
-        {
-            DisableBattleText();
-        }
-
-        private void Cure2Out_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AbilsCost.Content = "-10";
-            LabShow(AbilsCost);
-        }
-
-        private void Elixir1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            CountText.Content = "Всего: " + BAG.ElixirITM;
-            LabShow(CountText);
-        }
-
-        private void SleepBag1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            CountText.Content = "Всего: " + BAG.SleepBagITM;
-            LabShow(CountText);
-        }
-
-        private void Ether2Out_MouseEnter(object sender, MouseEventArgs e)
-        {
-            CountText.Content = "Всего: " + BAG.Ether2ITM;
-            LabShow(CountText);
-        }
-
-        private void Herbs1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            CountText.Content = "Всего: " + BAG.HerbsITM;
-            LabShow(CountText);
-        }
-
-        private void Herbs1_Click(object sender, RoutedEventArgs e)
-        {
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
-            BAG.HerbsITM -= 1;
-            if (350 + Super1.CurrentHP >= Super1.MaxHP)
-            {
-                Super1.CurrentHP = Super1.MaxHP;
-                HPbar1.Value = Super1.CurrentHP;
-            }
-            else
-            {
-                Super1.CurrentHP = Convert.ToUInt16(Super1.CurrentHP + 350);
-                HPbar1.Value = Super1.CurrentHP;
-            }
-            MenuHpApExp();
-            if (BAG.HerbsITM < 1)
-            {
-                LabHide(HerbsText);
-                ButtonHide(Herbs1);
-                CountText.Content = "";
-            }
-            else
-                CountText.Content = "Всего: " + BAG.HerbsITM;
-        }
-
-        private void Ether2Out_Click(object sender, RoutedEventArgs e)
-        {
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
-            BAG.Ether2ITM -= 1;
-            if (300 + Super1.CurrentAP >= Super1.MaxAP)
-            {
-                Super1.CurrentAP = Super1.MaxAP;
-                APbar1.Value = Super1.CurrentAP;
-            }
-            else
-            {
-                Super1.CurrentAP = Convert.ToUInt16(Super1.CurrentAP + 300);
-                APbar1.Value = Super1.CurrentAP;
-            }
-            MenuHpApExp();
-            if (BAG.Ether2ITM < 1)
-            {
-                LabHide(Ether2OutText);
-                ButtonHide(Ether2Out);
-                CountText.Content = "";
-            }
-            else
-                CountText.Content = "Всего: " + BAG.Ether2ITM;
-        }
-
-        private void SleepBag1_Click(object sender, RoutedEventArgs e)
-        {
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
-            BAG.SleepBagITM -= 1;
-            Super1.CurrentHP = Super1.MaxHP;
-            Super1.CurrentAP = Super1.MaxAP;
-            MenuHpApExp();
-            if (BAG.SleepBagITM < 1)
-            {
-                LabHide(SleepBagText);
-                ButtonHide(SleepBag1);
-                CountText.Content = "";
-            }
-            else
-                CountText.Content = "Всего: " + BAG.SleepBagITM;
-        }
-
-        private void Elixir1_Click(object sender, RoutedEventArgs e)
-        {
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
-            BAG.ElixirITM -= 1;
-            Super1.CurrentHP = Super1.MaxHP;
-            Super1.CurrentAP = Super1.MaxAP;
-            MenuHpApExp();
-            if (BAG.ElixirITM < 1)
-            {
-                LabHide(ElixirText);
-                ButtonHide(Elixir1);
-                CountText.Content = "";
-            }
-            else
-                CountText.Content = "Всего: " + BAG.ElixirITM;
-        }
-
-        private void CraftHerbs_Click(object sender, RoutedEventArgs e)
-        {
-            BAG.Materials -= 500;
-            BAG.HerbsITM++;
-            MaterialsCraft.Content = BAG.Materials;
-            CountText.Content = "Всего: " + BAG.HerbsITM;
-            CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-            TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-        }
-
-        private void CraftEther2_Click(object sender, RoutedEventArgs e)
-        {
-            BAG.Materials -= 1500;
-            BAG.Ether2ITM++;
-            MaterialsCraft.Content = BAG.Materials;
-            CountText.Content = "Всего: " + BAG.Ether2ITM;
-            CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-            TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-        }
-
-        private void CraftBedbag_Click(object sender, RoutedEventArgs e)
-        {
-            BAG.Materials -= 100;
-            BAG.SleepBagITM++;
-            CountText.Content = "Всего: " + BAG.SleepBagITM;
-            MaterialsCraft.Content = BAG.Materials;
-            CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-            TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-        }
-
-        private void CraftElixir_Click(object sender, RoutedEventArgs e)
-        {
-            BAG.Materials -= 10000;
-            BAG.ElixirITM++;
-            CountText.Content = "Всего: " + BAG.ElixirITM;
-            MaterialsCraft.Content = BAG.Materials;
-            CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-            TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-        }
-
-        private void CraftPerfboots_Click(object sender, RoutedEventArgs e)
-        {
-            BAG.Materials -= 30000;
-            BAG.ArmBoots[3] = true;
-            MaterialsCraft.Content = BAG.Materials;
-            ButtonHide(CraftPerfboots);
-            if (Super1.PlayerEQ[3] == 0)
-                BAG.Boots = true;
-        }
-
-        private void CraftPerfboots_MouseEnter(object sender, MouseEventArgs e)
-        {
-            CountText.Content = "Что это?";
-            LabShow(CountText);
-        }
-
-        private void Ether2_Click(object sender, RoutedEventArgs e)
-        {
-            LabHide(ItemText);
-            ImgHide(ItemsCountImg);
-            MenuItemsHide1();
-            if ((Super1.CurrentAP + 300) > Super1.MaxAP)
-                Super1.CurrentAP = Super1.MaxAP;
-            else
-                Super1.CurrentAP += 300;
-            RefreshAllAP();
-            CurrentAPcalculate();
-            BAG.Ether2ITM -= 1;
-            Time1.Value = 0;
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer11, Ether2AP_Time_Tick47, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Ether2_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "+300 ОД";
-            ItemText.Content = "Всего:" + BAG.Ether2ITM;
-            TextCh1();
-        }
-
-        private void Herbs_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "+350 ОЗ";
-            ItemText.Content = "Всего:" + BAG.HerbsITM;
-            TextCh1();
-        }
-
-        private void Herbs_Click(object sender, RoutedEventArgs e)
-        {
-            LabHide(ItemText);
-            ImgHide(ItemsCountImg);
-            MenuItemsHide1();
-            if ((Super1.CurrentHP + 350) > Super1.MaxHP)
-                Super1.CurrentHP = Super1.MaxHP;
-            else
-                Super1.CurrentHP += 350;
-            RefreshAllHP();
-            CurrentHPcalculate();
-            BAG.HerbsITM -= 1;
-            Time1.Value = 0;
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer11, HerbsHP_Time_Tick46, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Elixir_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "100% ОЗ и ОД";
-            ItemText.Content = "Всего:" + BAG.ElixirITM;
-            TextCh1();
-        }
-
-        private void Elixir_Click(object sender, RoutedEventArgs e)
-        {
-            LabHide(ItemText);
-            ImgHide(ItemsCountImg);
-            MenuItemsHide1();            
-            Super1.CurrentHP = Super1.MaxHP;
-            Super1.CurrentAP = Super1.MaxAP;
-            RefreshAllHPAP();
-            CurrentHPcalculate();
-            CurrentAPcalculate();
-            BAG.ElixirITM -= 1;
-            Time1.Value = 0;
-            UInt16 GameSpeed1 = Convert.ToUInt16(25 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer8, Items_Time_Tick10, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            GameSpeed1 = Convert.ToUInt16(75 / GameSpeed.Value);
-            WidelyUsedAnyTimer(out timer11, ElixirHPAP_Time_Tick48, new TimeSpan(0, 0, 0, 0, GameSpeed1));
-            Dj(new Uri(@"ItemsUsed.mp3", UriKind.RelativeOrAbsolute));
+            string[] SSam = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch9.png", };
+            string[] IcoSS = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked10.png", };
+            ActionsTickCheck(SSam, IcoSS);
         }
         private void HerbsHP_Time_Tick46(object sender, EventArgs e)
         {
@@ -8054,93 +7403,9 @@ namespace WpfApp1
         }
         private void ElixirHPAP_Time_Tick48(object sender, EventArgs e)
         {
-            CureHealTxt.Content = "100%";
-            RecoverAPTxt.Content = "100%";
+            FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "100%", "100%" });
             CureOrHeal();
             RestoreAP();
-        }
-        public static Byte CurrentLocation=0;
-        private void ChapterIntroduction_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            switch (Sets.MenuTask)
-            {
-                case 0:
-                    Img1.Source = new BitmapImage(new Uri(@"Loc1_2.jpg", UriKind.RelativeOrAbsolute));
-                    MediaHide(ChapterIntroduction);
-                    TablesAllTurnOn1();
-                    ChestsAllTurnOn1();
-                    KeysAllTurnOn1();
-                    LocksAllTurnOn1();
-                    HeyPlaySomething(new Uri(@"Main_theme.mp3", UriKind.RelativeOrAbsolute));
-                    ImgShowX(new Image[] { TableMessage1, Threasure1 });
-                    CurrentLocation = 0;
-                    break;
-                case 4:
-                    Img1.Source = new BitmapImage(new Uri(@"Loc2.jpg", UriKind.RelativeOrAbsolute));
-                    Img3.Source = new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\b2.jpg", UriKind.RelativeOrAbsolute));
-                    MediaHide(ChapterIntroduction);
-                    CurrentLocation = 1;
-                    SaveGame();
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 10:
-                    MediaShowAdvanced(TheEnd, new Uri(@"Titres3.mp4", UriKind.RelativeOrAbsolute), new TimeSpan(0, 0, 0, 0, 0));
-                    HeyPlaySomething(new Uri(@"Titres.mp3", UriKind.RelativeOrAbsolute));
-                    break;
-                default:
-                    Form1.Close();
-                    break;
-            }
-            
-            ImgShowX(new Image[] { Img1, Img2, SaveProgress });
-        }
-
-        private void Equipments2_Click(object sender, RoutedEventArgs e)
-        {
-            if (Sets.EquipmentClass == 0)
-            {
-                OnEquiped(Equip1, EquipH, "Древний кинжал", 0, 50);
-            }
-            if (Sets.EquipmentClass == 1)
-            {
-                OnEquiped(Equip2, EquipB, "Древняя броня", 1, 25);
-            }
-            if (Sets.EquipmentClass == 2)
-            {
-                OnEquiped(Equip3, EquipL, "Поножи воина", 2, 15);
-            }
-            if (Sets.EquipmentClass == 3)
-            {
-                OnEquiped(Equip4, EquipD, "Сапоги мужества", 3, 10);
-            }
-            StatsMeaning();
-            BtnHideX(new Button[] { Equipments, Equipments2, Equipments4, CancelEq });
-            EquipWatch();
-        }
-
-        private void Equipments2_MouseEnter(object sender, MouseEventArgs e)
-        {
-            LabShow(Describe1);
-            if (Sets.EquipmentClass == 0)
-            {
-                //               "Закалённый острый кинжал, пробивающий камни насквозь. Крайне\nсмертоносная игрушка."
-                EquipCollectInfo("Закалённый острый кинжал, пробивающий камни насквозь. Крайне\nсмертоносная игрушка.", AddATK1, "+50");
-            }
-            if (Sets.EquipmentClass == 1)
-            {
-                EquipCollectInfo("Отлично сохранившиеся доспехи древних воинов. Кажется, что\nради хороших вещей древние даже золота не жалели.", AddDEF1, "+25");
-            }
-            if (Sets.EquipmentClass == 2)
-            {
-                EquipCollectInfo("Поножи из могучих раздробленных пластин, защищают даже от\nукуса комара.", AddDEF1, "+15");
-            }
-            if (Sets.EquipmentClass == 3)
-            {
-                EquipCollectInfo("Сапоги прирождённых солдат, покрыты слоём железа и укрепл-\nены пластинами.", AddDEF1, "+10");
-            }
         }
     }
 }

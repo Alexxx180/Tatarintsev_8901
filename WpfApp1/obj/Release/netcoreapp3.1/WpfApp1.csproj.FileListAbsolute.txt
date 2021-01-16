@@ -1,21 +1,10 @@
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\WpfApp1.exe
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\WpfApp1.deps.json
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\WpfApp1.runtimeconfig.json
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\WpfApp1.runtimeconfig.dev.json
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\WpfApp1.dll
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\WpfApp1.pdb
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.csproj.ResolveComReference.cache
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\MainWindow.g.cs
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\App.g.cs
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1_MarkupCompile.cache
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1_MarkupCompile.lref
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\MainWindow.baml
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.g.resources
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.AssemblyInfoInputs.cache
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.AssemblyInfo.cs
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.csproj.CoreCompileInputs.cache
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.dll
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.pdb
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.genruntimeconfig.cache
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.csprojAssemblyReference.cache
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\History_showdown.mp4
@@ -98,3 +87,14 @@ D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.csproj.CopyComplete
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Desert Rage.exe
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Desert Rage.deps.json
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Desert Rage.runtimeconfig.json
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Desert Rage.runtimeconfig.dev.json
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Desert Rage.dll
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Desert Rage.pdb
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage_MarkupCompile.cache
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage_MarkupCompile.lref
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage.g.resources
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage.dll
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage.pdb
