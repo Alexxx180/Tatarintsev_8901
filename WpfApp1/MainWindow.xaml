@@ -148,7 +148,7 @@
         <Label x:Name="Player5" Content="CAHEKCAHEK00005" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="Bernard MT Condensed" FontSize="36" Panel.ZIndex="5" Grid.Column="2" Visibility="Hidden" Grid.ColumnSpan="12" Grid.RowSpan="2" Foreground="White" Grid.Row="11" IsEnabled="False" MouseDoubleClick="Player5_MouseDoubleClick"/>
         <Label x:Name="Player6" Content="CAHEKCAHEK00006" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="Bernard MT Condensed" FontSize="36" Panel.ZIndex="5" Grid.Column="2" Visibility="Hidden" Grid.ColumnSpan="12" Grid.RowSpan="2" Foreground="White" Grid.Row="13" IsEnabled="False" MouseDoubleClick="Player6_MouseDoubleClick"/>
         <Image x:Name="AutorizeImg" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Wanted.png" Grid.Column="0" Grid.Row="0" Visibility="Visible" Grid.ColumnSpan="15" Grid.RowSpan="18" Panel.ZIndex="4" MouseLeave="CancelDelete"/>
-        <TextBox x:Name="AddPlayer" Grid.ColumnSpan="11" Grid.Column="2" HorizontalAlignment="Left" MaxLength="15" Margin="0,0,0,0" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Center" Panel.ZIndex="5" Grid.RowSpan="2" FontSize="36" FontFamily="Bernard MT Condensed" Width="345" Height="50" PreviewTextInput="AddPlayer_PreviewTextInput" MouseEnter="AddPlayer_MouseEnter" GotFocus="AddPlayer_MouseEnter2" Visibility="Hidden" IsEnabled="False"/>
+        <TextBox x:Name="AddPlayer" Grid.ColumnSpan="11" Grid.Column="2" HorizontalAlignment="Left" MaxLength="15" Margin="0,0,0,0" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Center" Panel.ZIndex="5" Grid.RowSpan="2" FontSize="36" FontFamily="Bernard MT Condensed" Width="345" Height="50" PreviewTextInput="AddPlayer_PreviewTextInput" MouseEnter="AddPlayer_MouseEnter" GotFocus="AddPlayer_MouseEnter" Visibility="Hidden" IsEnabled="False"/>
         <Button x:Name="AddProfile" Content="+" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="60" Width="64" FontSize="48" Click="AddProfile_Click" Panel.ZIndex="5" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Visibility="Hidden" FontFamily="Arial Black" Background="#FF77FFA3" Foreground="White" BorderBrush="White" IsEnabled="False"/>
         <Button x:Name="DeleteProfile" Content="X" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="60" Width="64" FontSize="48" Click="DeleteProfile_Click" Panel.ZIndex="5" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2" Visibility="Hidden" FontFamily="Arial Black" Background="#FFFF1818" Foreground="White" BorderBrush="White" IsEnabled="False"/>
 
@@ -253,7 +253,7 @@
             </MediaElement.Effect>
         </MediaElement>
         <Image x:Name="TrgtImg" Grid.ColumnSpan="15" Grid.Column="2" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.RowSpan="16" Grid.Row="23" VerticalAlignment="Top" Panel.ZIndex="6" Source="/Target1.png" Stretch="Fill" Visibility="Hidden" Width="325" Height="325"/>
-        <Button x:Name="Cancel1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" Panel.ZIndex="4" FontSize="48" Visibility="Hidden" IsEnabled="False" Click="Cancel1_Click" MouseEnter="Cancel1_MouseEnter" MouseLeave="FightStaticButtons_MouseLeave" Grid.Column="49" Grid.Row="31" Grid.RowSpan="3" Grid.ColumnSpan="6">
+        <Button x:Name="Cancel1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" Panel.ZIndex="4" FontSize="48" Visibility="Hidden" IsEnabled="False" Click="Cancel1_Click" MouseEnter="FightStaticButtons_MouseEnter" MouseLeave="FightStaticButtons_MouseLeave" Grid.Column="49" Grid.Row="31" Grid.RowSpan="3" Grid.ColumnSpan="6">
             <Image x:Name="Cancel1Img" Source="/CancelImg.png" Stretch="Fill"/>
         </Button>
         <Button x:Name="Fight" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="48" Click="Button_Click" IsEnabled="False" Visibility="Hidden" Panel.ZIndex="4" MouseEnter="FightDynamicButtons_MouseEnter" MouseLeave="FightDynamicButtons_MouseLeave" Grid.Column="43" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="31">
@@ -331,7 +331,7 @@
             <Image x:Name="SelectTrgt4Img" Source="/TrgtSelectBeforeImg.png" Stretch="Fill"/>
         </Button>
 
-        <Button x:Name="Cancel2" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" Panel.ZIndex="4" MouseLeave="FightStaticButtons_MouseLeave" Click="Cancel2_Click" Visibility="Hidden" IsCancel="True" IsEnabled="False" Grid.Column="49" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="31">
+        <Button x:Name="Cancel2" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" Panel.ZIndex="4" MouseEnter="FightStaticButtons_MouseEnter" MouseLeave="FightStaticButtons_MouseLeave" Click="Cancel2_Click" Visibility="Hidden" IsCancel="True" IsEnabled="False" Grid.Column="49" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="31">
             <Image x:Name="Cancel2Img" Source="/CancelImg.png" Stretch="Fill"/>
         </Button>
 
@@ -351,7 +351,7 @@
         <Button x:Name="SwitchAbils" Grid.Column="52" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="32" VerticalAlignment="Center" Panel.ZIndex="5" Grid.RowSpan="3" Grid.ColumnSpan="6" FontSize="36" FontFamily="Segoe UI" Width="189" Height="75" Click="SwitchAbils_Click" Visibility="Hidden">
             <Image x:Name="ToNextImg" Source="/ToNext.png" Stretch="Fill"/>
         </Button>
-        <Button x:Name="Back1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" Click="Back1_Click" MouseEnter="Back1_MouseEnter" MouseLeave="FightStaticButtons_MouseLeave" Visibility="Hidden" IsEnabled="False" Panel.ZIndex="4" Grid.Column="40" Grid.Row="32" Grid.RowSpan="3" Grid.ColumnSpan="6">
+        <Button x:Name="Back1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" Click="Back1_Click" MouseEnter="FightStaticButtons_MouseEnter" MouseLeave="FightStaticButtons_MouseLeave" Visibility="Hidden" IsEnabled="False" Panel.ZIndex="4" Grid.Column="40" Grid.Row="32" Grid.RowSpan="3" Grid.ColumnSpan="6">
             <Image x:Name="BackImg1" Source="/BackImg.png" Stretch="Fill"/>
         </Button>
 
@@ -379,7 +379,7 @@
         <Button x:Name="Elixir" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="4" MouseLeave="ItemsUseInBattle_MouseLeave" IsEnabled="False" Visibility="Hidden" Grid.Column="52" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="32" Height="75" MouseEnter="ItemsUseInBattle_MouseEnter" Click="ItemsInFight_Click">
             <Image x:Name="ElixirItem" Source="/ElixirItem.png"/>
         </Button>
-        <Button x:Name="Back2" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" Visibility="Hidden" Panel.ZIndex="4" IsEnabled="False" MouseEnter="Back1_MouseEnter" MouseLeave="FightStaticButtons_MouseLeave" Click="Back2_Click" Grid.Column="40" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="32">
+        <Button x:Name="Back2" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" Visibility="Hidden" Panel.ZIndex="4" IsEnabled="False" MouseEnter="FightStaticButtons_MouseEnter" MouseLeave="FightStaticButtons_MouseLeave" Click="Back2_Click" Grid.Column="40" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="32">
             <Image x:Name="BackImg2" Source="/BackImg.png" Stretch="Fill"/>
         </Button>
 

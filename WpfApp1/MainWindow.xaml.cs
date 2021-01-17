@@ -73,7 +73,7 @@ namespace WpfApp1
             Cmd.Connection.Close();
             return Selected;
         }
-        public Object[] NewSqlDataReaderBuild(in Object[] Values)
+        public Object[] NewSqlDataReaderBuild(Object[] Values, in Byte StartValue, in Byte EndValue)
         {
             Cmd.Connection.Open();
             DataReader = Cmd.ExecuteReader();
@@ -81,9 +81,26 @@ namespace WpfApp1
             {
                 while (DataReader.Read())
                 {
-                    for (Byte i = 0; i < Values.Length; i++)
+                    for (Byte i = StartValue; i < EndValue; i++)
                     {
-                        Values[i]=DataReader.GetValue(i);
+                        Values[i- StartValue] =DataReader.GetValue(i);
+                    }
+                }
+            }
+            Cmd.Connection.Close();
+            return Values;
+        }
+        public Byte[] NewSqlDataReaderBuild(Byte[] Values, in Byte StartValue, in Byte EndValue)
+        {
+            Cmd.Connection.Open();
+            DataReader = Cmd.ExecuteReader();
+            if (DataReader.HasRows)
+            {
+                while (DataReader.Read())
+                {
+                    for (Byte i = StartValue; i < EndValue; i++)
+                    {
+                        Values[i- StartValue] = Convert.ToByte(DataReader.GetValue(i));
                     }
                 }
             }
@@ -110,13 +127,13 @@ namespace WpfApp1
         {
             for (Byte i = 0; i < ParamNames.Length; i++)
             {
-                if (NewAnyParams.GetType() == typeof(String))
+                if (NewAnyParams[i].GetType() == typeof(String))
                     AddProcedureParameter(ParamNames[i], (String)NewAnyParams[i]);
-                if (NewAnyParams.GetType() == typeof(Boolean))
+                if (NewAnyParams[i].GetType() == typeof(Boolean))
                     AddProcedureParameter(ParamNames[i], (Boolean)NewAnyParams[i]);
-                if (NewAnyParams.GetType() == typeof(Byte))
+                if (NewAnyParams[i].GetType() == typeof(Byte))
                     AddProcedureParameter(ParamNames[i], (Byte)NewAnyParams[i]);
-                if (NewAnyParams.GetType() == typeof(UInt16))
+                if (NewAnyParams[i].GetType() == typeof(UInt16))
                     AddProcedureParameter(ParamNames[i], (UInt16)NewAnyParams[i]);
             }
         }
@@ -125,10 +142,23 @@ namespace WpfApp1
             if (PlayerLogins.Count > 0)
                 PlayerLogins.Clear();
         }
+        public void DeselectCurrentPlayer(in String NewPlayerLogin)
+        {
+            NewStoredProcedureBuild("DeselectPlayer");
+            NewExecuteNonQueryBuild();
+            Cmd.Parameters.Clear();
+        }
         public void NewPlayer(in String NewPlayerLogin)
         {
             NewStoredProcedureBuild("AddNewProfile");
             AddProcedureParameter("@LOGIN", NewPlayerLogin);
+            NewExecuteNonQueryBuild();
+            Cmd.Parameters.Clear();
+        }
+        public void DeletePlayer(in String ExistingPlayerLogin)
+        {
+            NewStoredProcedureBuild("DeleteProfile");
+            AddProcedureParameter("@LOGIN", ExistingPlayerLogin);
             NewExecuteNonQueryBuild();
             Cmd.Parameters.Clear();
         }
@@ -145,6 +175,66 @@ namespace WpfApp1
             CurrentLogin = (PlayerLogins.Count > 0 ? (NewSqlDataReaderBuild("????", 0) == "????" ? PlayerLogins[0] : NewSqlDataReaderBuild("????", 0)) : "????");
             Cmd.Parameters.Clear();
             return CurrentLogin;
+        }
+        public Object[] CheckPlayerBag(in String PlayerLogin, in Object[] Items)
+        {
+            NewStoredProcedureBuild("CheckBAG");
+            AddProcedureParameter("@LOGIN", PlayerLogin);
+            return NewSqlDataReaderBuild(Items, 2, 11);
+        }
+        public Byte[] CheckPlayerEquip(in String PlayerLogin, in Byte[] Equip)
+        {
+            NewStoredProcedureBuild("CheckEquip");
+            AddProcedureParameter("@LOGIN", PlayerLogin);
+            return NewSqlDataReaderBuild(Equip, 2, 10);
+        }
+        public Object[] GetPlayerRecord(in String PlayerLogin, in Object[] RecordValues)
+        {
+            NewStoredProcedureBuild("CheckPlayer");
+            AddProcedureParameter("@LOGIN", PlayerLogin);
+            return NewSqlDataReaderBuild(RecordValues, 1, 8);
+        }
+        public Object[] GetPlayerStats(in String PlayerLogin, in Object[] Params)
+        {
+            NewStoredProcedureBuild("CheckParams");
+            AddProcedureParameter("@LOGIN", PlayerLogin);
+            return NewSqlDataReaderBuild(Params, 1, 7);
+        }
+        public Byte[] GetPlayerSettings(in String PlayerLogin, in Byte[] Settings)
+        {
+            NewStoredProcedureBuild("CheckSettings");
+            AddProcedureParameter("@LOGIN", PlayerLogin);
+            return NewSqlDataReaderBuild(Settings, 2, 7);
+        }
+        public void SavePlayerBag(in String[] Parameters, in Object[] Items)
+        {
+            NewStoredProcedureBuild("GetNewItemsBag");
+            AddProcedureParametersX(Parameters, Items);
+            NewExecuteNonQueryBuild();
+        }
+        public void SavePlayerEquip(in String[] Parameters, in Object[] Equipment)
+        {
+            NewStoredProcedureBuild("GetNewItemsEquip");
+            AddProcedureParametersX(Parameters, Equipment);
+            NewExecuteNonQueryBuild();
+        }
+        public void SavePlayerStats(in String[] Parameters, in Object[] Stats)
+        {
+            NewStoredProcedureBuild("GetNewParams");
+            AddProcedureParametersX(Parameters, Stats);
+            NewExecuteNonQueryBuild();
+        }
+        public void SavePlayerSettings(in String[] Parameters, in Object[] Settings)
+        {
+            NewStoredProcedureBuild("GetNewSettings");
+            AddProcedureParametersX(Parameters, Settings);
+            NewExecuteNonQueryBuild();
+        }
+        public void NewGameStart(in String PlayerLogin)
+        {
+            NewStoredProcedureBuild("GetNewSettings");
+            AddProcedureParameter("@LOGIN", PlayerLogin);
+            NewExecuteNonQueryBuild();
         }
         public Boolean CheckIfPlayerCanContinue()
         {
@@ -245,6 +335,9 @@ namespace WpfApp1
             //[RU] СТАТУС ИГРОКА В И ВНЕ БОЯ
             DefenseState = 1;
             PlayerStatus = 0;
+            MenuTask = 0;
+            MiniTask = false;
+            Experience = 0;
         }
         public void SetStats(in Byte Level)
         {
@@ -264,6 +357,40 @@ namespace WpfApp1
             Defence = Defense;
             Speed = Agility;
             Special = Ability;
+        }
+        public void SetCurrentHpAp(in UInt16 Hp, in UInt16 Ap)
+        {
+            CurrentHP = Hp;
+            CurrentAP = Ap;
+        }
+        public Object[] GetPlayerRecord()
+        {
+            return new Object[] { CurrentLevel, MenuTask, CurrentHP, CurrentAP, Experience, MiniTask, Learned };
+        }
+        public void SetPlayerRecord(params Object[] Values)
+        {
+            SetAnyValues(new Object[] { CurrentLevel, MenuTask, CurrentHP, CurrentAP, Experience, MiniTask, Learned }, Values);
+        }
+        public void SetAnyValues(Object[] Properties, params Object[] Values)
+        {
+            for (Byte i = 0; i < Values.Length; i++)
+            {
+                if (Properties[i].GetType() == typeof(String))
+                    Properties[i] = (String)Values[i];
+                if (Properties[i].GetType() == typeof(Boolean))
+                    Properties[i] = (Boolean)Values[i];
+                if (Properties[i].GetType() == typeof(Byte))
+                    Properties[i] = (Byte)Values[i];
+                if (Properties[i].GetType() == typeof(UInt16))
+                    Properties[i] = (UInt16)Values[i];
+            }
+        }
+        public void SetAllEquip(in Byte Weapon, in Byte Armor, in Byte Legs, in Byte Boots)
+        {
+            PlayerEQ[0] = Weapon;
+            PlayerEQ[1] = Armor;
+            PlayerEQ[2] = Legs;
+            PlayerEQ[3] = Boots;
         }
         public UInt16 MaxHP { get; set; }
         public UInt16 MaxAP { get; set; }
@@ -285,6 +412,9 @@ namespace WpfApp1
         public Byte[] SpeedNxt { get; set; }
         public Byte[] SpecialNxt { get; set; }
         public Byte[] PlayerEQ { get; set; }
+        public Byte MenuTask { get; set; }
+        public Boolean MiniTask { get; set; }
+        public UInt16 Experience { get; set; }
     }
 
     //[EN] Bag class, depends on items getting and used in/out battle
@@ -325,7 +455,7 @@ namespace WpfApp1
             ElixirITM = 0;
             Materials = 0;
         }
-        public void ItemsSet(in Byte Bandages, in Byte Antidote, in Byte Ether, in Byte Fused, in Byte Herbs, in Byte SleepBags, in Byte Ethers2, in Byte Elixir, in Byte Materia) {
+        public void ItemsSet(in Byte Bandages, in Byte Antidote, in Byte Ether, in Byte Fused, in Byte Herbs, in Byte SleepBags, in Byte Ethers2, in Byte Elixir, in UInt16 Materia) {
             BandageITM = Bandages;
             AntidoteITM = Antidote;
             EtherITM = Ether;
@@ -448,8 +578,6 @@ namespace WpfApp1
         private void InitOnNewGame()
         {
             EquipmentClass = 0;
-            MenuTask = 0;
-            MiniTask = false;
             TableEN = true;
             LockIndex = 3;
             StepsToBattle = 20;
@@ -470,8 +598,6 @@ namespace WpfApp1
         public Int32 Rnd1 { get; set; }
         public Int32 Rnd2 { get; set; }
         public Byte EquipmentClass { get; set; }
-        public Byte MenuTask { get; set; }
-        public Boolean MiniTask { get; set; }
         public Byte SpiderAlive { get; set; }
         public Byte MummyAlive { get; set; }
         public Byte ZombieAlive { get; set; }
@@ -513,8 +639,6 @@ namespace WpfApp1
         }
 
         Sql DataBaseMSsql = new Sql();
-        //public static List<string>DataBaseMSsql.PlayerLogins = new List<string>();
-        //public static string DataBaseMSsql.CurrentLogin = "????";
 
         public static UInt16[] TimeWorldRecord = new UInt16[] { 0, 0, 0, 0 };
         private void WorldRecord(object sender, EventArgs e)
@@ -1023,15 +1147,7 @@ namespace WpfApp1
             //[RU] Возврат к исходным значениям.
             AnyHideX(AddProfile, DeleteProfile, Player1, Player2, Player3, Player4, Player5, Player6, CurrentPlayer, AutorizeImg, Continue, AddPlayer);
 
-
-            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-
-            SqlCommand cmd = new SqlCommand("NewGameStart", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            cmd.Connection.Close();
+            DataBaseMSsql.NewGameStart(DataBaseMSsql.CurrentLogin);
 
             SetEnemies();
             Exp = 0;
@@ -1062,7 +1178,7 @@ namespace WpfApp1
             CurrentAPcalculate();
             BAG.EquipWearSet(false, false, false, false);
             BAG.ItemsSet(10, 10, 10, 10, 0, 0, 0, 0, 0);
-            Sets.MenuTask = 0;
+            Super1.MenuTask = 0;
             Uri uriSourceCH = new Uri(@"ChestClosed(ver1).png", UriKind.RelativeOrAbsolute);
             FastImgChange(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4 }, new BitmapImage[] { new BitmapImage(uriSourceCH), new BitmapImage(uriSourceCH), new BitmapImage(uriSourceCH), new BitmapImage(uriSourceCH) });
         }
@@ -1173,42 +1289,42 @@ namespace WpfApp1
             {
                 case 0:
                     MapScheme = new Byte[,]
-                    {{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },
-                    {  1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1 },
-                    {  1,0,0,1,0,1,0,0,1,0,1,0,0,0,1,1,1,1,1,1,0,1,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,0,0,0,1 },
-                    {  1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,1,0,0,0,0,0,1,0,0,0,0,1,0,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1 },
-                    {  1,1,1,0,1,1,1,1,0,1,0,0,1,0,1,0,1,1,1,1,1,1,1,1,0,0,1,0,1,0,1,0,0,0,0,1,161,1,0,0,0,1,0,0,1,1,0,1,0,0,1,1,0,0,1,1,1,0,0,1 },
-                    {  1,0,0,0,1,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,1,0,0,0,0,0,0,0,0,1,1,1,0,1,0,0,1,0,1,1,0,0,0,0,0,1,1,0,1 },
-                    {  1,1,0,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,0,1,0,0,1,1,1,1,0,1,0,1 },
-                    {  1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,203,1,0,0,1,1,0,1,0,0,0,1,1,1,1,133,1,1,1,0,0,0,0,1,0,0,1,0,1,0,1,1,0,0,1,0,1,0,1 },
-                    {  1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,0,0,1,1,1,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,1,0,1,0,1,0,0,0,1,0,1,0,1 },
-                    {  1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,1,1,204,0,0,0,0,1,1,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,1,0,1,0,1,191,1,0,1,0,1,0,1 },
-                    {  1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,1,0,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,0,0,0,0,0,173,1,1,1,1,1,1,0,1,1,0,1,0,0,1,1,0,1,0,1,0,1 },
-                    {  1,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,1,0,1,0,0,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,1,1,0,1 },
-                    {  1,0,1,0,1,0,1,1,1,0,1,0,1,1,1,1,1,0,1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,1,1,1,1,1,0,0,1 },
-                    {  1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1,1,1,1,1,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1 },
-                    {  1,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1 },
-                    {  1,0,1,0,1,0,1,0,1,0,1,0,0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1 },
-                    {  1,0,1,0,1,0,1,0,1,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1 },
-                    {  1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1,1,0,1,0,0,1,150,1,0,1,0,1,1,1,1,1,0,0,1,1,1,1,1,0,1,1,0,0,0,1,0,0,0,0,0,0,1 },
-                    {  1,0,1,1,131,1,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1 },
-                    {  1,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,1,1,1,1,1,1,132,1,1,0,1,1,1,0,0,1,0,0,1,1,1,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,1 },
-                    {  1,0,0,0,0,0,1,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,1 },
-                    {  1,0,1,0,0,0,0,1,1,1,1,102,0,0,0,0,1,0,1,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,0,1,0,1,0,0,0,0,1,0,1,1,1,0,0,0,0,0,0,0,0,0,1,0,0,1 },
-                    {  1,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1 },
-                    {  1,0,1,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1,0,1,0,0,1,0,0,1,1,1,1,0,0,0,0,0,1,0,0,1 },
-                    {  1,0,1,0,1,0,0,0,0,0,1,202,0,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1 },
-                    {  1,1,1,0,1,1,1,1,0,0,1,1,0,0,1,172,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,1,1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1 },
-                    {  1,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,1,1,0,0,1,0,0,1,0,0,0,1,1,1,0,1,1,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1 },
-                    {  1,0,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,201,1,0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,1,1,1,0,1,0,0,1,0,0,1 },
-                    {  1,0,0,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,0,1,0,0,0,1,0,0,1,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,1,0,1,0,0,1,0,0,0,0,0,1,0,0,1,1,0,1 },
-                    {  1,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,1,1,0,0,1,0,1,0,0,1,0,0,0,1,0,0,0,1,1,0,0,0,0,1,0,1,0,0,1,1,1,1,1,1,1,0,1,0,0,1 },
-                    {  1,0,1,0,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0,1,0,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1 },
-                    {  1,1,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,0,0,1,0,0,0,1,0,1,0,1,0,1,1,1,0,1,1,0,0,1,1,1,1,0,0,1,1,0,1,0,0,1 },
-                    {  1,0,0,0,1,0,0,0,0,1,1,0,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,1,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,1,1,0,1 },
-                    {  1,0,101,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,171,0,1,0,1,0,1,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,103,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,1 },
-                    {  1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
-                    {  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }};
+                    {{ 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 },  
+                    {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  0,  0,  1,  0,  1,  0,  0,  1,  0,  1,  0,  0,  0,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  0,  0,  0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  1,  1,  0,  0,  0,  1 },  
+                    {  1,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  1,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  1,  1,  0,  1,  1,  1,  1,  0,  1,  0,  0,  1,  0,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  1,161,  1,  0,  0,  0,  1,  0,  0,  1,  1,  0,  1,  0,  0,  1,  1,  0,  0,  1,  1,  1,  0,  0,  1 },  
+                    {  1,  0,  0,  0,  1,  0,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  0,  0,  1,  0,  1,  1,  0,  0,  0,  0,  0,  1,  1,  0,  1 },  
+                    {  1,  1,  0,  1,  1,  0,  1,  1,  1,  1,  0,  1,  1,  0,  1,  1,  1,  1,  0,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  0,  1,  0,  1,  1,  0,  1,  0,  0,  1,  1,  1,  1,  0,  1,  0,  1 },  
+                    {  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,203,  1,  0,  0,  1,  1,  0,  1,  0,  0,  0,  1,  1,  1,  1,133,  1,  1,  1,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  0,  1,  1,  0,  0,  1,  0,  1,  0,  1 },  
+                    {  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  0,  1,  0,  0,  0,  1,  1,  1,  0,  1,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,  1,  0,  1,  0,  1 },  
+                    {  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  1,  1,  1,204,  0,  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  1,  1,  1,  1,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  0,  1,191,  1,  0,  1,  0,  1,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  1,  1,  1,  1,  1,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,173,  1,  1,  1,  1,  1,  1,  0,  1,  1,  0,  1,  0,  0,  1,  1,  0,  1,  0,  1,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  0,  1,  1,  1,  0,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,  0,  0,  0,  1,  1,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  0,  1,  1,  1,  0,  1,  0,  1,  1,  1,  1,  1,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,  1,  1,  1,  1,  1,  1,  1,  0,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  1,  1,  1,  1,  0,  0,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,  1,  1,  1,  1,  1,  0,  0,  1,  0,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  0,  0,  1,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  1,  0,  0,  1,150,  1,  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  1,  1,  1,  1,  0,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  0,  1,  1,131,  1,  0,  0,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  1,  1,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,  1,  1,  1,  1,  1,132,  1,  1,  0,  1,  1,  1,  0,  0,  1,  0,  0,  1,  1,  1,  0,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  0,  0,  0,  0,  0,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  0,  0,  1 },  
+                    {  1,  0,  1,  0,  0,  0,  0,  1,  1,  1,  1,102,  0,  0,  0,  0,  1,  0,  1,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  0,  1,  0,  0,  0,  0,  1,  0,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1 },  
+                    {  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  1,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  0,  1,  0,  0,  1,  0,  0,  1,  1,  1,  1,  0,  0,  0,  0,  0,  1,  0,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,  1,202,  0,  0,  1,  1,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  1 },  
+                    {  1,  1,  1,  0,  1,  1,  1,  1,  0,  0,  1,  1,  0,  0,  1,172,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  1,  1,  1,  1,  1,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1 },  
+                    {  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  1,  0,  0,  0,  1,  1,  1,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  0,  1,  1,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,201,  1,  0,  0,  0,  0,  1,  0,  0,  1,  1,  1,  1,  0,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  1,  0,  0,  1,  0,  0,  1 },  
+                    {  1,  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  1,  1,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  1,  1,  0,  0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  0,  0,  0,  1,  0,  1,  0,  0,  1,  1,  1,  1,  1,  1,  1,  0,  1,  0,  0,  1 },  
+                    {  1,  0,  1,  0,  1,  0,  0,  0,  0,  1,  1,  1,  1,  0,  0,  0,  0,  1,  1,  0,  1,  0,  0,  1,  0,  0,  1,  0,  1,  1,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1 },  
+                    {  1,  1,  1,  0,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  1,  0,  1,  0,  1,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  1,  1,  1,  0,  0,  1,  1,  0,  1,  0,  0,  1 },  
+                    {  1,  0,  0,  0,  1,  0,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  1,  0,  0,  0,  1,  0,  1,  0,  0,  0,  1,  0,  1,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1,  1,  0,  1 },  
+                    {  1,  0,101,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,171,  0,  1,  0,  1,  0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,103,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1 },  
+                    {  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },  
+                    {  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 }};
                     break;
                 case 1:
                     MapScheme = new Byte[,]
@@ -1291,26 +1407,18 @@ namespace WpfApp1
         private void Med1_MediaEnded(object sender, RoutedEventArgs e)
         {
             Img1.Source = new BitmapImage(new Uri(@"AbsoluteBlack.jpg", UriKind.RelativeOrAbsolute));
-            ImgShow(Img1);
-            MediaShow(ChapterIntroduction);
-            MediaHide(Med1);
-            ButtonHide(Skip1);
+            AnyShowX(Img1, ChapterIntroduction);
+            AnyHideX(Med1, Skip1);
             HeyPlaySomething(new Uri(@"Main_theme.mp3", UriKind.RelativeOrAbsolute));
         }
         private void CheckIfInteracted()
         {
             if (ChestMessage1.IsEnabled)
-            {
                 ImgHide(ChestMessage1);
-            }
             if (TaskCompletedImg.IsEnabled)
-            {
                 ImgHide(TaskCompletedImg);
-            }
             if (PainImg.IsEnabled)
-            {
                 ImgHide(PainImg);
-            }
         }
         //[EN] Complete tasks
         //[RU] Завершение задач.
@@ -1320,7 +1428,7 @@ namespace WpfApp1
             ImgShow(TaskCompletedImg);
             Sets.LockIndex--;
             Sets.EnemyRate++;
-            Sets.MenuTask++;
+            Super1.MenuTask++;
         }
         //[EN] Target select mech
         //[RU] Механика выбора цели.
@@ -2698,9 +2806,7 @@ namespace WpfApp1
                 BattleText1.Content = "Победа!";
                 BattleText2.Content = "Пора переходить к добыче";
                 BattleText3.Content = "";
-                ImgShow(Img4);
-                LabShowX(new Label[] { BattleText1, BattleText2 });
-                ButtonShow(textOk2);
+                AnyShowX(Img4, BattleText1, BattleText2, textOk2);
             }
             else
             {
@@ -2767,7 +2873,7 @@ namespace WpfApp1
             }
             else
             {
-                UInt16 GameSpeed1 = Convert.ToUInt16((240 / Super1.Speed) / GameSpeed.Value);
+                UInt16 GameSpeed1 = Convert.ToUInt16(240 / Super1.Speed / GameSpeed.Value);
                 WidelyUsedAnyTimer(out timer, Player_Time_Tick, new TimeSpan(0, 0, 0, 0, GameSpeed1));
             }
         }
@@ -3275,10 +3381,9 @@ namespace WpfApp1
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             timer9.Stop();
-            ImgHideX(new Image[] { TrgtImg, EnemyImg });
             UInt16 strength = Convert.ToUInt16(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0]);
             Byte PharaohAura = 0;
-
+            AnyHideX(BattleText1, HPenemyBar, HPenemy, Fight, Cancel1, TrgtImg, EnemyImg);
             SelectedTrgt = Sets.SelectedTarget;
             UInt16 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
             WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, GameSpeed1));
@@ -3287,7 +3392,7 @@ namespace WpfApp1
             {
                 PharaohAura = 25;
             }
-            AnyHideX(BattleText1, HPenemyBar, HPenemy, Fight, Cancel1);
+            
             LabShow(BattleText1);
 
             Time1.Value = 0;
@@ -3737,12 +3842,20 @@ namespace WpfApp1
         {
             LabShow(BattleText2);
         }
-
-        public void DisableBattleText()
+        private void FightStaticButtons_MouseEnter(object sender, MouseEventArgs e)
         {
-            LabHide(BattleText2);
+            Button[] FightMenu = { Cancel1, Cancel2, Back1, Back2 };
+            String[] BattleTxt = { "Отменить нападение", "Отменить умение", "Обратно к действиям", "Обратно к действиям" };
+            for (Byte i = 0; i < FightMenu.Length; i++)
+            {
+                if (sender.Equals(FightMenu[i]))
+                {
+                    BattleText2.Content = BattleTxt[i];
+                    LabShow(BattleText2);
+                    break;
+                }
+            }
         }
-
         private void FightStaticButtons_MouseLeave(object sender, MouseEventArgs e)
         {
             Button[] FightMenu = { Cancel1, Cancel2, Back1, Back2 };
@@ -3790,7 +3903,7 @@ namespace WpfApp1
         private void Cancel1_MouseEnter(object sender, MouseEventArgs e)
         {
             BattleText2.Content = "Отменить нападение";
-            TextCh1();
+            LabShow(BattleText1);
         }
         private void HideFightIconPersActions()
         {
@@ -3822,17 +3935,6 @@ namespace WpfApp1
         {
             AbilitiesMakeDisappear1();
             FightMenuBack();
-        }
-
-        private void Back1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BattleText2.Content = "Вернуться к действиям";
-            TextCh1();
-        }
-
-        private void Back1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            LabHide(BattleText2);
         }
         private void PersonTextAnimationStart(in EventHandler PersonAction, in EventHandler IconAction, in UInt16 PersonSpeed, in UInt16 IconSpeed)
         {
@@ -4050,7 +4152,7 @@ namespace WpfApp1
         private void Levelling_Time_Tick40(object sender, EventArgs e)
         {
             if ((Exp > 0) && (Super1.CurrentLevel < 25)) {
-                if (NextExpBar.Value + 1 >= NextExpBar.Maximum)
+                if (Super1.Experience + 1 >= NextExpBar.Maximum)
                 {
                     if (Super1.CurrentLevel < 25) {
                         Super1.CurrentLevel += 1;
@@ -4061,6 +4163,7 @@ namespace WpfApp1
                         Super1.MaxHP = Super1.MaxHPNxt[Super1.CurrentLevel - 1];
                         Super1.MaxAP = Super1.MaxAPNxt[Super1.CurrentLevel - 1];
 
+                        Super1.Experience = 0;
                         NextExpBar.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
                         NextExpBar.Value = 0;
                         ExpText.Content = "Опыт " + NextExpBar.Value + "/" + NextExpBar.Maximum;
@@ -4092,6 +4195,7 @@ namespace WpfApp1
                         }
                     } else
                     {
+                        Super1.Experience = Convert.ToUInt16(NextExpBar.Maximum);
                         NextExpBar.Value = NextExpBar.Maximum;
                         //                "Максимальный"
                         ExpText.Content = "Профессионал";
@@ -4110,7 +4214,8 @@ namespace WpfApp1
                 }
                 else
                 {
-                    NextExpBar.Value++;
+                    Super1.Experience++;
+                    NextExpBar.Value= Super1.Experience;
                     ExpText.Content = "Опыт " + NextExpBar.Value + "/" + NextExpBar.Maximum;
                 }
                 Exp--;
@@ -4808,6 +4913,7 @@ namespace WpfApp1
             APbar1.Width = (APbar.Width + APbarOver333.Width + APbarOver666.Width) * 0.65;
             APbar1.Maximum = Super1.MaxAP;
             APbar1.Value = Super1.CurrentAP;
+            NextExpBar.Value = Super1.Experience;
             ExpBar1.Width = NextExpBar.Width * 0.5;
             ExpBar1.Maximum = NextExpBar.Maximum;
             ExpBar1.Value = NextExpBar.Value;
@@ -5434,7 +5540,7 @@ namespace WpfApp1
             LabShow(Describe2);
             Tasks.IsEnabled = false;
             Uri[] uriSources = new Uri[] { new Uri(@"ActiveTask.png", UriKind.RelativeOrAbsolute), new Uri(@"CompletedTask.png", UriKind.RelativeOrAbsolute) };
-            switch (Sets.MenuTask)
+            switch (Super1.MenuTask)
             {
                 case 0:
                     LabShow(Task1);
@@ -5500,11 +5606,6 @@ namespace WpfApp1
             Describe2.Content = "Руководство игрока";
             LabShow(DescribeHeader);
             LabShow(Describe1);
-        }
-
-        private void BarExchange(in Boolean HPorAP, in Byte lvl, in Int16 AddOrDrop)
-        {
-
         }
         private void FastInfoChange(TextBlock[] Texts, Label[] Headers, in string[] text, in string[] content)
         {
@@ -5592,12 +5693,12 @@ namespace WpfApp1
         {
             HideFightIconPersActions();
             WonOrDied();
-            switch (Sets.MenuTask)
+            switch (Super1.MenuTask)
             {
                 case 3:
                     MediaShowAdvanced(TheEnd, new Uri(@"Final1.mp4", UriKind.RelativeOrAbsolute), new TimeSpan(0, 0, 0, 0, 0));
                     HeyPlaySomething(new Uri(@"Final1.mp3", UriKind.RelativeOrAbsolute));
-                    Sets.MenuTask++;
+                    Super1.MenuTask++;
                     Img1.Source = new BitmapImage(new Uri(@"AbsoluteBlack.jpg", UriKind.RelativeOrAbsolute));
                     break;
                 case 4:
@@ -5764,6 +5865,27 @@ namespace WpfApp1
                 if (sender.Equals(abils[i]))
                     Dj(uris[i]);
             }
+            if (sender.Equals(Cure1))
+            {
+                Super1.CurrentHP= Convert.ToUInt16(Super1.CurrentHP+Convert.ToUInt16(Super1.Special*2)>=Super1.MaxHP? Super1.MaxHP: Super1.CurrentHP + Convert.ToUInt16(Super1.Special * 2));
+                Super1.CurrentAP -= 5;
+                RefreshAllHPAP();
+                MenuHpApExp();
+            }
+            if (sender.Equals(Cure2Out))
+            {
+                Super1.CurrentHP = Super1.MaxHP;
+                Super1.CurrentAP -= 10;
+                RefreshAllHPAP();
+                MenuHpApExp();
+            }
+            if (sender.Equals(Heal1))
+            {
+                Super1.PlayerStatus = 0;
+                Super1.CurrentAP -= 3;
+                RefreshAllHPAP();
+                MenuHpApExp();
+            }
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
@@ -5924,45 +6046,16 @@ namespace WpfApp1
                 }
                 try
                 {
-                    //@"Server=SASHA\SQLEXPRESS;Database=DesertRageGame;Trusted_Connection=Yes"
-                    //"Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True"
-                    SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-
-                    SqlCommand cmd = new SqlCommand("AddNewProfile", con);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = AddPlayer.Text;
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                    cmd.Connection.Close();
-                    cmd = new SqlCommand("CheckLogin", con);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    //cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value="CAHEK";
-                    cmd.Connection.Open();
-                    SqlDataReader sqlDataReader = cmd.ExecuteReader();
-                   DataBaseMSsql.PlayerLogins = new List<string>();
-                    if (sqlDataReader.HasRows)
-                    {
-                        while (sqlDataReader.Read())
-                        {
-                           DataBaseMSsql.PlayerLogins.Add(sqlDataReader.GetValue(0).ToString());
-                        }
-                    }
-                    cmd.Connection.Close();
-                    if (DataBaseMSsql.PlayerLogins.Count > 0)
-                    {
-                        CurrentPlayer.Content =DataBaseMSsql.PlayerLogins[0];
-                    }
-                    else
-                    {
-                        CurrentPlayer.Content = "????";
-                    }
+                    DataBaseMSsql.NewPlayer(AddPlayer.Text);
+                    DataBaseMSsql.CheckAllRecordedPlayers();
+                    DataBaseMSsql.GetCurrentPlayer();
                     AnyHideX(AddPlayer, AddProfile);
                     AddPlayer.Text = "";
                     CheckRecords();
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Something get wrong" + ex);
+                    throw new Exception("Something get wrong, Read this: " + ex);
                 }
             }
             else
@@ -6015,28 +6108,7 @@ namespace WpfApp1
             CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 3, 0);
             ButtonShow(DeleteProfile);
-            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (DataBaseMSsql.CurrentLogin != "????")
-            {
-                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Connection.Open();
-                SqlDataReader sqlDataReader = cmd.ExecuteReader();
-                string slct = "";
-                if (sqlDataReader.HasRows)
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        slct = sqlDataReader.GetValue(2).ToString();
-                    }
-                }
-                if (slct != "1")
-                    Continue.IsEnabled = true;
-                else
-                    Continue.IsEnabled = false;
-                cmd.Connection.Close();
-            }
+            Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue();
         }
 
         private void Player2_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -6045,28 +6117,7 @@ namespace WpfApp1
             CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 5, 0);
             ButtonShow(DeleteProfile);
-            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (DataBaseMSsql.CurrentLogin != "????")
-            {
-                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Connection.Open();
-                SqlDataReader sqlDataReader = cmd.ExecuteReader();
-                string slct = "";
-                if (sqlDataReader.HasRows)
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        slct = sqlDataReader.GetValue(2).ToString();
-                    }
-                }
-                if (slct != "1")
-                    Continue.IsEnabled = true;
-                else
-                    Continue.IsEnabled = false;
-                cmd.Connection.Close();
-            }
+            Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue();
         }
 
         private void Player3_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -6075,28 +6126,7 @@ namespace WpfApp1
             CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 7, 0);
             ButtonShow(DeleteProfile);
-            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (DataBaseMSsql.CurrentLogin != "????")
-            {
-                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Connection.Open();
-                SqlDataReader sqlDataReader = cmd.ExecuteReader();
-                string slct = "";
-                if (sqlDataReader.HasRows)
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        slct = sqlDataReader.GetValue(2).ToString();
-                    }
-                }
-                if (slct != "1")
-                    Continue.IsEnabled = true;
-                else
-                    Continue.IsEnabled = false;
-                cmd.Connection.Close();
-            }
+            Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue();
         }
 
         private void Player4_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -6105,28 +6135,7 @@ namespace WpfApp1
             CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 9, 0);
             ButtonShow(DeleteProfile);
-            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (DataBaseMSsql.CurrentLogin != "????")
-            {
-                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Connection.Open();
-                SqlDataReader sqlDataReader = cmd.ExecuteReader();
-                string slct = "";
-                if (sqlDataReader.HasRows)
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        slct = sqlDataReader.GetValue(2).ToString();
-                    }
-                }
-                if (slct != "1")
-                    Continue.IsEnabled = true;
-                else
-                    Continue.IsEnabled = false;
-                cmd.Connection.Close();
-            }
+            Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue();
         }
 
         private void Player5_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -6135,28 +6144,7 @@ namespace WpfApp1
             CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 11, 0);
             ButtonShow(DeleteProfile);
-            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (DataBaseMSsql.CurrentLogin != "????")
-            {
-                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Connection.Open();
-                SqlDataReader sqlDataReader = cmd.ExecuteReader();
-                string slct = "";
-                if (sqlDataReader.HasRows)
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        slct = sqlDataReader.GetValue(2).ToString();
-                    }
-                }
-                if (slct != "1")
-                    Continue.IsEnabled = true;
-                else
-                    Continue.IsEnabled = false;
-                cmd.Connection.Close();
-            }
+            Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue();
         }
 
         private void Player6_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -6165,28 +6153,7 @@ namespace WpfApp1
             CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
             BtnGrid(DeleteProfile, 13, 0);
             ButtonShow(DeleteProfile);
-            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-            if (DataBaseMSsql.CurrentLogin != "????")
-            {
-                SqlCommand cmd = new SqlCommand("CheckPlayer", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Connection.Open();
-                SqlDataReader sqlDataReader = cmd.ExecuteReader();
-                string slct = "";
-                if (sqlDataReader.HasRows)
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        slct = sqlDataReader.GetValue(2).ToString();
-                    }
-                }
-                if (slct != "1")
-                    Continue.IsEnabled = true;
-                else
-                    Continue.IsEnabled = false;
-                cmd.Connection.Close();
-            }
+            Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue();
         }
 
         private void Player1_MouseLeave(object sender, MouseEventArgs e)
@@ -6201,126 +6168,31 @@ namespace WpfApp1
 
         private void DeleteProfile_Click(object sender, RoutedEventArgs e)
         {
-            ButtonHide(DeleteProfile);
-            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-
-            SqlCommand cmd = new SqlCommand("DeleteProfile", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-            for (Byte i = 0; i <DataBaseMSsql.PlayerLogins.Count; i++) {
-                if (DataBaseMSsql.PlayerLogins[i] == DataBaseMSsql.CurrentLogin)
-                {
-                   DataBaseMSsql.PlayerLogins.RemoveAt(i);
-                }
-            }
-            if (DataBaseMSsql.PlayerLogins.Count > 0)
-            {
-                DataBaseMSsql.CurrentLogin =DataBaseMSsql.PlayerLogins[0];
-            }
-            else
-            {
-                DataBaseMSsql.CurrentLogin = "????";
-            }
-            CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
-            LabHideX(new Label[] { Player1, Player2, Player3, Player4, Player5, Player6 });
+            DataBaseMSsql.DeletePlayer(DataBaseMSsql.CurrentLogin);
+            DataBaseMSsql.CheckAllRecordedPlayers();
+            CurrentPlayer.Content = DataBaseMSsql.GetCurrentPlayer();
+            AnyHideX(Player1, Player2, Player3, Player4, Player5, Player6, DeleteProfile);
             CheckRecords();
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            cmd.Connection.Close();
         }
 
-        private void AddPlayer_MouseEnter(object sender, MouseEventArgs e)
+        private void AddPlayer_MouseEnter(object sender, RoutedEventArgs e)
         {
-            if ((AddPlayer.Text == "Никем быть нельзя!") || (AddPlayer.Text == "Один уже есть"))
-            {
-                AddPlayer.Text = "";
-            }
-        }
-
-        private void AddPlayer_MouseEnter2(object sender, RoutedEventArgs e)
-        {
-            if ((AddPlayer.Text == "Никем быть нельзя!") || (AddPlayer.Text == "Один уже есть"))
-            {
-                AddPlayer.Text = "";
-            }
+            AddPlayer.Text = ((AddPlayer.Text == "Никем быть нельзя!") || (AddPlayer.Text == "Один уже есть")) ? "": AddPlayer.Text;
         }
 
         private void SaveGame()
         {
             try
             {
-                SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
-
-                SqlCommand cmd = new SqlCommand("GetNewItemsBag", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Parameters.Add("@BAN", SqlDbType.TinyInt).Value = BAG.BandageITM;
-                cmd.Parameters.Add("@ETR", SqlDbType.TinyInt).Value = BAG.EtherITM;
-                cmd.Parameters.Add("@ANT", SqlDbType.TinyInt).Value = BAG.AntidoteITM;
-                cmd.Parameters.Add("@FUS", SqlDbType.TinyInt).Value = BAG.FusedITM;
-                cmd.Parameters.Add("@HRB", SqlDbType.TinyInt).Value = BAG.HerbsITM;
-                cmd.Parameters.Add("@ER2", SqlDbType.TinyInt).Value = BAG.Ether2ITM;
-                cmd.Parameters.Add("@SLB", SqlDbType.TinyInt).Value = BAG.SleepBagITM;
-                cmd.Parameters.Add("@ELX", SqlDbType.TinyInt).Value = BAG.ElixirITM;
-                cmd.Parameters.Add("@MAT", SqlDbType.SmallInt).Value = BAG.Materials;
-                cmd.Connection.Open();
-                cmd.ExecuteNonQuery();
-                cmd.Parameters.Clear();
-                cmd.Connection.Close();
-
-                cmd = new SqlCommand("GetNewSettings", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Parameters.Add("@MUS", SqlDbType.TinyInt).Value = Convert.ToByte(MusicLoud.Value * 100);
-                cmd.Parameters.Add("@SND", SqlDbType.TinyInt).Value = Convert.ToByte(SoundsLoud.Value * 100);
-                cmd.Parameters.Add("@NS", SqlDbType.TinyInt).Value = Convert.ToByte(NoiseLoud.Value * 100);
-                cmd.Parameters.Add("@FS", SqlDbType.TinyInt).Value = Convert.ToByte(GameSpeed.Value * 100);
-                cmd.Parameters.Add("@BR", SqlDbType.TinyInt).Value = Convert.ToByte(Brightness.Value * 100);
-                if (TimerTurnOn.IsChecked.Value)
-                    cmd.Parameters.Add("@TMR", SqlDbType.Bit).Value = 1;
-                else
-                    cmd.Parameters.Add("@TMR", SqlDbType.Bit).Value = 0;
-                cmd.Connection.Open();
-                cmd.ExecuteNonQuery();
-                cmd.Parameters.Clear();
-                cmd.Connection.Close();
-
-                cmd = new SqlCommand("GetNewEquip", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Parameters.Add("@WPN", SqlDbType.TinyInt).Value = Super1.PlayerEQ[0];
-                cmd.Parameters.Add("@ARR", SqlDbType.TinyInt).Value = Super1.PlayerEQ[1];
-                cmd.Parameters.Add("@PNT", SqlDbType.TinyInt).Value = Super1.PlayerEQ[2];
-                cmd.Parameters.Add("@BOO", SqlDbType.TinyInt).Value = Super1.PlayerEQ[3];
                 Byte[] CipherValue = new Byte[] { 1, 2, 4, 8 };
-                cmd.Parameters.Add("@WPS", SqlDbType.TinyInt).Value = Encoder(CipherValue, BAG.Weapon, Convert.ToByte(BAG.Weapon.Length));
-                cmd.Parameters.Add("@ARS", SqlDbType.TinyInt).Value = Encoder(CipherValue, BAG.Armor, Convert.ToByte(BAG.Armor.Length));
-                cmd.Parameters.Add("@PTS", SqlDbType.TinyInt).Value = Encoder(CipherValue, BAG.Pants, Convert.ToByte(BAG.Pants.Length));
-                cmd.Parameters.Add("@BTS", SqlDbType.TinyInt).Value = Encoder(CipherValue, BAG.ArmBoots, Convert.ToByte(BAG.ArmBoots.Length));
-                cmd.Connection.Open();
-                cmd.ExecuteNonQuery();
-                cmd.Parameters.Clear();
-                cmd.Connection.Close();
-
-                cmd = new SqlCommand("GetNewParams", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-                cmd.Parameters.Add("@LV", SqlDbType.TinyInt).Value = Super1.CurrentLevel;
-                cmd.Parameters.Add("@LC", SqlDbType.TinyInt).Value = Sets.MenuTask;
-                cmd.Parameters.Add("@HP", SqlDbType.SmallInt).Value = Super1.CurrentHP;
-                cmd.Parameters.Add("@AP", SqlDbType.SmallInt).Value = Super1.CurrentAP;
-                cmd.Parameters.Add("@XP", SqlDbType.SmallInt).Value = NextExpBar.Value;
-                cmd.Parameters.Add("@TK", SqlDbType.TinyInt).Value = 0;
-                cmd.Parameters.Add("@LN", SqlDbType.TinyInt).Value = 0;
-                cmd.Parameters.Add("@TR", SqlDbType.Bit).Value = 1;
-                cmd.Connection.Open();
-                cmd.ExecuteNonQuery();
-                cmd.Parameters.Clear();
-                cmd.Connection.Close();
+                DataBaseMSsql.SavePlayerBag(new string[] { "@LOGIN", "@BAN", "@ETR", "@ANT", "@FUS", "@HRB", "@ER2", "@SLB", "@ELX", "@MAT" }, new Object[] { DataBaseMSsql.CurrentLogin, BAG.BandageITM, BAG.EtherITM, BAG.AntidoteITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM, BAG.Materials});
+                DataBaseMSsql.SavePlayerEquip(new string[] { "@LOGIN", "@WPN", "@ARR", "@PNT", "@BOO", "@WPS", "@ARS", "@PTS", "@BTS" }, new Object[] { DataBaseMSsql.CurrentLogin, Super1.PlayerEQ[0], Super1.PlayerEQ[1], Super1.PlayerEQ[2], Super1.PlayerEQ[3], Encoder(CipherValue, BAG.Weapon, Convert.ToByte(BAG.Weapon.Length)), Encoder(CipherValue, BAG.Armor, Convert.ToByte(BAG.Armor.Length)), Encoder(CipherValue, BAG.Pants, Convert.ToByte(BAG.Pants.Length)), Encoder(CipherValue, BAG.ArmBoots, Convert.ToByte(BAG.ArmBoots.Length)) });
+                DataBaseMSsql.SavePlayerSettings(new string[] { "@LOGIN", "@MUS", "@SND", "@NS", "@FS", "@BR", "@TMR" }, new Object[] { DataBaseMSsql.CurrentLogin, Convert.ToByte(MusicLoud.Value * 100), Convert.ToByte(SoundsLoud.Value * 100), Convert.ToByte(NoiseLoud.Value * 100), Convert.ToByte(GameSpeed.Value * 100), Convert.ToByte(Brightness.Value * 100), TimerTurnOn.IsChecked.Value });
+                DataBaseMSsql.SavePlayerStats(new string[] { "@LOGIN", "@LV", "@LC", "@HP", "@AP", "@XP", "@TK", "@LN", "@TR" }, new Object[] { DataBaseMSsql.CurrentLogin, Super1.GetPlayerRecord(), true });
             }
             catch (Exception ex)
             {
-                throw new Exception("Something get wrong" + ex);
+                throw new Exception("Something get wrong, Read this: " + ex);
             }
         }
         private Byte Encoder(in Byte[] CipherValues, in Boolean[] ToEncode, in Byte length)
@@ -6360,51 +6232,33 @@ namespace WpfApp1
         }
         private void Continue_Click(object sender, RoutedEventArgs e)
         {
-            SqlConnection con = new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
+            Object[] Bag=DataBaseMSsql.CheckPlayerBag(DataBaseMSsql.CurrentLogin, new Object[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            BAG.ItemsSet(Convert.ToByte(Bag[0]), Convert.ToByte(Bag[1]), Convert.ToByte(Bag[2]), Convert.ToByte(Bag[3]), Convert.ToByte(Bag[4]), Convert.ToByte(Bag[5]), Convert.ToByte(Bag[6]), Convert.ToByte(Bag[7]), Convert.ToUInt16(Bag[8]));
 
-            SqlCommand cmd = new SqlCommand("CheckBAG", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-            cmd.Connection.Open();
-            SqlDataReader sqlDataReader = cmd.ExecuteReader();
-            if (sqlDataReader.HasRows)
-            {
-                while (sqlDataReader.Read())
-                {
-                    BAG.BandageITM = Convert.ToByte(sqlDataReader.GetValue(2).ToString());
-                    BAG.EtherITM = Convert.ToByte(sqlDataReader.GetValue(3).ToString());
-                    BAG.AntidoteITM = Convert.ToByte(sqlDataReader.GetValue(4).ToString());
-                    BAG.FusedITM = Convert.ToByte(sqlDataReader.GetValue(5).ToString());
-                    BAG.HerbsITM = Convert.ToByte(sqlDataReader.GetValue(6).ToString());
-                    BAG.Ether2ITM = Convert.ToByte(sqlDataReader.GetValue(7).ToString());
-                    BAG.SleepBagITM = Convert.ToByte(sqlDataReader.GetValue(8).ToString());
-                    BAG.ElixirITM = Convert.ToByte(sqlDataReader.GetValue(9).ToString());
-                    BAG.Materials = Convert.ToUInt16(sqlDataReader.GetValue(10).ToString());
-                }
-            }
-            cmd.Parameters.Clear();
-            cmd.Connection.Close();
-            cmd = new SqlCommand("CheckEquip", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-            cmd.Connection.Open();
+            Byte[] ByteEquip = DataBaseMSsql.CheckPlayerEquip(DataBaseMSsql.CurrentLogin, new Byte[] { 0, 0, 0, 0, 0, 0, 0, 0 });
+            Super1.SetAllEquip(ByteEquip[0], ByteEquip[1], ByteEquip[2], ByteEquip[3]);
+            Byte[] Ciphers = { ByteEquip[4], ByteEquip[5], ByteEquip[6], ByteEquip[7] };
 
-            Byte[] Ciphers = { 0, 0, 0, 0 };
-            sqlDataReader = cmd.ExecuteReader();
-            if (sqlDataReader.HasRows)
-            {
-                while (sqlDataReader.Read())
-                {
-                    Super1.PlayerEQ[0] = Convert.ToByte(sqlDataReader.GetValue(2).ToString());
-                    Super1.PlayerEQ[1] = Convert.ToByte(sqlDataReader.GetValue(3).ToString());
-                    Super1.PlayerEQ[2] = Convert.ToByte(sqlDataReader.GetValue(4).ToString());
-                    Super1.PlayerEQ[3] = Convert.ToByte(sqlDataReader.GetValue(5).ToString());
-                    Ciphers[0] = Convert.ToByte(sqlDataReader.GetValue(6).ToString());
-                    Ciphers[1] = Convert.ToByte(sqlDataReader.GetValue(7).ToString());
-                    Ciphers[2] = Convert.ToByte(sqlDataReader.GetValue(8).ToString());
-                    Ciphers[3] = Convert.ToByte(sqlDataReader.GetValue(9).ToString());
-                }
-            }
+            Bag = DataBaseMSsql.GetPlayerRecord(DataBaseMSsql.CurrentLogin, new Object[] { 0, 0, 0, 0, 0, 0, 0 });
+            Super1.CurrentLevel = Convert.ToByte(Bag[0]);
+            Super1.MenuTask= Convert.ToByte(Bag[1]);
+            Super1.SetCurrentHpAp(Convert.ToByte(Bag[2]), Convert.ToByte(Bag[3]));
+            Super1.Experience = Convert.ToUInt16(Bag[4]);
+            Super1.MiniTask = Convert.ToBoolean(Bag[5]);
+            Super1.Learned = Convert.ToByte(Bag[6]);
+
+            NextExpBar.Value = Super1.Experience;
+            NextExpBar.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
+            ExpBar1.Value = NextExpBar.Value;
+            CurrentHPcalculate();
+            CurrentAPcalculate();
+            RefreshAllHPAP();
+
+            Bag = DataBaseMSsql.GetPlayerStats(DataBaseMSsql.CurrentLogin, new Object[] { 0, 0, 0, 0, 0, 0 });
+            Super1.SetStats(Super1.CurrentLevel, Convert.ToUInt16(Bag[0]), Convert.ToUInt16(Bag[1]), Convert.ToByte(Bag[2]), Convert.ToByte(Bag[3]), Convert.ToByte(Bag[4]), Convert.ToByte(Bag[5]));
+
+            ByteEquip = DataBaseMSsql.GetPlayerSettings(DataBaseMSsql.CurrentLogin, new Byte[] { 0, 0, 0, 0, 0, 0 });
+            SettingsSetAll(ByteEquip);
 
             Byte[] CipherValue = new Byte[] { 1, 2, 4, 8 };
             BAG.Weapon = Decoder(CipherValue, Ciphers[0], Convert.ToByte(BAG.Weapon.Length));
@@ -6418,76 +6272,6 @@ namespace WpfApp1
 
             BAG.ArmBoots = Decoder(CipherValue, Ciphers[3], Convert.ToByte(BAG.ArmBoots.Length));
             BAG.Boots = GetValueFromDecoder(BAG.ArmBoots, Super1.PlayerEQ[3]);
-
-            cmd.Parameters.Clear();
-            cmd.Connection.Close();
-
-            cmd = new SqlCommand("CheckPlayer", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-            cmd.Connection.Open();
-            sqlDataReader = cmd.ExecuteReader();
-            if (sqlDataReader.HasRows)
-            {
-                while (sqlDataReader.Read())
-                {
-                    Super1.CurrentLevel = Convert.ToByte(sqlDataReader.GetValue(1).ToString());
-                    Sets.MenuTask = Convert.ToByte(sqlDataReader.GetValue(2).ToString());
-                    Super1.CurrentHP = Convert.ToUInt16(sqlDataReader.GetValue(3).ToString());
-                    Super1.CurrentAP = Convert.ToUInt16(sqlDataReader.GetValue(4).ToString());
-                    NextExpBar.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
-                    NextExpBar.Value = Convert.ToUInt16(sqlDataReader.GetValue(5).ToString());
-                    Sets.MiniTask = Convert.ToBoolean(Convert.ToByte(sqlDataReader.GetValue(6)));
-                    Super1.Learned = Convert.ToByte(sqlDataReader.GetValue(7).ToString());
-                }
-            }
-            CurrentHPcalculate();
-            CurrentAPcalculate();
-            ExpBar1.Value = NextExpBar.Value;
-            RefreshAllHPAP();
-
-            cmd.Parameters.Clear();
-            cmd.Connection.Close();
-            cmd = new SqlCommand("CheckParams", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-            cmd.Connection.Open();
-            sqlDataReader = cmd.ExecuteReader();
-            if (sqlDataReader.HasRows)
-            {
-                while (sqlDataReader.Read())
-                {
-                    Super1.MaxHP = Convert.ToUInt16(sqlDataReader.GetValue(1).ToString());
-                    Super1.MaxAP = Convert.ToUInt16(sqlDataReader.GetValue(2).ToString());
-                    Super1.Attack = Convert.ToByte(sqlDataReader.GetValue(3).ToString());
-                    Super1.Defence = Convert.ToByte(sqlDataReader.GetValue(4).ToString());
-                    Super1.Speed = Convert.ToByte(sqlDataReader.GetValue(5).ToString());
-                    Super1.Special = Convert.ToByte(sqlDataReader.GetValue(6).ToString());
-                }
-            }
-
-            cmd.Parameters.Clear();
-            cmd.Connection.Close();
-            cmd = new SqlCommand("CheckSettings", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LOGIN", SqlDbType.VarChar).Value = DataBaseMSsql.CurrentLogin;
-            cmd.Connection.Open();
-            sqlDataReader = cmd.ExecuteReader();
-            if (sqlDataReader.HasRows)
-            {
-                while (sqlDataReader.Read())
-                {
-                    MusicLoud.Value = Convert.ToDouble(sqlDataReader.GetValue(2)) / 100;
-                    SoundsLoud.Value = Convert.ToDouble(sqlDataReader.GetValue(3)) / 100;
-                    NoiseLoud.Value = Convert.ToDouble(sqlDataReader.GetValue(4)) / 100;
-                    GameSpeed.Value = Convert.ToDouble(sqlDataReader.GetValue(5)) / 100;
-                    Brightness.Value = Convert.ToDouble(sqlDataReader.GetValue(6)) / 100;
-                    TimerTurnOn.IsChecked = Convert.ToBoolean(Convert.ToByte(sqlDataReader.GetValue(7)));
-                }
-            }
-
-            cmd.Parameters.Clear();
-            cmd.Connection.Close();
             ContinueQuest();
         }
 
@@ -6497,7 +6281,7 @@ namespace WpfApp1
             {
                 case 0:
                     ChestsAndTablesAllTurnOn1();
-                    switch (Sets.MenuTask)
+                    switch (Super1.MenuTask)
                     {
                         case 0:
                             Map1ModelsAllTurnOn1();
@@ -6519,7 +6303,7 @@ namespace WpfApp1
                     }
                     ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress }, new Byte[] { 27, 24, 7, 9, 33, 25, 10, 4, 17 }, new Byte[] { 19, 11, 21, 20, 18, 13, 38, 36, 29 });
                     PlayerSetLocation(17, 29);
-                    Sets.LockIndex = Convert.ToByte(3 - Sets.MenuTask);
+                    Sets.LockIndex = Convert.ToByte(3 - Super1.MenuTask);
                     break;
                 case 1:
                     AnyGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress }, new Byte[] { 9, 21, 10, 8, 29, 22, 22, 16, 28 }, new Byte[] { 8, 10, 24, 35, 49, 23, 2, 4, 20 });
@@ -6527,6 +6311,13 @@ namespace WpfApp1
                     PlayerSetLocation(34, 51);
                     break;
             }
+        }
+        private void SettingsSetAll(params Byte[] SettingValues)
+        {
+            Slider[] Sliders = { MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness };
+            for (Byte i = 0; i < Sliders.Length; i++)
+                Sliders[i].Value= Convert.ToDouble(SettingValues[i]) / 100;
+            TimerTurnOn.IsChecked = Convert.ToBoolean(SettingValues[5]);
         }
         private void PlayerSetLocation(in Byte row, in Byte column)
         {
@@ -6536,7 +6327,7 @@ namespace WpfApp1
         }
         private void ContinueQuest()
         {
-            if ((Sets.MenuTask >= 4) && (Sets.MenuTask <= 6))
+            if ((Super1.MenuTask >= 4) && (Super1.MenuTask <= 6))
             {
                 CurrentLocation = 1;
             }
@@ -6606,6 +6397,7 @@ namespace WpfApp1
             RefreshAllHPAP();
             if (Super1.CurrentLevel >= 25)
             {
+                Super1.Experience = Convert.ToUInt16(NextExpBar.Maximum);
                 NextExpBar.Value = NextExpBar.Maximum;
                 ExpBar1.Value = ExpBar1.Maximum;
                 ExpText.Content = "Профессионал";
@@ -6613,6 +6405,7 @@ namespace WpfApp1
             }
             else
             {
+                NextExpBar.Value = Super1.Experience;
                 ExpBar1.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
                 ExpBar1.Value = NextExpBar.Value;
                 ExpText.Content = "Опыт " + NextExpBar.Value + "/" + NextExpBar.Maximum;
@@ -7093,7 +6886,7 @@ namespace WpfApp1
         public static Byte CurrentLocation=0;
         private void ChapterIntroduction_MediaEnded(object sender, RoutedEventArgs e)
         {
-            switch (Sets.MenuTask)
+            switch (Super1.MenuTask)
             {
                 case 0:
                     Img1.Source = new BitmapImage(new Uri(@"Loc1_2.jpg", UriKind.RelativeOrAbsolute));
