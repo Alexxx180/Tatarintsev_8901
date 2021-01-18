@@ -157,8 +157,8 @@
 
         <!--Начальный экран/Карта-->
 
-        <Button x:Name="Button1" Content="Новое приключение" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="121" Width="722" FontSize="72" Click="Button1_Click" Panel.ZIndex="4" Grid.Row="29" Grid.Column="19" Grid.ColumnSpan="23" Grid.RowSpan="5" Visibility="Visible" FontStretch="Normal"/>
-        <Button x:Name="Continue" Content="Продолжить начатое" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="121" Width="722" FontSize="72" Click="Continue_Click" Panel.ZIndex="4" Grid.Row="24" Grid.Column="19" Grid.ColumnSpan="23" Grid.RowSpan="5" Visibility="Visible" IsEnabled="False" FontStretch="Normal"/>
+        <Button x:Name="Button1" Content="Новое приключение" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="121" Width="722" FontSize="72" Click="Button1_Click" Panel.ZIndex="5" Grid.Row="29" Grid.Column="19" Grid.ColumnSpan="23" Grid.RowSpan="5" Visibility="Visible" FontStretch="Normal"/>
+        <Button x:Name="Continue" Content="Продолжить начатое" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="121" Width="722" FontSize="72" Click="Continue_Click" Panel.ZIndex="5" Grid.Row="24" Grid.Column="19" Grid.ColumnSpan="23" Grid.RowSpan="5" Visibility="Visible" IsEnabled="False" FontStretch="Normal"/>
         <Label x:Name="Lab1" Content="Desert Rage" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="Bauhaus 93" FontSize="132" Panel.ZIndex="4" Grid.Column="19" Grid.Row="1" Visibility="Visible" Grid.ColumnSpan="23" Grid.RowSpan="8"/>
         <Image x:Name="Img1" HorizontalAlignment="Left" Height="1080" VerticalAlignment="Top" Width="1920" Stretch="Fill" Source="/Loc2.jpg" Grid.Column="0" Grid.Row="0" Visibility="Visible" Grid.ColumnSpan="60" Grid.RowSpan="36" Panel.ZIndex="3"/>
 
@@ -239,8 +239,6 @@
                 </LinearGradientBrush>
             </ProgressBar.Foreground>
         </ProgressBar>
-        <!--<MediaElement x:Name="Med3" LoadedBehavior="Manual" HorizontalAlignment="Center" Height="240" Margin="128,589,0,0" VerticalAlignment="Center" Width="240" Panel.ZIndex="7" Visibility="Hidden" IsEnabled="False" Source="D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\HandAttack2.m4v" MediaEnded="Med3_MediaEnded" SpeedRatio="2" MediaFailed="Med3_MediaFailed" MediaOpened="Med3_MediaOpened" Grid.Column="45" Grid.RowSpan="9" Grid.ColumnSpan="8" Grid.Row="18"/>
-        <MediaElement x:Name="Med4" LoadedBehavior="Manual" HorizontalAlignment="Left" Height="125" Margin="35,38,0,0" VerticalAlignment="Top" Width="125" Panel.ZIndex="5" Visibility="Hidden" IsEnabled="False" Source="D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Begin1.avi" MediaEnded="Med4_MediaEnded" SpeedRatio="2" ScrubbingEnabled="True" MediaFailed="Med4_MediaFailed" MediaOpened="Med4_MediaOpened" Grid.Column="2"/>-->
         <Image x:Name="Img6" Grid.ColumnSpan="15" HorizontalAlignment="Left" Height="300" Margin="0,0,0,0" VerticalAlignment="Top" Width="300" Panel.ZIndex="4" Source="/Spider.png" Visibility="Hidden" IsEnabled="False" Grid.RowSpan="15" Grid.Row="23" Grid.Column="2" Stretch="Uniform"/>
         <Image x:Name="Img7" Grid.ColumnSpan="10" HorizontalAlignment="Left" Height="300" Margin="0,0,0,0" VerticalAlignment="Top" Width="300" Panel.ZIndex="4" Source="/Spider.png" Visibility="Hidden" IsEnabled="False" Grid.RowSpan="10" Grid.Row="16" Grid.Column="13"/>
         <Image x:Name="Img8" Grid.ColumnSpan="10" HorizontalAlignment="Left" Height="300" Margin="0,0,0,0" VerticalAlignment="Top" Width="300" Panel.ZIndex="4" Source="/Spider.png" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="10" Grid.Row="22" Grid.Column="24"/>
@@ -315,19 +313,19 @@
         <Button x:Name="Torch" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" IsEnabled="False" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave" Visibility="Hidden" Click="Torch_Click" Panel.ZIndex="4" Grid.Column="40" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="26">
             <Image x:Name="TorchImg" Source="/TorchImg.png" Stretch="Fill"/>
         </Button>
-        <Button x:Name="ACT1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="189" Height="75" Panel.ZIndex="4" FontSize="36" MouseEnter="FightDynamicButtons_MouseEnter" MouseLeave="FightDynamicButtons_MouseLeave" Click="ACT1_Click" Visibility="Hidden" IsEnabled="False" Grid.Column="43" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="31">
+        <Button x:Name="ACT1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="189" Height="75" Panel.ZIndex="4" FontSize="36" MouseEnter="FightDynamicButtons_MouseEnter" MouseLeave="FightDynamicButtons_MouseLeave" Click="ActionOnOne_Click" Visibility="Hidden" IsEnabled="False" Grid.Column="43" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="31">
             <Image x:Name="SelectTrgt2Img" Source="/TrgtSelectBeforeImg.png" Stretch="Fill"/>
         </Button>
         <Button x:Name="Whip" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" Panel.ZIndex="4" FontSize="36" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave" Click="Whip_Click" Visibility="Hidden" IsEnabled="False" Grid.Column="46" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="26">
             <Image x:Name="WhipImg" Source="/WhipImg.png" Stretch="Fill"/>
         </Button>
-        <Button x:Name="ACT2" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" IsEnabled="False" Visibility="Hidden" Panel.ZIndex="4" MouseEnter="FightDynamicButtons_MouseEnter" MouseLeave="FightDynamicButtons_MouseLeave" Click="ACT2_Click" Grid.Column="43" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="31">
+        <Button x:Name="ACT2" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" IsEnabled="False" Visibility="Hidden" Panel.ZIndex="4" MouseEnter="FightDynamicButtons_MouseEnter" MouseLeave="FightDynamicButtons_MouseLeave" Click="ActionOnOne_Click" Grid.Column="43" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="31">
             <Image x:Name="SelectTrgt3Img" Source="/TrgtSelectBeforeImg.png" Stretch="Fill"/>
         </Button>
         <Button x:Name="Thrower" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="189" Height="75" Panel.ZIndex="5" Visibility="Hidden" IsEnabled="False" FontSize="36" Grid.Column="52" Grid.Row="26" Grid.RowSpan="3" Grid.ColumnSpan="6" Click="Thrower_Click" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave">
             <Image x:Name="ThrowerImg" Source="/Thrower.png" Stretch="Fill"/>
         </Button>
-        <Button x:Name="ACT3" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" IsEnabled="False" Visibility="Hidden" Panel.ZIndex="4" Grid.Column="43" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="31" Click="ACT3_Click" MouseEnter="FightDynamicButtons_MouseEnter" MouseLeave="FightDynamicButtons_MouseLeave">
+        <Button x:Name="ACT3" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" FontSize="36" IsEnabled="False" Visibility="Hidden" Panel.ZIndex="4" Grid.Column="43" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="31" Click="ActionOnOne_Click" MouseEnter="FightDynamicButtons_MouseEnter" MouseLeave="FightDynamicButtons_MouseLeave">
             <Image x:Name="SelectTrgt4Img" Source="/TrgtSelectBeforeImg.png" Stretch="Fill"/>
         </Button>
 
@@ -335,13 +333,13 @@
             <Image x:Name="Cancel2Img" Source="/CancelImg.png" Stretch="Fill"/>
         </Button>
 
-        <Button x:Name="Super" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" Panel.ZIndex="4" FontSize="36" IsEnabled="False" Visibility="Hidden" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave" Click="Super_Click" Grid.Column="40" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="29">
+        <Button x:Name="Super" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="75" Width="189" Panel.ZIndex="4" FontSize="36" IsEnabled="False" Visibility="Hidden" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave" Click="ActionOnAll_Click" Grid.Column="40" Grid.RowSpan="3" Grid.ColumnSpan="6" Grid.Row="29">
             <Image x:Name="SuperImg" Source="/SuperImg.png" Stretch="Fill"/>
         </Button>
-        <Button x:Name="Tornado" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="189" Height="75" Panel.ZIndex="5" Visibility="Hidden" IsEnabled="False" FontSize="36" Grid.Column="46" Grid.Row="29" Grid.RowSpan="3" Grid.ColumnSpan="6" Click="Tornado_Click" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave">
+        <Button x:Name="Tornado" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="189" Height="75" Panel.ZIndex="5" Visibility="Hidden" IsEnabled="False" FontSize="36" Grid.Column="46" Grid.Row="29" Grid.RowSpan="3" Grid.ColumnSpan="6" Click="ActionOnAll_Click" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave">
             <Image x:Name="TornadoImg" Source="/Tornado.png" Stretch="Fill"/>
         </Button>
-        <Button x:Name="Quake" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="189" Height="75" Panel.ZIndex="5" Visibility="Hidden" IsEnabled="False" FontSize="36" Grid.Column="52" Grid.Row="29" Grid.RowSpan="3" Grid.ColumnSpan="6" Click="Quake_Click" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave">
+        <Button x:Name="Quake" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="189" Height="75" Panel.ZIndex="5" Visibility="Hidden" IsEnabled="False" FontSize="36" Grid.Column="52" Grid.Row="29" Grid.RowSpan="3" Grid.ColumnSpan="6" Click="ActionOnAll_Click" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave">
             <Image x:Name="QuakeImg" Source="/Quake.png" Stretch="Fill"/>
         </Button>
         <Button x:Name="Learn" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="189" Height="75" Panel.ZIndex="5" Visibility="Hidden" IsEnabled="False" FontSize="36" Grid.Column="46" Grid.Row="32" Grid.RowSpan="3" Grid.ColumnSpan="6" MouseEnter="AbilitiesInFight_MouseEnter" MouseLeave="AbilitiesInFight_MouseLeave">
