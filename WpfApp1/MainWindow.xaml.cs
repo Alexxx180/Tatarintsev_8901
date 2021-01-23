@@ -24,6 +24,326 @@ namespace WpfApp1
     /// [EN] Interaction logic for game triggers.
     /// [RU] Интерактивная логика для внутренних механизмов.
     /// </summary>
+    public class Descriptions
+    {
+        public class Foes : Descriptions
+        {
+            public Foes()
+            {
+                SetAllEnemyDscr();
+            }
+
+            private void SetAllEnemyDscr()
+            {
+                Spider = "Паук";
+                Mummy = "Мумия";
+                Zombie = "Зомби";
+                Bones = "Страж";
+                Vulture = "Стервятник";
+                Ghoul = "Гуль";
+                GrimReaper =@"Жнец";
+                Scarab = "Скарабей";
+                GetByIndexes = new string[,] { { Spider, Mummy, Zombie, Bones }, { Vulture, Ghoul, GrimReaper, Scarab } };
+            }
+            public String Spider { get; set; }
+            public String Mummy { get; set; }
+            public String Zombie { get; set; }
+            public String Bones { get; set; }
+            public String Vulture { get; set; }
+            public String Ghoul { get; set; }
+            public String GrimReaper { get; set; }
+            public String Scarab { get; set; }
+            public String[,] GetByIndexes { get; set; }
+        }
+    }
+    public class Paths
+    {
+        public class Static : Paths
+        {
+            /*public BitmapImage GetBitmapImage(string UriToBmp)
+            {
+                return new BitmapImage(new Uri(UriToBmp, UriKind.RelativeOrAbsolute));
+            }
+            public BitmapImage[] GetBitmapImageArray(params BitmapImage[] bitmapImages)
+            {
+                return bitmapImages;
+            }*/
+            public class Foes : Static
+            {
+                public Foes()
+                {
+                    SetAllEnemyPaths();
+                }
+
+                private void SetAllEnemyPaths()
+                {
+                    Spider = "Spider.png";
+                    Mummy = "Mummy.png";
+                    Zombie = "Zombie.png";
+                    Bones = "Bones.png";
+                    Vulture = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Vulture.png";
+                    Ghoul = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Ghoul.png";
+                    GrimReaper = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\GrimReaper.png";
+                    Scarab = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Scarab.png";
+
+                    SpiderIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png";
+                    MummyIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png";
+                    ZombieIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Zombie1.png";
+                    BonesIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Bones1.png";
+                    VultureIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Vulture1.png";
+                    GhoulIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Ghoul1.png";
+                    GrimReaperIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\GrimReaper1.png";
+                    ScarabIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Scarab.png";
+                    //GetByIndexes = GetBitmapImageArray(Spider, Mummy, Zombie, Bones, Vulture, Ghoul, GrimReaper, Scarab);
+                    //new Uri(, UriKind.RelativeOrAbsolute), new Uri(, UriKind.RelativeOrAbsolute), new Uri(, UriKind.RelativeOrAbsolute), new Uri(, UriKind.RelativeOrAbsolute), new Uri(, UriKind.RelativeOrAbsolute), new Uri(, UriKind.RelativeOrAbsolute)
+                }
+                public String Spider { get; set; }
+                public String Mummy { get; set; }
+                public String Zombie { get; set; }
+                public String Bones { get; set; }
+                public String Vulture { get; set; }
+                public String Ghoul { get; set; }
+                public String GrimReaper { get; set; }
+                public String Scarab { get; set; }
+                public String SpiderIcon { get; set; }
+                public String MummyIcon { get; set; }
+                public String ZombieIcon { get; set; }
+                public String BonesIcon { get; set; }
+                public String VultureIcon { get; set; }
+                public String GhoulIcon { get; set; }
+                public String GrimReaperIcon { get; set; }
+                public String ScarabIcon { get; set; }
+            }
+            public class Bosses : Static
+            {
+                public Bosses()
+                {
+                    SetAllEnemyPaths();
+                }
+
+                private void SetAllEnemyPaths()
+                {
+                    Pharaoh = "Mummy.png";
+                    UghZan = "Spider.png";
+
+                    PharaohIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Pharaoh.png";
+                    UghZanIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\UghZan1.png";
+                    //GetByIndexes = GetBitmapImageArray(Spider, Mummy, Zombie, Bones, Vulture, Ghoul, GrimReaper, Scarab);
+                }
+                public String Pharaoh { get; set; }
+                public String UghZan { get; set; }
+                public String PharaohIcon { get; set; }
+                public String UghZanIcon { get; set; }
+            }
+            public class Person : Static
+            {
+                public Person()
+                {
+                    SetAllPersonPaths();
+                }
+
+                private void SetAllPersonPaths()
+                {
+                    Usual = "/pers5.png";
+                    Serious = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSam.png";
+                }
+                public String Usual { get; set; }
+                public String Serious { get; set; }
+            }
+            public class Icon : Static
+            {
+                public Icon()
+                {
+                    SetAllIconPaths();
+                }
+
+                private void SetAllIconPaths()
+                {
+                    Usual = "/person6.png";
+                    Poison = "IconPoisoned.png";
+                    Serious = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSam.png";
+                }
+                public String Usual { get; set; }
+                public String Poison { get; set; }
+                public String Serious { get; set; }
+            }
+        }
+        public class Dynamic : Paths
+        {
+            
+            public class Foes : Dynamic
+            {
+                public Foes()
+                {
+                    SetAllEnemyPaths();
+                }
+
+                private void SetAllEnemyPaths()
+                {
+                    Spider = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png" };
+                    Mummy = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png" };
+                    Zombie = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png" };
+                    Bones = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png" };
+                    Vulture = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks1.png" };
+                    Ghoul = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png" };
+                    GrimReaper = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png" };
+                    Scarab = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png" };
+                   
+                }
+                public String[] Spider { get; set; }
+                public String[] Mummy { get; set; }
+                public String[] Zombie { get; set; }
+                public String[] Bones { get; set; }
+                public String[] Vulture { get; set; }
+                public String[] Ghoul { get; set; }
+                public String[] GrimReaper { get; set; }
+                public String[] Scarab { get; set; }
+                
+            }
+            public class Bosses : Dynamic
+            {
+                public Bosses()
+                {
+                    SetAllBossesPaths();
+                }
+
+                private void SetAllBossesPaths()
+                {
+                    Pharaoh = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
+                    UghZan = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
+                }
+                public String[] Pharaoh { get; set; }
+                public String[] UghZan { get; set; }
+            }
+            public class Person : Dynamic
+            {
+                public Person()
+                {
+                    SetAllPersonPaths();
+                }
+
+                public void SetAllPersonPaths()
+                {
+                    Cure = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure10.png"};
+                    Cure2 = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_14.png"};
+                    Heal = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal10.png"};
+                    BuffUp = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp10.png"};
+                    ToughenUp = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp10.png"};
+                    Regen = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen10.png"};
+                    Control = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control10.png"};
+                    Torch = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch10.png"};
+                    Whip = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip10.png"};
+                    Thrower = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png"};
+                    Super = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png"};
+                    Tornado = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png" };
+                    Quake = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake8.png" };
+                    BagUse = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png" };
+                    Escape = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png" };
+                    HdAttack = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack10.png" };
+                    SeriousMg = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun14.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun15.png" };
+                    SSwitch = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch9.png" };
+                    Hurt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts5.png" };
+                    //GetByIndexes = BmpArrayNotStatedX(Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake);
+                }
+                public string[] Cure { get; set; }
+                public string[] Cure2 { get; set; }
+                public string[] Heal { get; set; }
+                public string[] BuffUp { get; set; }
+                public string[] ToughenUp { get; set; }
+                public string[] Regen { get; set; }
+                public string[] Control { get; set; }
+                public string[] Torch { get; set; }
+                public string[] Whip { get; set; }
+                public string[] Thrower { get; set; }
+                public string[] Super { get; set; }
+                public string[] Tornado { get; set; }
+                public string[] Quake { get; set; }
+                public string[] BagUse { get; set; }
+                public string[] Escape { get; set; }
+                public string[] HdAttack { get; set; }
+                public string[] SeriousMg { get; set; }
+                public string[] SSwitch { get; set; }
+                public string[] Hurt { get; set; }
+                public string[][] GetByIndexes { get; set; }
+            }
+
+            public class Icon : Dynamic
+            {
+                public Icon()
+                {
+                    SetAllIconPaths();
+                }
+
+                public void SetAllIconPaths()
+                {
+                    Cure = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure10.png" };
+                    Cure2 = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_9.png" };
+                    Heal = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon10.png" };
+                    BuffUp = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon10.png" };
+                    ToughenUp = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon10.png" };
+                    Regen = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon10.png" };
+                    Control = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon10.png" };
+                    Torch = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch10.png" };
+                    Whip = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon10.png" };
+                    Thrower = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon10.png" };
+                    Super = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png" };
+                    Tornado = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon10.png" };
+                    Quake = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon9.png" };
+                    BagUse = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed10.png" };
+                    Escape = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png" };
+                    HdAttack = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage10.png" };
+                    SeriousMg = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png" };
+                    SSwitch = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked10.png" };
+                    //GetByIndexes = BmpArrayNotStatedX(Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake);
+                }
+                public string[] Cure { get; set; }
+                public string[] Cure2 { get; set; }
+                public string[] Heal { get; set; }
+                public string[] BuffUp { get; set; }
+                public string[] ToughenUp { get; set; }
+                public string[] Regen { get; set; }
+                public string[] Control { get; set; }
+                public string[] Torch { get; set; }
+                public string[] Whip { get; set; }
+                public string[] Thrower { get; set; }
+                public string[] Super { get; set; }
+                public string[] Tornado { get; set; }
+                public string[] Quake { get; set; }
+                public string[] BagUse { get; set; }
+                public string[] Escape { get; set; }
+                public string[] HdAttack { get; set; }
+                public string[] SeriousMg { get; set; }
+                public string[] SSwitch { get; set; }
+                public string[][] GetByIndexes { get; set; }
+            }
+            public class Misc : Dynamic
+            {
+                public Misc()
+                {
+                    SetAllMiscPaths();
+                }
+                public void SetAllMiscPaths()
+                {
+                    Target = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png" };
+                }
+                public string[] Target { get; set; }
+            }
+            }
+    }
+
+    /*
+     "/Pharaoh.png";
+"/UghZan.png";
+
+
+case "Мумия": return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png" };
+                case "Зомби": return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png" };
+                case "Страж": return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png" };
+                case "Фараон": return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
+                case "Угх-зан I": return new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
+                default: return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png" }; ;
+     
+     */
     public class Sql {
         public Sql()
         {
@@ -34,18 +354,18 @@ namespace WpfApp1
         {
             return new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");
         }
-        public void NewStoredProcedureBuild(in String ProcedureName)
+        private void NewStoredProcedureBuild(in String ProcedureName)
         {
             Cmd = new SqlCommand(ProcedureName, Con);
             Cmd.CommandType = CommandType.StoredProcedure;
         }
-        public void NewExecuteNonQueryBuild()
+        private void NewExecuteNonQueryBuild()
         {
             Cmd.Connection.Open();
             Cmd.ExecuteNonQuery();
             Cmd.Connection.Close();
         }
-        public List<string> NewSqlDataReaderBuild(List<string> Lgs)
+        private List<string> NewSqlDataReaderBuild(List<string> Lgs)
         {
             Cmd.Connection.Open();
             DataReader = Cmd.ExecuteReader();
@@ -59,7 +379,7 @@ namespace WpfApp1
             Cmd.Connection.Close();
             return Lgs;
         }
-        public string NewSqlDataReaderBuild(string Selected, in Byte Column)
+        private string NewSqlDataReaderBuild(string Selected, in Byte Column)
         {
             Cmd.Connection.Open();
             DataReader = Cmd.ExecuteReader();
@@ -73,7 +393,7 @@ namespace WpfApp1
             Cmd.Connection.Close();
             return Selected;
         }
-        public Object[] NewSqlDataReaderBuild(Object[] Values, in Byte StartValue, in Byte EndValue)
+        private Object[] NewSqlDataReaderBuild(Object[] Values, in Byte StartValue, in Byte EndValue)
         {
             Cmd.Connection.Open();
             DataReader = Cmd.ExecuteReader();
@@ -90,40 +410,34 @@ namespace WpfApp1
             Cmd.Connection.Close();
             return Values;
         }
-        public Byte[] NewSqlDataReaderBuild(Byte[] Values, in Byte StartValue, in Byte EndValue)
+        private Byte[] NewSqlDataReaderBuild(Byte[] Values, in Byte StartValue, in Byte EndValue)
         {
             Cmd.Connection.Open();
             DataReader = Cmd.ExecuteReader();
             if (DataReader.HasRows)
-            {
                 while (DataReader.Read())
-                {
                     for (Byte i = StartValue; i < EndValue; i++)
-                    {
                         Values[i- StartValue] = Convert.ToByte(DataReader.GetValue(i));
-                    }
-                }
-            }
             Cmd.Connection.Close();
             return Values;
         }
-        public void AddProcedureParameter(in String ParamName, in String NewStringParam)
+        private void AddProcedureParameter(in String ParamName, in String NewStringParam)
         {
             Cmd.Parameters.Add(ParamName, SqlDbType.VarChar).Value = NewStringParam;
         }
-        public void AddProcedureParameter(in String ParamName, in Boolean NewBooleanParam)
+        private void AddProcedureParameter(in String ParamName, in Boolean NewBooleanParam)
         {
             Cmd.Parameters.Add(ParamName, SqlDbType.Bit).Value = NewBooleanParam;
         }
-        public void AddProcedureParameter(in String ParamName, in Byte NewTinyIntParam)
+        private void AddProcedureParameter(in String ParamName, in Byte NewTinyIntParam)
         {
             Cmd.Parameters.Add(ParamName, SqlDbType.TinyInt).Value = NewTinyIntParam;
         }
-        public void AddProcedureParameter(in String ParamName, in UInt16 NewSmallIntParam)
+        private void AddProcedureParameter(in String ParamName, in UInt16 NewSmallIntParam)
         {
             Cmd.Parameters.Add(ParamName, SqlDbType.TinyInt).Value = NewSmallIntParam;
         }
-        public void AddProcedureParametersX(in String[] ParamNames, in Object[] NewAnyParams)
+        private void AddProcedureParametersX(in String[] ParamNames, in Object[] NewAnyParams)
         {
             for (Byte i = 0; i < ParamNames.Length; i++)
             {
@@ -248,6 +562,28 @@ namespace WpfApp1
         public List<string> PlayerLogins { get; set; }
         public string CurrentLogin { get; set; }
     }
+
+    /*
+     Exception: Something get wrong, Read this: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (2): Не удается найти указанный файл.
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at WpfApp1.Sql.NewSqlDataReaderBuild(List`1 Lgs) in D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\MainWindow.xaml.cs:line 306
+   at WpfApp1.Sql.CheckAllRecordedPlayers() in D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\MainWindow.xaml.cs:line 419
+   at WpfApp1.MainWindow..ctor() in D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\MainWindow.xaml.cs:line 896
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:2,State:0,Class:20
+    */
     //[EN] Foe class, influence on new enemies.
     //[RU] Класс противник, определяет новых противников возникающих в бою.
     public class Foe
@@ -269,21 +605,50 @@ namespace WpfApp1
                 EnemyAgility = sp;
                 EnemyMHP = mhp;
             }
+            public void PreStats(in Byte FoeIndex)
+            {
+                UInt16[] MaxHp = {    65,   83,  101,  125,  250,  306,  272,  100,  400,  600,  950,  760,  500, 2000,10000,  350 };
+                Byte[] Power   = {  25, 32, 41, 50, 45, 80,100, 75,150,125,160,180, 75,170,255, 50 };
+                Byte[] Vital   = {   3,  7,  5, 15, 25, 40, 20, 80,100,120, 70,150, 40,120,255, 50 };
+                Byte[] Speed   = {  10, 17, 25, 35, 65, 30, 45, 80,100, 90,130,150, 40, 90,255, 50 };
+                Byte[] Abils   = {   0,  2,  5,  7, 30, 20, 60, 80, 75,110, 70,150, 35,140,255, 50 };
+                Byte[] Exper   = {   5,  8, 12, 15, 35, 75,100, 60,175,140,200,225,100,200,255,150 };
+                Byte[] Mater   = {   5, 10, 35, 75, 60,110, 80,255,105,180,150,255,100,200,255,150 };
+                Byte[] Drops =   { 0,1,2,3, 6,4,5,7, 6,5,5,7, 3, 7, 7, 5 };
+                EnemyAttack = Power[FoeIndex];
+                EnemyDefence = Vital[FoeIndex];
+                EnemySpeed = Speed[FoeIndex];
+                EnemyAgility = Abils[FoeIndex];
+                EnemyMHP = MaxHp[FoeIndex];
+                Materials = Mater[FoeIndex];
+                Experience = Exper[FoeIndex];
+                DropRate = Drops[FoeIndex];
+            }
             public UInt16 EnemyMHP { get; set; }
             public Byte EnemyAttack { get; set; }
             public Byte EnemyDefence { get; set; }
             public Byte EnemySpeed { get; set; }
             public Byte EnemyAgility { get; set; }
+            public Byte Experience { get; set; }
+            public Byte Materials { get; set; }
+            public Byte DropRate { get; set; }
         }
+        /// <summary>
+        /// Крайне важная информация для разработчика на будущее:
+        /// Т.к. выходит слишком много "Ничьих" среди врагов и они не могут
+        /// нанести урон персонажу + игрок не может противостоять физическими атаками врагов 3 локации
+        /// Создаем формулу бонуса к атаке: АТК (с учётом экипировки)+АТК(без)* (СКР/100)
+        /// Бонус к защите: ЗЩТ+СПЦ*(СКР/200)
+        /// </summary>
         public void GetStats() {
-            EnemyName = new string[] { "Паук", "Мумия", "Зомби", "Страж", "Фараон", "Угх-зан I" };
+            EnemyName = new string[][] { new string[] { "Паук", "Мумия", "Зомби", "Страж", "Фараон", "Угх-зан I" }, new string[] { "Стервятник", "Гуль", "Жнец", "Скарабей" } };
             EnemyAppears = new string[] { "", "", "" };
             EnemyTurn = new Byte[] { 60, 30, 0 };
             EnemyHP = new UInt16[] { 0, 0, 0 };
             EnemiesStillAlive = 0;
         }
         public UInt16[] EnemyHP { get; set; }
-        public string[] EnemyName { get; set; }
+        public string[][] EnemyName { get; set; }
         public string[] EnemyAppears { get; set; }
         public Byte[] EnemyTurn { get; set; }
         public Byte EnemiesStillAlive { get; set; }
@@ -596,15 +961,15 @@ namespace WpfApp1
             LockIndex = 3;
             StepsToBattle = 20;
             SelectedTarget = 0;
-            SpiderAlive = 0;
-            MummyAlive = 0;
-            ZombieAlive = 0;
-            BonesAlive = 0;
+            FoeType1Alive = 0;
+            FoeType2Alive = 0;
+            FoeType3Alive = 0;
+            FoeType4Alive = 0;
             EnemyRate = 2;
             Rnd1 = 0;
             Rnd2 = 0;
             SpecialBattle = 0;
-            ItemsDropRate = new Byte[] { 0, 0, 0, 0 };
+            ItemsDropRate = new Byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
         }
         public Byte SelectedTarget { get; set; }
         public Byte StepsToBattle { get; set; }
@@ -612,10 +977,10 @@ namespace WpfApp1
         public Int32 Rnd1 { get; set; }
         public Int32 Rnd2 { get; set; }
         public Byte EquipmentClass { get; set; }
-        public Byte SpiderAlive { get; set; }
-        public Byte MummyAlive { get; set; }
-        public Byte ZombieAlive { get; set; }
-        public Byte BonesAlive { get; set; }
+        public Byte FoeType1Alive { get; set; }
+        public Byte FoeType2Alive { get; set; }
+        public Byte FoeType3Alive { get; set; }
+        public Byte FoeType4Alive { get; set; }
         public bool TableEN { get; set; }
         public Byte LockIndex { get; set; }
         public Byte SpecialBattle { get; set; }
@@ -632,7 +997,7 @@ namespace WpfApp1
         //[RU] Инициализация ГлавногоЭкрана (Главный Конструктор).
         public MainWindow()
         {
-            Foe1.GetStats();
+            //Foe1.GetStats();
             SetEnemies();
             InitializeComponent();
 
@@ -651,6 +1016,8 @@ namespace WpfApp1
                 throw new Exception("Something get wrong, Read this: " + ex);
             }
         }
+
+        /*System.Windows.Markup.XamlParseException: "Вызов конструктора для типа "WpfApp1.MainWindow", удовлетворяющего указанным ограничениям привязки, привел к выдаче исключения."*/
 
         Sql DataBaseMSsql = new Sql();
 
@@ -737,6 +1104,16 @@ namespace WpfApp1
         }
         //[EN] Initialize public objects
         //[RU] Инициализация объектов публичного доступа
+        Descriptions.Foes FoesNames = new Descriptions.Foes();
+        Paths.Static.Person PersonStatePath = new Paths.Static.Person();
+        Paths.Static.Icon IconStatePath = new Paths.Static.Icon();
+        Paths.Static.Foes FoesStatePath = new Paths.Static.Foes();
+        Paths.Static.Bosses BossesStatePath = new Paths.Static.Bosses();
+        Paths.Dynamic.Foes FoesAnimatePath = new Paths.Dynamic.Foes();
+        Paths.Dynamic.Bosses BossesAnimatePath = new Paths.Dynamic.Bosses();
+        Paths.Dynamic.Person PersonAnimatePath = new Paths.Dynamic.Person();
+        Paths.Dynamic.Icon IconAnimatePath = new Paths.Dynamic.Icon();
+        Paths.Dynamic.Misc MiscAnimatePath = new Paths.Dynamic.Misc();
         Bag BAG = new Bag();
         Characteristics Super1 = new Characteristics
         {
@@ -755,6 +1132,10 @@ namespace WpfApp1
         Foe.Stats Mummy = new Foe.Stats();
         Foe.Stats Zombie = new Foe.Stats();
         Foe.Stats Bones = new Foe.Stats();
+        Foe.Stats Vulture = new Foe.Stats();
+        Foe.Stats Ghoul = new Foe.Stats();
+        Foe.Stats GrimReaper = new Foe.Stats();
+        Foe.Stats Scarab = new Foe.Stats();
         Foe.Stats BOSS1 = new Foe.Stats();
         Foe.Stats SecretBOSS1 = new Foe.Stats();
 
@@ -770,18 +1151,22 @@ namespace WpfApp1
         }
         private void SetEnemies()
         {
-            Spider.GetStats();
-            Spider.PreStats(25, 0, 10, 1, 65);
-            Mummy.GetStats();
-            Mummy.PreStats(32, 0, 17, 1, 83);
-            Zombie.GetStats();
-            Zombie.PreStats(41, 0, 25, 1, 101);
-            Bones.GetStats();
-            Bones.PreStats(50, 0, 35, 1, 125);
-            BOSS1.GetStats();
-            BOSS1.PreStats(75, 0, 40, 1, 500);
-            SecretBOSS1.GetStats();
-            SecretBOSS1.PreStats(50, 0, 50, 1, 350);
+            //Spider.GetStats();
+            //Mummy.GetStats();
+            //Zombie.GetStats();
+            //Bones.GetStats();
+            //BOSS1.GetStats();
+            //SecretBOSS1.GetStats();
+            Spider.PreStats(0);
+            Mummy.PreStats(1);
+            Zombie.PreStats(2);
+            Bones.PreStats(3);
+            Vulture.PreStats(4);
+            Ghoul.PreStats(5);
+            GrimReaper.PreStats(6);
+            Scarab.PreStats(7);
+            BOSS1.PreStats(12);
+            SecretBOSS1.PreStats(15);
         }
         private void SEF(Uri sound)
         {
@@ -1151,10 +1536,10 @@ namespace WpfApp1
             Foe1.EnemyAppears[2] = "";
             Foe1.EnemiesStillAlive = 0;
 
-            Sets.SpiderAlive = 0;
-            Sets.MummyAlive = 0;
-            Sets.ZombieAlive = 0;
-            Sets.BonesAlive = 0;
+            Sets.FoeType1Alive = 0;
+            Sets.FoeType2Alive = 0;
+            Sets.FoeType3Alive = 0;
+            Sets.FoeType4Alive = 0;
 
             PharaohAppears.Opacity = 0.1;
             Sets.SpecialBattle = 0;
@@ -1425,15 +1810,15 @@ namespace WpfApp1
         private void InfoAboutEnemies()
         {
             Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } };
-            int[] newHP = { Spider.EnemyMHP, Mummy.EnemyMHP, Zombie.EnemyMHP, Bones.EnemyMHP, BOSS1.EnemyMHP, SecretBOSS1.EnemyMHP };
-            Uri[] EnemySource = new Uri[] { new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Zombie1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Bones1.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Pharaoh.png", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\UghZan1.png", UriKind.RelativeOrAbsolute) };
-            for (int en = 0; en < newHP.Length; en++)
-                if (Foe1.EnemyAppears[Sets.SelectedTarget] == Foe1.EnemyName[en])
+            int[][] newHP = { new int[] { Spider.EnemyMHP, Mummy.EnemyMHP, Zombie.EnemyMHP, Bones.EnemyMHP, BOSS1.EnemyMHP, SecretBOSS1.EnemyMHP }, new int[] { Vulture.EnemyMHP, Ghoul.EnemyMHP, GrimReaper.EnemyMHP, Scarab.EnemyMHP } };
+            Uri[][] EnemySource = new Uri[][] { new Uri[] { new Uri(FoesStatePath.SpiderIcon, UriKind.RelativeOrAbsolute), new Uri(FoesStatePath.MummyIcon, UriKind.RelativeOrAbsolute), new Uri(FoesStatePath.ZombieIcon, UriKind.RelativeOrAbsolute), new Uri(FoesStatePath.BonesIcon, UriKind.RelativeOrAbsolute), new Uri(BossesStatePath.PharaohIcon, UriKind.RelativeOrAbsolute), new Uri(BossesStatePath.UghZanIcon, UriKind.RelativeOrAbsolute) }, new Uri[] { new Uri(FoesStatePath.VultureIcon, UriKind.RelativeOrAbsolute), new Uri(FoesStatePath.GhoulIcon, UriKind.RelativeOrAbsolute), new Uri(FoesStatePath.GrimReaperIcon, UriKind.RelativeOrAbsolute), new Uri(FoesStatePath.ScarabIcon, UriKind.RelativeOrAbsolute) } };
+            for (int en = 0; en < Foe1.EnemyName[CurrentLocation].Length; en++)
+                if (Foe1.EnemyAppears[Sets.SelectedTarget] == Foe1.EnemyName[CurrentLocation][en])
                 {
-                    BattleText1.Content = Foe1.EnemyName[en];
-                    HPenemyBar.Maximum = newHP[en];
+                    BattleText1.Content = Foe1.EnemyName[CurrentLocation][en];
+                    HPenemyBar.Maximum = newHP[CurrentLocation][en];
                     HPenemyBar.Width = HPenemyBar.Maximum;
-                    EnemyImg.Source = new BitmapImage(EnemySource[en]);
+                    EnemyImg.Source = new BitmapImage(EnemySource[CurrentLocation][en]);
                     Grid.SetColumn(BattleText1, 17);
                     break;
                 }
@@ -1513,6 +1898,7 @@ namespace WpfApp1
                 case 104:
                     ChangeMapToVoidOrWallX(new Byte[] { 104, 134 }, 0);
                     ImgHide(JailImg1);
+                    Sets.EnemyRate = 5;
                     break;
                 case 105:
                     ChangeMapToVoidOrWallX(new Byte[] { 105, 135 }, 0);
@@ -1736,7 +2122,7 @@ namespace WpfApp1
                 Dj(new Uri(@"Ambushed.mp3", UriKind.RelativeOrAbsolute));
                 MediaShow(Med2);
             }
-            //Sets.StepsToBattle++;
+            Sets.StepsToBattle++;
             GetPoisoned();
         }
         //[EN] Movement (W,A,S,D), actions on map (E), open menu (LCtrl), target select in fight (W,A,S,D)
@@ -2019,13 +2405,53 @@ namespace WpfApp1
                     break;
             }
         }
-
+        private void FoesCalculate(in Byte InBattle, in Byte FoeIndex, in Byte Exper, in Byte Mater, in Byte ItemDrop)
+        {
+            Image[] Enemies = { Img6, Img7, Img8 };
+            UInt16[][] EnHP = { new UInt16[] { Spider.EnemyMHP, Mummy.EnemyMHP, Zombie.EnemyMHP, Bones.EnemyMHP, BOSS1.EnemyMHP, SecretBOSS1.EnemyMHP }, new UInt16[] { Vulture.EnemyMHP, Ghoul.EnemyMHP, GrimReaper.EnemyMHP, Scarab.EnemyMHP } };
+            Uri[,] RegularEnemiesImg = new Uri[,] { { new Uri(@FoesStatePath.Spider, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Mummy, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Zombie, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Bones, UriKind.RelativeOrAbsolute) }, { new Uri(@FoesStatePath.Vulture, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Ghoul, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.GrimReaper, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Scarab, UriKind.RelativeOrAbsolute) } };
+                for (Byte i = 0; i < Enemies.Length; i++)
+                {
+                    if (InBattle - 1 == i)
+                    {
+                        Foe1.EnemyHP[i] = EnHP[CurrentLocation][FoeIndex];
+                        Enemies[i].Source = new BitmapImage(RegularEnemiesImg[CurrentLocation, FoeIndex]);
+                        Foe1.EnemyAppears[i] = FoesNames.GetByIndexes[CurrentLocation, FoeIndex];
+                        break;
+                    }
+                }
+                Exp += Exper;
+                Mat += Mater;
+                switch (FoeIndex)
+                {
+                    case 0:
+                        Sets.FoeType1Alive += 1;
+                        break;
+                    case 1:
+                        Sets.FoeType2Alive += 1;
+                        break;
+                    case 2:
+                        Sets.FoeType3Alive += 1;
+                        break;
+                    case 3:
+                        Sets.FoeType4Alive += 1;
+                        break;
+                    default:
+                        Sets.FoeType1Alive += 1;
+                        break;
+                }
+                Sets.ItemsDropRate[ItemDrop] += 1;
+        }
         private void RegularBattle()
         {
             CalculateBattleStatus();
 
-            string[] RegularEnemies = new string[] { "Паук", "Мумия", "Зомби", "Страж" };
-            Uri[] RegularEnemiesImg = new Uri[] { new Uri(@"Spider.png", UriKind.RelativeOrAbsolute), new Uri(@"Mummy.png", UriKind.RelativeOrAbsolute), new Uri(@"Zombie.png", UriKind.RelativeOrAbsolute), new Uri(@"Bones.png", UriKind.RelativeOrAbsolute) };
+            //UInt16[][] EnHP = { new UInt16[] { Spider.EnemyMHP, Mummy.EnemyMHP, Zombie.EnemyMHP, Bones.EnemyMHP, BOSS1.EnemyMHP, SecretBOSS1.EnemyMHP }, new UInt16[] { Vulture.EnemyMHP, Ghoul.EnemyMHP, GrimReaper.EnemyMHP, Scarab.EnemyMHP } };
+            Byte[][] Mat = { new Byte[] { Spider.Materials, Mummy.Materials, Zombie.Materials, Bones.Materials, BOSS1.Materials, SecretBOSS1.Materials }, new Byte[] { Vulture.Materials, Ghoul.Materials, GrimReaper.Materials, Scarab.Materials } };
+            Byte[][] XP = { new Byte[] { Spider.Experience, Mummy.Experience, Zombie.Experience, Bones.Experience, BOSS1.Experience, SecretBOSS1.Experience }, new Byte[] { Vulture.Experience, Ghoul.Experience, GrimReaper.Experience, Scarab.Experience } };
+            Byte[][] DrRt = { new Byte[] { Spider.DropRate, Mummy.DropRate, Zombie.DropRate, Bones.DropRate, BOSS1.DropRate, SecretBOSS1.DropRate }, new Byte[] { Vulture.DropRate, Ghoul.DropRate, GrimReaper.DropRate, Scarab.DropRate } };
+            //string[] RegularEnemies = new string[] { "Паук", "Мумия", "Зомби", "Страж", "Стервятник", "Гуль", };
+            //Uri[,] RegularEnemiesImg = new Uri[,] { { new Uri(@FoesStatePath.Spider, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Mummy, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Zombie, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Bones, UriKind.RelativeOrAbsolute) }, { new Uri(@FoesStatePath.Vulture, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Ghoul, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.GrimReaper, UriKind.RelativeOrAbsolute), new Uri(@FoesStatePath.Scarab, UriKind.RelativeOrAbsolute) } };
             Uri RegularBattleTheme1 = new Uri(@"Battle_theme2.mp3", UriKind.RelativeOrAbsolute);
 
             HeyPlaySomething(RegularBattleTheme1);
@@ -2035,28 +2461,15 @@ namespace WpfApp1
 
             if (Sets.SpecialBattle == 0)
             {
-                Image[] Enemies = { Img6, Img7, Img8 };
+                //Image[] Enemies = { Img6, Img7, Img8 };
                 Sets.Rnd1 = Random1.Next(1, 4);
                 Foe1.EnemiesStillAlive = (byte)Sets.Rnd1;
-                for (int ib = 1; ib <= Sets.Rnd1; ib++)
+                for (Byte ib = 1; ib <= Sets.Rnd1; ib++)
                 {
                     Sets.Rnd2 = Random1.Next(1, Sets.EnemyRate);
+                    FoesCalculate(ib, Convert.ToByte(Sets.Rnd2-1), XP[CurrentLocation][Sets.Rnd2 - 1], Mat[CurrentLocation][Sets.Rnd2 - 1], DrRt[CurrentLocation][Sets.Rnd2 - 1]);
                     if (Sets.Rnd2 == 1)
                     {
-                        for (Byte i = 0; i < Enemies.Length; i++)
-                        {
-                            if (ib-1 == i)
-                            {
-                                Foe1.EnemyHP[i] = 65;
-                                Enemies[i].Source = new BitmapImage(RegularEnemiesImg[0]);
-                                Foe1.EnemyAppears[i] = RegularEnemies[0];
-                                break;
-                            }
-                        }
-                        Exp += 5;
-                        Mat += 5;
-                        Sets.SpiderAlive += 1;
-                        Sets.ItemsDropRate[0] += 1;
                         if (EnemyNamesFight[0] == 0)
                             if ((EnemyNamesFight[1] != 1) && (EnemyNamesFight[2] != 1) && (EnemyNamesFight[3] != 1))
                                 EnemyNamesFight[0] = 1;
@@ -2067,20 +2480,6 @@ namespace WpfApp1
                     }
                     if (Sets.Rnd2 == 2)
                     {
-                        for (Byte i = 0; i < Enemies.Length; i++)
-                        {
-                            if (ib-1 == i)
-                            {
-                                Foe1.EnemyHP[i] = 83;
-                                Enemies[i].Source = new BitmapImage(RegularEnemiesImg[1]);
-                                Foe1.EnemyAppears[i] = RegularEnemies[1];
-                                break;
-                            }
-                        }
-                        Mat += 10;
-                        Exp += 8;
-                        Sets.MummyAlive += 1;
-                        Sets.ItemsDropRate[1] += 1;
                         if (EnemyNamesFight[1] == 0)
                         {
                             if ((EnemyNamesFight[0] != 1) && (EnemyNamesFight[2] != 1) && (EnemyNamesFight[3] != 1))
@@ -2093,20 +2492,6 @@ namespace WpfApp1
                     }
                     if (Sets.Rnd2 == 3)
                     {
-                        for (Byte i = 0; i < Enemies.Length; i++)
-                        {
-                            if (ib-1 == i)
-                            {
-                                Foe1.EnemyHP[i] = 101;
-                                Enemies[i].Source = new BitmapImage(RegularEnemiesImg[2]);
-                                Foe1.EnemyAppears[i] = RegularEnemies[2];
-                                break;
-                            }
-                        }
-                        Mat += 35;
-                        Exp += 12;
-                        Sets.ZombieAlive += 1;
-                        Sets.ItemsDropRate[2] += 1;
                         if (EnemyNamesFight[2] == 0)
                             if ((EnemyNamesFight[0] != 1) && (EnemyNamesFight[1] != 1) && (EnemyNamesFight[3] != 1))
                                 EnemyNamesFight[2] = 1;
@@ -2117,20 +2502,6 @@ namespace WpfApp1
                     }
                     if (Sets.Rnd2 == 4)
                     {
-                        for (Byte i = 0; i < Enemies.Length; i++)
-                        {
-                            if (ib == i)
-                            {
-                                Foe1.EnemyHP[i] = 125;
-                                Enemies[i].Source = new BitmapImage(RegularEnemiesImg[3]);
-                                Foe1.EnemyAppears[i] = RegularEnemies[3];
-                                break;
-                            }
-                        }
-                        Mat += 75;
-                        Exp += 15;
-                        Sets.BonesAlive += 1;
-                        Sets.ItemsDropRate[3] += 1;
                         if (EnemyNamesFight[3] == 0)
                             if ((EnemyNamesFight[0] != 1) && (EnemyNamesFight[1] != 1) && (EnemyNamesFight[2] != 1))
                                 EnemyNamesFight[3] = 1;
@@ -2140,10 +2511,10 @@ namespace WpfApp1
                                 EnemyNamesFight[3] = 3;
                     }
                 }
-                EnemiesTotal(0, RegularEnemies[0], Sets.SpiderAlive);
-                EnemiesTotal(1, RegularEnemies[1], Sets.MummyAlive);
-                EnemiesTotal(2, RegularEnemies[2], Sets.ZombieAlive);
-                EnemiesTotal(3, RegularEnemies[3], Sets.BonesAlive);
+                EnemiesTotal(0, Foe1.EnemyName[CurrentLocation][0], Sets.FoeType1Alive);
+                EnemiesTotal(1, Foe1.EnemyName[CurrentLocation][1], Sets.FoeType2Alive);
+                EnemiesTotal(2, Foe1.EnemyName[CurrentLocation][2], Sets.FoeType3Alive);
+                EnemiesTotal(3, Foe1.EnemyName[CurrentLocation][0], Sets.FoeType4Alive);
                 switch (Sets.Rnd1)
                 {
                     case 1:
@@ -2197,13 +2568,13 @@ namespace WpfApp1
             AbilityBonuses[0] = 0;
             AbilityBonuses[1] = 0;
             Time1.Value = 100;
-            Icon0.Source = (Super1.PlayerStatus == 0 ? new BitmapImage(new Uri(@"person6.png", UriKind.RelativeOrAbsolute)) : new BitmapImage(new Uri(@"IconPoisoned.png", UriKind.RelativeOrAbsolute)));
+            Icon0.Source = (Super1.PlayerStatus == 0 ? new BitmapImage(new Uri(IconStatePath.Usual, UriKind.RelativeOrAbsolute)) : new BitmapImage(new Uri(IconStatePath.Poison, UriKind.RelativeOrAbsolute)));
         }
         private void BossBattle1()
         {
             CalculateBattleStatus();
             Uri PharaohSource = new Uri(@"Pharaoh.mp3", UriKind.RelativeOrAbsolute);
-            Uri PharaohSRC = new Uri(@"Pharaoh.png", UriKind.RelativeOrAbsolute);
+            Uri PharaohSRC = new Uri(@BossesStatePath.Pharaoh, UriKind.RelativeOrAbsolute);
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Convert.ToByte(Sets.Rnd1);
             BattleText3.Content = "Фараон: " + Foe1.EnemiesStillAlive;
@@ -2316,6 +2687,8 @@ namespace WpfApp1
         }
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
+            Sets.SelectedTarget = Convert.ToByte(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
+            SelectedTrgt = Sets.SelectedTarget;
             FightMenuMakesDisappear();
             BtnShowX(new Button[] { Fight, Cancel1 });
             SelectTarget();
@@ -2357,10 +2730,10 @@ namespace WpfApp1
                         APRegenerate.IsEnabled = false;
                         APRegenerate.Stop();
                     }
-                Sets.SpiderAlive = 0;
-                Sets.MummyAlive = 0;
-                Sets.ZombieAlive = 0;
-                Sets.BonesAlive = 0;
+                Sets.FoeType1Alive = 0;
+                Sets.FoeType2Alive = 0;
+                Sets.FoeType3Alive = 0;
+                Sets.FoeType4Alive = 0;
 
                 Foe1.EnemyHP[0] = 0;
                 Foe1.EnemyHP[1] = 0;
@@ -2424,7 +2797,7 @@ namespace WpfApp1
                 AnyShowX(Img4, BattleText1, BattleText2, textOk2);
             }
             else
-                if (Super1.CurrentHP != 0)
+                if (Super1.CurrentHP > 0)
                     Time();
         }
         private void Button3_Click(object sender, RoutedEventArgs e)
@@ -2480,33 +2853,56 @@ namespace WpfApp1
         {
             EnemyAttack = 25;
             for (Byte i = 0; i < Foe1.EnemyName.Length; i++)
-                if (Foe1.EnemyAppears[pos - 1] == Foe1.EnemyName[i])
+                if (Foe1.EnemyAppears[pos - 1] == Foe1.EnemyName[CurrentLocation][i])
                 {
-                    Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 };
-                    EnemyAttack = FS[i].EnemyAttack;
+                    Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 }, new Foe.Stats[] { Vulture, Ghoul, GrimReaper, Scarab } };
+                    EnemyAttack = Convert.ToUInt16(FS[CurrentLocation][i].EnemyAttack + FS[CurrentLocation][i].EnemyAttack*(FS[CurrentLocation][i].EnemySpeed*0.01));
                     break;
                 }
             return EnemyAttack;
         }
         private int GetOut(out Byte Speed)
         {
-            Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 };
+            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 }, new Foe.Stats[] { Vulture, Ghoul, GrimReaper, Scarab } };
             Speed = 10;
             for (Byte i = 0; i < Foe1.EnemyAppears.Length; i++)
                 for (Byte j = 0; j < Foe1.EnemyName.Length; j++)
-                    if (Foe1.EnemyAppears[i] == Foe1.EnemyName[j])
-                        Speed = (Speed < FS[j].EnemySpeed ? Speed = FS[j].EnemySpeed : Speed);
+                    if (Foe1.EnemyAppears[i] == Foe1.EnemyName[CurrentLocation][j])
+                        Speed = (Speed < FS[CurrentLocation][j].EnemySpeed ? FS[CurrentLocation][j].EnemySpeed : Speed);
             return Speed;
         }
-
+        private UInt16 EnemyTough(Byte pos)
+        {
+            UInt16 EnemyDefence = 25;
+            for (Byte i = 0; i < Foe1.EnemyName.Length; i++)
+                if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i])
+                {
+                    Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 }, new Foe.Stats[] { Vulture, Ghoul, GrimReaper, Scarab } };
+                    EnemyDefence = Convert.ToUInt16(FS[CurrentLocation][i].EnemyDefence + FS[CurrentLocation][i].EnemyAgility * (FS[CurrentLocation][i].EnemySpeed * 0.01));
+                    break;
+                }
+            return EnemyDefence;
+        }
+        private UInt16 EnemyAntiSkill(Byte pos)
+        {
+            UInt16 EnemyAura = 25;
+            for (Byte i = 0; i < Foe1.EnemyName.Length; i++)
+                if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i])
+                {
+                    Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 }, new Foe.Stats[] { Vulture, Ghoul, GrimReaper, Scarab } };
+                    EnemyAura = Convert.ToUInt16(FS[CurrentLocation][i].EnemyAgility + FS[CurrentLocation][i].EnemySpeed);
+                    break;
+                }
+            return EnemyAura;
+        }
         private string NameEnemies(out string enemy, Byte pos)
         {
             enemy = "Паук";
             for (Byte i = 0; i < Foe1.EnemyName.Length; i++)
-                if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[i])
+                if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i])
                 {
                     Foe.Stats[] FS = new Foe.Stats[] { Spider, Mummy, Zombie, Bones, BOSS1, SecretBOSS1 };
-                    enemy = FS[i].EnemyName[i];
+                    enemy = FS[i].EnemyName[CurrentLocation][i];
                     break;
                 }
             return enemy;
@@ -2516,7 +2912,7 @@ namespace WpfApp1
         {
             string ogg = "";
             for (Byte i = 0; i < Foe1.EnemyName.Length; i++)
-                if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[i])
+                if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i])
                 {
                     string[] sounds = { "SpiderDied", "MummyDied", "ZombieDied", "BonesDied", "DefeatPharaoh" };
                     ogg = sounds[i];
@@ -2555,7 +2951,7 @@ namespace WpfApp1
                     WidelyUsedAnyTimer(out timer3, DamageTime_Tick3, new TimeSpan(0, 0, 0, 0, GameSpeed1));
                     timer3.IsEnabled = true;
                 }
-                else if (Img4.Source.ToString().Contains("pers5.png") && (!timer3.IsEnabled)) {
+                else if (Img4.Source.ToString().Contains(PersonStatePath.Usual) && (!timer3.IsEnabled)) {
                     WidelyUsedAnyTimer(out timer3, DamageTime_Tick3, new TimeSpan(0, 0, 0, 0, GameSpeed1));
                     timer3.IsEnabled = true;
                 }
@@ -2655,8 +3051,8 @@ namespace WpfApp1
             }
             string enemy = "";
             UInt16 EnemyAttack = 25;
-            UInt16 PlayerDef = Convert.ToUInt16(Super1.Defence * Super1.DefenseState + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3] + AbilityBonuses[1]);
-            Uri uriSource = new Uri(@"IconPoisoned.png", UriKind.RelativeOrAbsolute);
+            UInt16 PlayerDef = Convert.ToUInt16(Super1.Defence * Super1.DefenseState + Super1.Special * Super1.Speed*0.005 + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3] + AbilityBonuses[1]);
+            Uri uriSource = new Uri(@IconStatePath.Poison, UriKind.RelativeOrAbsolute);
             if (((Foe1.EnemyHP[0] > 0) || (Foe1.EnemyHP[1] > 0) || (Foe1.EnemyHP[2] > 0)) && (Super1.CurrentHP > 0))
             {
                 if (Foe1.EnemyHP[0] > 0)
@@ -2811,13 +3207,13 @@ namespace WpfApp1
             SelectedTrgt = Sets.SelectedTarget;
             WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, Convert.ToUInt16(50 / GameSpeed.Value)));
 
-            Byte PharaohAura = Convert.ToByte(Sets.SpecialBattle == 1? 25 : 0);
+            UInt16 EnemyDefence = EnemyTough(SelectedTrgt);
             LabShow(BattleText1);
 
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
 
-            Foe1.EnemyHP[Sets.SelectedTarget] = Convert.ToUInt16(Foe1.EnemyHP[Sets.SelectedTarget] - (strength - PharaohAura) < 0 ? 0 : Foe1.EnemyHP[Sets.SelectedTarget] - (strength - PharaohAura));
+            Foe1.EnemyHP[Sets.SelectedTarget] = Convert.ToUInt16(Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence) < 0 ? 0 : Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence));
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
             {
                 string res = "SpiderDied";
@@ -2842,7 +3238,7 @@ namespace WpfApp1
                         ImgHide(Img8);
                         break;
                 }
-                SuperCheckFoes(Sets.SelectedTarget);
+                SuperCheckFoes(EnemyNamesFight[Sets.SelectedTarget]);
                 Sets.SelectedTarget = Convert.ToByte(Foe1.EnemyHP[0] != 0? 0 : Foe1.EnemyHP[1] != 0? 1 : Foe1.EnemyHP[2] != 0? 2 : 0);
 
                 Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } };
@@ -2864,13 +3260,11 @@ namespace WpfApp1
         }
 
         public static Byte Actions = 0;
-
-        
         public static UInt16 FoeDamage = 0;
 
         private void DamageFoe_Time_Tick17(object sender, EventArgs e)
         {
-            UInt16 strength = Convert.ToUInt16(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0]);
+            UInt16 strength = Convert.ToUInt16(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0]- EnemyTough(Sets.SelectedTarget));
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             Labs[SelectedTrgt].Content = Convert.ToUInt16(strength);
             FoesKicked();
@@ -2890,26 +3284,32 @@ namespace WpfApp1
         private void TorchDmg_Time_Tick20(object sender, EventArgs e)
         {
             UInt16 trchsp = Convert.ToUInt16((Foe1.EnemyAppears[SelectedTrgt] == "Паук") || (Foe1.EnemyAppears[SelectedTrgt] == "Мумия") ? Super1.Special * 2.5 : Foe1.EnemyAppears[SelectedTrgt] == "Фараон" ? Super1.Special * 0.5 : Super1.Special * 1.25);
+            trchsp += Convert.ToUInt16(Super1.Special * Super1.Speed * 0.01);
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            Labs[SelectedTrgt].Content = Convert.ToUInt16(trchsp);
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            Labs[SelectedTrgt].Content = Convert.ToUInt16(trchsp > EnemyAura ? trchsp - EnemyAura : 0);
             FoesKicked();
         }
 
         private void WhipDmg_Time_Tick21(object sender, EventArgs e)
         {
             UInt16 whipsp = Convert.ToUInt16((Foe1.EnemyAppears[SelectedTrgt] == "Зомби") || (Foe1.EnemyAppears[SelectedTrgt] == "Страж") ? Super1.Special * 3 : Foe1.EnemyAppears[SelectedTrgt] == "Фараон" ? Super1.Special * 0.75 : Super1.Special * 1.5);
+            whipsp += Convert.ToUInt16(Super1.Special * Super1.Speed * 0.01);
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            Labs[SelectedTrgt].Content = Convert.ToUInt16(whipsp);
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            Labs[SelectedTrgt].Content = Convert.ToUInt16(whipsp > EnemyAura ? whipsp - EnemyAura : 0);
             FoesKicked();
         }
 
         private void SuperDmg_Time_Tick22(object sender, EventArgs e)
         {
             UInt16 supersp = Convert.ToUInt16(Foe1.EnemyAppears[0] != "Фараон"? Super1.Special * 2 : Super1.Special);
+            supersp += Convert.ToUInt16(Super1.Special * Super1.Speed * 0.01);
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            for (Byte i=0;i<Labs.Length;i++)
+            for (Byte i = 0; i < Labs.Length; i++)
                 if (Foe1.EnemyHP[i] != 0)
-                    Labs[i].Content = supersp;
+                    Labs[i].Content = supersp > EnemyAura? supersp - EnemyAura: 0;
             FoesKicked();
         }
 
@@ -3012,14 +3412,27 @@ namespace WpfApp1
             if (Actions == pers.Length - 1)
             {
                 Actions = 0;
-                Img4.Source= new BitmapImage(new Uri(Sets.SpecialBattle != 200? "/pers5.png" : @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSam.png", UriKind.RelativeOrAbsolute));
-                Img5.Source= new BitmapImage(new Uri(Sets.SpecialBattle == 200? @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSam.png": Super1.PlayerStatus == 1? "/IconPoisoned.png": "/person6.png", UriKind.RelativeOrAbsolute));
+                Img4.Source= new BitmapImage(new Uri(Sets.SpecialBattle != 200? @PersonStatePath.Usual : @PersonStatePath.Serious, UriKind.RelativeOrAbsolute));
+                Img5.Source= new BitmapImage(new Uri(Sets.SpecialBattle == 200? @IconStatePath.Serious: Super1.PlayerStatus == 1? @IconStatePath.Poison: @IconStatePath.Usual, UriKind.RelativeOrAbsolute));
                 AfterAction();
                 timer8.Stop();
             }
             else
                 Actions++;
         }
+        /*private void ActionsTickCheck(in BitmapImage[] pers, in string[] ico)
+        {
+            if (Actions >= pers.Length - 1)
+            {
+                Actions = 0;
+                Img4.Source = Sets.SpecialBattle != 200 ? pers[Actions] : new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSam.png", UriKind.RelativeOrAbsolute));
+                Img5.Source = new BitmapImage(new Uri(Sets.SpecialBattle == 200 ? @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSam.png" : Super1.PlayerStatus == 1 ? "/IconPoisoned.png" : "/person6.png", UriKind.RelativeOrAbsolute));
+                AfterAction();
+                timer8.Stop();
+            }
+            else
+                Actions++;
+        }*/
         public static Byte trgt = 0;
         private void UnlimitedActionsTickCheck(in string[] spec)
         {
@@ -3490,6 +3903,8 @@ namespace WpfApp1
         }
         private void Torch_Click(object sender, RoutedEventArgs e)
         {
+            Sets.SelectedTarget = Convert.ToByte(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
+            SelectedTrgt = Sets.SelectedTarget;
             SelectTarget();
             AbilitiesMakeDisappear1();
             BtnShowX(new Button[] { ACT1, Cancel2 });
@@ -3526,26 +3941,27 @@ namespace WpfApp1
             ButtonShow(Back1);
             InBattleHighSkillsMenu();
         }
-        private void CheckFoeCounts(in Byte selected, in string foestatus)
+        /*private void CheckFoeCounts(in Byte selected, in string foestatus)
         {
             Label[] Enemies = { BattleText3 , BattleText4 , BattleText5 };
             Enemies[selected].Content = foestatus;
-            Enemies[selected].Foreground = Brushes.Red;
-        }
+        }*/
         private void ACT(in Byte a1)
         {
             string[] EnemyNames = { "Паук", "Мумия", "Зомби", "Страж", "Стервятник", "Гуль", "Жнец", "Скарабей", "Моль-убийца", "Прислужник", "П. червь", "Мастер"  };
             UInt16 strength = Convert.ToUInt16(a1 == 0? ( Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[0] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[1] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[5] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[6] ? Super1.Special * 2.5 : Super1.Special * 1.25) : a1 == 1? ( Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[2] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[3] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[7] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[9] ? Super1.Special * 3 : Super1.Special * 1.5 ) : a1 == 2 ? (Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[4] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[8] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[9] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[11] ? Super1.Special*5 : Super1.Special*2.5) : Super1.Special);
+            strength += Convert.ToUInt16(Super1.Special * Super1.Speed * 0.01);
             AnyHideX(HPenemy, BattleText1, HPenemyBar, EnemyImg, Fight, Cancel1, Cancel2);
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
-            Foe1.EnemyHP[Sets.SelectedTarget] = Convert.ToUInt16(Foe1.EnemyHP[Sets.SelectedTarget] - strength < 0 ? 0 : Foe1.EnemyHP[Sets.SelectedTarget] - strength);
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            Foe1.EnemyHP[Sets.SelectedTarget] = Convert.ToUInt16(strength > EnemyAura ? Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyAura) < 0 ? 0 : Foe1.EnemyHP[Sets.SelectedTarget] - (strength-EnemyAura): Foe1.EnemyHP[Sets.SelectedTarget]);
             if (Foe1.EnemyHP[Sets.SelectedTarget] <= 0)
             {
                 string res;
                 try { res = EnemySounds(Sets.SelectedTarget); } catch { res = "SpiderDied"; }
                 SEF(new Uri(@"" + res + ".mp3", UriKind.RelativeOrAbsolute));
-                SuperCheckFoes(Sets.SelectedTarget);
+                SuperCheckFoes(EnemyNamesFight[Sets.SelectedTarget]);
             }
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
             {
@@ -3564,7 +3980,7 @@ namespace WpfApp1
         private void Heal_Click(object sender, RoutedEventArgs e)
         {
             LabShow(BattleText1);
-            Img5.Source = new BitmapImage(new Uri(@"Person6.png", UriKind.RelativeOrAbsolute));
+            Img5.Source = new BitmapImage(new Uri(@IconStatePath.Usual, UriKind.RelativeOrAbsolute));
             SetAnyValues(new object[] { Super1.PlayerStatus, Time1.Value },0,0);
             Super1.CurrentAP -= 3;
             RefreshAllAP();
@@ -3575,82 +3991,98 @@ namespace WpfApp1
         }
         private void Whip_Click(object sender, RoutedEventArgs e)
         {
+            Sets.SelectedTarget = Convert.ToByte(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
+            SelectedTrgt = Sets.SelectedTarget;
             SelectTarget();
             AbilitiesMakeDisappear1();
             BtnShowX(new Button[] { ACT2, Cancel2 });
         }
         private void SuperCheckFoes(in Byte seltrg)
         {
-            Byte FoeType;
-            string FoesCount;
+            Label[] Enemies = { BattleText3, BattleText4, BattleText5 };
             switch (Foe1.EnemyAppears[seltrg])
             {
+                case "Стервятник":
                 case "Паук":
-                    FoeType = 0;
-                    if (Sets.SpiderAlive - 1 == 0) {
-                        Foe1.EnemyAppears[seltrg] = "";
-                        Sets.SpiderAlive = 0;
-                        FoesCount = "";
-                    } else {
-                        Foe1.EnemyAppears[seltrg] = "";
-                        Sets.SpiderAlive--;
-                        FoesCount = "Паук: " + Sets.SpiderAlive;
-                    }
-                    break;
-                case "Мумия":
-                    FoeType = 1;
-                    if (Sets.MummyAlive - 1 == 0) {
-                        Foe1.EnemyAppears[seltrg] = "";
-                        Sets.MummyAlive = 0;
-                        FoesCount = "";
-                    } else {
-                        Foe1.EnemyAppears[seltrg] = "";
-                        Sets.MummyAlive--;
-                        FoesCount = "Мумия: " + Sets.MummyAlive;
-                    }
-                    break;
-                case "Зомби":
-                    FoeType = 2;
-                    if (Sets.ZombieAlive - 1 == 0) {
-                        Foe1.EnemyAppears[seltrg] = "";
-                        Sets.ZombieAlive = 0;
-                        FoesCount = "";
-                    } else {
-                        Foe1.EnemyAppears[seltrg] = "";
-                        Sets.ZombieAlive--;
-                        FoesCount = "Зомби: " + Sets.ZombieAlive;
-                    }
-                    break;
-                case "Страж":
-                    FoeType = 3;
-                    if (Sets.BonesAlive - 1 == 0)
+                    if (Sets.FoeType1Alive - 1 == 0)
                     {
                         Foe1.EnemyAppears[seltrg] = "";
-                        Sets.BonesAlive = 0;
-                        FoesCount = "";
-                    } else {
-                        Foe1.EnemyAppears[seltrg] = "";
-                        Sets.BonesAlive--;
-                        FoesCount = "Страж: " + Sets.BonesAlive;
-                    }
-                    break;
-                default:
-                    FoeType = 0;
-                    if (Sets.SpiderAlive - 1 == 0)
-                    {
-                        Foe1.EnemyAppears[seltrg] = "";
-                        Sets.SpiderAlive = 0;
-                        FoesCount = "";
+                        Sets.FoeType1Alive = 0;
+                        LabHide(Enemies[EnemyNamesFight[seltrg]]);
                     }
                     else
                     {
                         Foe1.EnemyAppears[seltrg] = "";
-                        Sets.SpiderAlive--;
-                        FoesCount = "Паук: " + Sets.SpiderAlive;
+                        Sets.FoeType1Alive--;
+                        Enemies[EnemyNamesFight[seltrg]].Foreground = Brushes.Red;
+                        EnemiesTotal(0, Foe1.EnemyName[CurrentLocation][0], Sets.FoeType1Alive);
                     }
                     break;
-            }
-            CheckFoeCounts(FoeType, FoesCount);
+                case "Гуль":
+                case "Мумия":
+                    if (Sets.FoeType2Alive - 1 == 0)
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                        Sets.FoeType2Alive = 0;
+                        LabHide(Enemies[EnemyNamesFight[seltrg]]);
+                    }
+                    else
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                        Sets.FoeType2Alive--;
+                        Enemies[EnemyNamesFight[seltrg]].Foreground = Brushes.Red;
+                        EnemiesTotal(1, Foe1.EnemyName[CurrentLocation][1], Sets.FoeType2Alive);
+                    }
+                    break;
+                case "Жнец":
+                case "Зомби":
+                    if (Sets.FoeType3Alive - 1 == 0)
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                        Sets.FoeType3Alive = 0;
+                        LabHide(Enemies[EnemyNamesFight[seltrg]]);
+                    }
+                    else
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                        Sets.FoeType3Alive--;
+                        Enemies[EnemyNamesFight[seltrg]].Foreground = Brushes.Red;
+                        EnemiesTotal(2, Foe1.EnemyName[CurrentLocation][2], Sets.FoeType3Alive);
+                    }
+                    break;
+                case "Скарабей":
+                case "Страж":
+                    if (Sets.FoeType4Alive - 1 == 0)
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                        Sets.FoeType4Alive = 0;
+                        LabHide(Enemies[EnemyNamesFight[seltrg]]);
+                    }
+                    else
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                        Sets.FoeType4Alive--;
+                        Enemies[EnemyNamesFight[seltrg]].Foreground = Brushes.Red;
+                        EnemiesTotal(3, Foe1.EnemyName[CurrentLocation][3], Sets.FoeType4Alive);
+                    }
+                    break;
+                default:
+                    if (Sets.FoeType1Alive - 1 == 0)
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                        Sets.FoeType1Alive = 0;
+                        LabHide(Enemies[EnemyNamesFight[seltrg]]);
+                    }
+                    else
+                    {
+                        Foe1.EnemyAppears[seltrg] = "";
+                        Sets.FoeType1Alive--;
+                        Enemies[EnemyNamesFight[seltrg]].Foreground = Brushes.Red;
+                        EnemiesTotal(0, Foe1.EnemyName[CurrentLocation][0], Sets.FoeType1Alive);
+                    }
+                    break;
+            }            
+            //CheckFoeCounts(FoeType, FoesCount);
         }
         private void AbilitySupers(in UInt16 strength)
         {
@@ -3661,9 +4093,8 @@ namespace WpfApp1
             Time1.Value = 0;
 
             Lab2.Foreground = Brushes.White;
-            //if (Foe1.EnemyAppears[Sets.SelectedTarget] != "Фараон")
-            //{
-            if ((Foe1.EnemyHP[0] - strength <= 0) && (Foe1.EnemyAppears[0] != ""))
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            if ((Foe1.EnemyHP[0] - strength + EnemyAura <= 0) && (Foe1.EnemyAppears[0] != ""))
             {
                 Foe1.EnemyHP[0] = 0;
                 ImgHide(Img6);
@@ -3671,9 +4102,9 @@ namespace WpfApp1
                 Foe1.EnemiesStillAlive--;
             }
             else if (Foe1.EnemyAppears[0] != "")
-                Foe1.EnemyHP[0] = Convert.ToUInt16(Foe1.EnemyHP[0] - strength);
+                Foe1.EnemyHP[0] = Convert.ToUInt16(strength>EnemyAura? (Foe1.EnemyHP[0] - strength + EnemyAura) : Foe1.EnemyHP[0]);
 
-            if ((Foe1.EnemyHP[1] - strength <= 0) && (Foe1.EnemyAppears[1] != ""))
+            if ((Foe1.EnemyHP[1] - strength + EnemyAura <= 0) && (Foe1.EnemyAppears[1] != ""))
             {
                 Foe1.EnemyHP[1] = 0;
                 ImgHide(Img7);
@@ -3681,9 +4112,9 @@ namespace WpfApp1
                 Foe1.EnemiesStillAlive--;
             }
             else if (Foe1.EnemyAppears[1] != "")
-                Foe1.EnemyHP[1] = Convert.ToUInt16(Foe1.EnemyHP[1] - strength);
+                Foe1.EnemyHP[1] = Convert.ToUInt16(strength > EnemyAura ? (Foe1.EnemyHP[1] - strength + EnemyAura) : Foe1.EnemyHP[1]);
 
-            if ((Foe1.EnemyHP[2] - strength <= 0) && (Foe1.EnemyAppears[2] != ""))
+            if ((Foe1.EnemyHP[2] - strength + EnemyAura <= 0) && (Foe1.EnemyAppears[2] != ""))
             {
                 Foe1.EnemyHP[2] = 0;
                 ImgHide(Img8);
@@ -3691,7 +4122,7 @@ namespace WpfApp1
                 Foe1.EnemiesStillAlive--;
             }
             else if (Foe1.EnemyAppears[2] != "")
-                Foe1.EnemyHP[2] = Convert.ToUInt16(Foe1.EnemyHP[2] - strength);
+                Foe1.EnemyHP[2] = Convert.ToUInt16(strength > EnemyAura ? (Foe1.EnemyHP[2] - strength + EnemyAura) : Foe1.EnemyHP[2]);
 
             if (Foe1.EnemyHP[0] != 0)
                 Sets.SelectedTarget = 0;
@@ -3701,22 +4132,6 @@ namespace WpfApp1
                 Sets.SelectedTarget = 2;
 
             Time1.Value = 0;
-            //}
-            /*else
-            {
-                if (Foe1.EnemyHP[0] - strength <= 0)
-                    Foe1.EnemyHP[0] = 0;
-                else
-                    Foe1.EnemyHP[0] = Convert.ToUInt16(Foe1.EnemyHP[0] - strength);
-
-                if (Foe1.EnemyHP[0] == 0)
-                {
-                    ImgHide(Img6);
-                    Time1.Value = 0;
-                    Foe1.EnemiesStillAlive = 0;
-                }
-                //Dj(new Uri(@"DefeatPharaoh.mp3", UriKind.RelativeOrAbsolute));
-            }*/
         }
         
         private void Items_Click(object sender, RoutedEventArgs e)
@@ -5144,6 +5559,7 @@ namespace WpfApp1
                     Sets.LockIndex = Convert.ToByte(3 - Super1.MenuTask);
                     break;
                 case 1:
+                    Sets.EnemyRate = 3;
                     AnyGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress }, new Byte[] { 9, 21, 10, 8, 29, 22, 22, 16, 28 }, new Byte[] { 8, 10, 24, 35, 49, 23, 2, 4, 20 });
                     AnyShowX(SecretChestImg1, SecretChestImg2, JailImg4);
                     PlayerSetLocation(34, 51);
@@ -5166,50 +5582,41 @@ namespace WpfApp1
         private void ContinueQuest()
         {
             CurrentLocation = Convert.ToByte((Super1.MenuTask >= 4) && (Super1.MenuTask <= 6)? 1 : 0);
-            
-
             MapBuild(CurrentLocation);
             MapCheck(CurrentLocation);
             if (CheckMapIfModelExists(7))
                 ImgShow(Boulder1);
+
+            //"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\b2"
             Uri[] music = new Uri[] { new Uri(@"Main_theme.mp3", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\WaterTemple_theme.mp3", UriKind.RelativeOrAbsolute) };
+            Uri[] ambushed = new Uri[] { new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Ambushed2.mp4", UriKind.RelativeOrAbsolute), new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleStarts\BattleStations2.mp4", UriKind.RelativeOrAbsolute) };
+            BitmapImage[] battlegrounds = new BitmapImage[] { new BitmapImage(new Uri(@"Battle3.jpg", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\b2.jpg", UriKind.RelativeOrAbsolute)) };
             BitmapImage[] location = new BitmapImage[] { new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Loc1_2.jpg", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Loc2.jpg", UriKind.RelativeOrAbsolute)) };
-            BitmapImage[] chestvercl = new BitmapImage[] { new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestClosed(ver1).png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestVersions\ChestClosed(ver2).png", UriKind.RelativeOrAbsolute)) };
-            BitmapImage[] chestverop = new BitmapImage[] { new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestOpened(ver1).png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestVersions\ChestOpened(ver2).png", UriKind.RelativeOrAbsolute)) };
             BitmapImage[] threasures = new BitmapImage[] { new BitmapImage(new Uri(@"AncientArtifact.png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"AncientArtifact2.png", UriKind.RelativeOrAbsolute)) };
-            if (BAG.Weapon[CurrentLocation])
-            {
-                ChangeMapToWall(203);
-                ChestImg3.Source = chestverop[CurrentLocation];
-            } else
-                ChestImg3.Source = chestvercl[CurrentLocation];
-            if (BAG.Armor[CurrentLocation])
-            {
-                ChangeMapToWall(201);
-                ChestImg1.Source = chestverop[CurrentLocation];
-            }
-            else
-                ChestImg1.Source = chestvercl[CurrentLocation];
-            if (BAG.Pants[CurrentLocation])
-            {
-                ChangeMapToWall(204);
-                ChestImg4.Source = chestverop[CurrentLocation];
-            }
-            else
-                ChestImg4.Source = chestvercl[CurrentLocation];
-            if (BAG.ArmBoots[CurrentLocation])
-            {
-                ChangeMapToWall(202);
-                ChestImg2.Source = chestverop[CurrentLocation];
-            }
-            else
-                ChestImg2.Source = chestvercl[CurrentLocation];
+            ChestsCheck(BAG.Weapon[CurrentLocation], 203, ChestImg3);
+            ChestsCheck(BAG.Armor[CurrentLocation], 201, ChestImg1);
+            ChestsCheck(BAG.Pants[CurrentLocation], 204, ChestImg4);
+            ChestsCheck(BAG.ArmBoots[CurrentLocation], 202, ChestImg2);
+            Img3.Source = battlegrounds[CurrentLocation];
+            Med2.Source = ambushed[CurrentLocation];
             Img1.Source = location[CurrentLocation];
             HeyPlaySomething(music[CurrentLocation]);
             Threasure1.Source = threasures[CurrentLocation];
             ChestsAndTablesAllTurnOn1();
             ImgShowX(new Image[] { Img1, Threasure1, Img2, SaveProgress });
             ContinueCheckPoints();
+        }
+        private void ChestsCheck(in Boolean CheckValue, in Byte OnMap, Image Chest)
+        {
+            BitmapImage[] chestvercl = new BitmapImage[] { new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestClosed(ver1).png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestVersions\ChestClosed(ver2).png", UriKind.RelativeOrAbsolute)) };
+            BitmapImage[] chestverop = new BitmapImage[] { new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestOpened(ver1).png", UriKind.RelativeOrAbsolute)), new BitmapImage(new Uri(@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestVersions\ChestOpened(ver2).png", UriKind.RelativeOrAbsolute)) };
+            if (CheckValue)
+            {
+                ChangeMapToWall(OnMap);
+                Chest.Source = chestverop[CurrentLocation];
+            }
+            else
+                Chest.Source = chestvercl[CurrentLocation];
         }
         private void ContinueCheckPoints()
         {
@@ -5422,12 +5829,7 @@ namespace WpfApp1
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
         }
-        private void BuffUp_Time_Tick29(object sender, EventArgs e)
-        {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp10.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon10.png" };
-            ActionsTickCheck(Pers, Icon);
-        }
+        
         private void BuffUpVal_Time_Tick30(object sender, EventArgs e)
         {
             BuffUpTxt.Content = "+"+Super1.Special;
@@ -5494,6 +5896,8 @@ namespace WpfApp1
 
         private void Thrower_Click(object sender, RoutedEventArgs e)
         {
+            Sets.SelectedTarget = Convert.ToByte(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
+            SelectedTrgt = Sets.SelectedTarget;
             SelectTarget();
             AbilitiesMakeDisappear1();
             BtnShowX(new Button[] { ACT3, Cancel2 });
@@ -5501,7 +5905,7 @@ namespace WpfApp1
         private void ActionOnOne_Click(object sender, RoutedEventArgs e)
         {
             EventHandler[,] ActTime = { { Torch_Time_Tick13, Whip_Time_Tick14, Thrower_Time_Tick37 }, { TorchDmg_Time_Tick20, WhipDmg_Time_Tick21, Thrower_Time_Tick36 } };
-            Uri[] ActSounds = { new Uri(@"Torch.mp3", UriKind.RelativeOrAbsolute), new Uri(@"Whip.mp3", UriKind.RelativeOrAbsolute), new Uri(@"Whip.mp3", UriKind.RelativeOrAbsolute), };
+            Uri[] ActSounds = { new Uri(@"Torch.mp3", UriKind.RelativeOrAbsolute), new Uri(@"Whip.mp3", UriKind.RelativeOrAbsolute), new Uri(@"Whip.mp3", UriKind.RelativeOrAbsolute) };
             Byte[] Cost = { 4, 6, 15 };
             Button[] Actions = { ACT1, ACT2, ACT3 };
             SelectedTrgt = Sets.SelectedTarget;
@@ -5793,13 +6197,12 @@ namespace WpfApp1
         }
         private void DamageTime_Tick3(object sender, EventArgs e)
         {
-            string[] HurtImg = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts5.png" };
-            Img4.Source = new BitmapImage(new Uri(HurtImg[PlayerHurt], UriKind.RelativeOrAbsolute));
-            if (PlayerHurt == HurtImg.Length - 1)
+            Img4.Source = new BitmapImage(new Uri(PersonAnimatePath.Hurt[PlayerHurt], UriKind.RelativeOrAbsolute));
+            if (PlayerHurt == PersonAnimatePath.Hurt.Length - 1)
             {
                 HP.Foreground = Brushes.White;
                 PlayerHurt = 0;
-                Img4.Source = new BitmapImage(new Uri("/pers5.png", UriKind.RelativeOrAbsolute));
+                Img4.Source = new BitmapImage(new Uri(PersonStatePath.Usual, UriKind.RelativeOrAbsolute));
                 timer3.Stop();
                 timer3.IsEnabled = false;
             }
@@ -5826,27 +6229,35 @@ namespace WpfApp1
         }
         private string FoesStaticCheck(in string EnemyName)
         {
-            switch (EnemyName)
+            return EnemyName switch
             {
-                case "Мумия": return "/Mummy.png";
-                case "Зомби": return "/Zombie.png";
-                case "Страж": return "/Bones.png";
-                case "Фараон": return "/Pharaoh.png";
-                case "Угх-зан I": return "/UghZan.png";
-                default: return "/Spider.png";
-            }
+                "Мумия" => FoesStatePath.Mummy,
+                "Зомби" => FoesStatePath.Zombie,
+                "Страж" => FoesStatePath.Bones,
+                "Стервятник" => FoesStatePath.Vulture,
+                "Гуль" => FoesStatePath.Ghoul,
+                "Жнец" => FoesStatePath.GrimReaper,
+                "Скарабей" => FoesStatePath.Scarab,
+                "Фараон" => BossesStatePath.Pharaoh,
+                "Угх-зан I" => BossesStatePath.UghZan,
+                _ => FoesStatePath.Spider,
+            };
         }
         private string[] FoesDynamicCheck(in string EnemyName)
         {
-            switch (EnemyName)
+            return EnemyName switch
             {
-                case "Мумия": return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png" };
-                case "Зомби": return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png" };
-                case "Страж": return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png" };
-                case "Фараон": return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
-                case "Угх-зан I": return new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
-                default: return new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png" }; ;
-            }
+                "Мумия" => FoesAnimatePath.Mummy,
+                "Зомби" => FoesAnimatePath.Zombie,
+                "Страж" => FoesAnimatePath.Bones,
+                "Стервятник" => FoesAnimatePath.Vulture,
+                "Гуль" => FoesAnimatePath.Ghoul,
+                "Жнец" => FoesAnimatePath.GrimReaper,
+                "Скарабей" => FoesAnimatePath.Scarab,
+                "Фараон" => BossesAnimatePath.Pharaoh,
+                "Угх-зан I" => BossesAnimatePath.UghZan,
+                _ => FoesAnimatePath.Spider,
+            };
         }
         private bool FoeAttacks_Time_Ticks(in Byte t1)
         {
@@ -5874,199 +6285,74 @@ namespace WpfApp1
         {
             if (FoeAttacks_Time_Ticks(0))
                 timer5.Stop();
-            /*if (timer5 != null)
-                FoeAttacks_Time_Ticks(out timer5);
-            string[] EnemyAnimate = FoesDynamicCheck(Foe1.EnemyAppears[0]);
-            string Enemy = FoesStaticCheck(Foe1.EnemyAppears[0]);
-            Img6.Source = new BitmapImage(new Uri(EnemyAnimate[EnemyAtck[0]], UriKind.RelativeOrAbsolute));
-            if (EnemyAtck[0] == EnemyAnimate.Length - 1)
-            {
-                if (Sets.SpecialBattle == 200)
-                {
-                    LabHide(BattleText6);
-                    HP.Foreground = Brushes.White;
-                }
-                EnemyAtck[0] = 0;
-                Img6.Source = new BitmapImage(new Uri(Enemy, UriKind.RelativeOrAbsolute));
-                timer5.Stop();
-            }
-            else
-            {
-                Img6.Source = new BitmapImage(new Uri(EnemyAnimate[EnemyAtck[0]], UriKind.RelativeOrAbsolute));
-                EnemyAtck[0]++;
-            }*/
         }
 
         private void FoeAttack2_Time_Tick6(object sender, EventArgs e)
         {
             if (FoeAttacks_Time_Ticks(1))
                 timer6.Stop();
-            /*string[] EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png" };
-            string Enemy = "/Spider.png";
-            switch (Foe1.EnemyAppears[1])
-            {
-                case "Мумия":
-                    EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png" };
-                    Enemy = "/Mummy.png";
-                    break;
-                case "Зомби":
-                    EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png" };
-                    Enemy = "/Zombie.png";
-                    break;
-                case "Страж":
-                    EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png" };
-                    Enemy = "/Bones.png";
-                    break;
-                case "Фараон":
-                    EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
-                    Enemy = "/Pharaoh.png";
-                    break;
-                case "Угх-зан I":
-                    EnemyAnimate = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
-                    Enemy = "/UghZan.png";
-                    break;
-                default:
-                    break;
-            }
-            Img7.Source = new BitmapImage(new Uri(EnemyAnimate[EnemyAtck[1]], UriKind.RelativeOrAbsolute));
-            if (EnemyAtck[1] == EnemyAnimate.Length - 1)
-            {
-                EnemyAtck[1] = 0;
-                Img7.Source = new BitmapImage(new Uri(Enemy, UriKind.RelativeOrAbsolute));
-                timer6.Stop();
-            }
-            else
-            {
-                Img7.Source = new BitmapImage(new Uri(EnemyAnimate[EnemyAtck[1]], UriKind.RelativeOrAbsolute));
-                EnemyAtck[1]++;
-            }*/
         }
 
         private void FoeAttack3_Time_Tick7(object sender, EventArgs e)
         {
             if (FoeAttacks_Time_Ticks(2))
                 timer7.Stop();
-            /*string[] EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png" };
-            string Enemy = "/Spider.png";
-            switch (Foe1.EnemyAppears[2])
-            {
-                case "Мумия":
-                    EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png" };
-                    Enemy = "/Mummy.png";
-                    break;
-                case "Зомби":
-                    EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png" };
-                    Enemy = "/Zombie.png";
-                    break;
-                case "Страж":
-                    EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png" };
-                    Enemy = "/Bones.png";
-                    break;
-                case "Фараон":
-                    EnemyAnimate = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
-                    Enemy = "/Pharaoh.png";
-                    break;
-                case "Угх-зан I":
-                    EnemyAnimate = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
-                    Enemy = "/UghZan.png";
-                    break;
-                default:
-                    break;
-            }
-            Img8.Source = new BitmapImage(new Uri(EnemyAnimate[EnemyAtck[2]], UriKind.RelativeOrAbsolute));
-            if (EnemyAtck[2] >= EnemyAnimate.Length - 1)
-            {
-                EnemyAtck[2] = 0;
-                Img8.Source = new BitmapImage(new Uri(Enemy, UriKind.RelativeOrAbsolute));
-                timer7.Stop();
-            }
-            else
-            {
-                Img8.Source = new BitmapImage(new Uri(EnemyAnimate[EnemyAtck[2]], UriKind.RelativeOrAbsolute));
-                EnemyAtck[2]++;
-            }*/
         }
         private void HandAttack_Time_Tick8(object sender, EventArgs e)
         {
-            string[] HndAt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack10.png" };
-            string[] IcoRg = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage10.png" };
-            ActionsTickCheck(HndAt, IcoRg);
+            ActionsTickCheck(PersonAnimatePath.HdAttack, IconAnimatePath.HdAttack);
         }
-
-
         private void Escape_Time_Tick9(object sender, EventArgs e)
         {
-            string[] Flee = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png" };
-            string[] IcoEs = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png" };
-            ActionsTickCheck(Flee, IcoEs);
+            ActionsTickCheck(PersonAnimatePath.Escape, IconAnimatePath.Escape);
         }
-
         private void Items_Time_Tick10(object sender, EventArgs e)
         {
-            string[] ItmUs = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png" };
-            string[] IcoUs = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed10.png" };
-            ActionsTickCheck(ItmUs, IcoUs);
+            ActionsTickCheck(PersonAnimatePath.BagUse, IconAnimatePath.BagUse);
         }
-
         private void Cure_Time_Tick11(object sender, EventArgs e)
         {
-            string[] Cure = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure10.png" };
-            string[] IcoCr = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure10.png" };
-            ActionsTickCheck(Cure, IcoCr);
+            ActionsTickCheck(PersonAnimatePath.Cure, IconAnimatePath.Cure);
         }
 
+        //Где найти вдохновение
+        //https://www.youtube.com/results?search_query=dq+2+battle+theme
         private void Heal_Time_Tick12(object sender, EventArgs e)
         {
-            string[] Heal = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal10.png" };
-            string[] IcoHl = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon10.png" };
-            ActionsTickCheck(Heal, IcoHl);
+            ActionsTickCheck(PersonAnimatePath.Heal, IconAnimatePath.Heal);
         }
-
         private void Torch_Time_Tick13(object sender, EventArgs e)
         {
-            string[] Torch = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch10.png" };
-            string[] IcoTh = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch10.png" };
-            ActionsTickCheck(Torch, IcoTh);
+            ActionsTickCheck(PersonAnimatePath.Torch, IconAnimatePath.Torch);
         }
         private void Whip_Time_Tick14(object sender, EventArgs e)
         {
-            string[] Whip = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip10.png" };
-            string[] IcoWp = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon10.png" };
-            ActionsTickCheck(Whip, IcoWp);
+            ActionsTickCheck(PersonAnimatePath.Whip, IconAnimatePath.Whip);
         }
-
         private void Super_Time_Tick15(object sender, EventArgs e)
         {
-            string[] Super = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png" };
-            string[] IcoSr = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png" };
-            ActionsTickCheck(Super, IcoSr);
+            ActionsTickCheck(PersonAnimatePath.Super, IconAnimatePath.Super);
         }
-
         private void Target_Time_Tick16(object sender, EventArgs e)
         {
-            string[] Trgt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png" };
-            UnlimitedActionsTickCheck(Trgt);
+            UnlimitedActionsTickCheck(MiscAnimatePath.Target);
         }
-
         private void Bandage_Time_Tick23(object sender, EventArgs e)
         {
             CureHealTxt.Content = "+50";
             CureOrHeal();
         }
-
         private void Ether_Time_Tick24(object sender, EventArgs e)
         {
             RecoverAPTxt.Content = "+50";
             RestoreAP();
         }
-
         private void Fused_Time_Tick25(object sender, EventArgs e)
         {
             FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "+80", "+80" });
             CureOrHeal();
             RestoreAP();
         }
-
         private void Antidote_Time_Tick26(object sender, EventArgs e)
         {
             CureHealTxt.Content = "-Яд";
@@ -6074,26 +6360,24 @@ namespace WpfApp1
         }
         private void Cure2_Time_Tick27(object sender, EventArgs e)
         {
-            string[] Cure = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_14.png" };
-            string[] IcoCr = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_9.png" };
-            ActionsTickCheck(Cure, IcoCr);
+            ActionsTickCheck(PersonAnimatePath.Cure2, IconAnimatePath.Cure2);
         }
         private void CureHP2_Time_Tick28(object sender, EventArgs e)
         {
             CureHealTxt.Content = "100%";
             CureOrHeal();
         }
+        private void BuffUp_Time_Tick29(object sender, EventArgs e)
+        {
+            ActionsTickCheck(PersonAnimatePath.BuffUp, IconAnimatePath.BuffUp);
+        }
         private void Regen_Time_Tick32(object sender, EventArgs e)
         {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen10.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon10.png" };
-            ActionsTickCheck(Pers, Icon);
+            ActionsTickCheck(PersonAnimatePath.Regen, IconAnimatePath.Regen);
         }
         private void Toughen_Time_Tick31(object sender, EventArgs e)
         {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp10.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon10.png" };
-            ActionsTickCheck(Pers, Icon);
+            ActionsTickCheck(PersonAnimatePath.ToughenUp, IconAnimatePath.ToughenUp);
         }
         private void RegenHP_Time_Tick33(object sender, EventArgs e)
         {
@@ -6115,56 +6399,50 @@ namespace WpfApp1
         }
         private void Control_Time_Tick35(object sender, EventArgs e)
         {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control10.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon10.png" };
-            ActionsTickCheck(Pers, Icon);
+            ActionsTickCheck(PersonAnimatePath.Control, IconAnimatePath.Control);
         }
         private void Thrower_Time_Tick36(object sender, EventArgs e)
         {
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             string[] EnemyNames = { "Паук", "Мумия", "Зомби", "Страж", "Стервятник", "Гуль", "Жнец", "Скарабей", "Моль-убийца", "Прислужник", "П. червь", "Мастер" };
-            Labs[SelectedTrgt].Content = Convert.ToUInt16(Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[4] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[8] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[9] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[11] ? Super1.Special * 5 : Super1.Special * 2.5);
+            UInt16 strength = Convert.ToUInt16((Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[4] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[8] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[9] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[11] ? Super1.Special * 5 : Super1.Special * 2.5) + Super1.Special * Super1.Speed * 0.01);
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            Labs[SelectedTrgt].Content = Convert.ToUInt16(strength > EnemyAura ? strength - EnemyAura : 0);
             FoesKicked();
         }
         private void Thrower_Time_Tick37(object sender, EventArgs e)
         {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon10.png" };
-            ActionsTickCheck(Pers, Icon);
+            ActionsTickCheck(PersonAnimatePath.Thrower, IconAnimatePath.Thrower);
         }
         private void Tornado_Time_Tick38(object sender, EventArgs e)
         {
-            string[] Pers = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon10.png" };
-            ActionsTickCheck(Pers, Icon);
+            ActionsTickCheck(PersonAnimatePath.Tornado, IconAnimatePath.Tornado);
         }
         private void TornadoDmg_Time_Tick39(object sender, EventArgs e)
         {
-            AllDmgTimeTextChangeConstruction(Convert.ToUInt16(Super1.Special * 3));
+            UInt16 strength = Convert.ToUInt16(Super1.Special * 3 + Super1.Special * Super1.Speed * 0.01);
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            AllDmgTimeTextChangeConstruction(Convert.ToUInt16(strength > EnemyAura ? strength - EnemyAura : 0));
             FoesKicked();
         }
         private void SeriousMinigun_Time_Tick39(object sender, EventArgs e)
         {
-            string[] SSam = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun14.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun15.png" };
-            string[] IcoSS = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png" };
-            ActionsTickCheck(SSam, IcoSS);
+            ActionsTickCheck(PersonAnimatePath.SeriousMg, IconAnimatePath.SeriousMg);
         }
         private void Quake_Time_Tick43(object sender, EventArgs e)
         {
-            string[] Pers = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake8.png" };
-            string[] Icon = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon9.png" };
-            ActionsTickCheck(Pers, Icon);
+            ActionsTickCheck(PersonAnimatePath.Quake, IconAnimatePath.Quake);
         }
         private void QuakeDmg_Time_Tick44(object sender, EventArgs e)
         {
-            AllDmgTimeTextChangeConstruction(Convert.ToUInt16(Super1.Special * 4));
+            UInt16 strength = Convert.ToUInt16(Super1.Special * 4 + Super1.Special * Super1.Speed * 0.01);
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            AllDmgTimeTextChangeConstruction(Convert.ToUInt16(strength > EnemyAura ? strength - EnemyAura : 0));
             FoesKicked();
         }
         private void SeriousSwitch_Time_Tick45(object sender, EventArgs e)
         {
-            string[] SSam = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch9.png", };
-            string[] IcoSS = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked10.png", };
-            ActionsTickCheck(SSam, IcoSS);
+            ActionsTickCheck(PersonAnimatePath.SSwitch, IconAnimatePath.SSwitch);
         }
         private void HerbsHP_Time_Tick46(object sender, EventArgs e)
         {
