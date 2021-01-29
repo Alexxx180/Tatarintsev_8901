@@ -159,8 +159,21 @@
 
         <Button x:Name="Button1" Content="Новое приключение" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="121" Width="722" FontSize="72" Click="Button1_Click" Panel.ZIndex="5" Grid.Row="29" Grid.Column="19" Grid.ColumnSpan="23" Grid.RowSpan="5" Visibility="Visible" FontStretch="Normal"/>
         <Button x:Name="Continue" Content="Продолжить начатое" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Height="121" Width="722" FontSize="72" Click="Continue_Click" Panel.ZIndex="5" Grid.Row="24" Grid.Column="19" Grid.ColumnSpan="23" Grid.RowSpan="5" Visibility="Visible" IsEnabled="False" FontStretch="Normal"/>
-        <Label x:Name="Lab1" Content="Desert Rage" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="Bauhaus 93" FontSize="132" Panel.ZIndex="4" Grid.Column="19" Grid.Row="1" Visibility="Visible" Grid.ColumnSpan="23" Grid.RowSpan="8"/>
-        <Image x:Name="Img1" HorizontalAlignment="Left" Height="1080" VerticalAlignment="Top" Width="1920" Stretch="Fill" Source="/Loc2.jpg" Grid.Column="0" Grid.Row="0" Visibility="Visible" Grid.ColumnSpan="60" Grid.RowSpan="36" Panel.ZIndex="3"/>
+        <Label x:Name="Lab1" Content="Desert Rage" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="Bauhaus 93" FontSize="132" Panel.ZIndex="4" Grid.Column="18" Grid.Row="1" Visibility="Visible" Grid.ColumnSpan="25" Grid.RowSpan="8" BorderBrush="#FF611717" BorderThickness="8,8,8,8">
+            <Label.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FFB84444" Offset="0.609"/>
+                </LinearGradientBrush>
+            </Label.Background>
+            <Label.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="White" Offset="0.247"/>
+                </LinearGradientBrush>
+            </Label.Foreground>
+        </Label>
+        <Image x:Name="Img1" HorizontalAlignment="Left" Height="1080" VerticalAlignment="Top" Width="1920" Stretch="Fill" Source="/Loc2_1.png" Grid.Column="0" Grid.Row="0" Visibility="Visible" Grid.ColumnSpan="60" Grid.RowSpan="36" Panel.ZIndex="3"/>
 
         <!--Заставка-->
 
@@ -189,7 +202,7 @@
         <Image x:Name="JailImg1" Grid.ColumnSpan="1" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Source="/Jail1.png" Panel.ZIndex="3" IsEnabled="False" Visibility="Visible" Stretch="Fill" Grid.Row="27" Grid.Column="50"/>
         <Image x:Name="JailImg2" Grid.Column="53" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="4" Source="/Jail1.png" IsEnabled="False" Visibility="Visible" Stretch="Fill" Grid.Row="18"/>
         <Image x:Name="JailImg3" Grid.ColumnSpan="1" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="3" Source="/Jail1.png" IsEnabled="False" Visibility="Visible" Stretch="Fill" Grid.Row="4" Grid.Column="54"/>
-        <Image x:Name="JailImg4" Grid.ColumnSpan="1" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Source="/Jail1.png" Panel.ZIndex="3" IsEnabled="False" Visibility="Visible" Stretch="Fill" Grid.Row="5" Grid.Column="55"/>
+
         <Image x:Name="JailImg5" Grid.Column="4" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="4" Source="/Jail1.png" IsEnabled="False" Visibility="Visible" Stretch="Fill" Grid.Row="18"/>
         <Image x:Name="JailImg6" Grid.Column="15" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="4" Source="/Jail1.png" IsEnabled="False" Visibility="Visible" Stretch="Fill" Grid.Row="28"/>
         <Image x:Name="JailImg7" Grid.Column="20" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="4" Source="/Jail1.png" IsEnabled="False" Visibility="Visible" Stretch="Fill" Grid.Row="26"/>
@@ -197,6 +210,8 @@
         <Image x:Name="Threasure1" Grid.ColumnSpan="1" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="3" Source="/AncientArtifact2.png" Visibility="Visible" IsEnabled="False" Grid.Row="16" Grid.Column="4"/>
         <Image x:Name="SaveProgress" Grid.ColumnSpan="1" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="3" Source="/SafeArea.png" Visibility="Visible" IsEnabled="False" Grid.Row="28" Grid.Column="20" Stretch="Fill"/>
         <Image x:Name="PharaohAppears" Grid.ColumnSpan="1" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="3" Source="/PharaohModel.png" Visibility="Hidden" IsEnabled="False" Grid.Row="8" Grid.Column="36" Opacity="0.01"/>
+        <Image x:Name="Ancient" Grid.ColumnSpan="1" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="3" Source="/AncientModel1.png" Visibility="Visible" IsEnabled="False" Grid.Row="16" Grid.Column="4" Opacity="0"/>
+        <Image x:Name="Warrior" Grid.ColumnSpan="1" HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="31" Panel.ZIndex="3" Source="/WarriorModel_1.png" Visibility="Hidden" IsEnabled="False" Grid.Row="16" Grid.Column="1"/>
 
         <!--Сообщения на карте-->
         <Image x:Name="TableMessage1" Grid.ColumnSpan="11" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Panel.ZIndex="4" Source="/TableMessage6.png" Stretch="Fill" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="7" Grid.Row="25" Grid.Column="11"/>
@@ -684,7 +699,7 @@
                 <TextBlock x:Name="Control1ToolTip" FontSize="24" Text="Постепенно восстанавливает ОД"/>
             </ToolTipService.ToolTip>
         </Button>
-        
+
         <!--Предметы вне боя-->
         <Label x:Name="BandageText" Content="+50 ОЗ" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Foreground="White" FontFamily="Franklin Gothic Demi" FontSize="36" Visibility="Hidden" IsEnabled="False" Grid.RowSpan="3" Grid.Row="9" Grid.Column="11"/>
         <Label x:Name="HerbsText" Content="+350 ОЗ" Grid.ColumnSpan="5" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Foreground="White" FontFamily="Franklin Gothic Demi" FontSize="36" Visibility="Hidden" IsEnabled="False" Grid.RowSpan="3" Grid.Row="9" Grid.Column="28"/>
@@ -864,10 +879,10 @@
         </Button>
 
         <!--Задачи-->
-        <Label x:Name="Task1" Content="Найдите способ открыть дверь" Grid.ColumnSpan="32" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Foreground="White" FontSize="60" FontFamily="Franklin Gothic Demi" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="3" Grid.Row="3" Grid.Column="8"/>
-        <Label x:Name="Task2" Content="Соберите другой ключ" Grid.ColumnSpan="32" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Foreground="White" FontFamily="Franklin Gothic Demi" FontSize="60" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="3" Grid.Row="8" Grid.Column="8"/>
-        <Label x:Name="Task3" Content="Соберите последний ключ" Grid.ColumnSpan="32" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" FontFamily="Franklin Gothic Demi" FontSize="60" Foreground="White" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="3" Grid.Row="13" Grid.Column="8"/>
-        <Label x:Name="Task4" Content="Проверьте загадочный артефакт" Grid.ColumnSpan="32" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Foreground="White" FontFamily="Franklin Gothic Demi" FontSize="60" Visibility="Hidden" IsEnabled="False" Grid.RowSpan="3" Grid.Row="18" Grid.Column="8"/>
+        <Label x:Name="Task1" Content="Найдите способ открыть дверь" Grid.ColumnSpan="34" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Foreground="White" FontSize="60" FontFamily="Franklin Gothic Demi" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="3" Grid.Row="3" Grid.Column="8"/>
+        <Label x:Name="Task2" Content="Соберите другой ключ" Grid.ColumnSpan="34" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Foreground="White" FontFamily="Franklin Gothic Demi" FontSize="60" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="3" Grid.Row="8" Grid.Column="8"/>
+        <Label x:Name="Task3" Content="Соберите последний ключ" Grid.ColumnSpan="34" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" FontFamily="Franklin Gothic Demi" FontSize="60" Foreground="White" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="3" Grid.Row="13" Grid.Column="8"/>
+        <Label x:Name="Task4" Content="Проверьте загадочный артефакт" Grid.ColumnSpan="34" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Foreground="White" FontFamily="Franklin Gothic Demi" FontSize="60" Visibility="Hidden" IsEnabled="False" Grid.RowSpan="3" Grid.Row="18" Grid.Column="8"/>
         <Image x:Name="Task1Img" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Source="CompletedTask.png" IsEnabled="False" Visibility="Hidden" Stretch="Uniform" Grid.RowSpan="5" Grid.Row="2" Grid.Column="3"/>
         <Image x:Name="Task2Img" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Source="CompletedTask.png" IsEnabled="False" Visibility="Hidden" Grid.RowSpan="5" Grid.Row="7" Grid.Column="3"/>
         <Image x:Name="Task3Img" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Panel.ZIndex="11" Source="/CompletedTask.png" Visibility="Hidden" IsEnabled="False" Grid.RowSpan="5" Grid.Row="12" Grid.Column="3"/>

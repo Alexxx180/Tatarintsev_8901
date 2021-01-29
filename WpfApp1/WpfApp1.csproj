@@ -18,6 +18,7 @@
     <None Remove="AncientArtifact.png" />
     <None Remove="AncientArtifact2.png" />
     <None Remove="AncientKnife.png" />
+    <None Remove="AncientModel1.png" />
     <None Remove="AntidoteItem.png" />
     <None Remove="ATK.png" />
     <None Remove="ATK2.png" />
@@ -91,6 +92,7 @@
     <None Remove="Loc1_1.jpg" />
     <None Remove="Loc1_2.jpg" />
     <None Remove="Loc2.jpg" />
+    <None Remove="Loc2_1.png" />
     <None Remove="Lock.png" />
     <None Remove="Materials.png" />
     <None Remove="Menu.bmp" />
@@ -157,6 +159,8 @@
     <None Remove="Wall1.jpg" />
     <None Remove="Wanted.png" />
     <None Remove="Wanted2.png" />
+    <None Remove="WarriorModel1.png" />
+    <None Remove="WarriorModel_1.png" />
     <None Remove="WhipImg.png" />
     <None Remove="Zombie.png" />
   </ItemGroup>
@@ -165,6 +169,7 @@
     <Resource Include="AG2.png" />
     <Resource Include="AncientArtifact2.png" />
     <Resource Include="AncientKnife.png" />
+    <Resource Include="AncientModel1.png" />
     <Resource Include="ATK2.png" />
     <Resource Include="BackImg.png" />
     <Resource Include="BackToAdventure.png" />
@@ -200,6 +205,7 @@
     <Resource Include="LevelUpMenu.jpg" />
     <Resource Include="Loc1_2.jpg" />
     <Resource Include="Loc2.jpg" />
+    <Resource Include="Loc2_1.png" />
     <Resource Include="Materials.png" />
     <Resource Include="Menu2.png" />
     <Resource Include="Menu3.png" />
@@ -450,6 +456,8 @@
     <Resource Include="Wall1.jpg" />
     <Resource Include="Wanted.png" />
     <Resource Include="Wanted2.png" />
+    <Resource Include="WarriorModel1.png" />
+    <Resource Include="WarriorModel_1.png" />
     <Resource Include="WhipImg.png" />
     <Resource Include="Zombie.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
