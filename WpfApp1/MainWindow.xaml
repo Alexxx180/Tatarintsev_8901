@@ -287,7 +287,7 @@
 
         <!--Сражение-->
 
-        <MediaElement x:Name="Med2" LoadedBehavior="Manual" Grid.ColumnSpan="60" HorizontalAlignment="Left" Height="1080" Margin="0,0,0,0" VerticalAlignment="Top" Width="1920" Panel.ZIndex="5" IsEnabled="False" Visibility="Hidden" Source="Ambushed2.mp4" MediaEnded="Med2_MediaEnded" SpeedRatio="1" Stretch="Fill" Grid.RowSpan="36"/>
+        <MediaElement x:Name="Med2" LoadedBehavior="Manual" Grid.ColumnSpan="60" HorizontalAlignment="Left" Height="1080" Margin="0,0,0,0" VerticalAlignment="Top" Width="1920" Panel.ZIndex="5" IsEnabled="False" Visibility="Hidden" Source="Ambushed2.mp4" MediaEnded="Med2_MediaEnded" SpeedRatio="1" Stretch="Fill" Grid.RowSpan="36" MediaOpened="Med2_MediaOpened"/>
         <Image x:Name="Img3" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="60" Grid.RowSpan="36" HorizontalAlignment="Left" Height="1080" Margin="0,0,0,0" VerticalAlignment="Top" Width="1920" Panel.ZIndex="3" Source="/Battle3.jpg" IsEnabled="False" Visibility="Hidden" Stretch="Fill"/>
         <Image x:Name="Img4" HorizontalAlignment="Center" Height="240" Margin="0,0,0,0" VerticalAlignment="Center" Width="240" Panel.ZIndex="4" Visibility="Hidden" Source="/pers5.png" Grid.Column="45" Grid.Row="17" Grid.ColumnSpan="8" Grid.RowSpan="9" />
         <Image x:Name="Img5" HorizontalAlignment="Center" Height="125" Margin="0,0,0,0" VerticalAlignment="Center" Width="125" Panel.ZIndex="4" Source="/person6.png" Visibility="Hidden" IsEnabled="False" Grid.Column="41" Grid.RowSpan="5" Grid.ColumnSpan="5" Grid.Row="1"/>

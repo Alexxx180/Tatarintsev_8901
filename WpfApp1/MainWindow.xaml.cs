@@ -89,7 +89,7 @@ namespace WpfApp1
             BtnAfter = new Static.BtnImgs.After();
             MenuImgs = new Static.Menu();
             Fighting = new Static.Battle();
-            AniModel = new Paths.Dynamic.Models();
+            AniModel = new Dynamic.Models();
         }
         public class CutScenes : Paths
         {
@@ -98,11 +98,13 @@ namespace WpfApp1
             {
                 Ambushed = @"Ambushed.mp4";
                 BattleStations = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleStarts\BattleStations2.mp4";
+                NotAgain = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleStarts\BattleStations3.mp4";
                 PreChapter1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Chapter1.mp4";
                 PreChapter2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Chapter2.mp4";
                 PreChapter3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Chapter3.mp4";
                 Victory = @"Win.mp4";
                 WasteTime = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleEnds\Win2.mp4";
+                PowerRanger = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleEnds\Win3.mp4";
                 Fin_Chapter1 = @"Final1.mp4";
                 Fin_Chapter2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersEnding\Final2.mp4";
                 Titres = @"Titres3.mp4";
@@ -110,11 +112,13 @@ namespace WpfApp1
             public String Prologue { get; set; }
             public String Ambushed { get; set; }
             public String BattleStations { get; set; }
+            public String NotAgain { get; set; }
             public String PreChapter1 { get; set; }
             public String PreChapter2 { get; set; }
             public String PreChapter3 { get; set; }
             public String Victory { get; set; }
             public String WasteTime { get; set; }
+            public String PowerRanger { get; set; }
             public String Fin_Chapter1 { get; set; }
             public String Fin_Chapter2 { get; set; }
             public String Titres { get; set; }
@@ -370,9 +374,11 @@ namespace WpfApp1
                 {
                     Battle1 = @"Battle3.jpg";
                     Battle2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\b2.jpg";
+                    Battle3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\Battle3.jpg";
                 }
                 public String Battle1 { get; set; }
                 public String Battle2 { get; set; }
+                public String Battle3 { get; set; }
             }
             public class Menu : Static
             {
@@ -1401,6 +1407,7 @@ Error Number:2,State:0,Class:20
             TableEN = true;
             LockIndex = 3;
             StepsToBattle = 20;
+            SeriousBonus = 0;
             SelectedTarget = 0;
             FoeType1Alive = 0;
             FoeType2Alive = 0;
@@ -1447,6 +1454,7 @@ Error Number:2,State:0,Class:20
         public bool TableEN { get; set; }
         public Byte LockIndex { get; set; }
         public Byte SpecialBattle { get; set; }
+        public Byte SeriousBonus { get; set; }
         public Byte[] ItemsDropRate { get; set; }
     }
 
@@ -1916,7 +1924,7 @@ Error Number:2,State:0,Class:20
                     MapScheme = new Byte[,]
                     {{ 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 },
                     {  1,  0,  0,  0,  0,  0,  0,  0,  0,178,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  8,  8,  1,  0,  0,  0,  1,  8,  8,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,179,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
-                    {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  8,  8,  1,  0,  0,  0,  1,  8,  8,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  8,  8,  1,  0,163,  0,  1,  8,  8,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
                     {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  1,  0,  0,  8,  8,  1,  0,  0,  0,  1,  8,  8,  0,  0,  1,  0,  1,  1,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
                     {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  1,  0,  0,  8,  8,  8,  1,  0,  1,  8,  8,  8,  0,  0,  1,  0,  1,  0,  0,  1,  1,  0,  0,  6,  6,  0,  0,  0,  1,  1,  1,  0,  0,  0,  6,  6,  0,  0,  1 },
                     {  1,  0,  0,  6,  6,  0,  0,  0,  1,  1,  1,  0,  0,  0,  6,  6,  0,  0,  1,  1,  0,  1,  0,  0,  0,  8,  8,  8,  0,  8,  8,  8,  0,  0,  0,  1,  0,  1,  0,  0,  1,  1,  0,  0,  6,  6,  0,  0,  1,  0,  0,  0,  1,  0,  0,  6,  6,  0,  0,  1 },
@@ -2230,10 +2238,11 @@ Error Number:2,State:0,Class:20
         {
             Img2.Source = bmp;
             Adoptation.SetBounds(LeftRightOrUpDown, rowcolumn);
-            PlayerSetLocation(Convert.ToByte(Adoptation.ImgYbounds), Convert.ToByte(Adoptation.ImgXbounds));
+            PlayerSetLocation(Bits(Adoptation.ImgYbounds), Bits(Adoptation.ImgXbounds));
             GroundCheck(MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds]);
             TablesSetInfo();
-            if (Sets.StepsToBattle >= rnd) { ImgHideX(new Image[] { Img2, PainImg }); Sound1.Stop(); Dj(Path.GameNoises.Danger); MediaShow(Med2); }
+            string[] AmbushRef = { Path.CutScene.Ambushed, Path.CutScene.BattleStations, Path.CutScene.NotAgain };
+            if (Sets.StepsToBattle >= rnd) { AnyHideX(PainImg, Img2); Sound1.Stop(); Dj(Path.GameNoises.Danger); MediaShow(Med2); }
             Sets.StepsToBattle++;
             GetPoisoned();
         }
@@ -2421,9 +2430,9 @@ Error Number:2,State:0,Class:20
         {
             switch (EnemyNamesFight[num])
             {
-                case 1: BattleText3.Content = EnemyKind + ": " + CountEnemy; LabShow(BattleText3); break;
-                case 2: BattleText4.Content = EnemyKind + ": " + CountEnemy; LabShow(BattleText4); break;
-                case 3: BattleText5.Content = EnemyKind + ": " + CountEnemy; LabShow(BattleText5); break;
+                case 1: BattleText3.Content = EnemyKind + ": " + CountEnemy; LabShow(BattleText3); BattleText3.Foreground = Brushes.Red; if (CountEnemy <= 0) LabHide(BattleText3); break;
+                case 2: BattleText4.Content = EnemyKind + ": " + CountEnemy; LabShow(BattleText4); BattleText4.Foreground = Brushes.Red; if (CountEnemy <= 0) LabHide(BattleText4); break;
+                case 3: BattleText5.Content = EnemyKind + ": " + CountEnemy; LabShow(BattleText5); BattleText5.Foreground = Brushes.Red; if (CountEnemy <= 0) LabHide(BattleText5); break;
                 default: break;
             }
         }
@@ -2453,6 +2462,7 @@ Error Number:2,State:0,Class:20
             }
             Sets.ItemsDropRate[ItemDrop] += 1;
         }
+        private void LabelsReturnNormal() { Label[] Enemies = { BattleText3, BattleText4, BattleText5 }; foreach (Label en in Enemies) en.Foreground = Brushes.White; }
         private void SmartEnemyLabels(in Byte Index)
         {
             List<Byte> msp = new List<byte>();
@@ -2474,17 +2484,16 @@ Error Number:2,State:0,Class:20
             if (Sets.SpecialBattle == 0)
             {
                 Sets.Rnd1 = Random1.Next(1, 4);
-                Foe1.EnemiesStillAlive = (byte)Sets.Rnd1;
+                Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
                 for (Byte ib = 1; ib <= Sets.Rnd1; ib++)
                 {
                     Sets.Rnd2 = Random1.Next(1, Sets.EnemyRate);
-                    FoesCalculate(ib, Convert.ToByte(Sets.Rnd2 - 1), XP[CurrentLocation][Sets.Rnd2 - 1], Mat[CurrentLocation][Sets.Rnd2 - 1], DrRt[CurrentLocation][Sets.Rnd2 - 1]);
-                    SmartEnemyLabels(Convert.ToByte(Sets.Rnd2 - 1));
+                    FoesCalculate(ib, Bits(Sets.Rnd2 - 1), XP[CurrentLocation][Sets.Rnd2 - 1], Mat[CurrentLocation][Sets.Rnd2 - 1], DrRt[CurrentLocation][Sets.Rnd2 - 1]);
+                    SmartEnemyLabels(Bits(Sets.Rnd2 - 1));
                 }
-                EnemiesTotal(0, Foe1.EnemyName[CurrentLocation][0], Sets.FoeType1Alive);
-                EnemiesTotal(1, Foe1.EnemyName[CurrentLocation][1], Sets.FoeType2Alive);
-                EnemiesTotal(2, Foe1.EnemyName[CurrentLocation][2], Sets.FoeType3Alive);
-                EnemiesTotal(3, Foe1.EnemyName[CurrentLocation][3], Sets.FoeType4Alive);
+                Byte[] FoeCount = { Sets.FoeType1Alive, Sets.FoeType2Alive, Sets.FoeType3Alive, Sets.FoeType4Alive };
+                for (Byte i=0;i<FoeCount.Length;i++) EnemiesTotal(i, Foe1.EnemyName[CurrentLocation][i], FoeCount[i]);
+                LabelsReturnNormal();
                 switch (Sets.Rnd1)
                 {
                     case 1: ImgShow(Img6); break;
@@ -2615,7 +2624,7 @@ Error Number:2,State:0,Class:20
         }
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
-            Sets.SelectedTarget = Convert.ToByte(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
+            Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
             SelectedTrgt = Sets.SelectedTarget;
             FightMenuMakesDisappear();
             BtnShowX(new Button[] { Fight, Cancel1 });
@@ -2658,7 +2667,7 @@ Error Number:2,State:0,Class:20
                 timer2.Stop();
                 Sound1.Stop();
                 ChestsAndTablesAllTurnOn1();
-                if (CurrentLocation == 0) Map1EnableModels(); else ImgShowX(new Image[] { SecretChestImg1, SecretChestImg2 });
+                if (CurrentLocation == 0) Map1EnableModels(); else if(CurrentLocation == 1) ImgShowX(new Image[] { SecretChestImg1, SecretChestImg2 });
                 if (CheckMapIfModelExists(7)) ImgShow(Boulder1);
                 ButtonHide(Abilities);
                 Abilities.IsEnabled = Super1.CurrentLevel >= 2;
@@ -2672,7 +2681,7 @@ Error Number:2,State:0,Class:20
                 if (APRegenerate != null) { APRegenerate.IsEnabled = !APRegenerate.IsEnabled; APRegenerate.Stop(); }
                 ChestsAndTablesAllTurnOn1();
                 if (CheckMapIfModelExists(7)) ImgShow(Boulder1);
-                if (CurrentLocation == 1) ImgShowX(new Image[] { SecretChestImg1, SecretChestImg2 });
+                if (CurrentLocation == 0) Map1EnableModels(); else if (CurrentLocation == 1) ImgShowX(new Image[] { SecretChestImg1, SecretChestImg2 });
                 Sound1.Stop();
                 SEF(Path.GameSounds.NowTheWinnerIs);
                 Grid.SetColumn(BattleText1, 22);
@@ -2808,7 +2817,7 @@ Error Number:2,State:0,Class:20
         {
             string enemy = "";
             UInt16 EnemyAttack = 25;
-            UInt16 PlayerDef = Convert.ToUInt16(Super1.Defence * Super1.DefenseState + Super1.Special * Super1.Speed * 0.005 + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3] + AbilityBonuses[1]);
+            UInt16 PlayerDef = Shrt(Super1.Defence * Super1.DefenseState + Super1.Special * Super1.Speed * 0.005 + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3] + AbilityBonuses[1]+ Sets.SeriousBonus);
             if (Foe1.EnemyHP[FoeNo] > 0)
                 if (Foe1.EnemyTurn[FoeNo] == 200)
                 {
@@ -2818,10 +2827,10 @@ Error Number:2,State:0,Class:20
                     NameEnemies(out enemy, 1);
                     if (EnemyAttack > PlayerDef)
                     {
-                        UInt16 dmg = Convert.ToUInt16(EnemyAttack - PlayerDef);
-                        WidelyUsedAnyTimer(out SomeTimer, FoeFights[FoeNo], new TimeSpan(0, 0, 0, 0, Convert.ToUInt16(50 / GameSpeed.Value)));
+                        UInt16 dmg = Shrt(EnemyAttack - PlayerDef);
+                        WidelyUsedAnyTimer(out SomeTimer, FoeFights[FoeNo], new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
                         EnemyOnAttack(enemy, dmg);
-                        Super1.PlayerStatus = Convert.ToByte((Random1.Next(1, 13) == 7) && (Super1.PlayerStatus != 1) && (Foe1.EnemyAppears[FoeNo] == "Паук") ? 1 : 0);
+                        Super1.PlayerStatus = Bits((Random1.Next(1, 13) == 7) && (Super1.PlayerStatus != 1) && (Foe1.EnemyAppears[FoeNo] == "Паук") ? 1 : 0);
                         Img5.Source = Bmper(Super1.PlayerStatus == 1 ? Path.IconStatePath.Poison : Path.IconStatePath.Usual);
                     }
                 }
@@ -2899,7 +2908,7 @@ Error Number:2,State:0,Class:20
         {
             timer9.Stop();
             SelectedTrgt = Sets.SelectedTarget;
-            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0]);
+            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0]+Sets.SeriousBonus);
             UInt16 EnemyDefence = EnemyTough(SelectedTrgt);
             AnyHideX(BattleText1, HPenemyBar, HPenemy, Fight, Cancel1, TrgtImg, EnemyImg);
             WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, Convert.ToUInt16(50 / GameSpeed.Value)));
@@ -2945,7 +2954,7 @@ Error Number:2,State:0,Class:20
         public static UInt16 FoeDamage = 0;
         private void DamageFoe_Time_Tick17(object sender, EventArgs e)
         {
-            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] - EnemyTough(Sets.SelectedTarget));
+            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus - EnemyTough(Sets.SelectedTarget));
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             Labs[SelectedTrgt].Content = Shrt(strength);
             FoesKicked();
@@ -3112,7 +3121,7 @@ Error Number:2,State:0,Class:20
         private void HideAfterBattleMenu() { AnyHideX(NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1, AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg, AfterHPbar, AfterAPbar, NextExpBar, BeforeHPbar, BeforeAPbar, BeforeHPbarOver333, AfterHPbarOver333, BeforeHPbarOver666, AfterHPbarOver666, BeforeAPbarOver333, AfterAPbarOver333, BeforeAPbarOver666, AfterAPbarOver666, TextOk1); }
         private void TextOk1_Click(object sender, RoutedEventArgs e)
         {
-            Win.Source = (CurrentLocation==1? Ura(Path.CutScene.WasteTime) : Ura(Path.CutScene.Victory));
+            Win.Source = (CurrentLocation == 2 ? Ura(Path.CutScene.PowerRanger) : CurrentLocation ==1? Ura(Path.CutScene.WasteTime) : Ura(Path.CutScene.Victory));
             MaterialsAdd.Content = "";
             if (timer.IsEnabled) timer.Stop();
             BAG.Materials += Convert.ToUInt16(timer.IsEnabled ? Mat : 0);
@@ -3365,7 +3374,7 @@ Error Number:2,State:0,Class:20
             if (Sets.SpecialBattle == 200)
             {
                 APtext.Content = "ОД";
-                Super1.SetStats(Convert.ToByte(Super1.CurrentLevel-1));
+                Super1.SetStats(Bits(Super1.CurrentLevel-1));
                 Super1.SetCurrentHpAp(RememberHPAP[0], RememberHPAP[1]);
                 RefreshAllHPAP();
                 Sets.SpecialBattle = 0;
@@ -3527,7 +3536,7 @@ Error Number:2,State:0,Class:20
         }
         private void SuperCheckFoes(in Byte seltrg)
         {
-            Label[] Enemies = { BattleText3, BattleText4, BattleText5 };
+            //Label[] Enemies = { BattleText3, BattleText4, BattleText5 };
             Byte[] FoesAlive = { Sets.FoeType1Alive, Sets.FoeType2Alive, Sets.FoeType3Alive, Sets.FoeType4Alive };
             for (Byte i = 0; i < FoesAlive.Length; i++)
                 if (Foe1.EnemyAppears[seltrg] == Foe1.EnemyName[CurrentLocation][i])
@@ -3535,16 +3544,14 @@ Error Number:2,State:0,Class:20
                     if (FoesAlive[i] - 1 <= 0)
                     {
                         Sets.EnemiesGetLost(i);
-                        LabHide(Enemies[EnemyNamesFight[i]-1]);
                         FoesAlive[i] = 0;
                     }
                     else
                     {
                         Sets.EnemiesGetDown(i);
                         FoesAlive[i]--;
-                        Enemies[EnemyNamesFight[i]-1].Foreground = Brushes.Red;
-                        EnemiesTotal(Bits(i), Foe1.EnemyName[CurrentLocation][i], FoesAlive[i]);
                     }
+                    EnemiesTotal(Bits(i), Foe1.EnemyName[CurrentLocation][i], FoesAlive[i]);
                     break;
                 }
             Foe1.EnemyAppears[seltrg] = "";
@@ -3557,7 +3564,7 @@ Error Number:2,State:0,Class:20
             SelectedTrgt = 4;
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
-            for (Byte i=0;i<3;i++) SupersFastCheck(strength,i);
+            for (Byte i=0;i< Foe1.EnemyAppears.Length; i++) SupersFastCheck(strength,i);
             Sets.SelectedTarget = Convert.ToByte(Foe1.EnemyHP[0] > 0 ? 0 : Foe1.EnemyHP[1] > 0? 1 : 2);
             Time1.Value = 0;
         }
@@ -3571,7 +3578,7 @@ Error Number:2,State:0,Class:20
                 ImgHide(FoeImgs[CheckIndex]);
                 if ((Sets.SpecialBattle != 1) && (Sets.SpecialBattle != 2)) SuperCheckFoes(CheckIndex);
                 else { LabHide(BattleText3); Foe1.EnemyAppears[0] = ""; };
-                Foe1.EnemiesStillAlive = Convert.ToByte(Foe1.EnemiesStillAlive - 1 <= 0 ? 0 : Foe1.EnemiesStillAlive - 1);
+                Foe1.EnemiesStillAlive = Bits(Foe1.EnemiesStillAlive - 1 <= 0 ? 0 : Foe1.EnemiesStillAlive - 1);
                 Foe1.EnemyAppears[CheckIndex] = "";
             }
             else if (Foe1.EnemyAppears[CheckIndex] != "") Foe1.EnemyHP[CheckIndex] = Convert.ToUInt16(strength > EnemyAura ? (Foe1.EnemyHP[CheckIndex] - strength + EnemyAura) : Foe1.EnemyHP[CheckIndex]);
@@ -3709,12 +3716,13 @@ Error Number:2,State:0,Class:20
             ShowEquipAndStats();
             EquipWatch();
         }
+        private void CheckSeriousBonus() { Sets.SeriousBonus = Bits(((Super1.PlayerEQ[0] == 165) && (Super1.PlayerEQ[1] == 85) && (Super1.PlayerEQ[2] == 55) && (Super1.PlayerEQ[3] == 25)) ? 90 : 0); }
         private void EquipWatch()
         {
             AnyShowX(Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4);
             FastEnableDisableBtn(new Boolean[] { BAG.Hands && (Super1.PlayerEQ[0] == 0), BAG.Jacket && (Super1.PlayerEQ[1] == 0), BAG.Legs && (Super1.PlayerEQ[2] == 0), BAG.Boots && (Super1.PlayerEQ[3] == 0), !BAG.Hands && (Super1.PlayerEQ[0] != 0),!BAG.Jacket && (Super1.PlayerEQ[1] != 0),!BAG.Legs && (Super1.PlayerEQ[2] != 0),!BAG.Boots && (Super1.PlayerEQ[3] != 0) }, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4);
         }
-        private void StatsMeaning() { FastTextChange(new Label[] { Level0, ATK1, DEF1, AG1, SP1 }, new string[] { "Уровень: " + Super1.CurrentLevel, Convert.ToString(Super1.Attack + Super1.PlayerEQ[0]), Convert.ToString(Super1.Defence + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3]), Convert.ToString(Super1.Speed), Convert.ToString(Super1.Special) }); }
+        private void StatsMeaning() { FastTextChange(new Label[] { Level0, ATK1, DEF1, AG1, SP1 }, new string[] { "Уровень: " + Super1.CurrentLevel, Convert.ToString(Super1.Attack + Super1.PlayerEQ[0] + Sets.SeriousBonus), Convert.ToString(Super1.Defence + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3]+Sets.SeriousBonus), Convert.ToString(Super1.Speed), Convert.ToString(Super1.Special) }); }
         private void OnRemove_Click(object sender, RoutedEventArgs e)
         {
             Button[] buttons = { Remove1, Remove2, Remove3, Remove4 };
@@ -3729,6 +3737,7 @@ Error Number:2,State:0,Class:20
                     BAG.EquipPropertyChange(i, true);
                     break;
                 }
+            CheckSeriousBonus();
             StatsMeaning();
             EquipWatch();
         }
@@ -3986,6 +3995,8 @@ Error Number:2,State:0,Class:20
         private void MediaShowAdvanced(MediaElement Media, Uri Source, TimeSpan timeSpan)
         {
             Media.Stop();
+            Media.Visibility = Visibility.Visible;
+            Media.IsEnabled = true;
             Media.Source = Source;
             Media.Position = timeSpan;
             Media.Play();
@@ -4209,8 +4220,8 @@ Error Number:2,State:0,Class:20
             MapCheck(CurrentLocation);
             if (CheckMapIfModelExists(7)) ImgShow(Boulder1);
             string[] music = new string[] { Path.GameMusic.AncientPyramid, Path.GameMusic.WaterTemple, Path.GameMusic.LavaTemple };
-            Uri[] ambushed = new Uri[] { Ura(Path.CutScene.Ambushed), Ura(Path.CutScene.BattleStations), Ura(Path.CutScene.BattleStations) };
-            BitmapImage[] battlegrounds = BmpersToX(Bmper(Path.Fighting.Battle1), Bmper(Path.Fighting.Battle2), Bmper(Path.Fighting.Battle2));
+            Uri[] ambushed = new Uri[] { Ura(Path.CutScene.Ambushed), Ura(Path.CutScene.BattleStations), Ura(Path.CutScene.NotAgain) };
+            BitmapImage[] battlegrounds = BmpersToX(Bmper(Path.Fighting.Battle1), Bmper(Path.Fighting.Battle2), Bmper(Path.Fighting.Battle3));
             BitmapImage[] location = BmpersToX(Bmper(Path.Backgrounds.Location1), Bmper(Path.Backgrounds.Location2), Bmper(Path.Backgrounds.Location3));
             BitmapImage[] threasures = BmpersToX(Bmper(Path.MapModels.Artifact1), Bmper(Path.MapModels.Artifact2), Bmper(Path.MapModels.Artifact3));
             ChestsCheck(BAG.Weapon[CurrentLocation], 203, ChestImg3);
@@ -4223,6 +4234,10 @@ Error Number:2,State:0,Class:20
             ChestsAndTablesAllTurnOn1();
             ImgShowX(new Image[] { Img1, Threasure1, Img2, SaveProgress });
             ContinueCheckPoints();
+           // BAG.Weapon[3] = true;
+            BAG.Armor[3] = true;
+            BAG.Pants[3] = true;
+            BAG.ArmBoots[3] = true;
         }
         private void ChestsCheck(in Boolean CheckValue, in Byte OnMap, Image Chest)
         {
@@ -4619,6 +4634,7 @@ Error Number:2,State:0,Class:20
                     break;
                 }
             }
+            CheckSeriousBonus();
             StatsMeaning();
             BtnHideX(new Button[] { Equipments, Equipments2, Equipments3, Equipments4, CancelEq });
             EquipWatch();
@@ -4667,6 +4683,10 @@ Error Number:2,State:0,Class:20
                 "Скарабей" => Path.FoesStatePath.Scarab,
                 "Фараон" => Path.BossesStatePath.Pharaoh,
                 "Угх-зан I" => Path.BossesStatePath.UghZan,
+                "Моль-убийца" => Path.FoesStatePath.KillerMole,
+                "Прислужник" => Path.FoesStatePath.Imp,
+                "П. червь" => Path.FoesStatePath.Worm,
+                "Мастер" => Path.FoesStatePath.Master,
                 _ => Path.FoesStatePath.Spider,
             };
         }
@@ -4683,6 +4703,10 @@ Error Number:2,State:0,Class:20
                 "Скарабей" => Path.FoesAnimatePath.Scarab,
                 "Фараон" => Path.BossesAnimatePath.Pharaoh,
                 "Угх-зан I" => Path.BossesAnimatePath.UghZan,
+                "Моль-убийца" => Path.FoesAnimatePath.KillerMole,
+                "Прислужник" => Path.FoesAnimatePath.Imp,
+                "П. червь" => Path.FoesAnimatePath.Worm,
+                "Мастер" => Path.FoesAnimatePath.Master,
                 _ => Path.FoesAnimatePath.Spider,
             };
         }
@@ -4772,5 +4796,7 @@ Error Number:2,State:0,Class:20
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             for (Byte i = 0; i < 3; i++) Labs[i].Content = Foe1.EnemyHP[i] > 0 ? ActionPower : Labs[i].Content;
         }
+
+        private void Med2_MediaOpened(object sender, RoutedEventArgs e) { AnyHideX(Img3, Img1); }
     }
 }
