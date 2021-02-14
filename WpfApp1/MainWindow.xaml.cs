@@ -92,9 +92,11 @@ namespace WpfApp1
                 BattleStations = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleStarts\BattleStations2.mp4";
                 PreChapter1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Chapter1.mp4";
                 PreChapter2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Chapter2.mp4";
+                PreChapter3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Chapter3.mp4";
                 Victory = @"Win.mp4";
                 WasteTime = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleEnds\Win2.mp4";
                 Fin_Chapter1 = @"Final1.mp4";
+                Fin_Chapter2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersEnding\Final2.mp4";
                 Titres = @"Titres3.mp4";
             }
             public String Prologue { get; set; }
@@ -102,9 +104,11 @@ namespace WpfApp1
             public String BattleStations { get; set; }
             public String PreChapter1 { get; set; }
             public String PreChapter2 { get; set; }
+            public String PreChapter3 { get; set; }
             public String Victory { get; set; }
             public String WasteTime { get; set; }
             public String Fin_Chapter1 { get; set; }
+            public String Fin_Chapter2 { get; set; }
             public String Titres { get; set; }
         }
         public class OST:Paths
@@ -121,6 +125,7 @@ namespace WpfApp1
                     Prologue = @"Intro1.mp3";
                     AncientPyramid = @"Main_theme.mp3";
                     WaterTemple = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\WaterTemple_theme.mp3";
+                    LavaTemple = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\FireTemple_theme.mp3";
                     FoesChase = @"Battle_theme2.mp3";
                     LookWhoAwake = @"Pharaoh.mp3";
                     SeriousIsMe = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SecretBossFight1.mp3";
@@ -131,6 +136,7 @@ namespace WpfApp1
                 public String Prologue { get; set; }
                 public String AncientPyramid { get; set; }
                 public String WaterTemple { get; set; }
+                public String LavaTemple { get; set; }
                 public String FoesChase { get; set; }
                 public String LookWhoAwake { get; set; }
                 public String SeriousIsMe { get; set; }
@@ -219,6 +225,7 @@ namespace WpfApp1
                     Main = @"New_game_show.jpg";
                     Location1 = @"Loc1_2.jpg";
                     Location2 = @"Loc2_1.png";
+                    Location3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Loc3.jpg";
                     Normal = @"AbsoluteBlack.jpg";
                     Register = "Wanted.png";
                     UnRegister = "Wanted2.png";
@@ -255,22 +262,32 @@ namespace WpfApp1
                     public Models() { SetAllModPaths(); }
                     public void SetAllModPaths()
                     {
+                        LeverOff = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\LeverOff.png";
+                        LeverOn = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\LeverOn.png";
                         ChestClosed1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestClosed(ver1).png";
                         ChestClosed2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestVersions\ChestClosed(ver2).png";
+                        ChestClosed3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\ChestClosed(ver3).png";
                         ChestOpened1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestOpened(ver1).png";
                         ChestOpened2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestVersions\ChestOpened(ver2).png";
+                        ChestOpened3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\ChestOpened(ver3).png";
                         Artifact1 = @"AncientArtifact.png";
                         Artifact2 = @"AncientArtifact2.png";
+                        Artifact3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\AncientArtifact3.png";
                         SeriousPants = @"GetItemsCustomPants4.png";
                         BandageBoots = @"GetItemsCustomBoots1.png";
                         StrongBoots = @"GetItemsCustomBoots2.png";
                     }
+                    public String LeverOff { get; set; }
+                    public String LeverOn { get; set; }
                     public String ChestClosed1 { get; set; }
                     public String ChestClosed2 { get; set; }
+                    public String ChestClosed3 { get; set; }
                     public String ChestOpened1 { get; set; }
                     public String ChestOpened2 { get; set; }
+                    public String ChestOpened3 { get; set; }
                     public String Artifact1 { get; set; }
                     public String Artifact2 { get; set; }
+                    public String Artifact3 { get; set; }
                     public String SeriousPants { get; set; }
                     public String BandageBoots { get; set; }
                     public String StrongBoots { get; set; }
@@ -282,41 +299,58 @@ namespace WpfApp1
                     {
                         Knucleduster = @"GetItemsCustomWeapon1.png";
                         AncientKnife = @"GetItemsCustomWeapon2.png";
+                        LegendSword = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsCustomWeapon3.png";
+                        SeriousMinigun = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsCustomWeapon4.png";
                         LeatherArmor = @"GetItemsArmor1.png";
                         AncientArmor = @"GetItemsArmor2.png";
+                        LegendArmor = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsArmor3.png";
                         FeatherWears = @"GetItemsCustomPants1.png";
                         AncientPants = @"GetItemsCustomPants2.png";
+                        LegendPants = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsCustomPants3.png";
                         SeriousPants = @"GetItemsCustomPants4.png";
                         BandageBoots = @"GetItemsCustomBoots1.png";
                         StrongBoots = @"GetItemsCustomBoots2.png";
+                        LegendBoots = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsCustomBoots3.png";
                         Tb1_Msg1 = @"TableMessage1.png";
                         Tb1_Msg2 = @"TableMessage4.png";
+                        Tb1_Msg3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\TableMessage7.png";
                         Tb2_Msg1 = @"TableMessage2.png";
                         Tb2_Msg2 = @"TableMessage5.png";
+                        Tb2_Msg3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\TableMessage8.png";
                         Tb3_Msg1 = @"TableMessage3.png";
                         Tb3_Msg2 = @"TableMessage6.png";
+                        Tb3_Msg3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\TableMessage9.png";
                         Completed ="/TaskCompleted.png";
                     }
                     public String Knucleduster { get; set; }
                     public String AncientKnife { get; set; }
+                    public String LegendSword { get; set; }
+                    public String SeriousMinigun { get; set; }
                     public String LeatherArmor { get; set; }
                     public String AncientArmor { get; set; }
+                    public String LegendArmor { get; set; }
                     public String FeatherWears { get; set; }
                     public String AncientPants { get; set; }
                     public String SeriousPants { get; set; }
+                    public String LegendPants { get; set; }
                     public String BandageBoots { get; set; }
                     public String StrongBoots { get; set; }
+                    public String LegendBoots { get; set; }
                     public String Tb1_Msg1 { get; set; }
                     public String Tb1_Msg2 { get; set; }
+                    public String Tb1_Msg3 { get; set; }
                     public String Tb2_Msg1 { get; set; }
                     public String Tb2_Msg2 { get; set; }
+                    public String Tb2_Msg3 { get; set; }
                     public String Tb3_Msg1 { get; set; }
                     public String Tb3_Msg2 { get; set; }
+                    public String Tb3_Msg3 { get; set; }
                     public String Completed { get; set; }
                 }
                 public String Main { get; set; }
                 public String Location1 { get; set; }
                 public String Location2 { get; set; }
+                public String Location3 { get; set; }
                 public String Normal { get; set; }
                 public String Register { get; set; }
                 public String UnRegister { get; set; }
@@ -356,28 +390,38 @@ namespace WpfApp1
                         ArrowPrev = @"ToPrev.png";
                         Knucleduster= @"KnucledusterItem.png";
                         AncientKnife = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\AncientKnife.png";
+                        LegendSword = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\LegendSword.png";
+                        SeriousMinigun = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\SeriousMinigun.png";
                         LeatherArmor = @"BlackSkinItems.png";
                         AncientArmor = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\AncientArmorButton.png";
-                        SeriousPants = @"CoolT-shirt.png";
+                        LegendArmor = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\LegendArmor.png";
+                        SeriousTshirt = @"CoolT-shirt.png";
                         FeatherWears = @"EagleWearsItems.png";
                         AncientPants = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\WarPants.png";
+                        LegendPants = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\LegendPants.png";
                         SeriousPants = @"SeriousPants.png";
                         BandageBoots = @"BandageBootsItems.png";
                         StrongBoots = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\ManBoots.png";
+                        LegendBoots = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\LegendBoots.png";
                         SeriousBoots = @"SeriousBoots.png";
                     }
                     public String ArrowNext { get; set; }
                     public String ArrowPrev { get; set; }
                     public String Knucleduster { get; set; }
                     public String AncientKnife { get; set; }
+                    public String LegendSword { get; set; }
+                    public String SeriousMinigun { get; set; }
                     public String LeatherArmor { get; set; }
                     public String AncientArmor { get; set; }
+                    public String LegendArmor { get; set; }
                     public String SeriousTshirt { get; set; }
                     public String FeatherWears { get; set; }
                     public String AncientPants { get; set; }
+                    public String LegendPants { get; set; }
                     public String SeriousPants { get; set; }
                     public String BandageBoots { get; set; }
                     public String StrongBoots { get; set; }
+                    public String LegendBoots { get; set; }
                     public String SeriousBoots { get; set; }
                 }
                 public class Before : BtnImgs
@@ -433,6 +477,10 @@ namespace WpfApp1
                     Ghoul = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Ghoul.png";
                     GrimReaper = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\GrimReaper.png";
                     Scarab = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Scarab.png";
+                    KillerMole = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\KillerMole.png";
+                    Imp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Imp.png";
+                    Worm = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Worm.png";
+                    Master = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Master.png";
 
                     SpiderIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png";
                     MummyIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png";
@@ -442,6 +490,10 @@ namespace WpfApp1
                     GhoulIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Ghoul1.png";
                     GrimReaperIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\GrimReaper1.png";
                     ScarabIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Scarab.png";
+                    KillerMoleIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\KillerMole.png";
+                    ImpIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Imp.png";
+                    WormIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Worm.png";
+                    MasterIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Master.png";
                 }
                 public String Spider { get; set; }
                 public String Mummy { get; set; }
@@ -451,6 +503,10 @@ namespace WpfApp1
                 public String Ghoul { get; set; }
                 public String GrimReaper { get; set; }
                 public String Scarab { get; set; }
+                public String KillerMole { get; set; }
+                public String Imp { get; set; }
+                public String Worm { get; set; }
+                public String Master { get; set; }
                 public String SpiderIcon { get; set; }
                 public String MummyIcon { get; set; }
                 public String ZombieIcon { get; set; }
@@ -459,6 +515,10 @@ namespace WpfApp1
                 public String GhoulIcon { get; set; }
                 public String GrimReaperIcon { get; set; }
                 public String ScarabIcon { get; set; }
+                public String KillerMoleIcon { get; set; }
+                public String ImpIcon { get; set; }
+                public String WormIcon { get; set; }
+                public String MasterIcon { get; set; }
             }
             public class Bosses : Static
             {
@@ -528,6 +588,10 @@ namespace WpfApp1
                     Ghoul = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png" };
                     GrimReaper = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png" };
                     Scarab = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png" };
+                    KillerMole = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\KillerMoleAttacks\KillerMole1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\KillerMoleAttacks\KillerMole2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\KillerMoleAttacks\KillerMole1.png" };
+                    Imp = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ImpAttacks\Imp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ImpAttacks\Imp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ImpAttacks\Imp1.png" };
+                    Worm = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\WormAttacks\Worm1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\WormAttacks\Worm2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\WormAttacks\Worm1.png" };
+                    Master = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\MasterAttacks\Master1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\MasterAttacks\Master2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\MasterAttacks\Master1.png" };
                 }
                 public String[] Spider { get; set; }
                 public String[] Mummy { get; set; }
@@ -537,7 +601,11 @@ namespace WpfApp1
                 public String[] Ghoul { get; set; }
                 public String[] GrimReaper { get; set; }
                 public String[] Scarab { get; set; }
-                
+                public String[] KillerMole { get; set; }
+                public String[] Imp { get; set; }
+                public String[] Worm { get; set; }
+                public String[] Master { get; set; }
+
             }
             public class Bosses : Dynamic
             {
@@ -582,6 +650,8 @@ namespace WpfApp1
                     Escape = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png" };
                     HdAttack = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack10.png" };
                     KnAttack = new string[] { @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck1.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck2.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck3.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck4.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck5.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck6.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck7.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck8.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck9.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck10.png" };
+                    SwAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword10.png" };
+                    MgAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack14.png" };
                     SeriousMg = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun14.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun15.png" };
                     SSwitch = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch9.png" };
                     Hurt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts5.png" };
@@ -604,6 +674,8 @@ namespace WpfApp1
                 public string[] Escape { get; set; }
                 public string[] HdAttack { get; set; }
                 public string[] KnAttack { get; set; }
+                public string[] SwAttack { get; set; }
+                public string[] MgAttack { get; set; }
                 public string[] SeriousMg { get; set; }
                 public string[] SSwitch { get; set; }
                 public string[] Hurt { get; set; }
@@ -637,6 +709,8 @@ namespace WpfApp1
                     Escape = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png" };
                     HdAttack = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage10.png" };
                     KnAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk10.png" };
+                    SwAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword8.png" };
+                    MgAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png" };
                     SeriousMg = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png" };
                     SSwitch = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked10.png" };
                     LevelUp = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon9.png" };
@@ -658,6 +732,8 @@ namespace WpfApp1
                 public string[] Escape { get; set; }
                 public string[] HdAttack { get; set; }
                 public string[] KnAttack { get; set; }
+                public string[] SwAttack { get; set; }
+                public string[] MgAttack { get; set; }
                 public string[] SeriousMg { get; set; }
                 public string[] SSwitch { get; set; }
                 public string[] LevelUp { get; set; }
@@ -1842,6 +1918,45 @@ Error Number:2,State:0,Class:20
                     {  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  6,  0,  6,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1 },
                     {  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 } };
                     break;
+                case 2:
+                    MapScheme = new Byte[,]
+                    {{ 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 },
+                    {  1,  0,  0,  0,  0,  0,  0,  0,  0,178,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  8,  8,  1,  0,  0,  0,  1,  8,  8,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,179,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  8,  8,  1,  0,  0,  0,  1,  8,  8,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  1,  0,  0,  8,  8,  1,  0,  0,  0,  1,  8,  8,  0,  0,  1,  0,  1,  1,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  1,  0,  0,  8,  8,  8,  1,  0,  1,  8,  8,  8,  0,  0,  1,  0,  1,  0,  0,  1,  1,  0,  0,  6,  6,  0,  0,  0,  1,  1,  1,  0,  0,  0,  6,  6,  0,  0,  1 },
+                    {  1,  0,  0,  6,  6,  0,  0,  0,  1,  1,  1,  0,  0,  0,  6,  6,  0,  0,  1,  1,  0,  1,  0,  0,  0,  8,  8,  8,  0,  8,  8,  8,  0,  0,  0,  1,  0,  1,  0,  0,  1,  1,  0,  0,  6,  6,  0,  0,  1,  0,  0,  0,  1,  0,  0,  6,  6,  0,  0,  1 },
+                    {  1,  0,  0,  6,  6,  0,  0,  1,  0,  0,  0,  1,  0,  0,  6,  6,  0,  0,  1,  1,  0,  1,  1,  0,  0,  0,  8,  8,  0,  8,  8,  0,  0,  0,  1,  1,  0,  0,  0,  0,  1,  1,  6,  6,224,222,  6,  6,  1,  0,151,  0,  1,  6,  6,224,222,  6,  6,  1 },
+                    {  1,  6,  6,223,225,  6,  6,  1,  0,152,  0,  1,  6,  6,223,225,  6,  6,  1,  1,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  1,  1,  6,  6,222,222,  6,  6,  1,  0,  0,  0,  1,  6,  6,222,222,  6,  6,  1 },
+                    {  1,  6,  6,223,223,  6,  6,  1,  0,  0,  0,  1,  6,  6,223,223,  6,  6,  1,  1,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,  6,  6,  0,  0,  0,  1,  0,  1,  0,  0,  0,  6,  6,  0,  0,  1 },
+                    {  1,  0,  0,  6,  6,  0,  0,  0,  1,  0,  1,  0,  0,  0,  6,  6,  0,  0,  1,  1,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  1,  1,  0,  1,  1,  0,  0,  6,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  6,  6,  0,  0,  1 },
+                    {  1,  0,  0,  6,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  6,  6,  0,  0,139,139,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1 },
+                    {  1,  0,  0,  0,  0,  0,  0,222,222,224,221,223,  0,  0,  0,  0,  0,  0,  1,  1,  0,223,  8,223,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,225,  0,  0,  0,  0,  0,140,140,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  0,  0,  0,  0,  0,221,222,222,223,223,  0,  0,  0,  0,  0,  0,  1,  1,  0,  8,225,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,225,  8,225,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,223,225,  0,  0,  0,  1,  0,221,  0,  0,  0,  1 },
+                    {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,225,  8,225,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,225,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,222,224,223,  0,  0,  0,  1,  0,  0,  1,  0,226,  1 },
+                    {  1,  1,  1,  1,  1,  0,  0,  1,  1,  1,  1,  8,  8,  8,  8,  8,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,223,224,222,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1 },
+                    {  1,  0,  0,  0,  1,  1,  1,  1,  0,  0,  1,  8,  8,  8,  8,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,138,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,225,223,  0,  0,  1,  1,  1,  1,  1,  1,  1,  0,  0,  1 },
+                    {  1,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  0,  0,  6,  6,  0,  0,  0,  0,  1,  1,138,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  1,  0,209,  0,  1,  0,  1,  9,  1,233,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  6,  6,  0,  1,177,  0,  0,  1,  0,  6,  0,  6,  0,  8,  8,  8,  0,  6,  0,  6,  0,  1,  1,  0,  0,  1,  1,  1,  0,  0,  0,  1,  1,  1,  0,  0,  1 },
+                    {  1,  0,  1,  0,  0,  0,  1,  0,  1,  9,  0,  1,  1,  1,  0,223,  0,  0,  0,  0,  0,  6,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  6,  0,  6,  8,221,  8,  6,  0,  6,  0,  0,  0,  1,  1,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  0,  1,  1,  1,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  6,  6,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  6,  0,  6,  0,  8,  8,  8,  0,  6,  0,  6,  0,  0,  1,  1,  1,  0,  0,  0,  1,  1,  1,  1,  0,  0,  0,  0,  1 },
+                    {  1,  0,  8,  0,  0,  0,  8,  8,  1,  9,  1,  1,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  7,  1,  0,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  1,  1,  1,  1,  1,  8,  1,  0,  1,  0,  0,221,  0,  1,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  1,135,  1,  6,110,  6,  0,  0,  0,  0,  0,  0,  1,  1,  1 },
+                    {  1,  0,  6,  0,  0,224,  1,  8,  1,  9,  1,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  1,  0,210,  0,  0,  1,  0,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  1,  0,  6,  0,  0,  0,  1,  1,  1,  1,  0,  0,  1 },
+                    {  1,  1,  1,  0,  1,  1,  1,  8,  1,  0,  1,  0,  0,  1,  1,  1,  0,  0,  0,  1,  0,  1,  0,  0,  0,  0,  1,  6,  0,  0,  0,  0,  6,  0,  0,  6,  0,  6,  8,  0,  9,  1,  1,222,  0,  0,  0,  1,  1,  1,  1,  1,  0,  1,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  6,  0,  1,  8,  8,  8,  1,  9,  1,  0,  0,  1,  0,  0,  1,  0,  0,  1,  0,  1,  1,  1,  1,  0,  1,  0,  8,  0,  0,  1,  1,  1,  1,  1,  1,  8,  8,  0,  0,  0,  1,  1,  1,  1,  0,  1,  0,  0,  0,  0,  0,  1,  1,  1,  0,  0,  0,  1 },
+                    {  1,  0,  1,  1,  1,  8,  1,  1,  1,  0,  1,  0,  0,  1,  0,  0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  6,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,104,  0,  0,  0,  0,  1,  0,  1,136,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  6,  0,  1,  8,  1,  0,  0,  6,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  0,  8,  0,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,  1,  0,  8,212,  8,  0,  1 },
+                    {  1,  1,  1,  0,  1,  8,  1,  6,  6,  0,  1,  0,  0,  1,  1,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  6,  0,  0,  1,  0,  0,  0,  0,  1,  0,  1,  1,  1,  0,  1,  0,  1,  0,  1,105,  1,  0,  1,  0,  0,  0,  1,  0,  0,  8,  0,  0,  1 },
+                    {  1,  0,  0,  0,  1,  8,  1,  6,  6,  0,  1,  0,  0,  0,  0,  1,  0,  1,  1,  1,  0,  1,  1,  1,  0,  0,  1,  0,  8,  0,  1,  0,  1,  1,  1,  0,  0,134,211,  1,  0,  1,  0,  0,  0,  1,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  0,  6,  1,  6,  1,  6,  0,  6,  1,  0,  0,  0,  0,  1,  1,  1,222,  1,  1,  1,  0,  1,  0,  0,  1,  0,  0,  6,  1,  0,  1,  0,  0,  0,  8,  1,  1,  1,  0,  1,  1,  1,  0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
+                    {  1,  0,  1,  0,  6,  0,  1,  0,  6,  6,  1,  0,  0,  9,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  0,  1,  0,  0,  0,  1,  0,  1,  1,  1,  1 },
+                    {  1,  0,  1,  6,  0,  6,  1,  0,  6,  6,  1,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  0,223,  1,  8,  1,  0,  0,  0,  1,  0,  0,  0,  0,  1 },
+                    {  1,  0,  1,  1,  1,  1,  1,  6,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  1,  0,  0,  0,  6,  0,  1,  1,  1,  0,  0,  1 },
+                    {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  0,  0,  0,  0,  0,  6,  0,  0,  0,  0,  1,106,  0,  1 },
+                    {  1,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,108,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,223,  1 },
+                    {  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 } };
+                    break;
                 default: break;
             }
         }
@@ -1851,8 +1966,7 @@ Error Number:2,State:0,Class:20
         //[EN] Activate/Deactivate all .. | [RU] Активировать/Деактивировать все...
         //[EN] Chests+Tables/
         //[RU] Сундуки+Таблички/
-        private void ChestsAndTablesAllTurnOn1()
-        { ImgShowX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3 }); }
+        private void ChestsAndTablesAllTurnOn1() { ImgShowX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3 }); }
         private void ChestsAndTablesAllTurnOff1() { ImgHideX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3 }); }
         //[EN] keys/
         //[RU] ключи/
@@ -1874,7 +1988,12 @@ Error Number:2,State:0,Class:20
             Sets.EnemyRate++;
             Super1.MenuTask++;
         }
-
+        private void PullTheLever(Image Lever, Image[] Imgs)
+        {
+            AnyShowX(Imgs);
+            Lever.Source = Bmper(Path.MapModels.LeverOn);
+            SEF(Path.GameSounds.DoorOpened);
+        }
         private void HPenemyBARwidth(in double maxHp)
         {
             if (maxHp > 3500) { HPenemyBar.Width = HPenemyBar.Maximum / 16; HPenemyBar.Foreground= new SolidColorBrush(Color.FromRgb(0, 243, 255)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 243, 255)); }
@@ -1947,31 +2066,42 @@ Error Number:2,State:0,Class:20
             {
                 case 0: break;
                 case 6: Super1.CurrentHP--; ImgShow(PainImg); break;
+                case 8: Super1.CurrentHP-=10; ImgShow(PainImg); break;
+                case 9: Super1.CurrentHP-=25; ImgShow(PainImg); break;
                 case 104: ChangeMapToVoidOrWallX(new Byte[] { 104, 134 }, 0); ImgHide(JailImg1); Sets.EnemyRate = 5; Super1.MenuTask++; break;
-                case 105: ChangeMapToVoidOrWallX(new Byte[] { 105, 135 }, 0); ImgHideX(new Image[] { JailImg2, JailImg3 }); WidelyUsedAnyTimer(out timer, new EventHandler(BallRoll), new TimeSpan(0, 0, 0, 1)); break;
-                case 106: ChangeMapToVoidOrWallX(new Byte[] { 106, 136 }, 0); ImgHide(JailImg5); Super1.MenuTask++; break;
+                case 105: ChangeMapToVoidOrWallX(new Byte[] { 105, 135 }, 0); ImgHideX((CurrentLocation == 1) ? new Image[] {  JailImg2, JailImg3 } : new Image[] { JailImg2 }); WidelyUsedAnyTimer(out timer, new EventHandler(BallRoll), new TimeSpan(0, 0, 0, 1)); break;
+                case 106: ChangeMapToVoidOrWallX(new Byte[] { 106, 136 }, 0); ImgHide(JailImg5); if (CurrentLocation == 1) Super1.MenuTask++; break;
                 case 107: ChangeMapToVoidOrWallX(new Byte[] { 107, 137 }, 0); ImgHide(JailImg6); break;
                 case 108: ChangeMapToVoidOrWallX(new Byte[] { 108, 138 }, 0); ImgHide(JailImg7); break;
                 case 150: if (DataBaseMSsql.CurrentLogin != "????") { SaveGame(); SEF(Path.GameSounds.ControlSave); } break;
+                case 151: Super1.CurrentHP = Super1.MaxHP; Dj(Path.GameNoises.Cure); break;
+                case 152: Super1.CurrentAP = Super1.MaxAP; Dj(Path.GameNoises.Cure); break;
                 case 191: WhatsGoingOn(200); LetsBattle(); break;
                 case 192: ChangeMapToVoid(192); PlayerSetLocation(1,57); break;
                 default: break;
             }
         }
+        private Byte Bits(Object obj) { return Convert.ToByte(obj); }
+        private Int32 Numb(Object obj) { return Convert.ToInt32(obj); }
+        private UInt16 Shrt(Object obj) { return Convert.ToUInt16(obj); }
+        private Byte ColMgs(in Image img) { return Numb(img.GetValue(Grid.ColumnProperty)) - 5 > 0 ? Bits(Bits(img.GetValue(Grid.ColumnProperty)) - 5) : Bits(0); }
+        private Byte RowMgs(in Image img) { return Numb(img.GetValue(Grid.RowProperty)) - 8 > 0 ? Bits(Bits(img.GetValue(Grid.RowProperty)) - 8) : Bits(0); }
+        private Byte CheckGuy()
+        {
+            String[] Direction = { Path.Ray.StaticRight, Path.Ray.GoRight, Path.Ray.StaticDown, Path.Ray.GoDown1, Path.Ray.GoDown2, Path.Ray.StaticLeft, Path.Ray.GoLeft, Path.Ray.StaticUp, Path.Ray.GoUp1, Path.Ray.GoUp2 };
+            SByte[,] Dir1 = { { 0, 0, 1, 1, 1, 0, 0, -1, -1, -1 }, { 1, 1, 0, 0, 0, -1, -1, 0, 0, 0 } };
+            for (Byte i = 0; i < Direction.Length; i++) if (Img2.Source.ToString().Contains(Direction[i])) return MapScheme[Adoptation.ImgYbounds + Dir1[0, i], Adoptation.ImgXbounds + Dir1[1, i]];
+            return 0;
+        }
         private void TablesSetInfo()
         {
             if (Sets.TableEN || TableMessage1.IsEnabled) ImgHide(TableMessage1);
             Sets.TableEN = !Sets.TableEN && !TableMessage1.IsEnabled;
-            Byte Interaction = 0;
-            if (Img2.Source.ToString().Contains(Path.Ray.StaticRight) || Img2.Source.ToString().Contains(Path.Ray.GoRight)) Interaction = MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1];
-            else if (Img2.Source.ToString().Contains(Path.Ray.StaticDown) || Img2.Source.ToString().Contains(Path.Ray.GoDown1) || Img2.Source.ToString().Contains(Path.Ray.GoDown2)) Interaction = MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds];
-            else if (Img2.Source.ToString().Contains(Path.Ray.StaticLeft) || Img2.Source.ToString().Contains(Path.Ray.GoLeft)) Interaction = MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1];
-            else if (Img2.Source.ToString().Contains(Path.Ray.StaticUp) || Img2.Source.ToString().Contains(Path.Ray.GoUp1) || Img2.Source.ToString().Contains(Path.Ray.GoUp2)) Interaction = MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds];
-            Byte[] Conditions = { 171, 172, 173, 174, 175, 176 };
-            BitmapImage[] images = { Bmper(Path.Msg.Tb1_Msg1), Bmper(Path.Msg.Tb2_Msg1), Bmper(Path.Msg.Tb3_Msg1), Bmper(Path.Msg.Tb1_Msg2), Bmper(Path.Msg.Tb2_Msg2), Bmper(Path.Msg.Tb3_Msg2) };
-            Byte[] Rows = { 25, 17, 2, Convert.ToByte(Convert.ToByte(Table1.GetValue(Grid.RowProperty)) - 8), Convert.ToByte(Convert.ToByte(Table2.GetValue(Grid.RowProperty)) - 8), Convert.ToByte(Convert.ToByte(Table3.GetValue(Grid.RowProperty)) - 8) };
-            Byte[] Cols = { 13, 10, 33, Convert.ToByte(Convert.ToByte(Table1.GetValue(Grid.ColumnProperty)) - 5), Convert.ToByte(Convert.ToByte(Table2.GetValue(Grid.ColumnProperty)) - 5), 0 };
-            for (Byte i = 0; i < Conditions.Length; i++) if (Interaction == Conditions[i]) SetTablesMessage(images[i], Rows[i], Cols[i]);
+            Byte Interaction = CheckGuy();
+            Byte[] Conditions = { 171, 172, 173, 174, 175, 176, 177, 178, 179 };
+            BitmapImage[] images = BmpersToX(Bmper(Path.Msg.Tb1_Msg1), Bmper(Path.Msg.Tb2_Msg1), Bmper(Path.Msg.Tb3_Msg1), Bmper(Path.Msg.Tb1_Msg2), Bmper(Path.Msg.Tb2_Msg2), Bmper(Path.Msg.Tb3_Msg2), Bmper(Path.Msg.Tb1_Msg3), Bmper(Path.Msg.Tb2_Msg3), Bmper(Path.Msg.Tb3_Msg3));
+            Image[] Mess = { Table1, Table2, Table3, Table1, Table2, Table3, Table1, Table2, Table3 };
+            for (Byte i = 0; i < Conditions.Length; i++) if (Interaction == Conditions[i]) SetTablesMessage(images[i], RowMgs(Mess[i]), ColMgs(Mess[i]));
         }
         private void SetTablesMessage(BitmapImage image, Byte X, Byte Y)
         {
@@ -2109,8 +2239,8 @@ Error Number:2,State:0,Class:20
             PlayerSetLocation(Convert.ToByte(Adoptation.ImgYbounds), Convert.ToByte(Adoptation.ImgXbounds));
             GroundCheck(MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds]);
             TablesSetInfo();
-            if (Sets.StepsToBattle >= rnd) { ImgHideX(new Image[] { Img2, PainImg }); Sound1.Stop(); Dj(Path.GameNoises.Danger); MediaShow(Med2); }
-            Sets.StepsToBattle++;
+            //if (Sets.StepsToBattle >= rnd) { ImgHideX(new Image[] { Img2, PainImg }); Sound1.Stop(); Dj(Path.GameNoises.Danger); MediaShow(Med2); }
+            //Sets.StepsToBattle++;
             GetPoisoned();
         }
         private void SomeRudeAppears(in Byte BattleIndex, in EventHandler Event, in string Noise)
@@ -2123,6 +2253,15 @@ Error Number:2,State:0,Class:20
             Dj(Noise);
         }
         private void GetSecretReward() { Exp += 250; Mat += 250; Super1.MiniTask = true; ShowAfterBattleMenu(); }
+        private Boolean IsWallNext(Byte map)
+        {
+            switch (map)
+            {
+                case 0: case 6: case 7: case 8: case 9: case 104: case 105: case 106: case 107: case 111: case 112: case 113: case 114: case 115: case 116: case 117: case 118: case 119: case 120: case 150: case 151:
+                case 152: case 191: case 192: return true;
+                default: return false;
+            }
+        }
         //[EN] Movement (W,A,S,D), actions on map (E), open menu (LCtrl), target select in fight (W,A,S,D)
         //[RU] Передвижение (W,A,S,D), действия при нахождении на локации (E), открыть меню (LCtrl), выбор цели (W,A,S,D)
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -2132,39 +2271,48 @@ Error Number:2,State:0,Class:20
             {
                 Sets.Rnd1 = 0;
                 Sets.SelectedTarget = 0;
-                if (e.Key == Key.W) Movement(true, Img2.Source.ToString().Contains(Path.Ray.GoUp1) ? Bmper(Path.Ray.GoUp2) : Bmper(Path.Ray.GoUp1), ((MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 191) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 192) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 150) || (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] == 6) || ((MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] >= 104) && (MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds] <= 120))) ? Convert.ToByte(Adoptation.ImgYbounds - 1) : Convert.ToByte(Adoptation.ImgYbounds));
-                if (e.Key == Key.A) Movement(false, Img2.Source.ToString().Contains(Path.Ray.StaticLeft) ? Bmper(Path.Ray.GoLeft) : Bmper(Path.Ray.StaticLeft), ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 191) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds-1] == 192) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 150) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] == 6) || ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] >= 104) && (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1] <= 120))) ? Convert.ToByte(Adoptation.ImgXbounds - 1) : Convert.ToByte(Adoptation.ImgXbounds));
-                if (e.Key == Key.S) Movement(true, Img2.Source.ToString().Contains(Path.Ray.GoDown1) ? Bmper(Path.Ray.GoDown2) : Bmper(Path.Ray.GoDown1), ((MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 0) || (MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 191) || (MapScheme[Adoptation.ImgYbounds+1, Adoptation.ImgXbounds] == 192) || (MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 150) || (MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] == 6) || ((MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] >= 104) && (MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds] <= 120))) ? Convert.ToByte(Adoptation.ImgYbounds + 1) : Convert.ToByte(Adoptation.ImgYbounds));
-                if (e.Key == Key.D) Movement(false, Img2.Source.ToString().Contains(Path.Ray.StaticRight) ? Bmper(Path.Ray.GoRight) : Bmper(Path.Ray.StaticRight), ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 0) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 191) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds-1] == 192) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 150) || (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] == 6) || ((MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] >= 104) && (MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1] <= 120))) ? Convert.ToByte(Adoptation.ImgXbounds + 1) : Convert.ToByte(Adoptation.ImgXbounds));
+                if (e.Key == Key.W) Movement(true, Img2.Source.ToString().Contains(Path.Ray.GoUp1) ? Bmper(Path.Ray.GoUp2) : Bmper(Path.Ray.GoUp1), IsWallNext(MapScheme[Adoptation.ImgYbounds - 1, Adoptation.ImgXbounds]) ? Bits(Adoptation.ImgYbounds - 1) : Bits(Adoptation.ImgYbounds));
+                if (e.Key == Key.A) Movement(false, Img2.Source.ToString().Contains(Path.Ray.StaticLeft) ? Bmper(Path.Ray.GoLeft) : Bmper(Path.Ray.StaticLeft), IsWallNext(MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds - 1]) ? Bits(Adoptation.ImgXbounds - 1) : Bits(Adoptation.ImgXbounds));
+                if (e.Key == Key.S) Movement(true, Img2.Source.ToString().Contains(Path.Ray.GoDown1) ? Bmper(Path.Ray.GoDown2) : Bmper(Path.Ray.GoDown1), IsWallNext(MapScheme[Adoptation.ImgYbounds + 1, Adoptation.ImgXbounds]) ? Bits(Adoptation.ImgYbounds + 1) : Bits(Adoptation.ImgYbounds));
+                if (e.Key == Key.D) Movement(false, Img2.Source.ToString().Contains(Path.Ray.StaticRight) ? Bmper(Path.Ray.GoRight) : Bmper(Path.Ray.StaticRight), IsWallNext(MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds + 1]) ? Bits(Adoptation.ImgXbounds + 1) : Bits(Adoptation.ImgXbounds));
                 if (e.Key == Key.E)
                 {
-                    string[] ChestOp = { Path.MapModels.ChestOpened1, Path.MapModels.ChestOpened2 };
-                    string[,] EquipmentAll = new string[,] { { Path.Msg.Knucleduster, Path.Msg.LeatherArmor, Path.Msg.FeatherWears, Path.Msg.BandageBoots }, { Path.Msg.AncientKnife, Path.Msg.AncientArmor, Path.Msg.AncientPants, Path.Msg.StrongBoots } };
-                    string SecretEquip = Path.Msg.SeriousPants;
+                    string[] ChestOp = { Path.MapModels.ChestOpened1, Path.MapModels.ChestOpened2, Path.MapModels.ChestOpened3 };
+                    string[,] EquipmentAll = new string[,] { { Path.Msg.Knucleduster, Path.Msg.LeatherArmor, Path.Msg.FeatherWears, Path.Msg.BandageBoots }, { Path.Msg.AncientKnife, Path.Msg.AncientArmor, Path.Msg.AncientPants, Path.Msg.StrongBoots }, { Path.Msg.LegendSword, Path.Msg.LegendArmor, Path.Msg.LegendPants, Path.Msg.LegendBoots } };
                     Int32[] LocItem = new Int32[] { Img2.Source.ToString().Contains(Path.Ray.StaticDown) ? Adoptation.ImgYbounds + 1 : (Img2.Source.ToString().Contains(Path.Ray.StaticUp) ? Adoptation.ImgYbounds - 1 : Adoptation.ImgYbounds), Img2.Source.ToString().Contains(Path.Ray.StaticRight) ? Adoptation.ImgXbounds + 1 : (Img2.Source.ToString().Contains(Path.Ray.StaticLeft) ? Adoptation.ImgXbounds - 1 : Adoptation.ImgXbounds) };
                     Byte Interaction = MapScheme[LocItem[0], LocItem[1]];
                     switch (Interaction)
                     {
                         case 101: ImgGrid(TaskCompletedImg, 28,  0); CollectKey(KeyImg1, LockImg1); ChangeMapToVoidOrWallX(new Byte[] { 101, 131 }, 0); break;
                         case 102: ImgGrid(TaskCompletedImg, 16, 18); CollectKey(KeyImg2, LockImg2); ChangeMapToVoidOrWallX(new Byte[] { 102, 132 }, 0); break;
-                        case 103: ImgGrid(TaskCompletedImg, 28, 39); CollectKey(KeyImg3, LockImg3); ChangeMapToVoidOrWallX(new Byte[] { 101, 131 }, 0); break;
+                        case 103: ImgGrid(TaskCompletedImg, 28, 39); CollectKey(KeyImg3, LockImg3); ChangeMapToVoidOrWallX(new Byte[] { 103, 133 }, 0); break;
+                        case 108: ImgGrid(TaskCompletedImg, 28, 39); PullTheLever(Lever1, new Image[] { Bridge1, Bridge2, Bridge3, Bridge4 }); ChangeMapToWall(108); ChangeMapToVoid(138); Super1.MenuTask++; break;
+                        case 109: ImgGrid(TaskCompletedImg, 28, 39); PullTheLever(Lever2, new Image[] { Bridge5, Bridge6 }); ChangeMapToWall(109); ChangeMapToVoid(139); break;
+                        case 110: ImgGrid(TaskCompletedImg, 28, 39); PullTheLever(Lever3, new Image[] { Bridge7, Bridge8 }); ChangeMapToWall(110); ChangeMapToVoid(140); break;
                         case 161: SomeRudeAppears(1, PharaohAppear_Time51, Path.GameNoises.Horror); break;
                         case 162: SomeRudeAppears(2, AncientAppear_Time52, Path.GameNoises.EgoRage); break;
                         case 163: break;
-                        case 201: ChestOpen(ChestImg1, Bmper(EquipmentAll[CurrentLocation, 1]), Bmper(ChestOp[CurrentLocation]), 1, 0); break;
-                        case 202: ChestOpen(ChestImg2, Bmper(EquipmentAll[CurrentLocation, 3]), Bmper(ChestOp[CurrentLocation]), 3, 0); break;
-                        case 203: ChestOpen(ChestImg3, Bmper(EquipmentAll[CurrentLocation, 0]), Bmper(ChestOp[CurrentLocation]), 0, 0); break;
-                        case 204: ChestOpen(ChestImg4, Bmper(EquipmentAll[CurrentLocation, 2]), Bmper(ChestOp[CurrentLocation]), 2, 0); break;
-                        case 205: ChestOpen(ChestImg4, Bmper(EquipmentAll[CurrentLocation, 2]), Bmper(ChestOp[CurrentLocation]), 2, 1); break;
-                        case 206: ChestOpen(ChestImg3, Bmper(EquipmentAll[CurrentLocation, 0]), Bmper(ChestOp[CurrentLocation]), 0, 1); break;
-                        case 207: ChestOpen(ChestImg2, Bmper(EquipmentAll[CurrentLocation, 3]), Bmper(ChestOp[CurrentLocation]), 3, 1); break;
-                        case 208: ChestOpen(ChestImg1, Bmper(EquipmentAll[CurrentLocation, 1]), Bmper(ChestOp[CurrentLocation]), 1, 1); break;
-                        case 209: break;
-                        case 210: break;
-                        case 211: break;
-                        case 212: break;
-                        case 213: ChestOpen(SecretChestImg1, Bmper(SecretEquip), Bmper(ChestOp[CurrentLocation]), 2, 3); break;
+                        case 201: ChestOpen(ChestImg1, Bmper(EquipmentAll[CurrentLocation, 1]), Bmper(ChestOp[CurrentLocation]), 1, CurrentLocation); break;
+                        case 202: ChestOpen(ChestImg2, Bmper(EquipmentAll[CurrentLocation, 3]), Bmper(ChestOp[CurrentLocation]), 3, CurrentLocation); break;
+                        case 203: ChestOpen(ChestImg3, Bmper(EquipmentAll[CurrentLocation, 0]), Bmper(ChestOp[CurrentLocation]), 0, CurrentLocation); break;
+                        case 204: ChestOpen(ChestImg4, Bmper(EquipmentAll[CurrentLocation, 2]), Bmper(ChestOp[CurrentLocation]), 2, CurrentLocation); break;
+                        case 205: ChestOpen(ChestImg4, Bmper(EquipmentAll[CurrentLocation, 2]), Bmper(ChestOp[CurrentLocation]), 2, CurrentLocation); break;
+                        case 206: ChestOpen(ChestImg3, Bmper(EquipmentAll[CurrentLocation, 0]), Bmper(ChestOp[CurrentLocation]), 0, CurrentLocation); break;
+                        case 207: ChestOpen(ChestImg2, Bmper(EquipmentAll[CurrentLocation, 3]), Bmper(ChestOp[CurrentLocation]), 3, CurrentLocation); break;
+                        case 208: ChestOpen(ChestImg1, Bmper(EquipmentAll[CurrentLocation, 1]), Bmper(ChestOp[CurrentLocation]), 1, CurrentLocation); break;
+                        case 209: ChestOpen(ChestImg1, Bmper(EquipmentAll[CurrentLocation, 0]), Bmper(ChestOp[CurrentLocation]), 0, CurrentLocation); break;
+                        case 210: ChestOpen(ChestImg2, Bmper(EquipmentAll[CurrentLocation, 1]), Bmper(ChestOp[CurrentLocation]), 1, CurrentLocation); break;
+                        case 211: ChestOpen(ChestImg3, Bmper(EquipmentAll[CurrentLocation, 2]), Bmper(ChestOp[CurrentLocation]), 2, CurrentLocation); break;
+                        case 212: ChestOpen(ChestImg4, Bmper(EquipmentAll[CurrentLocation, 3]), Bmper(ChestOp[CurrentLocation]), 3, CurrentLocation); break;
+                        case 213: ChestOpen(SecretChestImg1, Bmper(Path.Msg.SeriousPants), Bmper(ChestOp[CurrentLocation]), 2, 3); break;
+                        case 221: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpDmg1, SpDmg2, SpDmg3, SpDmg4, SpDmg5); Super1.CurrentHP -= 50; ImgShow(PainImg); break;
+                        case 222: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpHrb1, SpHrb2, SpHrb3, SpHrb4, SpHrb5, SpHrb6, SpHrb7, SpHrb8, SpHrb9, SpHrb10, SpHrb11, SpHrb12, SpHrb13, SpHrb14); if (BAG.HerbsITM < 255) BAG.HerbsITM++; break;
+                        case 223: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpEtr1, SpEtr2, SpEtr3, SpEtr4, SpEtr5, SpEtr6, SpEtr7, SpEtr8, SpEtr9, SpEtr10, SpEtr11, SpEtr12, SpEtr13, SpEtr14, SpEtr15, SpEtr16, SpEtr17, SpEtr18); if (BAG.Ether2ITM < 255) BAG.Ether2ITM++; break;
+                        case 224: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpElx1, SpElx2, SpElx3, SpElx4, SpElx5, SpElx6); if (BAG.ElixirITM < 255) BAG.ElixirITM++; break;
+                        case 225: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpSbg1, SpSbg2, SpSbg3, SpSbg4, SpSbg5, SpSbg6, SpSbg7, SpSbg8, SpSbg9, SpSbg10, SpSbg11); if (BAG.SleepBagITM<255) BAG.SleepBagITM++; break;
+                        case 226: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpSer); BAG.Weapon[3] = true; break;
                         case 232: ChestOpen(SecretChestImg2, Bmper(Path.Msg.Completed), Bmper(ChestOp[CurrentLocation]), 2, 3); GetSecretReward(); break;
+                        case 233: GetSecretReward(); break;
                         default: break;
                     }
                 }
@@ -2945,7 +3093,7 @@ Error Number:2,State:0,Class:20
         private void WinStop()
         {
             WonOrDied();
-            string[] music = new string[] { Path.GameMusic.AncientPyramid, Path.GameMusic.WaterTemple };
+            string[] music = new string[] { Path.GameMusic.AncientPyramid, Path.GameMusic.WaterTemple, Path.GameMusic.LavaTemple };
             CheckMapIfModelExistsX(new Byte[] { 104, 105, 105, 106, 107, 108 }, new Image[] { JailImg1, JailImg2, JailImg3, JailImg5, JailImg6, JailImg7 });
             if (Sets.TableEN) ImgShow(TableMessage1);
             if (CurrentLocation == 0) Map1EnableModels();
@@ -2989,6 +3137,7 @@ Error Number:2,State:0,Class:20
                 switch (Sets.SpecialBattle)
                 {
                     case 1: MediaShow(TheEnd); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
+                    case 2: MediaShow(TheEnd); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
                     case 200: MediaShow(Win); AnyHide(Img1); break;
                     default: MediaShow(Win); AnyHide(Img1); break;
                 }
@@ -3427,7 +3576,8 @@ Error Number:2,State:0,Class:20
             {
                 Foe1.EnemyHP[CheckIndex] = 0;
                 ImgHide(FoeImgs[CheckIndex]);
-                SuperCheckFoes(CheckIndex);
+                if ((Sets.SpecialBattle != 1) && (Sets.SpecialBattle != 2)) SuperCheckFoes(CheckIndex);
+                else { LabHide(BattleText3); Foe1.EnemyAppears[0] = ""; };
                 Foe1.EnemiesStillAlive = Convert.ToByte(Foe1.EnemiesStillAlive - 1 <= 0 ? 0 : Foe1.EnemiesStillAlive - 1);
                 Foe1.EnemyAppears[CheckIndex] = "";
             }
@@ -3592,10 +3742,10 @@ Error Number:2,State:0,Class:20
         private void OnEquip_Click(object sender, RoutedEventArgs e)
         {
             BitmapImage[][] bitmapImages = {
-                BmpersToX(Bmper(Path.BtnCustomize.Knucleduster), Bmper(Path.BtnCustomize.AncientKnife), Bmper(Path.BtnCustomize.SeriousTshirt)),
-                BmpersToX(Bmper(Path.BtnCustomize.LeatherArmor), Bmper(Path.BtnCustomize.AncientArmor), Bmper(Path.BtnCustomize.SeriousTshirt)),
-                BmpersToX(Bmper(Path.BtnCustomize.FeatherWears), Bmper(Path.BtnCustomize.AncientPants), Bmper(Path.BtnCustomize.SeriousPants)),
-                BmpersToX(Bmper(Path.BtnCustomize.BandageBoots), Bmper(Path.BtnCustomize.StrongBoots), Bmper(Path.BtnCustomize.SeriousBoots))
+                BmpersToX(Bmper(Path.BtnCustomize.Knucleduster), Bmper(Path.BtnCustomize.AncientKnife), Bmper(Path.BtnCustomize.LegendSword), Bmper(Path.BtnCustomize.SeriousMinigun)),
+                BmpersToX(Bmper(Path.BtnCustomize.LeatherArmor), Bmper(Path.BtnCustomize.AncientArmor), Bmper(Path.BtnCustomize.LegendArmor), Bmper(Path.BtnCustomize.SeriousTshirt)),
+                BmpersToX(Bmper(Path.BtnCustomize.FeatherWears), Bmper(Path.BtnCustomize.AncientPants), Bmper(Path.BtnCustomize.LegendPants), Bmper(Path.BtnCustomize.SeriousPants)),
+                BmpersToX(Bmper(Path.BtnCustomize.BandageBoots), Bmper(Path.BtnCustomize.StrongBoots), Bmper(Path.BtnCustomize.LegendBoots), Bmper(Path.BtnCustomize.SeriousBoots))
             };
             Byte i = 0;
             Button[] EqButtons = { Equip1, Equip2, Equip3, Equip4 };
@@ -3604,11 +3754,12 @@ Error Number:2,State:0,Class:20
             Sets.EquipmentClass = i;
             if (SomeEquipHave[i][0]) ButtonShow(Equipments);
             if (SomeEquipHave[i][1]) ButtonShow(Equipments2);
+            if (SomeEquipHave[i][2]) ButtonShow(Equipments3);
             if (SomeEquipHave[i][3]) ButtonShow(Equipments4);
-            FastImgChange(new Image[] { EquipmentsImg, Equipments2Img, Equipments4Img }, bitmapImages[i]);
+            FastImgChange(new Image[] { EquipmentsImg, Equipments2Img, Equipments3Img, Equipments4Img }, bitmapImages[i]);
             ButtonShow(CancelEq);
         }
-        private void CancelEq_Click(object sender, RoutedEventArgs e) { BtnHideX(new Button[] { Equipments, Equipments2, Equipments4, CancelEq }); }
+        private void CancelEq_Click(object sender, RoutedEventArgs e) { BtnHideX(new Button[] { Equipments, Equipments2, Equipments3, Equipments4, CancelEq }); }
         private void HeroTasks()
         {
             if (!Items0.IsEnabled) Dj(Path.GameNoises.BagClose);
@@ -3705,8 +3856,8 @@ Error Number:2,State:0,Class:20
             {
                 case 3: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter1), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); break;
                 case 4: MediaShowAdvanced(ChapterIntroduction, Ura(Path.CutScene.PreChapter2), new TimeSpan(0, 0, 0, 0, 0)); break;
-                case 6: break;
-                case 7: break;
+                case 6: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter2), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal);  break;
+                case 7: MediaShowAdvanced(ChapterIntroduction, Ura(Path.CutScene.PreChapter3), new TimeSpan(0, 0, 0, 0, 0));  break;
                 case 10: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Titres), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.SayGoodbye); break;
                 default: Form1.Close(); break;
             }
@@ -4005,6 +4156,7 @@ Error Number:2,State:0,Class:20
             {
                 case 0: Location1_AncientPyramid(); break;
                 case 1: Location2_WaterTemple(); break;
+                case 2: Location3_LavaTemple(); break;
             }
         }
         private void SettingsSetAll(params Byte[] SettingValues)
@@ -4045,17 +4197,29 @@ Error Number:2,State:0,Class:20
             AnyShowX(SecretChestImg1, SecretChestImg2);
             PlayerSetLocation(Convert.ToByte(Super1.MenuTask>4?28:34), Convert.ToByte(Super1.MenuTask > 4 ?20: 51));
         }
+        private void Location3_LavaTemple()
+        {
+            Sets.EnemyRate = 5;
+            //FastImgChange(new Image[] { Img1 }, BmpersToX(Bmper(Path.Backgrounds.Location3)));
+            AnyShowX(ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Boulder1, JailImg1, JailImg2, JailImg5, Lever1, Lever2, Lever3);
+            AnyGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress, Boulder1, JailImg1, JailImg2, JailImg5 }, new Byte[] { 17, 22, 28, 26, 17, 1, 1, 2, 18, 20, 28, 21, 25 }, new Byte[] { 4, 23, 38, 56, 27, 9, 50, 28, 28, 46, 37, 46, 48 });
+            AnyHideX(new Image[] { JailImg3, JailImg6, JailImg7, SecretChestImg1, SecretChestImg2 });
+            //AnyHideX(Super1.MenuTask > 5 ? new Image[] { JailImg1, JailImg5, JailImg6, JailImg7 } : new Image[] { JailImg1 });
+            //ChangeMapToVoidOrWallX(Super1.MenuTask > 5 ? new byte[] { 134, 136, 137, 138, 104, 106, 107, 108 } : new byte[] { 134, 104 }, 0);
+            //AnyShowX(SecretChestImg1, SecretChestImg2);
+            PlayerSetLocation(Convert.ToByte(18), Convert.ToByte(28));
+        }
         private void ContinueQuest()
         {
-            CurrentLocation = Convert.ToByte((Super1.MenuTask >= 4) && (Super1.MenuTask <= 6)? 1 : 0);
+            CurrentLocation = Convert.ToByte((Super1.MenuTask > 6) ? 2 : (Super1.MenuTask >= 4) && (Super1.MenuTask <= 6)? 1 : 0);
             MapBuild(CurrentLocation);
             MapCheck(CurrentLocation);
             if (CheckMapIfModelExists(7)) ImgShow(Boulder1);
-            string[] music = new string[] { Path.GameMusic.AncientPyramid, Path.GameMusic.WaterTemple };
-            Uri[] ambushed = new Uri[] { Ura(Path.CutScene.Ambushed), Ura(Path.CutScene.BattleStations) };
-            BitmapImage[] battlegrounds = BmpersToX(Bmper(Path.Fighting.Battle1), Bmper(Path.Fighting.Battle2));
-            BitmapImage[] location = BmpersToX(Bmper(Path.Backgrounds.Location1), Bmper(Path.Backgrounds.Location2));
-            BitmapImage[] threasures = BmpersToX(Bmper(Path.MapModels.Artifact1), Bmper(Path.MapModels.Artifact2));
+            string[] music = new string[] { Path.GameMusic.AncientPyramid, Path.GameMusic.WaterTemple, Path.GameMusic.LavaTemple };
+            Uri[] ambushed = new Uri[] { Ura(Path.CutScene.Ambushed), Ura(Path.CutScene.BattleStations), Ura(Path.CutScene.BattleStations) };
+            BitmapImage[] battlegrounds = BmpersToX(Bmper(Path.Fighting.Battle1), Bmper(Path.Fighting.Battle2), Bmper(Path.Fighting.Battle2));
+            BitmapImage[] location = BmpersToX(Bmper(Path.Backgrounds.Location1), Bmper(Path.Backgrounds.Location2), Bmper(Path.Backgrounds.Location3));
+            BitmapImage[] threasures = BmpersToX(Bmper(Path.MapModels.Artifact1), Bmper(Path.MapModels.Artifact2), Bmper(Path.MapModels.Artifact3));
             ChestsCheck(BAG.Weapon[CurrentLocation], 203, ChestImg3);
             ChestsCheck(BAG.Armor[CurrentLocation], 201, ChestImg1);
             ChestsCheck(BAG.Pants[CurrentLocation], 204, ChestImg4);
@@ -4069,8 +4233,8 @@ Error Number:2,State:0,Class:20
         }
         private void ChestsCheck(in Boolean CheckValue, in Byte OnMap, Image Chest)
         {
-            BitmapImage[] chestvercl = BmpersToX(Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.ChestClosed2));
-            BitmapImage[] chestverop = BmpersToX(Bmper(Path.MapModels.ChestOpened1), Bmper(Path.MapModels.ChestOpened2));
+            BitmapImage[] chestvercl = BmpersToX(Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.ChestClosed2), Bmper(Path.MapModels.ChestClosed3));
+            BitmapImage[] chestverop = BmpersToX(Bmper(Path.MapModels.ChestOpened1), Bmper(Path.MapModels.ChestOpened2), Bmper(Path.MapModels.ChestOpened3));
             Chest.Source = CheckValue ? chestverop[CurrentLocation] : chestvercl[CurrentLocation];
             if (CheckValue) ChangeMapToWall(OnMap);
         }
@@ -4157,6 +4321,10 @@ Error Number:2,State:0,Class:20
             return false;
         }
         private void ChangeMapToVoid(in Byte Condition) { for (Byte i = 0; i < MapScheme.GetLength(0); i++) for (Byte j = 0; j < MapScheme.GetLength(1); j++) if (MapScheme[i, j] == Condition) MapScheme[i, j] = 0; }
+        private void ChangeMapToVoid(in Byte Row, in Byte Col,  params Image[] Imgs)
+        {
+            foreach (Image img in Imgs) if ((Bits(img.GetValue(Grid.RowProperty))==Row)&&(Bits(img.GetValue(Grid.ColumnProperty)) == Col)) { AnyHide(img); MapScheme[Row, Col] = 0; }
+        }
         private void ChangeMapToVoidOrWallX(in Byte[] Conditions, in Byte Model) { foreach (Byte Condition in Conditions) if (Model==0) ChangeMapToVoid(Condition); else ChangeMapToWall(Condition); }
         private void ChangeMapToWall(in Byte Condition) { for (Byte i = 0; i < MapScheme.GetLength(0); i++) for (Byte j = 0; j < MapScheme.GetLength(1); j++) if (MapScheme[i, j] == Condition) MapScheme[i, j] = 1; }
         private void AbilsMenu_MouseLeave(object sender, MouseEventArgs e) { LabHide(AbilsCost); }
@@ -4395,7 +4563,7 @@ Error Number:2,State:0,Class:20
         public static Byte CurrentLocation=0;
         private void ChangeOnChapter(in Byte Loc)
         {
-            BitmapImage[][] MapAndBattle = { BmpersToX(Bmper(Path.Backgrounds.Location1), Bmper(Path.Fighting.Battle1)), BmpersToX(Bmper(Path.Backgrounds.Location1), Bmper(Path.Fighting.Battle2)) };
+            BitmapImage[][] MapAndBattle = { BmpersToX(Bmper(Path.Backgrounds.Location1), Bmper(Path.Fighting.Battle1)), BmpersToX(Bmper(Path.Backgrounds.Location2), Bmper(Path.Fighting.Battle2)), BmpersToX(Bmper(Path.Backgrounds.Location3), Bmper(Path.Fighting.Battle2)) };
             CurrentLocation = Loc;
             FastImgChange(new Image[] { Img1, Img3 }, MapAndBattle[CurrentLocation]);
             MediaHide(ChapterIntroduction);
@@ -4407,8 +4575,8 @@ Error Number:2,State:0,Class:20
                 case 0: ChangeOnChapter(0); Location1_AncientPyramid(); ImgShowX(new Image[] { TableMessage1, Threasure1 }); break;
                 case 3:
                 case 4: ChangeOnChapter(1); Location2_WaterTemple(); SaveGame(); break;
-                case 6: break;
-                case 7: break;
+                case 6:
+                case 7: ChangeOnChapter(2); ContinueQuest(); SaveGame(); break;
                 case 10: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Titres), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.SayGoodbye); break;
                 default: Form1.Close(); break;
             }
@@ -4418,9 +4586,9 @@ Error Number:2,State:0,Class:20
         private void AnyEquipments_MouseEnter(object sender, MouseEventArgs e)
         {
             LabShow(Describe1);
-            Button[] EquipmentsBt = new Button[] { Equipments, Equipments2, Equipments4 };
-            String[,] Descryption = new String[,] { { "Прочный костяной кастет. Одно из лучших средств показать свою мощь!", "Черная кожаная куртка. Никто не ценит ничего так сильно, как\nнадёжный кожак в жуткую погоду.", "Штаны из перьев стервятника. Вполне сгодится и на огородное пугало...", "Бинтовая обувь. Спасает от ужасной жары здешних песков как никогда." }, { "Закалённый острый кинжал, пробивающий камни насквозь. Крайне\nсмертоносная игрушка.", "Отлично сохранившиеся доспехи древних воинов. Кажется, что\nради хороших вещей древние даже золота не жалели.", "Поножи из могучих раздробленных пластин, защищают даже от\nукуса комара.", "Сапоги прирождённых солдат, покрыты слоём железа и укрепл-\nены пластинами." }, { "Размер не имеет  значения, главное как его используют", "Футболка для настоящих ценителей", "Штаны серьёзных намерений", "Прочные сапоги из натуральной дублёной кожи" } };
-            String[,] ParamsUp = new String[,] { { "+10", "+5", "+4", "+1" }, { "+50", "+25", "+15", "+10" }, { "+165", "+85", "+55", "+25" } };
+            Button[] EquipmentsBt = new Button[] { Equipments, Equipments2, Equipments3, Equipments4 };
+            String[,] Descryption = new String[,] { { "Прочный костяной кастет. Одно из лучших средств показать свою мощь!", "Черная кожаная куртка. Никто не ценит ничего так сильно, как\nнадёжный кожак в жуткую погоду.", "Штаны из перьев стервятника. Вполне сгодится и на огородное пугало...", "Бинтовая обувь. Спасает от ужасной жары здешних песков как никогда." }, { "Закалённый острый кинжал, пробивающий камни насквозь. Крайне\nсмертоносная игрушка.", "Отлично сохранившиеся доспехи древних воинов. Кажется, что\nради хороших вещей древние даже золота не жалели.", "Поножи из могучих раздробленных пластин, защищают даже от\nукуса комара.", "Сапоги прирождённых солдат, покрыты слоём железа и укрепл-\nены пластинами." }, { "Меч грёз, рассекающий воздух.", "Нагрудник, отполированный настолько, что в нём видно отражение\n приближающихся врагов.", "Поножи, способные полностью закрыть талию от любого вреда.", "Невесомые сапоги, из невероятно прочного материала." }, { "Размер не имеет  значения, главное как его используют", "Футболка для настоящих ценителей", "Штаны серьёзных намерений", "Прочные сапоги из натуральной дублёной кожи" } };
+            String[,] ParamsUp = new String[,] { { "+10", "+5", "+4", "+1" }, { "+50", "+25", "+15", "+10" }, { "+200", "+90", "+65", "+45" }, { "+165", "+85", "+55", "+25" } };
             for (Byte i=0;i<EquipmentsBt.Length;i++)
             {
                 if (sender.Equals(EquipmentsBt[i]))
@@ -4440,9 +4608,9 @@ Error Number:2,State:0,Class:20
         private void AnyEquipments_Click(object sender, RoutedEventArgs e)
         {
             LabShow(Describe1);
-            Button[] EquipmentsBt = new Button[] { Equipments, Equipments2, Equipments4 };
-            String[,] Descryption = new String[,] { { "Древний кастет", "Чёрный кожак", "Штаны стервятника", "Бинтовая обувь" }, { "Древний кинжал", "Древняя броня", "Поножи воина", "Сапоги мужества" }, { "Миниган XM214-A", "Футболка крутого", "Штаны серьёзного", "Военные ботинки" } };
-            Byte[,] ParamsUp = new Byte[,] { { 10, 5, 4, 1 }, { 50, 25, 15, 10 }, { 165, 85, 55, 25 } };
+            Button[] EquipmentsBt = new Button[] { Equipments, Equipments2, Equipments3, Equipments4 };
+            String[,] Descryption = new String[,] { { "Древний кастет", "Чёрный кожак", "Штаны стервятника", "Бинтовая обувь" }, { "Древний кинжал", "Древняя броня", "Поножи воина", "Сапоги мужества" }, { "Меч легенды", "Броня легенды", "Поножи легенды", "Сапоги легенды" }, { "Миниган XM214-A", "Футболка крутого", "Штаны серьёзного", "Военные ботинки" } };
+            Byte[,] ParamsUp = new Byte[,] { { 10, 5, 4, 1 }, { 50, 25, 15, 10 }, { 200, 90, 65, 45 }, { 165, 85, 55, 25 } };
             for (Byte i = 0; i < EquipmentsBt.Length; i++)
             {
                 if (sender.Equals(EquipmentsBt[i]))
@@ -4459,7 +4627,7 @@ Error Number:2,State:0,Class:20
                 }
             }
             StatsMeaning();
-            BtnHideX(new Button[] { Equipments, Equipments2, Equipments4, CancelEq });
+            BtnHideX(new Button[] { Equipments, Equipments2, Equipments3, Equipments4, CancelEq });
             EquipWatch();
         }
         private void DamageTime_Tick3(object sender, EventArgs e)

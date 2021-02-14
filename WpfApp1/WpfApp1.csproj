@@ -36,6 +36,7 @@
     <None Remove="Boots.png" />
     <None Remove="Boots2.png" />
     <None Remove="Boulder.png" />
+    <None Remove="Bridge.png" />
     <None Remove="CancelImg.png" />
     <None Remove="ChestClosed%28ver1%29.png" />
     <None Remove="ChestClosed%28ver2%29.png" />
@@ -86,13 +87,16 @@
     <None Remove="Key.png" />
     <None Remove="KnucledusterItem.png" />
     <None Remove="Learn.png" />
+    <None Remove="LegendSword.png" />
     <None Remove="Legs.png" />
     <None Remove="Legs2.png" />
     <None Remove="LevelUpMenu.jpg" />
+    <None Remove="LeverOff.png" />
     <None Remove="Loc1_1.jpg" />
     <None Remove="Loc1_2.jpg" />
     <None Remove="Loc2.jpg" />
     <None Remove="Loc2_1.png" />
+    <None Remove="Loc3.jpg" />
     <None Remove="Lock.png" />
     <None Remove="Materials.png" />
     <None Remove="Menu.bmp" />
@@ -130,6 +134,7 @@
     <None Remove="StatusButton.png" />
     <None Remove="StrengthUP.png" />
     <None Remove="SuperImg.png" />
+    <None Remove="Surprise.png" />
     <None Remove="Table.png" />
     <None Remove="TableBorder1.png" />
     <None Remove="TableMessage1.png" />
@@ -176,6 +181,7 @@
     <Resource Include="BackToAdventure2.png" />
     <Resource Include="Boots2.png" />
     <Resource Include="Boulder.png" />
+    <Resource Include="Bridge.png" />
     <Resource Include="CancelImg.png" />
     <Resource Include="ChestClosed(ver2).png" />
     <Resource Include="Confirm.png" />
@@ -201,11 +207,14 @@
     <Resource Include="Jacket2.png" />
     <Resource Include="Jail1.png" />
     <Resource Include="Learn.png" />
+    <Resource Include="LegendSword.png" />
     <Resource Include="Legs2.png" />
     <Resource Include="LevelUpMenu.jpg" />
+    <Resource Include="LeverOff.png" />
     <Resource Include="Loc1_2.jpg" />
     <Resource Include="Loc2.jpg" />
     <Resource Include="Loc2_1.png" />
+    <Resource Include="Loc3.jpg" />
     <Resource Include="Materials.png" />
     <Resource Include="Menu2.png" />
     <Resource Include="Menu3.png" />
@@ -226,6 +235,7 @@
     <Resource Include="Spider1.png" />
     <Resource Include="StrengthUP.png" />
     <Resource Include="SuperImg.png" />
+    <Resource Include="Surprise.png" />
     <Resource Include="TableBorder1.png" />
     <Resource Include="TableMessage2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
