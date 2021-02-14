@@ -42,7 +42,11 @@ namespace WpfApp1
                 Ghoul = "Гуль";
                 GrimReaper = "Жнец";
                 Scarab = "Скарабей";
-                GetByIndexes = new string[,] { { Spider, Mummy, Zombie, Bones }, { Vulture, Ghoul, GrimReaper, Scarab } };
+                KillerMole = "Моль-убийца";
+                Imp = "Прислужник";
+                Worm = "П. червь";
+                Master = "Мастер";
+                GetByIndexes = new string[,] { { Spider, Mummy, Zombie, Bones }, { Vulture, Ghoul, GrimReaper, Scarab }, { KillerMole, Imp, Worm, Master } };
             }
             public String Spider { get; set; }
             public String Mummy { get; set; }
@@ -52,6 +56,10 @@ namespace WpfApp1
             public String Ghoul { get; set; }
             public String GrimReaper { get; set; }
             public String Scarab { get; set; }
+            public String KillerMole { get; set; }
+            public String Imp { get; set; }
+            public String Worm { get; set; }
+            public String Master { get; set; }
             public String[,] GetByIndexes { get; set; }
         }
     }
@@ -522,11 +530,7 @@ namespace WpfApp1
             }
             public class Bosses : Static
             {
-                public Bosses()
-                {
-                    SetAllEnemyPaths();
-                }
-
+                public Bosses() { SetAllEnemyPaths(); }
                 private void SetAllEnemyPaths()
                 {
                     Pharaoh = "Foe1.Mummy.png";
@@ -609,10 +613,7 @@ namespace WpfApp1
             }
             public class Bosses : Dynamic
             {
-                public Bosses()
-                {
-                    SetAllBossesPaths();
-                }
+                public Bosses() { SetAllBossesPaths(); }
 
                 private void SetAllBossesPaths()
                 {
@@ -685,10 +686,7 @@ namespace WpfApp1
 
             public class Icon : Dynamic
             {
-                public Icon()
-                {
-                    SetAllIconPaths();
-                }
+                public Icon() { SetAllIconPaths(); }
 
                 public void SetAllIconPaths()
                 {
@@ -1013,10 +1011,7 @@ Error Number:2,State:0,Class:20
     //[RU] Класс противник, определяет новых противников возникающих в бою.
     public class Foe
     {
-        public Foe()
-        {
-            GetStats();
-        }
+        public Foe() { GetStats(); }
 
         //[EN] Stats class, presents each enemy stats in new object.
         //[RU] Класс параметров, определяет параметры каждого вида противников.
@@ -1066,7 +1061,7 @@ Error Number:2,State:0,Class:20
         /// Бонус к защите: ЗЩТ+СПЦ*(СКР/200)
         /// </summary>
         public void GetStats() {
-            EnemyName = new string[][] { new string[] { "Паук", "Мумия", "Зомби", "Страж", "Фараон", "Угх-зан I" }, new string[] { "Стервятник", "Гуль", "Жнец", "Скарабей", "????" } };
+            EnemyName = new string[][] { new string[] { "Паук", "Мумия", "Зомби", "Страж", "Фараон", "Угх-зан I" }, new string[] { "Стервятник", "Гуль", "Жнец", "Скарабей", "????" }, new string[] { "Моль-убийца", "Прислужник", "П. червь", "Мастер", "Владыка" } };
             EnemyAppears = new string[] { "", "", "" };
             EnemyTurn = new Byte[] { 60, 30, 0 };
             EnemyHP = new UInt16[] { 0, 0, 0 };
@@ -1082,8 +1077,13 @@ Error Number:2,State:0,Class:20
             Ghoul = new Stats();
             GrimReaper = new Stats();
             Scarab = new Stats();
+            KillerMole = new Stats();
+            Imp = new Stats();
+            Worm = new Stats();
+            Master = new Stats();
             BOSS1 = new Stats();
             BOSS2 = new Stats();
+            BOSS3 = new Stats();
             SecretBOSS1 = new Stats();
         }
         public UInt16[] EnemyHP { get; set; }
@@ -1099,8 +1099,13 @@ Error Number:2,State:0,Class:20
         public Stats Ghoul { get; set; }
         public Stats GrimReaper { get; set; }
         public Stats  Scarab { get; set; }
-        public Stats  BOSS1 { get; set; }
-        public Stats  BOSS2 { get; set; }
+        public Stats KillerMole { get; set; }
+        public Stats Imp { get; set; }
+        public Stats Worm { get; set; }
+        public Stats Master { get; set; }
+        public Stats BOSS1 { get; set; }
+        public Stats BOSS2 { get; set; }
+        public Stats BOSS3 { get; set; }
         public Stats SecretBOSS1 { get; set; }
     }
 
@@ -1178,14 +1183,8 @@ Error Number:2,State:0,Class:20
             CurrentHP = Hp;
             CurrentAP = Ap;
         }
-        public Object[] GetPlayerRecord(in string login)
-        {
-            return new Object[] { login, CurrentLevel, MenuTask, CurrentHP, CurrentAP, Experience, MiniTask, Learned, true };
-        }
-        public void SetPlayerRecord(params Object[] Values)
-        {
-            SetAnyValues(new Object[] { CurrentLevel, MenuTask, CurrentHP, CurrentAP, Experience, MiniTask, Learned }, Values);
-        }
+        public Object[] GetPlayerRecord(in string login) { return new Object[] { login, CurrentLevel, MenuTask, CurrentHP, CurrentAP, Experience, MiniTask, Learned, true }; }
+        public void SetPlayerRecord(params Object[] Values) { SetAnyValues(new Object[] { CurrentLevel, MenuTask, CurrentHP, CurrentAP, Experience, MiniTask, Learned }, Values); }
         public void SetAnyValues(Object[] Properties, params Object[] Values)
         {
             for (Byte i = 0; i < Values.Length; i++)
@@ -1242,23 +1241,19 @@ Error Number:2,State:0,Class:20
     //[RU] Класс мешка с вещами, зависит от вещей, получаемых и используемых в/вне боя
     public class Bag : Characteristics
     {
-        public Bag()
-        {
-            Equip();
-            Items();
-        }
+        public Bag() { Equip(); Items(); }
 
         //[EN] Initialize empty slots of equipment
         //[RU] Метод для обозначения слотов экипировки
         public void Equip()
         {
             Hands = false;
-            Weapon = new Boolean[] { false, false, false, false };
             Jacket = false;
-            Armor = new Boolean[] { false, false, false, false };
             Legs = false;
-            Pants = new Boolean[] { false, false, false, false };
             Boots = false;
+            Weapon = new Boolean[] { false, false, false, false };
+            Armor = new Boolean[] { false, false, false, false };
+            Pants = new Boolean[] { false, false, false, false };
             ArmBoots = new Boolean[] { false, false, false, false };
         }
         public void EquipPropertyChange(in Byte propertyNo, in Boolean onChange)
@@ -1376,19 +1371,13 @@ Error Number:2,State:0,Class:20
     //[RU] Класс прочее, содержит параметры двигателя игры
     public class Misc
     {
-        public Misc()
-        {
-            InitOnNewGame();
-        }
+        public Misc() { InitOnNewGame(); }
 
         //[EN] Adaptation subclass
         //[RU] Подкласс адаптации
         public class Adopt : Misc
         {
-            public Adopt()
-            {
-                AdoptInit();
-            }
+            public Adopt() { AdoptInit(); }
             private void AdoptInit()
             {
                 WidthAdBack = 1;
@@ -1590,8 +1579,13 @@ Error Number:2,State:0,Class:20
             Foe1.Ghoul.PreStats(5);
             Foe1.GrimReaper.PreStats(6);
             Foe1.Scarab.PreStats(7);
+            Foe1.KillerMole.PreStats(8);
+            Foe1.Imp.PreStats(9);
+            Foe1.Worm.PreStats(10);
+            Foe1.Master.PreStats(11);
             Foe1.BOSS1.PreStats(12);
             Foe1.BOSS2.PreStats(13);
+            Foe1.BOSS3.PreStats(14);
             Foe1.SecretBOSS1.PreStats(15);
         }
         private void ImgShrink(Image Img, in Double W, in Double H) { Img.Width = W; Img.Height = H; }
@@ -2005,8 +1999,8 @@ Error Number:2,State:0,Class:20
         private void InfoAboutEnemies()
         {
             Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } };
-            int[][] newHP = { new int[] { Foe1.Spider.EnemyMHP, Foe1.Mummy.EnemyMHP, Foe1.Zombie.EnemyMHP, Foe1.Bones.EnemyMHP, Foe1.BOSS1.EnemyMHP, Foe1.SecretBOSS1.EnemyMHP }, new int[] { Foe1.Vulture.EnemyMHP, Foe1.Ghoul.EnemyMHP, Foe1.GrimReaper.EnemyMHP, Foe1.Scarab.EnemyMHP, Foe1.BOSS2.EnemyMHP  } };
-            Uri[][] EnemySource = new Uri[][] { new Uri[] { Ura(Path.FoesStatePath.SpiderIcon), Ura(Path.FoesStatePath.MummyIcon), Ura(Path.FoesStatePath.ZombieIcon), Ura(Path.FoesStatePath.BonesIcon), Ura(Path.BossesStatePath.PharaohIcon), Ura(Path.BossesStatePath.UghZanIcon) }, new Uri[] { Ura(Path.FoesStatePath.VultureIcon), Ura(Path.FoesStatePath.GhoulIcon), Ura(Path.FoesStatePath.GrimReaperIcon), Ura(Path.FoesStatePath.ScarabIcon), Ura(Path.BossesStatePath.WarriorIcon) } };
+            int[][] newHP = { new int[] { Foe1.Spider.EnemyMHP, Foe1.Mummy.EnemyMHP, Foe1.Zombie.EnemyMHP, Foe1.Bones.EnemyMHP, Foe1.BOSS1.EnemyMHP, Foe1.SecretBOSS1.EnemyMHP }, new int[] { Foe1.Vulture.EnemyMHP, Foe1.Ghoul.EnemyMHP, Foe1.GrimReaper.EnemyMHP, Foe1.Scarab.EnemyMHP, Foe1.BOSS2.EnemyMHP  }, new int[] { Foe1.KillerMole.EnemyMHP, Foe1.Imp.EnemyMHP, Foe1.Worm.EnemyMHP, Foe1.Master.EnemyMHP, Foe1.BOSS3.EnemyMHP } };
+            Uri[][] EnemySource = new Uri[][] { new Uri[] { Ura(Path.FoesStatePath.SpiderIcon), Ura(Path.FoesStatePath.MummyIcon), Ura(Path.FoesStatePath.ZombieIcon), Ura(Path.FoesStatePath.BonesIcon), Ura(Path.BossesStatePath.PharaohIcon), Ura(Path.BossesStatePath.UghZanIcon) }, new Uri[] { Ura(Path.FoesStatePath.VultureIcon), Ura(Path.FoesStatePath.GhoulIcon), Ura(Path.FoesStatePath.GrimReaperIcon), Ura(Path.FoesStatePath.ScarabIcon), Ura(Path.BossesStatePath.WarriorIcon) }, new Uri[] { Ura(Path.FoesStatePath.KillerMoleIcon), Ura(Path.FoesStatePath.ImpIcon), Ura(Path.FoesStatePath.WormIcon), Ura(Path.FoesStatePath.MasterIcon) } };
             for (int en = 0; en < Foe1.EnemyName[CurrentLocation].Length; en++)
                 if (Foe1.EnemyAppears[Sets.SelectedTarget] == Foe1.EnemyName[CurrentLocation][en])
                 {
@@ -2029,8 +2023,8 @@ Error Number:2,State:0,Class:20
             {
                 if (Sets.SelectedTarget > 0)
                 {
-                    if (Foe1.EnemyHP[1] == 0) Sets.SelectedTarget = Convert.ToByte(Foe1.EnemyHP[0] != 0 ? Sets.SelectedTarget - 2 : Sets.SelectedTarget);
-                    else if (Foe1.EnemyHP[0] == 0) Sets.SelectedTarget = Convert.ToByte(Sets.SelectedTarget > 1 ? Sets.SelectedTarget - 1 : Sets.SelectedTarget);
+                    if (Foe1.EnemyHP[1] == 0) Sets.SelectedTarget = Bits(Foe1.EnemyHP[0] != 0 ? Sets.SelectedTarget - 2 : Sets.SelectedTarget);
+                    else if (Foe1.EnemyHP[0] == 0) Sets.SelectedTarget = Bits(Sets.SelectedTarget > 1 ? Sets.SelectedTarget - 1 : Sets.SelectedTarget);
                     else Sets.SelectedTarget--;
                     InfoAboutEnemies();
                 }
@@ -2038,8 +2032,8 @@ Error Number:2,State:0,Class:20
             else
                 if (Sets.SelectedTarget < Sets.Rnd1 - 1)
                 {
-                    if (Foe1.EnemyHP[1] == 0) Sets.SelectedTarget = Convert.ToByte(Foe1.EnemyHP[2] != 0 ? Sets.SelectedTarget + 2 : Sets.SelectedTarget);
-                    else if (Foe1.EnemyHP[0] == 0) Sets.SelectedTarget = Convert.ToByte(Sets.SelectedTarget < 2 ? Sets.SelectedTarget + 1 : Sets.SelectedTarget);
+                    if (Foe1.EnemyHP[1] == 0) Sets.SelectedTarget = Bits(Foe1.EnemyHP[2] != 0 ? Sets.SelectedTarget + 2 : Sets.SelectedTarget);
+                    else if (Foe1.EnemyHP[0] == 0) Sets.SelectedTarget = Bits(Sets.SelectedTarget < 2 ? Sets.SelectedTarget + 1 : Sets.SelectedTarget);
                     else Sets.SelectedTarget++;
                     InfoAboutEnemies();
                 }
@@ -2239,8 +2233,8 @@ Error Number:2,State:0,Class:20
             PlayerSetLocation(Convert.ToByte(Adoptation.ImgYbounds), Convert.ToByte(Adoptation.ImgXbounds));
             GroundCheck(MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds]);
             TablesSetInfo();
-            //if (Sets.StepsToBattle >= rnd) { ImgHideX(new Image[] { Img2, PainImg }); Sound1.Stop(); Dj(Path.GameNoises.Danger); MediaShow(Med2); }
-            //Sets.StepsToBattle++;
+            if (Sets.StepsToBattle >= rnd) { ImgHideX(new Image[] { Img2, PainImg }); Sound1.Stop(); Dj(Path.GameNoises.Danger); MediaShow(Med2); }
+            Sets.StepsToBattle++;
             GetPoisoned();
         }
         private void SomeRudeAppears(in Byte BattleIndex, in EventHandler Event, in string Noise)
@@ -2436,27 +2430,28 @@ Error Number:2,State:0,Class:20
         private void FoesCalculate(in Byte InBattle, in Byte FoeIndex, in Byte Exper, in Byte Mater, in Byte ItemDrop)
         {
             Image[] Enemies = { Img6, Img7, Img8 };
-            UInt16[][] EnHP = { new UInt16[] { Foe1.Spider.EnemyMHP, Foe1.Mummy.EnemyMHP, Foe1.Zombie.EnemyMHP, Foe1.Bones.EnemyMHP, Foe1.BOSS1.EnemyMHP, Foe1.SecretBOSS1.EnemyMHP }, new UInt16[] { Foe1.Vulture.EnemyMHP, Foe1.Ghoul.EnemyMHP, Foe1.GrimReaper.EnemyMHP, Foe1.Scarab.EnemyMHP } };
-            Uri[,] RegularEnemiesImg = new Uri[,] { { new Uri(@Path.FoesStatePath.Spider, UriKind.RelativeOrAbsolute), new Uri(@Path.FoesStatePath.Mummy, UriKind.RelativeOrAbsolute), new Uri(@Path.FoesStatePath.Zombie, UriKind.RelativeOrAbsolute), new Uri(@Path.FoesStatePath.Bones, UriKind.RelativeOrAbsolute) }, { new Uri(@Path.FoesStatePath.Vulture, UriKind.RelativeOrAbsolute), new Uri(@Path.FoesStatePath.Ghoul, UriKind.RelativeOrAbsolute), new Uri(@Path.FoesStatePath.GrimReaper, UriKind.RelativeOrAbsolute), new Uri(@Path.FoesStatePath.Scarab, UriKind.RelativeOrAbsolute) } };
-                for (Byte i = 0; i < Enemies.Length; i++)
-                    if (InBattle - 1 == i)
-                    {
-                        Foe1.EnemyHP[i] = EnHP[CurrentLocation][FoeIndex];
-                        Enemies[i].Source = new BitmapImage(RegularEnemiesImg[CurrentLocation, FoeIndex]);
-                        Foe1.EnemyAppears[i] = FoesNames.GetByIndexes[CurrentLocation, FoeIndex];
-                        break;
-                    }
-                Exp += Exper;
-                Mat += Mater;
-                switch (FoeIndex)
+            UInt16[][] EnHP = { new UInt16[] { Foe1.Spider.EnemyMHP, Foe1.Mummy.EnemyMHP, Foe1.Zombie.EnemyMHP, Foe1.Bones.EnemyMHP, Foe1.BOSS1.EnemyMHP, Foe1.SecretBOSS1.EnemyMHP }, new UInt16[] { Foe1.Vulture.EnemyMHP, Foe1.Ghoul.EnemyMHP, Foe1.GrimReaper.EnemyMHP, Foe1.Scarab.EnemyMHP, Foe1.BOSS2.EnemyMHP }, new UInt16[] { Foe1.KillerMole.EnemyMHP, Foe1.Imp.EnemyMHP, Foe1.Worm.EnemyMHP, Foe1.Master.EnemyMHP, Foe1.BOSS3.EnemyMHP } };
+            Uri[,] RegularEnemiesImg = new Uri[,] { { Ura(Path.FoesStatePath.Spider), Ura(Path.FoesStatePath.Mummy), Ura(Path.FoesStatePath.Zombie), Ura(Path.FoesStatePath.Bones) }, { Ura(Path.FoesStatePath.Vulture), Ura(Path.FoesStatePath.Ghoul), Ura(Path.FoesStatePath.GrimReaper), Ura(Path.FoesStatePath.Scarab) }, { Ura(Path.FoesStatePath.KillerMole), Ura(Path.FoesStatePath.Imp), Ura(Path.FoesStatePath.Worm), Ura(Path.FoesStatePath.Master) } };
+            //throw new Exception("121212!!!!!");
+            for (Byte i = 0; i < Enemies.Length; i++)
+                if (InBattle - 1 == i)
                 {
-                    case 0: Sets.FoeType1Alive += 1; break;
-                    case 1: Sets.FoeType2Alive += 1; break;
-                    case 2: Sets.FoeType3Alive += 1; break;
-                    case 3: Sets.FoeType4Alive += 1; break;
-                    default: Sets.FoeType1Alive += 1; break;
+                    Foe1.EnemyHP[i] = EnHP[CurrentLocation][FoeIndex];
+                    Enemies[i].Source = new BitmapImage(RegularEnemiesImg[CurrentLocation, FoeIndex]);
+                    Foe1.EnemyAppears[i] = FoesNames.GetByIndexes[CurrentLocation, FoeIndex];
+                    break;
                 }
-                Sets.ItemsDropRate[ItemDrop] += 1;
+            Exp += Exper;
+            Mat += Mater;
+            switch (FoeIndex)
+            {
+                case 0: Sets.FoeType1Alive += 1; break;
+                case 1: Sets.FoeType2Alive += 1; break;
+                case 2: Sets.FoeType3Alive += 1; break;
+                case 3: Sets.FoeType4Alive += 1; break;
+                default: Sets.FoeType1Alive += 1; break;
+            }
+            Sets.ItemsDropRate[ItemDrop] += 1;
         }
         private void SmartEnemyLabels(in Byte Index)
         {
@@ -2468,9 +2463,9 @@ Error Number:2,State:0,Class:20
         private void RegularBattle()
         {
             CalculateBattleStatus();
-            Byte[][] Mat = { new Byte[] { Foe1.Spider.Materials, Foe1.Mummy.Materials, Foe1.Zombie.Materials, Foe1.Bones.Materials, Foe1.BOSS1.Materials, Foe1.SecretBOSS1.Materials }, new Byte[] { Foe1.Vulture.Materials, Foe1.Ghoul.Materials, Foe1.GrimReaper.Materials, Foe1.Scarab.Materials } };
-            Byte[][] XP = { new Byte[] { Foe1.Spider.Experience, Foe1.Mummy.Experience, Foe1.Zombie.Experience, Foe1.Bones.Experience, Foe1.BOSS1.Experience, Foe1.SecretBOSS1.Experience }, new Byte[] { Foe1.Vulture.Experience, Foe1.Ghoul.Experience, Foe1.GrimReaper.Experience, Foe1.Scarab.Experience } };
-            Byte[][] DrRt = { new Byte[] { Foe1.Spider.DropRate, Foe1.Mummy.DropRate, Foe1.Zombie.DropRate, Foe1.Bones.DropRate, Foe1.BOSS1.DropRate, Foe1.SecretBOSS1.DropRate }, new Byte[] { Foe1.Vulture.DropRate, Foe1.Ghoul.DropRate, Foe1.GrimReaper.DropRate, Foe1.Scarab.DropRate } };
+            Byte[][] Mat = { new Byte[] { Foe1.Spider.Materials, Foe1.Mummy.Materials, Foe1.Zombie.Materials, Foe1.Bones.Materials, Foe1.BOSS1.Materials, Foe1.SecretBOSS1.Materials }, new Byte[] { Foe1.Vulture.Materials, Foe1.Ghoul.Materials, Foe1.GrimReaper.Materials, Foe1.Scarab.Materials }, new Byte[] { Foe1.KillerMole.Materials, Foe1.Imp.Materials, Foe1.Worm.Materials, Foe1.Master.Materials } };
+            Byte[][] XP = { new Byte[] { Foe1.Spider.Experience, Foe1.Mummy.Experience, Foe1.Zombie.Experience, Foe1.Bones.Experience, Foe1.BOSS1.Experience, Foe1.SecretBOSS1.Experience }, new Byte[] { Foe1.Vulture.Experience, Foe1.Ghoul.Experience, Foe1.GrimReaper.Experience, Foe1.Scarab.Experience }, new Byte[] { Foe1.KillerMole.Experience, Foe1.Imp.Experience, Foe1.Worm.Experience, Foe1.Master.Experience } };
+            Byte[][] DrRt = { new Byte[] { Foe1.Spider.DropRate, Foe1.Mummy.DropRate, Foe1.Zombie.DropRate, Foe1.Bones.DropRate, Foe1.BOSS1.DropRate, Foe1.SecretBOSS1.DropRate }, new Byte[] { Foe1.Vulture.DropRate, Foe1.Ghoul.DropRate, Foe1.GrimReaper.DropRate, Foe1.Scarab.DropRate }, new Byte[] { Foe1.KillerMole.DropRate, Foe1.Imp.DropRate, Foe1.Worm.DropRate, Foe1.Master.DropRate } };
             HeyPlaySomething(Path.GameMusic.FoesChase);
 
             Sets.StepsToBattle = 0;
@@ -2509,7 +2504,7 @@ Error Number:2,State:0,Class:20
             else if (Img2.Source.ToString().Contains(Path.Ray.GoLeft)) Img2.Source = Bmper(Path.Ray.StaticLeft);
             else if (Img2.Source.ToString().Contains(Path.Ray.GoDown1) || Img2.Source.ToString().Contains(Path.Ray.GoDown2)) Img2.Source = Bmper(Path.Ray.StaticDown);
             else if (Img2.Source.ToString().Contains(Path.Ray.GoRight)) Img2.Source = Bmper(Path.Ray.StaticRight);
-            LevelText.Content = (Super1.CurrentLevel < 25 ? "Ур. " + Super1.CurrentLevel : "Ур." + Super1.CurrentLevel);
+            LevelText.Content = Super1.CurrentLevel < 10 ? "Ур. " + Super1.CurrentLevel : "Ур." + Super1.CurrentLevel;
             if (Sets.TableEN) ImgHide(TableMessage1);
             MaxAndWidthHPcalculate();
             MaxAndWidthAPcalculate();
@@ -2667,7 +2662,7 @@ Error Number:2,State:0,Class:20
                 if (CheckMapIfModelExists(7)) ImgShow(Boulder1);
                 ButtonHide(Abilities);
                 Abilities.IsEnabled = Super1.CurrentLevel >= 2;
-                string[] music = new string[] { Path.GameMusic.AncientPyramid, Path.GameMusic.WaterTemple };
+                string[] music = new string[] { Path.GameMusic.AncientPyramid, Path.GameMusic.WaterTemple, Path.GameMusic.LavaTemple };
                 HeyPlaySomething(music[CurrentLocation]);
             }
             else
@@ -2685,7 +2680,7 @@ Error Number:2,State:0,Class:20
                 AnyShowX(Img4, BattleText1, BattleText2, textOk2);
             }
             else if (Super1.CurrentHP > 0) Time();
-            BattleText2.Content = Sets.FoeType1Alive+" " + Sets.FoeType2Alive + " " + Sets.FoeType3Alive + " " + Sets.FoeType4Alive + " " + Foe1.EnemiesStillAlive;
+            BattleText2.Content = "Вр1: "+Sets.FoeType1Alive+", Вр2: " + Sets.FoeType2Alive + ", Вр3: " + Sets.FoeType3Alive + ", Вр4: " + Sets.FoeType4Alive + ", Всего: " + Foe1.EnemiesStillAlive;
             AnyShow(BattleText2);
         }
         private void Button3_Click(object sender, RoutedEventArgs e)
@@ -2720,33 +2715,33 @@ Error Number:2,State:0,Class:20
         private void TimeEnemy() { Byte aglfoe = 25; if ((Foe1.EnemyHP[0] > 0) || (Foe1.EnemyHP[1] > 0) || (Foe1.EnemyHP[2] > 0)) WidelyUsedAnyTimer(out timer2, EnemyTime_Tick2, new TimeSpan(0, 0, 0, 0, Convert.ToUInt16((50 - aglfoe) / GameSpeed.Value))); }
         private int CheckEnemies(out UInt16 EnemyAttack, Byte pos)
         {
-            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 } };
+            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
             EnemyAttack = 25;
             for (Byte i = 0; i < Foe1.EnemyName.Length; i++) if (Foe1.EnemyAppears[pos - 1] == Foe1.EnemyName[CurrentLocation][i]) { EnemyAttack = Convert.ToUInt16(FS[CurrentLocation][i].EnemyAttack + FS[CurrentLocation][i].EnemyAttack*(FS[CurrentLocation][i].EnemySpeed*0.01)); break; }
             return 25;
         }
         private int GetOut(out Byte Speed)
         {
-            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 } };
+            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
             Speed = 10;
             for (Byte i = 0; i < Foe1.EnemyAppears.Length; i++) for (Byte j = 0; j < Foe1.EnemyName.Length; j++) if (Foe1.EnemyAppears[i] == Foe1.EnemyName[CurrentLocation][j]) Speed = Speed < FS[CurrentLocation][j].EnemySpeed ? FS[CurrentLocation][j].EnemySpeed : Speed;
             return Speed;
         }
         private UInt16 EnemyTough(Byte pos)
         {
-            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 } };
+            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
             for (Byte i = 0; i < Foe1.EnemyName.Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { return Convert.ToUInt16(FS[CurrentLocation][i].EnemyDefence + FS[CurrentLocation][i].EnemyAgility * (FS[CurrentLocation][i].EnemySpeed * 0.01)); }
             return 25;
         }
         private UInt16 EnemyAntiSkill(Byte pos)
         {
-            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 } };
+            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
             for (Byte i = 0; i < Foe1.EnemyName.Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { return Convert.ToUInt16(FS[CurrentLocation][i].EnemyAgility + FS[CurrentLocation][i].EnemySpeed); }
             return 25;
         }
         private string NameEnemies(out string enemy, Byte pos)
         {
-            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 } };
+            Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
             enemy = "Паук";
             for (Byte i = 0; i < Foe1.EnemyName.Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { enemy = FS[CurrentLocation][i].EnemyName[CurrentLocation][i]; break; }
             return enemy;
@@ -2762,17 +2757,17 @@ Error Number:2,State:0,Class:20
             if (Sets.SpecialBattle != 200) Super1.CurrentHP = Convert.ToUInt16(Super1.CurrentHP - dmg > 0? Super1.CurrentHP - dmg:0);
             else
             {
-                if (Super1.CurrentAP - 10 >= 0) Super1.SetCurrentHpAp(Convert.ToUInt16(Super1.CurrentHP - dmg + 10 > 0 ? Super1.CurrentHP - (dmg - 10) : 0), Convert.ToUInt16(Super1.CurrentAP - 10));                
-                else Super1.SetCurrentHpAp(Convert.ToUInt16(Super1.CurrentHP - dmg + Super1.CurrentAP > 0 ? Super1.CurrentHP - (dmg - Super1.CurrentAP) : 0), 0);                
+                if (Super1.CurrentAP - 10 >= 0) Super1.SetCurrentHpAp(Shrt(Super1.CurrentHP - dmg + 10 > 0 ? Super1.CurrentHP - (dmg - 10) : 0), Shrt(Super1.CurrentAP - 10));                
+                else Super1.SetCurrentHpAp(Shrt(Super1.CurrentHP - dmg + Super1.CurrentAP > 0 ? Super1.CurrentHP - (dmg - Super1.CurrentAP) : 0), 0);                
                 CurrentAPcalculate();
             }
             CurrentHPcalculate();
             BattleText6.Content = "-" + dmg;
             LabShow(BattleText6);
             HP.Foreground = Brushes.Red;
-            UInt16 GameSpeed1 = Convert.ToUInt16(50 / GameSpeed.Value);
             if (Sets.SpecialBattle != 200)
             {
+                UInt16 GameSpeed1 = Shrt(50 / GameSpeed.Value);
                 if (timer3 == null) { WidelyUsedAnyTimer(out timer3, DamageTime_Tick3, new TimeSpan(0, 0, 0, 0, GameSpeed1)); timer3.IsEnabled = true; }
                 else if (Img4.Source.ToString().Contains(Path.PersonStatePath.Usual) && (!timer3.IsEnabled)) { WidelyUsedAnyTimer(out timer3, DamageTime_Tick3, new TimeSpan(0, 0, 0, 0, GameSpeed1)); timer3.IsEnabled = true; }
                 else HP.Foreground = Brushes.White;
@@ -2904,7 +2899,7 @@ Error Number:2,State:0,Class:20
         {
             timer9.Stop();
             SelectedTrgt = Sets.SelectedTarget;
-            UInt16 strength = Convert.ToUInt16(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0]);
+            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0]);
             UInt16 EnemyDefence = EnemyTough(SelectedTrgt);
             AnyHideX(BattleText1, HPenemyBar, HPenemy, Fight, Cancel1, TrgtImg, EnemyImg);
             WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, Convert.ToUInt16(50 / GameSpeed.Value)));
@@ -2913,7 +2908,7 @@ Error Number:2,State:0,Class:20
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
 
-            Foe1.EnemyHP[Sets.SelectedTarget] = Convert.ToUInt16(Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence) < 0 ? 0 : Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence));
+            Foe1.EnemyHP[Sets.SelectedTarget] = Shrt(Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence) < 0 ? 0 : Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence));
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
             {
                 string res = Path.GameSounds.SpiderDied;
@@ -2928,23 +2923,21 @@ Error Number:2,State:0,Class:20
                     case 1: ImgHide(Img7); break;
                     case 2: ImgHide(Img8); break;
                 }
-                SuperCheckFoes(Convert.ToByte(Sets.SelectedTarget));
-                Sets.SelectedTarget = Convert.ToByte(Foe1.EnemyHP[0] != 0? 0 : Foe1.EnemyHP[1] != 0? 1 : Foe1.EnemyHP[2] != 0? 2 : 0);
+                SuperCheckFoes(Bits(Sets.SelectedTarget));
+                Sets.SelectedTarget = Bits(Foe1.EnemyHP[0] != 0? 0 : Foe1.EnemyHP[1] != 0? 1 : Foe1.EnemyHP[2] != 0? 2 : 0);
 
                 Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } };
                 ImgGrid(TrgtImg, grRowColumn[0, Sets.SelectedTarget], grRowColumn[1, Sets.SelectedTarget]);
-                Foe1.EnemiesStillAlive = Convert.ToByte(Foe1.EnemiesStillAlive - 1);
+                Foe1.EnemiesStillAlive = Bits(Foe1.EnemiesStillAlive - 1);
                 if ((Foe1.EnemyAppears[Sets.SelectedTarget] == "Фараон")|| (Foe1.EnemyAppears[Sets.SelectedTarget] == "Угх-зан I"))
                     if (Foe1.EnemiesStillAlive == 0)
                     {
-                        BattleText2.Content = Foe1.EnemyAppears[Sets.SelectedTarget] + " погибает!";
-                        LabShow(BattleText2);
                         LabHide(BattleText6);
                         BattleText6.Content = "";
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
                     }
             }
-            EventHandler WeaponCharacter = (Sets.SpecialBattle == 200 ? SeriousMinigun_Time_Tick39 : (Super1.PlayerEQ[0]==10 ? HandAttack_Time_Tick8: Super1.PlayerEQ[0] == 50 ? (EventHandler)KnifeAttack_Time_Tick8 : HandAttack_Time_Tick8));
+            EventHandler WeaponCharacter = (Sets.SpecialBattle == 200 ? SeriousMinigun_Time_Tick39 : (Super1.PlayerEQ[0]==10 ? HandAttack_Time_Tick8: Super1.PlayerEQ[0] == 50 ? KnifeAttack_Time_Tick8 : Super1.PlayerEQ[0] == 200 ? SwordAttack_Time_Tick8_1 : Super1.PlayerEQ[0] == 165 ? (EventHandler)MinigunAttack_Time_Tick8_2 : HandAttack_Time_Tick8));
             WidelyUsedAnyTimer(out timer8, WeaponCharacter, new TimeSpan(0, 0, 0, 0, Convert.ToUInt16(25 / GameSpeed.Value)));
             Dj(Path.GameNoises.HandAttack);
         }
@@ -2952,9 +2945,9 @@ Error Number:2,State:0,Class:20
         public static UInt16 FoeDamage = 0;
         private void DamageFoe_Time_Tick17(object sender, EventArgs e)
         {
-            UInt16 strength = Convert.ToUInt16(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] - EnemyTough(Sets.SelectedTarget));
+            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] - EnemyTough(Sets.SelectedTarget));
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            Labs[SelectedTrgt].Content = Convert.ToUInt16(strength);
+            Labs[SelectedTrgt].Content = Shrt(strength);
             FoesKicked();
         }
         private void CureHP_Time_Tick18(object sender, EventArgs e) { CureHealTxt.Content = "+" + Super1.Special * 2; CureOrHeal(); }
@@ -3095,7 +3088,7 @@ Error Number:2,State:0,Class:20
             WonOrDied();
             string[] music = new string[] { Path.GameMusic.AncientPyramid, Path.GameMusic.WaterTemple, Path.GameMusic.LavaTemple };
             CheckMapIfModelExistsX(new Byte[] { 104, 105, 105, 106, 107, 108 }, new Image[] { JailImg1, JailImg2, JailImg3, JailImg5, JailImg6, JailImg7 });
-            if (Sets.TableEN) ImgShow(TableMessage1);
+            //if (Sets.TableEN) ImgShow(TableMessage1);
             if (CurrentLocation == 0) Map1EnableModels();
             ImgShowX(new Image[] { Threasure1, Img2, SaveProgress });
             AnyHideX(Win, Img5);
@@ -3550,7 +3543,7 @@ Error Number:2,State:0,Class:20
                         Sets.EnemiesGetDown(i);
                         FoesAlive[i]--;
                         Enemies[EnemyNamesFight[i]-1].Foreground = Brushes.Red;
-                        EnemiesTotal(Convert.ToByte(i), Foe1.EnemyName[CurrentLocation][i], FoesAlive[i]);
+                        EnemiesTotal(Bits(i), Foe1.EnemyName[CurrentLocation][i], FoesAlive[i]);
                     }
                     break;
                 }
@@ -4701,8 +4694,7 @@ Error Number:2,State:0,Class:20
             EnemiesImg[t1].Source = Bmper(EnemyAnimate[EnemyAtck[t1]]);
             if (EnemyAtck[t1] >= EnemyAnimate.Length - 1)
             {
-                if (Sets.SpecialBattle == 200)
-                    LabHide(BattleText6);
+                if (Sets.SpecialBattle == 200) LabHide(BattleText6);
                 HP.Foreground = Brushes.White;
                 EnemyAtck[t1] = 0;
                 EnemiesImg[t1].Source = Bmper(Enemy);
@@ -4720,6 +4712,8 @@ Error Number:2,State:0,Class:20
         private void FoeAttack3_Time_Tick7(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(2)) timer7.Stop(); }
         private void HandAttack_Time_Tick8(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.HdAttack, Path.IconAnimatePath.HdAttack); }
         private void KnifeAttack_Time_Tick8(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.KnAttack, Path.IconAnimatePath.KnAttack); }
+        private void SwordAttack_Time_Tick8_1(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SwAttack, Path.IconAnimatePath.SwAttack); }
+        private void MinigunAttack_Time_Tick8_2(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.MgAttack, Path.IconAnimatePath.MgAttack); }
         private void Escape_Time_Tick9(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Escape, Path.IconAnimatePath.Escape); }
         private void Items_Time_Tick10(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.BagUse, Path.IconAnimatePath.BagUse); }
         private void Cure_Time_Tick11(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Cure, Path.IconAnimatePath.Cure); }
