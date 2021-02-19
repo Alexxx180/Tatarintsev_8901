@@ -61,6 +61,7 @@
     <None Remove="Ether2Item.png" />
     <None Remove="EtherItem.png" />
     <None Remove="FightBeforeImg.png" />
+    <None Remove="FinalBoss.png" />
     <None Remove="FusedItem.png" />
     <None Remove="GetItemsArmor1.png" />
     <None Remove="GetItemsArmor2.png" />
@@ -196,6 +197,7 @@
     <Resource Include="EscapeBeforeImg.png" />
     <Resource Include="Ether2Item.png" />
     <Resource Include="FightBeforeImg.png" />
+    <Resource Include="FinalBoss.png" />
     <Resource Include="GetItemsArmor2.png" />
     <Resource Include="GetItemsCustomBoots2.png" />
     <Resource Include="GetItemsCustomPants2.png" />
