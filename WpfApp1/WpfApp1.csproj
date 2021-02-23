@@ -13,6 +13,8 @@
     <None Remove="AbilsButton.png" />
     <None Remove="AbsoluteBlack.jpg" />
     <None Remove="ActiveTask.png" />
+    <None Remove="Adventures3.png" />
+    <None Remove="Adventures4.png" />
     <None Remove="AG.png" />
     <None Remove="AG2.png" />
     <None Remove="AncientArtifact.png" />
@@ -79,6 +81,7 @@
     <None Remove="IconDefence1.png" />
     <None Remove="IconPoisoned.png" />
     <None Remove="InfoButton.png" />
+    <None Remove="Introduction1.png" />
     <None Remove="ItemsBeforeImg.png" />
     <None Remove="ItemsButton.png" />
     <None Remove="ItemsCount.png" />
@@ -172,6 +175,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Adventures3.png" />
+    <Resource Include="Adventures4.png" />
     <Resource Include="AG2.png" />
     <Resource Include="AncientArtifact2.png" />
     <Resource Include="AncientKnife.png" />
@@ -205,6 +210,7 @@
     <Resource Include="GetItemsCustomWeapon2.png" />
     <Resource Include="Hands2.png" />
     <Resource Include="HerbsItem.png" />
+    <Resource Include="Introduction1.png" />
     <Resource Include="ItemsBeforeImg.png" />
     <Resource Include="Jacket2.png" />
     <Resource Include="Jail1.png" />

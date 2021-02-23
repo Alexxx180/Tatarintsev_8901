@@ -87,7 +87,10 @@ namespace WpfApp1
             BtnCustomize = new Static.BtnImgs.Usual();
             BtnBefore = new Static.BtnImgs.Before();
             BtnAfter = new Static.BtnImgs.After();
-            MenuImgs = new Static.Menu();
+            Adv = new Static.Menu.Adventures();
+            MenuImgs = new Static.Menu.MTasks();
+            BefMInfoImgs = new Static.Menu.MInfo.MBefore();
+            AftMInfoImgs = new Static.Menu.MInfo.MAfter();
             Fighting = new Static.Battle();
             AniModel = new Dynamic.Models();
         }
@@ -382,8 +385,8 @@ namespace WpfApp1
                 public Battle() { SetAllBPaths(); }
                 public void SetAllBPaths()
                 {
-                    Battle1 = @"Battle3.jpg";
-                    Battle2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\b2.jpg";
+                    Battle1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\Battle1.jpg";
+                    Battle2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\Battle2.jpg";
                     Battle3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\Battle3.jpg";
                 }
                 public String Battle1 { get; set; }
@@ -392,15 +395,278 @@ namespace WpfApp1
             }
             public class Menu : Static
             {
-                public Menu() { SetAllBPaths(); }
-                public void SetAllBPaths()
+                public class Adventures : Menu
                 {
-                    UsualTask = @"ActiveTask.png";
-                    Completed = @"CompletedTask.png";
+                    public Adventures() { SetAllAPaths(); }
+                    public void SetAllAPaths()
+                    {
+                        BeforeNewAdv = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\GameStartBtns\Adventures3.png";
+                        AfterNewAdv = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\GameStartBtns\Adventures1.png";
+                        BeforeConAdv = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\GameStartBtns\Adventures4.png";
+                        AfterConAdv = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\GameStartBtns\Adventures2.png";
+                    }
+                    public String BeforeNewAdv { get; set; }
+                    public String AfterNewAdv { get; set; }
+                    public String BeforeConAdv { get; set; }
+                    public String AfterConAdv { get; set; }
                 }
-                public String UsualTask { get; set; }
-                public String ExperTask { get; set; }
-                public String Completed { get; set; }
+                public class MTasks : Menu
+                {
+                    public MTasks() { SetAllTPaths(); }
+                    public void SetAllTPaths()
+                    {
+                        UsualTask = @"ActiveTask.png";
+                        Completed = @"CompletedTask.png";
+                    }
+                    public String UsualTask { get; set; }
+                    public String ExperTask { get; set; }
+                    public String Completed { get; set; }
+                }
+                public class MInfo : Menu
+                {
+                    public class MAfter : MInfo
+                    {
+                        public MAfter() { SetAllMPaths(); }
+                        public void SetAllMPaths()
+                        {
+                            Help1_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info1\Introduction2.png";
+                            Help1_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info2\Founder2.png";
+                            Help1_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info3\AncientPlaces2.png";
+                            Help2_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info1\WhoIsAncients2.png";
+                            Help2_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info2\PreHistory2.png";
+                            Help2_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info3\Artifacts2.png";
+                            Help3_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info1\NewAdventures2.png";
+                            Help3_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info2\Wanted2.png";
+                            Help3_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info3\Chapters2.png";
+                            Help4_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info1\Movement2.png";
+                            Help4_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info2\Exit2.png";
+                            Help4_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info3\Click2.png";
+                            Help5_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info1\Fight2.png";
+                            Help5_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info2\Foes2.png";
+                            Help5_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info3\Bosses2.png";
+                            Help6_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info1\FoesDestroy2.png";
+                            Help6_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info2\Timing2.png";
+                            Help6_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info3\Actions2.png";
+                            Help7_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info1\Hp2.png";
+                            Help7_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info2\Ap2.png";
+                            Help7_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info3\Time2.png";
+                            Help8_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info1\Damage2.png";
+                            Help8_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info2\Kombat2.png";
+                            Help8_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info3\Select2.png";
+                            Help9_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info1\Defence2.png";
+                            Help9_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info2\Skills2.png";
+                            Help9_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info3\Bag2.png";
+                            Help10_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info1\Flee2.png";
+                            Help10_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info2\Results2.png";
+                            Help10_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info3\StatsUp2.png";
+                            Help11_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info1\Status2.png";
+                            Help11_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info2\Levels2.png";
+                            Help11_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info3\Exp2.png";
+                            Help12_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info1\Stats2.png";
+                            Help12_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info2\ATK2.png";
+                            Help12_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info3\DEF2.png";
+                            Help13_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info1\SPD2.png";
+                            Help13_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info2\SPC2.png";
+                            Help13_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info3\TimeOut2.png";
+                            Help14_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info1\MoreFight2.png";
+                            Help14_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info2\Bestiary2.png";
+                            Help14_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info3\Tasks2.png";
+                            Help15_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info1\Settings2.png";
+                            Help15_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info2\Creator2.png";
+                            Help15_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info3\Goodbye2.png";
+                            Help16_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info1\Ways2.png";
+                            Help16_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info2\Walls2.png";
+                            Help16_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info3\Locks2.png";
+                            Help17_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info1\Chests2.png";
+                            Help17_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info2\Dangers2.png";
+                            Help17_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info3\Artifacts2.png";
+                            Help18_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info1\Sources2.png";
+                            Help18_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info2\SupposeSam2.png";
+                            Help18_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info3\Secrets2.png";
+                            Help19_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info1\Scenes2.png";
+                            Help19_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info2\Thanks2.png";
+                            Help19_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info3\Help2.png";
+                        }
+                        public String Help1_1 { get; set; }
+                        public String Help1_2 { get; set; }
+                        public String Help1_3 { get; set; }
+                        public String Help2_1 { get; set; }
+                        public String Help2_2 { get; set; }
+                        public String Help2_3 { get; set; }
+                        public String Help3_1 { get; set; }
+                        public String Help3_2 { get; set; }
+                        public String Help3_3 { get; set; }
+                        public String Help4_1 { get; set; }
+                        public String Help4_2 { get; set; }
+                        public String Help4_3 { get; set; }
+                        public String Help5_1 { get; set; }
+                        public String Help5_2 { get; set; }
+                        public String Help5_3 { get; set; }
+                        public String Help6_1 { get; set; }
+                        public String Help6_2 { get; set; }
+                        public String Help6_3 { get; set; }
+                        public String Help7_1 { get; set; }
+                        public String Help7_2 { get; set; }
+                        public String Help7_3 { get; set; }
+                        public String Help8_1 { get; set; }
+                        public String Help8_2 { get; set; }
+                        public String Help8_3 { get; set; }
+                        public String Help9_1 { get; set; }
+                        public String Help9_2 { get; set; }
+                        public String Help9_3 { get; set; }
+                        public String Help10_1 { get; set; }
+                        public String Help10_2 { get; set; }
+                        public String Help10_3 { get; set; }
+                        public String Help11_1 { get; set; }
+                        public String Help11_2 { get; set; }
+                        public String Help11_3 { get; set; }
+                        public String Help12_1 { get; set; }
+                        public String Help12_2 { get; set; }
+                        public String Help12_3 { get; set; }
+                        public String Help13_1 { get; set; }
+                        public String Help13_2 { get; set; }
+                        public String Help13_3 { get; set; }
+                        public String Help14_1 { get; set; }
+                        public String Help14_2 { get; set; }
+                        public String Help14_3 { get; set; }
+                        public String Help15_1 { get; set; }
+                        public String Help15_2 { get; set; }
+                        public String Help15_3 { get; set; }
+                        public String Help16_1 { get; set; }
+                        public String Help16_2 { get; set; }
+                        public String Help16_3 { get; set; }
+                        public String Help17_1 { get; set; }
+                        public String Help17_2 { get; set; }
+                        public String Help17_3 { get; set; }
+                        public String Help18_1 { get; set; }
+                        public String Help18_2 { get; set; }
+                        public String Help18_3 { get; set; }
+                        public String Help19_1 { get; set; }
+                        public String Help19_2 { get; set; }
+                        public String Help19_3 { get; set; }
+                    }
+                    public class MBefore : MInfo
+                    {
+                        public MBefore() { SetAllMPaths(); }
+                        public void SetAllMPaths()
+                        {
+                            Help1_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info1\Introduction1.png";
+                            Help1_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info2\Founder1.png";
+                            Help1_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info3\AncientPlaces1.png";
+                            Help2_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info1\WhoIsAncients1.png";
+                            Help2_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info2\PreHistory1.png";
+                            Help2_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info3\Artifacts1.png";
+                            Help3_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info1\NewAdventures1.png";
+                            Help3_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info2\Wanted1.png";
+                            Help3_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info3\Chapters1.png";
+                            Help4_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info1\Movement1.png";
+                            Help4_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info2\Exit1.png";
+                            Help4_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info3\Click1.png";
+                            Help5_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info1\Fight1.png";
+                            Help5_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info2\Foes1.png";
+                            Help5_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info3\Bosses1.png";
+                            Help6_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info1\FoesDestroy1.png";
+                            Help6_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info2\Timing1.png";
+                            Help6_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info3\Actions1.png";
+                            Help7_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info1\Hp1.png";
+                            Help7_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info2\Ap1.png";
+                            Help7_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info3\Time1.png";
+                            Help8_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info1\Damage1.png";
+                            Help8_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info2\Kombat1.png";
+                            Help8_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info3\Select1.png";
+                            Help9_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info1\Defence1.png";
+                            Help9_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info2\Skills1.png";
+                            Help9_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info3\Bag1.png";
+                            Help10_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info1\Flee1.png";
+                            Help10_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info2\Results1.png";
+                            Help10_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info3\StatsUp1.png";
+                            Help11_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info1\Status1.png";
+                            Help11_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info2\Levels1.png";
+                            Help11_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info3\Exp1.png";
+                            Help12_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info1\Stats1.png";
+                            Help12_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info2\ATK1.png";
+                            Help12_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info3\DEF1.png";
+                            Help13_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info1\SPD1.png";
+                            Help13_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info2\SPC1.png";
+                            Help13_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info3\TimeOut1.png";
+                            Help14_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info1\MoreFight1.png";
+                            Help14_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info2\Bestiary1.png";
+                            Help14_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info3\Tasks1.png";
+                            Help15_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info1\Settings1.png";
+                            Help15_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info2\Creator1.png";
+                            Help15_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info3\Goodbye1.png";
+                            Help16_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info1\Ways1.png";
+                            Help16_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info2\Walls1.png";
+                            Help16_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info3\Locks1.png";
+                            Help17_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info1\Chests1.png";
+                            Help17_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info2\Dangers1.png";
+                            Help17_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info3\Artifacts1.png";
+                            Help18_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info1\Sources1.png";
+                            Help18_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info2\SupposeSam1.png";
+                            Help18_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info3\Secrets1.png";
+                            Help19_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info1\Scenes1.png";
+                            Help19_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info2\Thanks1.png";
+                            Help19_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info3\Help1.png";
+                        }
+                        public String Help1_1 { get; set; }
+                        public String Help1_2 { get; set; }
+                        public String Help1_3 { get; set; }
+                        public String Help2_1 { get; set; }
+                        public String Help2_2 { get; set; }
+                        public String Help2_3 { get; set; }
+                        public String Help3_1 { get; set; }
+                        public String Help3_2 { get; set; }
+                        public String Help3_3 { get; set; }
+                        public String Help4_1 { get; set; }
+                        public String Help4_2 { get; set; }
+                        public String Help4_3 { get; set; }
+                        public String Help5_1 { get; set; }
+                        public String Help5_2 { get; set; }
+                        public String Help5_3 { get; set; }
+                        public String Help6_1 { get; set; }
+                        public String Help6_2 { get; set; }
+                        public String Help6_3 { get; set; }
+                        public String Help7_1 { get; set; }
+                        public String Help7_2 { get; set; }
+                        public String Help7_3 { get; set; }
+                        public String Help8_1 { get; set; }
+                        public String Help8_2 { get; set; }
+                        public String Help8_3 { get; set; }
+                        public String Help9_1 { get; set; }
+                        public String Help9_2 { get; set; }
+                        public String Help9_3 { get; set; }
+                        public String Help10_1 { get; set; }
+                        public String Help10_2 { get; set; }
+                        public String Help10_3 { get; set; }
+                        public String Help11_1 { get; set; }
+                        public String Help11_2 { get; set; }
+                        public String Help11_3 { get; set; }
+                        public String Help12_1 { get; set; }
+                        public String Help12_2 { get; set; }
+                        public String Help12_3 { get; set; }
+                        public String Help13_1 { get; set; }
+                        public String Help13_2 { get; set; }
+                        public String Help13_3 { get; set; }
+                        public String Help14_1 { get; set; }
+                        public String Help14_2 { get; set; }
+                        public String Help14_3 { get; set; }
+                        public String Help15_1 { get; set; }
+                        public String Help15_2 { get; set; }
+                        public String Help15_3 { get; set; }
+                        public String Help16_1 { get; set; }
+                        public String Help16_2 { get; set; }
+                        public String Help16_3 { get; set; }
+                        public String Help17_1 { get; set; }
+                        public String Help17_2 { get; set; }
+                        public String Help17_3 { get; set; }
+                        public String Help18_1 { get; set; }
+                        public String Help18_2 { get; set; }
+                        public String Help18_3 { get; set; }
+                        public String Help19_1 { get; set; }
+                        public String Help19_2 { get; set; }
+                        public String Help19_3 { get; set; }
+                    }
+                }
             }
 
             public class BtnImgs : Static
@@ -795,7 +1061,10 @@ namespace WpfApp1
         public Static.BtnImgs.Usual BtnCustomize { get; set; }
         public Static.BtnImgs.Before BtnBefore { get; set; }
         public Static.BtnImgs.After BtnAfter { get; set; }
-        public Static.Menu MenuImgs { get; set; }
+        public Static.Menu.MTasks MenuImgs { get; set; }
+        public Static.Menu.Adventures Adv { get; set; }
+        public Static.Menu.MInfo.MBefore BefMInfoImgs { get; set; }
+        public Static.Menu.MInfo.MAfter AftMInfoImgs { get; set; }
         public Static.Battle Fighting { get; set; }
         public Dynamic.Foes FoesAnimatePath { get; set; }
         public Dynamic.Bosses BossesAnimatePath { get; set; }
@@ -1496,7 +1765,7 @@ Error Number:2,State:0,Class:20
 
         Sql DataBaseMSsql = new Sql();
 
-        public static UInt16[] TimeWorldRecord = new UInt16[] { 0, 0, 0, 0 };
+        public static UInt16[] TimeWorldRecord = new UInt16[] { 23, 59, 40, 0 };
         public static Byte[] FleeTime = new Byte[] { 2, 30 };
         private void TryGetOut(object sender, EventArgs e)
         {
@@ -1747,7 +2016,10 @@ Error Number:2,State:0,Class:20
             Sets.FoeType4Alive = 0;
 
             PharaohAppears.Opacity = 0.1;
+            Ancient.Opacity = 0.25;
+            FinalAppears.Opacity = 0.1;
             Sets.SpecialBattle = 0;
+            TheEnd.Source = Ura(Path.CutScene.Victory);
 
             MapBuild(0);
             ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress, PharaohAppears }, new Byte[] { 27, 24, 7, 9, 33, 25, 10, 4, 17, 8 }, new Byte[] { 19, 11, 21, 20, 18, 13, 38, 36, 29, 36 });
@@ -1875,7 +2147,7 @@ Error Number:2,State:0,Class:20
                     {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  1,  0,  0,  1,138,  1,  0,  6,  0,  6,  0,  0,  0,  0,  1,  0,  0,  1,  1,  0,  1,  6,  1,  0,  1,  0,  1,192,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1 },
                     {  1,  0,  0,  1,  1,  0,  0,  1,  1,  0,  1,  1,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,  1,  1,  1,  1,  1,  1,213,  1,  1,  1,  1,  0,  0,  0,  1,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,134,  1,  1,  1,  1,  0,  0,  0,  0,  1 },
                     {  1,  0,  1,  0,  0,  1,  0,  1,  0,  0,  0,  0,  1,  0,  1,137,  1,  0,  1,  0,150,  0,  1,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  1,  1,  0,  6,  0,  0,  1 },
-                    {  1,  0,  1,  0,  0,  0,  0,  1,  1,  1,  1,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  1,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,174,  6,  6,  0,  1,  1,  0,  6,  0,  0,  1 },
+                    {  1,  0,  1,  0,  0,  0,  0,  1,  1,  1,  1,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  1,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  1,  1,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,174,  6,  6,  0,  1,  1,  0,  6,  0,  0,  1 },
                     {  1,  0,  0,  1,  1,  0,  0,  1,  0,  0,  0,  0,  1,  1,  1,  1,  6,  6,  0,  1,  0,  1,  0,  0,  1,  0,  0,  1,  0,  1,  1,  0,  0,  0,  0,  1,  6,  0,  6,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  6,  0,  0,  0,  0,  0,  0,  6,  0,  0,  1 },
                     {  1,  0,  0,  0,  0,  1,  0,  1,  0,  1,  1,  1,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  6,  0,  6,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  6,  0,  0,  0,  1 },
                     {  1,  0,  1,  0,  0,  1,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  1,  0,  1,  0,  0,  0,  0,  0,  6,  0,  6,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1 },
@@ -2250,7 +2522,7 @@ Error Number:2,State:0,Class:20
             GroundCheck(MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds]);
             TablesSetInfo();
             //string[] AmbushRef = { Path.CutScene.Ambushed, Path.CutScene.BattleStations, Path.CutScene.NotAgain };
-            //if (CurrentLocation < 3) { if (Sets.StepsToBattle >= rnd) { AnyHideX(PainImg, Img2); Sound1.Stop(); Dj(Path.GameNoises.Danger); LetsBattle(); } Sets.StepsToBattle++; }
+            if (CurrentLocation < 3) { if (Sets.StepsToBattle >= rnd) { AnyHideX(PainImg, Img2); Sound1.Stop(); Dj(Path.GameNoises.Danger); LetsBattle(); } Sets.StepsToBattle++; }
             GetPoisoned();
         }
         private void SomeRudeAppears(in Byte BattleIndex, in EventHandler Event, in string Noise)
@@ -2296,7 +2568,7 @@ Error Number:2,State:0,Class:20
                         case 101: ImgGrid(TaskCompletedImg, RowMgs(KeyImg1), ColMgs(KeyImg1)); CollectKey(KeyImg1, LockImg1); ChangeMapToVoidOrWallX(new Byte[] { 101, 131 }, 0); break;
                         case 102: ImgGrid(TaskCompletedImg, RowMgs(KeyImg2), ColMgs(KeyImg2)); CollectKey(KeyImg2, LockImg2); ChangeMapToVoidOrWallX(new Byte[] { 102, 132 }, 0); break;
                         case 103: ImgGrid(TaskCompletedImg, RowMgs(KeyImg3), ColMgs(KeyImg3)); CollectKey(KeyImg3, LockImg3); ChangeMapToVoidOrWallX(new Byte[] { 103, 133 }, 0); break;
-                        case 111: ImgGrid(TaskCompletedImg, RowMgs(KeyImg3), 39); PullTheLever(Lever1, new Image[] { Bridge1, Bridge2, Bridge3, Bridge4 }); ChangeMapToWall(111); ChangeMapToVoid(138); Super1.MenuTask++; break;
+                        case 111: ImgGrid(TaskCompletedImg, RowMgs(KeyImg3), 39); PullTheLever(Lever1, new Image[] { Bridge1, Bridge2, Bridge3, Bridge4 }); ChangeMapToWall(111); ChangeMapToVoid(138); Super1.MenuTask=8; break;
                         case 109: PullTheLever(Lever2, new Image[] { Bridge5, Bridge6 }); ChangeMapToWall(109); ChangeMapToVoid(139); break;
                         case 110: PullTheLever(Lever3, new Image[] { Bridge7, Bridge8 }); ChangeMapToWall(110); ChangeMapToVoid(140); break;
                         case 161: SomeRudeAppears(1, PharaohAppear_Time51, Path.GameNoises.Horror); break;
@@ -2431,7 +2703,7 @@ Error Number:2,State:0,Class:20
                 Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD,
                 AbilsCost, HealCost, CountText, CostText, FightSkills, MiscSkills, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3,
                 InfoIndex, Level0, AntidoteText, EtherText, BandageText, FusedText, MaterialsCraft, Ether1, Bandage, Antidote, Cure1, Fused, Equip1, Equip2,
-                Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, Equipments, CancelEq, InfoIndexPlus, InfoIndexMinus, CraftSwitch, CraftAntidote,
+                Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, Equipments, CancelEq, InfoIndexPlus, InfoIndexMinus, CraftSwitch, CraftAntidote, InfoImg1, InfoImg2, InfoImg3,
                 CraftBandage, CraftFused, CraftEther, Torch1, Whip1, Super0, Heal1, Cure2Out, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1,
                 BuffUp1, ToughenUp1, Regen1, Control1, Herbs1, Ether2Out, SleepBag1, Elixir1, CraftBedbag, CraftElixir, CraftHerbs, CraftPerfboots, CraftEther2);
         }
@@ -3226,7 +3498,7 @@ Error Number:2,State:0,Class:20
         private void HideFightIconPersActions() { AnyHideX(HPenemyBar, BattleText4, BattleText5, BattleText6, HPenemy, ItemText, ItemsCountImg, Img4, Img5, TrgtImg, Cure, Heal, Torch, Whip, Super, Back1, Button2, Button3, Button4, Items, Abilities, Fight, Cancel1, ACT1, ACT2, Cancel2); }
         private void GameOver_MediaEnded(object sender, RoutedEventArgs e)
         {
-            AnyHideX(Button2, Button3, Button4, Threasure1, GameOver);
+            /*AnyHideX(Button2, Button3, Button4, Threasure1, GameOver);
             AnyShowX(Img1, Button1, Lab1);
             Map1ModelsAllTurnOff1();
             ChestsAndTablesAllTurnOff1();
@@ -3235,7 +3507,9 @@ Error Number:2,State:0,Class:20
             if (timer != null) timer.Stop();
             Sound1.Position = new TimeSpan(0, 0, 0, 0, 0);
             Img1.Source = Bmper(Path.Backgrounds.Main);
-            HeyPlaySomething(Path.GameMusic.MainTheme);
+            HeyPlaySomething(Path.GameMusic.MainTheme);*/
+            Form1.Close();
+            Form1.Show();
         }
         public static Byte[] AbilityBonuses = new Byte[] { 0, 0, 0, 0 };
         private void AbilitiesMakeDisappear1() { BtnHideX(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake, Learn, Back1, SwitchAbils }); }
@@ -3857,7 +4131,8 @@ Error Number:2,State:0,Class:20
             GameMenu.InfoChange1 = 0;
             FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { GameMenu.HelpInfo2[0, GameMenu.InfoChange1], GameMenu.HelpInfo2[1, GameMenu.InfoChange1], GameMenu.HelpInfo2[2, GameMenu.InfoChange1] }, new string[] { GameMenu.HelpInfo1[0, GameMenu.InfoChange1], GameMenu.HelpInfo1[1, GameMenu.InfoChange1], GameMenu.HelpInfo1[2, GameMenu.InfoChange1] });
             FastTextChange(new Label[] { InfoIndex, Describe1, Describe2 }, new string[] { GameMenu.InfoChange1 + 1 + "/19", "Герой! Контролируй прогресс\nу точек контроля со знаком \"S\"", "Руководство игрока" });
-            AnyShowX(DescribeHeader, Describe1, Describe2, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, InfoIndexPlus, InfoText1, InfoText2, InfoText3);
+            AnyShowX(DescribeHeader, Describe1, Describe2, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, InfoIndexPlus, InfoText1, InfoText2, InfoText3, InfoImg1, InfoImg2, InfoImg3);
+            GameHint();
         }
         private void FastInfoChange(TextBlock[] Texts, Label[] Headers, in string[] text, in string[] content) { for (Byte i = 0; i < Headers.Length; i++) { Headers[i].Content = content[i]; Texts[i].Text = text[i]; } }
         private void FastImgChange(Image[] ImageArray, BitmapImage[] bitmapImage) { for (Byte i = 0; i < ImageArray.Length; i++) ImageArray[i].Source = bitmapImage[i]; }
@@ -3868,6 +4143,7 @@ Error Number:2,State:0,Class:20
             InfoIndex.Content = (GameMenu.InfoChange1 + 1) + "/19";
             ButtonShow(InfoIndexMinus);
             if (GameMenu.InfoChange1 >= 18) ButtonHide(InfoIndexPlus);
+            GameHint();
         }
         private void InfoIndexMinus_Click(object sender, RoutedEventArgs e)
         {
@@ -3876,6 +4152,7 @@ Error Number:2,State:0,Class:20
             InfoIndex.Content = GameMenu.InfoChange1 + 1 + "/19";
             ButtonShow(InfoIndexPlus);
             if (GameMenu.InfoChange1 <= 0) ButtonHide(InfoIndexMinus);
+            GameHint();
         }
         private void PharaohBattle_MediaEnded(object sender, RoutedEventArgs e)
         {
@@ -4229,10 +4506,11 @@ Error Number:2,State:0,Class:20
                 case 3: ChangeMapToVoidOrWallX(new Byte[] { 101, 131, 102, 132, 103, 133 }, 0); Sets.EnemyRate += 3; break;
             }
             ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress }, new Byte[] { 27, 24, 7, 9, 33, 25, 10, 4, 17 }, new Byte[] { 19, 11, 21, 20, 18, 15, 38, 36, 29 });
-            PlayerSetLocation(Bits(Super1.MenuTask<=0 ? 34 : 5), Bits(Super1.MenuTask <= 0 ? 18 : 36));
-            //PlayerSetLocation(Bits(Super1.MenuTask <= 0 ? 34 : 17), Bits(Super1.MenuTask <= 0 ? 18 : 29));
+            //PlayerSetLocation(Bits(Super1.MenuTask<=0 ? 34 : 5), Bits(Super1.MenuTask <= 0 ? 18 : 36));
+            PlayerSetLocation(Bits(Super1.MenuTask <= 0 ? 34 : 17), Bits(Super1.MenuTask <= 0 ? 18 : 29));
             Sets.LockIndex = Bits(3 - Super1.MenuTask);
             if (BAG.Armor[3]) ChangeMapToVoid(191);
+            TheEnd.Source = Ura(Path.CutScene.Victory);
         }
         private void Location2_WaterTemple()
         {
@@ -4246,6 +4524,7 @@ Error Number:2,State:0,Class:20
             if (Super1.MenuTask > 4) AnyHideX(Super1.MenuTask > 5 ? new Image[] { JailImg1, JailImg5, JailImg6, JailImg7 } : new Image[] { JailImg1 });
             if (Super1.MenuTask > 4) ChangeMapToVoidOrWallX(Super1.MenuTask > 5 ? new byte[] { 134,136,137,138,104,106,107,108 }: new byte[] { 134,104 }, 0);
             PlayerSetLocation(Bits(Super1.MenuTask>4 ? 28 : 34), Bits(Super1.MenuTask > 4 ? 20: 51));
+            TheEnd.Source = Ura(Path.CutScene.WasteTime);
         }
         private void Location3_LavaTemple()
         {
@@ -4260,13 +4539,14 @@ Error Number:2,State:0,Class:20
             SurpriseCheck(Super1.MiniTask, 233, SpTsk);
             if (Super1.MenuTask >= 8) { ChangeMapToVoid(138); ChangeMapToWall(111); PullTheLever(Lever1, new Image[] { Bridge1, Bridge2, Bridge3, Bridge4 }); }
             PlayerSetLocation(Bits(18), Bits(28));
+            TheEnd.Source = Ura(Path.CutScene.PowerRanger);
         }
         private void Location4_BigRun()
         {
             AnyShow(TimerFlees);
             AnyHideX(SpDmg1, SpDmg2, SpDmg3, SpDmg4, SpDmg5, SpHrb1, SpHrb2, SpHrb3, SpHrb4, SpHrb5, SpHrb6, SpHrb7, SpHrb8, SpHrb9, SpHrb10, SpHrb11, SpHrb12, SpHrb13, SpHrb14,
                 SpEtr1, SpEtr2, SpEtr3, SpEtr4, SpEtr5, SpEtr6, SpEtr7, SpEtr8, SpEtr9, SpEtr10, SpEtr11, SpEtr12, SpEtr13, SpEtr14, SpEtr15, SpEtr16, SpEtr17, SpEtr18, SpElx1, SpElx2, SpElx3, SpElx4, SpElx5, SpElx6,
-                SpSbg1, SpSbg2, SpSbg3, SpSbg4, SpSbg5, SpSbg6, SpSbg7, SpSbg8, SpSbg9, SpSbg10, SpSbg11, SpSer, SpTsk);
+                SpSbg1, SpSbg2, SpSbg3, SpSbg4, SpSbg5, SpSbg6, SpSbg7, SpSbg8, SpSbg9, SpSbg10, SpSbg11, SpSer, SpTsk, Lever1, Lever2, Lever3, Bridge1, Bridge2, Bridge3, Bridge4, Bridge5, Bridge6, Bridge7, Bridge8);
             WidelyUsedAnyTimer(out TimeToGetAway, TryGetOut, new TimeSpan(0, 0, 0, 1));
             PlayerSetLocation(Bits(1), Bits(30));
         }
@@ -4871,6 +5151,31 @@ Error Number:2,State:0,Class:20
         private void Med2_MediaOpened(object sender, RoutedEventArgs e) { /*AnyHideX(Img3, Img1);*/ }
         private void Med2_MediaFailed(object sender, ExceptionRoutedEventArgs e) { throw new Exception("Path isn't right!!!"); }
         private void ChapterIntroduction_MediaFailed(object sender, ExceptionRoutedEventArgs e) { throw new Exception("Path isn't right!!!"); }
-        private void ChapterIntroduction_MediaOpened(object sender, RoutedEventArgs e) { /*throw new Exception("Path isn't right!!!");*/ }
+        private void TheEnd_MediaFailed(object sender, ExceptionRoutedEventArgs e) { throw new Exception("Path isn't right!!! Dropped at task: "+Super1.MenuTask); }
+        private void InfoImgs_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Image[] imgs = { InfoImg1, InfoImg2, InfoImg3 };
+            string[,] inf = { { Path.AftMInfoImgs.Help1_1, Path.AftMInfoImgs.Help2_1, Path.AftMInfoImgs.Help3_1, Path.AftMInfoImgs.Help4_1, Path.AftMInfoImgs.Help5_1, Path.AftMInfoImgs.Help6_1, Path.AftMInfoImgs.Help7_1, Path.AftMInfoImgs.Help8_1, Path.AftMInfoImgs.Help9_1, Path.AftMInfoImgs.Help10_1, Path.AftMInfoImgs.Help11_1, Path.AftMInfoImgs.Help12_1, Path.AftMInfoImgs.Help13_1, Path.AftMInfoImgs.Help14_1, Path.AftMInfoImgs.Help15_1, Path.AftMInfoImgs.Help16_1, Path.AftMInfoImgs.Help17_1, Path.AftMInfoImgs.Help18_1, Path.AftMInfoImgs.Help19_1 },
+            { Path.AftMInfoImgs.Help1_2, Path.AftMInfoImgs.Help2_2, Path.AftMInfoImgs.Help3_2, Path.AftMInfoImgs.Help4_2, Path.AftMInfoImgs.Help5_2, Path.AftMInfoImgs.Help6_2, Path.AftMInfoImgs.Help7_2, Path.AftMInfoImgs.Help8_2, Path.AftMInfoImgs.Help9_2, Path.AftMInfoImgs.Help10_2, Path.AftMInfoImgs.Help11_2, Path.AftMInfoImgs.Help12_2, Path.AftMInfoImgs.Help13_2, Path.AftMInfoImgs.Help14_2, Path.AftMInfoImgs.Help15_2, Path.AftMInfoImgs.Help16_2, Path.AftMInfoImgs.Help17_2, Path.AftMInfoImgs.Help18_2, Path.AftMInfoImgs.Help19_2 },
+            { Path.AftMInfoImgs.Help1_3, Path.AftMInfoImgs.Help2_3, Path.AftMInfoImgs.Help3_3, Path.AftMInfoImgs.Help4_3, Path.AftMInfoImgs.Help5_3, Path.AftMInfoImgs.Help6_3, Path.AftMInfoImgs.Help7_3, Path.AftMInfoImgs.Help8_3, Path.AftMInfoImgs.Help9_3, Path.AftMInfoImgs.Help10_3, Path.AftMInfoImgs.Help11_3, Path.AftMInfoImgs.Help12_3, Path.AftMInfoImgs.Help13_3, Path.AftMInfoImgs.Help14_3, Path.AftMInfoImgs.Help15_3, Path.AftMInfoImgs.Help16_3, Path.AftMInfoImgs.Help17_3, Path.AftMInfoImgs.Help18_3, Path.AftMInfoImgs.Help19_3 } };
+            for (Byte i = 0;i < imgs.Length;i++) if (sender.Equals(imgs[i])) imgs[i].Source = Bmper(inf[i, GameMenu.InfoChange1]);
+        }
+        private void InfoImgs_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Image[] imgs = { InfoImg1, InfoImg2, InfoImg3 };
+            string[,] inf = { { Path.BefMInfoImgs.Help1_1, Path.BefMInfoImgs.Help2_1, Path.BefMInfoImgs.Help3_1, Path.BefMInfoImgs.Help4_1, Path.BefMInfoImgs.Help5_1, Path.BefMInfoImgs.Help6_1, Path.BefMInfoImgs.Help7_1, Path.BefMInfoImgs.Help8_1, Path.BefMInfoImgs.Help9_1, Path.BefMInfoImgs.Help10_1, Path.BefMInfoImgs.Help11_1, Path.BefMInfoImgs.Help12_1, Path.BefMInfoImgs.Help13_1, Path.BefMInfoImgs.Help14_1, Path.BefMInfoImgs.Help15_1, Path.BefMInfoImgs.Help16_1, Path.BefMInfoImgs.Help17_1, Path.BefMInfoImgs.Help18_1, Path.BefMInfoImgs.Help19_1 },
+            { Path.BefMInfoImgs.Help1_2, Path.BefMInfoImgs.Help2_2, Path.BefMInfoImgs.Help3_2, Path.BefMInfoImgs.Help4_2, Path.BefMInfoImgs.Help5_2, Path.BefMInfoImgs.Help6_2, Path.BefMInfoImgs.Help7_2, Path.BefMInfoImgs.Help8_2, Path.BefMInfoImgs.Help9_2, Path.BefMInfoImgs.Help10_2, Path.BefMInfoImgs.Help11_2, Path.BefMInfoImgs.Help12_2, Path.BefMInfoImgs.Help13_2, Path.BefMInfoImgs.Help14_2, Path.BefMInfoImgs.Help15_2, Path.BefMInfoImgs.Help16_2, Path.BefMInfoImgs.Help17_2, Path.BefMInfoImgs.Help18_2, Path.BefMInfoImgs.Help19_2 },
+            { Path.BefMInfoImgs.Help1_3, Path.BefMInfoImgs.Help2_3, Path.BefMInfoImgs.Help3_3, Path.BefMInfoImgs.Help4_3, Path.BefMInfoImgs.Help5_3, Path.BefMInfoImgs.Help6_3, Path.BefMInfoImgs.Help7_3, Path.BefMInfoImgs.Help8_3, Path.BefMInfoImgs.Help9_3, Path.BefMInfoImgs.Help10_3, Path.BefMInfoImgs.Help11_3, Path.BefMInfoImgs.Help12_3, Path.BefMInfoImgs.Help13_3, Path.BefMInfoImgs.Help14_3, Path.BefMInfoImgs.Help15_3, Path.BefMInfoImgs.Help16_3, Path.BefMInfoImgs.Help17_3, Path.BefMInfoImgs.Help18_3, Path.BefMInfoImgs.Help19_3 } };
+            for (Byte i = 0; i < imgs.Length; i++) if (sender.Equals(imgs[i])) imgs[i].Source = Bmper(inf[i, GameMenu.InfoChange1]);
+        }
+        private void GameHint()
+        {
+            string[,] inf = { { Path.BefMInfoImgs.Help1_1, Path.BefMInfoImgs.Help2_1, Path.BefMInfoImgs.Help3_1, Path.BefMInfoImgs.Help4_1, Path.BefMInfoImgs.Help5_1, Path.BefMInfoImgs.Help6_1, Path.BefMInfoImgs.Help7_1, Path.BefMInfoImgs.Help8_1, Path.BefMInfoImgs.Help9_1, Path.BefMInfoImgs.Help10_1, Path.BefMInfoImgs.Help11_1, Path.BefMInfoImgs.Help12_1, Path.BefMInfoImgs.Help13_1, Path.BefMInfoImgs.Help14_1, Path.BefMInfoImgs.Help15_1, Path.BefMInfoImgs.Help16_1, Path.BefMInfoImgs.Help17_1, Path.BefMInfoImgs.Help18_1, Path.BefMInfoImgs.Help19_1 },
+            { Path.BefMInfoImgs.Help1_2, Path.BefMInfoImgs.Help2_2, Path.BefMInfoImgs.Help3_2, Path.BefMInfoImgs.Help4_2, Path.BefMInfoImgs.Help5_2, Path.BefMInfoImgs.Help6_2, Path.BefMInfoImgs.Help7_2, Path.BefMInfoImgs.Help8_2, Path.BefMInfoImgs.Help9_2, Path.BefMInfoImgs.Help10_2, Path.BefMInfoImgs.Help11_2, Path.BefMInfoImgs.Help12_2, Path.BefMInfoImgs.Help13_2, Path.BefMInfoImgs.Help14_2, Path.BefMInfoImgs.Help15_2, Path.BefMInfoImgs.Help16_2, Path.BefMInfoImgs.Help17_2, Path.BefMInfoImgs.Help18_2, Path.BefMInfoImgs.Help19_2 },
+            { Path.BefMInfoImgs.Help1_3, Path.BefMInfoImgs.Help2_3, Path.BefMInfoImgs.Help3_3, Path.BefMInfoImgs.Help4_3, Path.BefMInfoImgs.Help5_3, Path.BefMInfoImgs.Help6_3, Path.BefMInfoImgs.Help7_3, Path.BefMInfoImgs.Help8_3, Path.BefMInfoImgs.Help9_3, Path.BefMInfoImgs.Help10_3, Path.BefMInfoImgs.Help11_3, Path.BefMInfoImgs.Help12_3, Path.BefMInfoImgs.Help13_3, Path.BefMInfoImgs.Help14_3, Path.BefMInfoImgs.Help15_3, Path.BefMInfoImgs.Help16_3, Path.BefMInfoImgs.Help17_3, Path.BefMInfoImgs.Help18_3, Path.BefMInfoImgs.Help19_3 } };
+            FastImgChange(new Image[] { InfoImg1, InfoImg2, InfoImg3 }, BmpersToX(Bmper(inf[0, GameMenu.InfoChange1]), Bmper(inf[1, GameMenu.InfoChange1]), Bmper(inf[2, GameMenu.InfoChange1])));
+        }
+        private void GameStartBtns_MouseEnter(object sender, MouseEventArgs e) { if (sender.Equals(Button1)) NewAdv.Source = Bmper(Path.Adv.AfterNewAdv); else ConAdv.Source = Bmper(Path.Adv.AfterConAdv); }
+        private void GameStartBtns_MouseLeave(object sender, MouseEventArgs e) { if (sender.Equals(Button1)) NewAdv.Source = Bmper(Path.Adv.BeforeNewAdv); else ConAdv.Source = Bmper(Path.Adv.BeforeConAdv); }
     }
 }
