@@ -32,8 +32,10 @@
     <None Remove="Battle1.bmp" />
     <None Remove="Battle3.bmp" />
     <None Remove="Battle3.jpg" />
+    <None Remove="Bestiary.jpg" />
     <None Remove="BlackSkinItems.png" />
     <None Remove="Bones.png" />
+    <None Remove="Bones1.png" />
     <None Remove="BonesDied.ogg" />
     <None Remove="Boots.png" />
     <None Remove="Boots2.png" />
@@ -74,12 +76,15 @@
     <None Remove="GetItemsCustomPants4.png" />
     <None Remove="GetItemsCustomWeapon1.png" />
     <None Remove="GetItemsCustomWeapon2.png" />
+    <None Remove="Ghoul1.png" />
+    <None Remove="GrimReaper1.png" />
     <None Remove="Hands.png" />
     <None Remove="Hands2.png" />
     <None Remove="HealMenu.png" />
     <None Remove="HerbsItem.png" />
     <None Remove="IconDefence1.png" />
     <None Remove="IconPoisoned.png" />
+    <None Remove="Imp1.png" />
     <None Remove="InfoButton.png" />
     <None Remove="Introduction1.png" />
     <None Remove="ItemsBeforeImg.png" />
@@ -89,6 +94,7 @@
     <None Remove="Jacket2.png" />
     <None Remove="Jail1.png" />
     <None Remove="Key.png" />
+    <None Remove="KillerMole1.png" />
     <None Remove="KnucledusterItem.png" />
     <None Remove="Learn.png" />
     <None Remove="LegendSword.png" />
@@ -102,11 +108,14 @@
     <None Remove="Loc2_1.png" />
     <None Remove="Loc3.jpg" />
     <None Remove="Lock.png" />
+    <None Remove="Master1.png" />
+    <None Remove="MasterOfAll1.png" />
     <None Remove="Materials.png" />
     <None Remove="Menu.bmp" />
     <None Remove="Menu2.png" />
     <None Remove="Menu3.png" />
     <None Remove="Mummy.png" />
+    <None Remove="Mummy1.png" />
     <None Remove="New_game_show.heif" />
     <None Remove="New_game_show.jpg" />
     <None Remove="New_game_show.svg" />
@@ -124,12 +133,14 @@
     <None Remove="Quake.png" />
     <None Remove="Regen.png" />
     <None Remove="SafeArea.png" />
+    <None Remove="Scarab.png" />
     <None Remove="SeriousBoots.png" />
     <None Remove="SeriousPants.png" />
     <None Remove="SettingsButton.png" />
     <None Remove="SettingsButton1.png" />
     <None Remove="SkillsAfterImg.png" />
     <None Remove="SkillsBeforeImg.png" />
+    <None Remove="Skips1.png" />
     <None Remove="SleepBagItem.png" />
     <None Remove="SP.png" />
     <None Remove="SP2.png" />
@@ -159,6 +170,8 @@
     <None Remove="Tornado.png" />
     <None Remove="TrgtSelectBeforeImg.png" />
     <None Remove="UghZan.png" />
+    <None Remove="UghZan1.png" />
+    <None Remove="Vulture1.png" />
     <None Remove="WalkD1.png" />
     <None Remove="WalkD2.png" />
     <None Remove="WalkL1.png" />
@@ -168,10 +181,13 @@
     <None Remove="Wall1.jpg" />
     <None Remove="Wanted.png" />
     <None Remove="Wanted2.png" />
+    <None Remove="Warrior1.png" />
     <None Remove="WarriorModel1.png" />
     <None Remove="WarriorModel_1.png" />
     <None Remove="WhipImg.png" />
+    <None Remove="Worm1.png" />
     <None Remove="Zombie.png" />
+    <None Remove="Zombie1.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -185,6 +201,8 @@
     <Resource Include="BackImg.png" />
     <Resource Include="BackToAdventure.png" />
     <Resource Include="BackToAdventure2.png" />
+    <Resource Include="Bestiary.jpg" />
+    <Resource Include="Bones1.png" />
     <Resource Include="Boots2.png" />
     <Resource Include="Boulder.png" />
     <Resource Include="Bridge.png" />
@@ -208,12 +226,16 @@
     <Resource Include="GetItemsCustomPants2.png" />
     <Resource Include="GetItemsCustomPants4.png" />
     <Resource Include="GetItemsCustomWeapon2.png" />
+    <Resource Include="Ghoul1.png" />
+    <Resource Include="GrimReaper1.png" />
     <Resource Include="Hands2.png" />
     <Resource Include="HerbsItem.png" />
+    <Resource Include="Imp1.png" />
     <Resource Include="Introduction1.png" />
     <Resource Include="ItemsBeforeImg.png" />
     <Resource Include="Jacket2.png" />
     <Resource Include="Jail1.png" />
+    <Resource Include="KillerMole1.png" />
     <Resource Include="Learn.png" />
     <Resource Include="LegendSword.png" />
     <Resource Include="Legs2.png" />
@@ -223,21 +245,26 @@
     <Resource Include="Loc2.jpg" />
     <Resource Include="Loc2_1.png" />
     <Resource Include="Loc3.jpg" />
+    <Resource Include="Master1.png" />
+    <Resource Include="MasterOfAll1.png" />
     <Resource Include="Materials.png" />
     <Resource Include="Menu2.png" />
     <Resource Include="Menu3.png" />
+    <Resource Include="Mummy1.png" />
     <Resource Include="Pain1.png" />
     <Resource Include="PersonHurts1.png" />
     <Resource Include="PharaohModel.png" />
     <Resource Include="Quake.png" />
     <Resource Include="Regen.png" />
     <Resource Include="SafeArea.png" />
+    <Resource Include="Scarab.png" />
     <Resource Include="SeriousBoots.png" />
     <Resource Include="SeriousPants.png" />
     <Resource Include="SettingsButton.png" />
     <Resource Include="SettingsButton1.png" />
     <Resource Include="SkillsAfterImg.png" />
     <Resource Include="SkillsBeforeImg.png" />
+    <Resource Include="Skips1.png" />
     <Resource Include="SleepBagItem.png" />
     <Resource Include="SP2.png" />
     <Resource Include="Spider1.png" />
@@ -453,6 +480,8 @@
     <Resource Include="Tornado.png" />
     <Resource Include="TrgtSelectBeforeImg.png" />
     <Resource Include="UghZan.png" />
+    <Resource Include="UghZan1.png" />
+    <Resource Include="Vulture1.png" />
     <Resource Include="WalkD1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -474,12 +503,15 @@
     <Resource Include="Wall1.jpg" />
     <Resource Include="Wanted.png" />
     <Resource Include="Wanted2.png" />
+    <Resource Include="Warrior1.png" />
     <Resource Include="WarriorModel1.png" />
     <Resource Include="WarriorModel_1.png" />
     <Resource Include="WhipImg.png" />
+    <Resource Include="Worm1.png" />
     <Resource Include="Zombie.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Zombie1.png" />
   </ItemGroup>
 
   <ItemGroup>
