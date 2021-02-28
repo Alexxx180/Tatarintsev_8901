@@ -24,14 +24,90 @@ namespace WpfApp1
     /// [EN] Interaction logic for game triggers.
     /// [RU] Интерактивная логика для внутренних механизмов.
     /// </summary>
-    public class Descriptions
+    public class Txts
     {
-        public class Foes : Descriptions
+        public void SetTxt() {
+            Foe = new Foes();
+            Bos = new Bosses();
+            Doc = new Docs();
+            Sct = new Sections();
+            Hnt = new Hints();
+            Goal = new Goals();
+            Bag = new BItems();
+            Skl = new Abililities();
+            Com = new Common();
+            Can = new CancelOptions();
+            Fht = new FightOptions();
+            Eqp = new Equipment();
+            Eqp.SetEquip();
+        }
+        public class Common : Txts
         {
-            public Foes()
+            public Common() { SetCommon(); }
+            private void SetCommon()
             {
-                SetAllEnemyDscr();
+                Total = "Всего";
+                Hlthy = "Статус: здоров";
+                Ill = "Статус: отравлен";
+                Exp = "Опыт";
+                Lv = "Ур";
+                NewLv = "Новый уровень!";
+                Won = "Победа!";
+                Thres = "Пора переходить к добыче";
+                Time = "Время";
             }
+            public String Total { get; set; }
+            public String Hlthy { get; set; }
+            public String Ill { get; set; }
+            public String Exp { get; set; }
+            public String Lv { get; set; }
+            public String NewLv { get; set; }
+            public String Expert { get; set; }
+            public String Won { get; set; }
+            public String Thres { get; set; }
+            public String Time { get; set; }
+        }
+        public class FightOptions : Txts
+        {
+            public FightOptions() { SetFightOptions(); }
+            private void SetFightOptions()
+            {
+                Atk = "Атаковать выбранного врага";
+                Def = "Встать в стойку (Защита X2)";
+                Esc = "Сбежать из боя";
+                Inv = "Посмотреть инвентарь";
+                Act = "Особые умения";
+                Trg = "Подтвердить цель";
+                S1 = "Поджечь выбранного врага";
+                S2 = "Ударить врага хлыстом";
+                S3 = "Подстрелить врага";
+            }
+            public String Atk { get; set; }
+            public String Def { get; set; }
+            public String Esc { get; set; }
+            public String Inv { get; set; }
+            public String Act { get; set; }
+            public String Trg { get; set; }
+            public String S1 { get; set; }
+            public String S2 { get; set; }
+            public String S3 { get; set; }
+        }
+        public class CancelOptions : Txts
+        {
+            public CancelOptions() { SetCancelOptions(); }
+            private void SetCancelOptions()
+            {
+                Fgt = "Отменить нападение";
+                Act = "Отменить умение";
+                Back = "Обратно к действиям";
+            }
+            public String Fgt { get; set; }
+            public String Act { get; set; }
+            public String Back { get; set; }
+        }
+        public class Foes : Txts
+        {
+            public Foes() { SetAllEnemyDscr(); }
             private void SetAllEnemyDscr()
             {
                 Spider = "Паук";
@@ -46,6 +122,7 @@ namespace WpfApp1
                 Imp = "Прислужник";
                 Worm = "П. червь";
                 Master = "Мастер";
+                GetFast = new string[] { Spider, Mummy, Zombie, Bones,  Vulture, Ghoul, GrimReaper, Scarab,  KillerMole, Imp, Worm, Master  };
                 GetByIndexes = new string[,] { { Spider, Mummy, Zombie, Bones }, { Vulture, Ghoul, GrimReaper, Scarab }, { KillerMole, Imp, Worm, Master } };
             }
             public String Spider { get; set; }
@@ -60,8 +137,300 @@ namespace WpfApp1
             public String Imp { get; set; }
             public String Worm { get; set; }
             public String Master { get; set; }
+            public String[] GetFast { get; set; }
             public String[,] GetByIndexes { get; set; }
         }
+        public class Bosses : Txts
+        {
+            public Bosses() { SetAllEnemyDscr(); }
+            private void SetAllEnemyDscr()
+            {
+                Pharaoh = "Фараон";
+                Friend = "????";
+                AMaster = "Владыка";
+                UghZan = "Угх-зан I";
+                GetByIndexes = new string[] { Pharaoh, Friend, AMaster, UghZan };
+            }
+            public String Pharaoh { get; set; }
+            public String Friend { get; set; }
+            public String AMaster { get; set; }
+            public String UghZan { get; set; }
+            public String[] GetByIndexes { get; set; }
+        }
+        public class Docs : Txts {
+            public Docs() { SetDocs(); }
+
+            private void SetDocs()
+            {
+                InfoChange1 = 0;
+                HelpInfo1 = new string[,]{ {"Введение","Древние - кто они?","Приключение","Управление","Сражение","Цель боя","Очки здоровья, ОЗ","Урон","Оборона","Побег","Статус","Показатели","Скорость (СКР)","Больше чем бой","Настройки","Проходы","Сундуки","Сила земли","Сцены" },
+                {"Неизвестный...","Предыстория","Розыск","Меню/Выход","Противники","Ходы","Очки действий, ОД","Бой","Умения","Результаты","Уровень","Атака (АТК)","Спец. (СПЦ)","Реестр противников","Разработал","Стены","Опасности","Погостить пришёл","Благодарности" },
+                {"Древние святыни","Артефакты","Главы","Взаимодействие","Боссы","Действия","АВШ","Выбор","Предметы","Прирост","Опыт","Защита (ЗЩТ)","Время игры","Задачи","До новых встреч","Замки","Цветные камушки","Секреты","Финансы" } };
+                HelpInfo2 = new string[,] { {"Добро пожаловать, искатели\nприключений! Приветствуем\nвас в кратком своде правил.","Древние - люди, что когда-то\nобладали технологиями, кото-\nрые нам и не снились.","Вам доступно создание\nнового или загрузка старого\nприключения если оно было","Клавиатура обязательна\nПередвижение - WASD,\nВзаимодействие - E","Во время передвижения, на\nвас могут напасть. Не бой-\nтесь сражаться за правое!","Во время сражения нужно\nубрать всех противников и\nбоссов с поля, не погибнув.","Определяют какое количе-\nство урона персонаж может\nвзять, прежде чем умереть.","Числом определяет силу, с\nкоторой бьёт герой или враг,\nприближает к гибели.","Повышает защиту героя в\nдва раза до следующего\nхода.","Существует альтернативный\nспособ выйти из сражения -\nизбежать этим действием.","Выводит состояние героя,\nпри отравлении персонаж\nбудет терять ОЗ.","Влияют на выживаемость\nгероя, каждый отвечает за\nчто-то своё.","Влияет на скорость заполне-\nния АВШ и возможность\nсбежать из боя.","Умения доступны вне боя, а\nещё каждое из них можно\n\"пожамкать\" ^_^.","Не так-то просто справляться\nс шумом? Слишком яркое\nизображение? Не вопрос!","Место, по которому может\nходить герой, обычная\nплита.","Там хранится всевозможное\nоружие и броня древних.\nПочему бы и не одолжить?","Источники, бьющие прямо\nиз огненных песков лечат\nвсе недомогания.","Как никогда лучше показы-\nвают происходящее в\nсамом эпицентре событий." },
+                {"Вы играете за одарённого\nархеолога Рэя, его целью\nявляется поиск артефактов.","После глупых войн и жажды\nвласти, люди истратили нас-\n","Здесь находятся все\nискатели! Можно разделять\nпрогресс с друзьями","Клавиатура обязательна\nОткрыть меню - Left CTRL\nВыйти из игры - ESC","Монстры и прочие чудища,\nвышедшие из под контроля\nжаждут вашей гибели","Действия героя и врагов\nраспределены: они могут\nвыполнять их спустя время","От ОД зависит доступ к осо-\nбым действиям - умениям,\nвызывающие эффекты","Опция позволяющая физи-\nчески атаковать врага\nгерою, зависит от АТК.","Каждое умение тратит ОД и\nможет оказывать эффект\nкак на врага, так и на героя.","Победив, вы получаете\nопыт, материалы и ве-\nщи в конце сражения.","Показывает потенциал\nперсонажа, от него за-\nвисят все показатели.","Урон, наносимый героем\nпри обычной атаке. Может\nбыть увеличена оружием.","Специальное влияет на силу\nэффектов от использования\nумений персонажа.","После открытия умения \"Из-\nучение\", вы сможете смот-\nреть показатели врагов","Прошу любить и жаловать:\nТатаринцев Александр,\nвыступал в роли FullStack.","Препятствия, через которые\nнельзя передвигаться. Из\nних составлены лабиринты.","Какое приключение не обо-\nйдётся без опасностей?\nВсё как положено.","-Алло, это кто?\n-Сэм.\n-Шутник, Сэм, это я.","Посвящается (Вы лучшие):\nМасленников Денис,\nМасленникова Татьяна" },
+                {"Основными местами для\nпоиска сокровищ стали\nсооружения древних.","Артефакты содержат посла-\nния, лежащие в основе\nключа к мудрости веков","Приключение рассказывает\nисторию, основные события\nкоторой показаны в главах","Все нажатия на кнопки\nосуществляются с помощью\nлевой кнопки мыши (ЛКМ)","Древние стражи и могучие\nвластители, пробудившиеся\nото сна ждут боя.","Совокупность опций возни-\nкающих около персонажа.\nНужны для победы в бою.","Активная временная шкала\nпосле заполнения, даёт ход\nгерою, отображая действия.","Для выбора зоны пораже-\nния. Отмена - вернуться к\nпредыдущим опциям","Использование предметов,\nполученных после боя или\nсозданных материалами.","При повышении уровня, по-\nказатели героя вырастут,\nоблегчая новые задачи.","При сборе достаточного\nколичества - повышает\nуровень.","Снижает урон, получаемый\nот врагов. Может быть\nувеличена доспехами.","Всему своё время и приклю-\nчение - не исключение, бе-\nрегите глаза, друзья!","Для понимания основной\nцели - она разбита на\nзадачи.","Надеюсь данное руководст-\nво было вам полезно, даль-\nше для общего развития =)","Закрытые проходы, веду-\nщие через путь к выходу\nк артефактам. ","Артефакты - ключи, ведущие\nк сокровищам, эта основная\nцель приключения.","Каждое сооружение хранит\nсвои секреты. Сможете ли\nвы отыскать их все?","А в плане денег - у нас нет\nденег. Поможете ли доброй\nкопеечкой? 89212049320" } };
+            }
+            public Byte InfoChange1 { get; set; }
+            public string[,] HelpInfo1 { get; set; }
+            public string[,] HelpInfo2 { get; set; }
+        }
+        public class Hints : Txts
+        {
+            public Hints() { SetHints(); }
+            private void SetHints()
+            {
+                Status = "ОЗ имеет тенденцию падать до 0. Враги только этого и добиваются.\nПохоже что ненадолго.";
+                Skills = "Каждое умение становится доступным при достижении определённого\nуровня. Используя их правильно, можно свернуть горы!";
+                Items = "Предметы бывают очень полезными как в бою, так и вне боя. Лучше\nвсего перевязывать раны - иначе этот напалм не выдержать.";
+                Equip = "Отличное оснащение даёт преимущество в бою.";
+                Tasks = "Выполняя задачи нужно оставаться предельно осторожным. Никто не\nзнает, что поджидает в святилищах древних.";
+                Infos = "Герой! Контролируй прогресс\nу точек контроля со знаком \"S\"";
+                Setts = "Настройки помогают определить предпочтения. Помимо стандартного\nизменения громкости и яркости, вы можете регулировать скорость боя";
+
+                EqWpn1 = "Прочный костяной кастет. Одно из лучших средств показать свою мощь!";
+                EqWpn2 = "Закалённый острый кинжал, пробивающий камни насквозь. Крайне\nсмертоносная игрушка.";
+                EqWpn3 = "Меч грёз, рассекающий воздух.";
+                EqWpn4 = "Размер не имеет  значения, главное как его используют";
+                EqArm1 = "Черная кожаная куртка. Никто не ценит ничего так сильно, как\nнадёжный кожак в жуткую погоду.";
+                EqArm2 = "Отлично сохранившиеся доспехи древних воинов. Кажется, что\nради хороших вещей древние даже золота не жалели.";
+                EqArm3 = "Нагрудник, отполированный настолько, что в нём видно отражение\n приближающихся врагов.";
+                EqArm4 = "Футболка для настоящих ценителей";
+                EqBts1 = "Бинтовая обувь. Спасает от ужасной жары здешних песков как никогда.";
+                EqBts2 = "Сапоги прирождённых солдат, покрыты слоём железа и укрепл-\nены пластинами.";
+                EqBts3 = "Невесомые сапоги, из невероятно прочного материала.";
+                EqBts4 = "Прочные сапоги из натуральной дублёной кожи";
+
+                Wrn1 = "Пора передохнуть...";
+                Wrn2 = "Эй, это уже не шутки!";
+                Wrn3 = "Срочно выключай машину!";
+            }
+            public string Status { get; set; }
+            public string Skills { get; set; }
+            public string Items { get; set; }
+            public string Equip { get; set; }
+            public string Tasks { get; set; }
+            public string Infos { get; set; }
+            public string Setts { get; set; }
+            public string EqWpn1 { get; set; }
+            public string EqWpn2 { get; set; }
+            public string EqWpn3 { get; set; }
+            public string EqWpn4 { get; set; }
+            public string EqArm1 { get; set; }
+            public string EqArm2 { get; set; }
+            public string EqArm3 { get; set; }
+            public string EqArm4 { get; set; }
+            public string EqPnt1 { get; set; }
+            public string EqPnt2 { get; set; }
+            public string EqPnt3 { get; set; }
+            public string EqPnt4 { get; set; }
+            public string EqBts1 { get; set; }
+            public string EqBts2 { get; set; }
+            public string EqBts3 { get; set; }
+            public string EqBts4 { get; set; }
+            public string Wrn1 { get; set; }
+            public string Wrn2 { get; set; }
+            public string Wrn3 { get; set; }
+        }
+        public class Sections : Txts
+        {
+            public Sections() { SetHints(); }
+            private void SetHints()
+            {
+                Status = "Статус героя";
+                Skills = "Умения героя";
+                Items = "Инвентарь";
+                Equip = "Снаряжение героя";
+                Tasks = "Текущие цели";
+                Infos = "Руководство игрока";
+                Setts = "Настройки";
+            }
+            public string Status { get; set; }
+            public string Skills { get; set; }
+            public string Items { get; set; }
+            public string Equip { get; set; }
+            public string Tasks { get; set; }
+            public string Infos { get; set; }
+            public string Setts { get; set; }
+        }
+        public class Abililities : Txts
+        {
+            public Abililities() { SetAbililities(); }
+            private void SetAbililities()
+            {
+                Cur = "Восстановление ОЗ, [-2 ОД]";
+                Cr2 = "ОЗ 100% мгновенно, [-10 ОД]";
+                Hl = "Лечение статуса, [-3 ОД]";
+                Bf = "Повышает атаку, [-12 ОД]";
+                Tg = "Повышает защиту, [-8 ОД]";
+                Rg = "Постепенно ОЗ+, [-15 ОД]";
+                Cn = "Постепенно ОД+, [0 ОД]";
+                Tr = "Поджигает врагов, [-4 ОД]";
+                Wh = "Дробит кости, [-6 ОД]";
+                Th = "Подстрелить врага, [-15 ОД]";
+                Sp = "Мощное комбо, [-10 ОД]";
+                Sp2 = "Порезы ветром, [-20 ОД]";
+                Sp3 = "Обвал грудой камней, [-30 ОД]";
+                Ln = "Изучить противника, [-2 ОД]";
+            }
+            public string Cur { get; set; }
+            public string Cr2 { get; set; }
+            public string Hl { get; set; }
+            public string Bf { get; set; }
+            public string Tg { get; set; }
+            public string Rg { get; set; }
+            public string Cn { get; set; }
+            public string Tr { get; set; }
+            public string Wh { get; set; }
+            public string Th { get; set; }
+            public string Sp { get; set; }
+            public string Sp2 { get; set; }
+            public string Sp3 { get; set; }
+            public string Ln { get; set; }
+        }
+        public class BItems : Txts
+        {
+            public BItems() { SetBItems(); }
+            private void SetBItems()
+            {
+                Ant = "-Яд";
+                Ban = "+50 ОЗ";
+                Etr = "+50 ОД";
+                Bld = "+80 ОЗ|ОД";
+                Hrb = "+350 ОЗ";
+                Er2 = "+300 ОД";
+                Slb = "100% ОЗ|ОД";
+                Elx = "100% ОЗ|ОД";
+            }
+            public string Ant { get; set; }
+            public string Ban { get; set; }
+            public string Etr { get; set; }
+            public string Bld { get; set; }
+            public string Hrb { get; set; }
+            public string Er2 { get; set; }
+            public string Slb { get; set; }
+            public string Elx { get; set; }
+        }
+        public class Goals : Txts
+        {
+            public Goals() { SetTasks(); }
+            private void SetTasks()
+            {
+                T1 = "Найдите способ открыть дверь";
+                T2 = "Соберите другой ключ";
+                T3 = "Соберите последний ключ";
+                T4 = "Проверьте загадочный артефакт";
+                T5 = "Найдите другой способ открыть врата";
+                T6 = "Откройте путь до артефакта";
+                T7 = "Проверьте загадочный артефакт";
+                T8 = "Найдите переправу через пропасть";
+                T9 = "Заберите последний ключ древних тайн";
+                T10 = "Выберетесь из лабиринта до обвала!";
+            }
+            public string T1 { get; set; }
+            public string T2 { get; set; }
+            public string T3 { get; set; }
+            public string T4 { get; set; }
+            public string T5 { get; set; }
+            public string T6 { get; set; }
+            public string T7 { get; set; }
+            public string T8 { get; set; }
+            public string T9 { get; set; }
+            public string T10 { get; set; }
+        }
+        public class Equipment : Txts
+        {
+            public void SetEquip()
+            {
+                Hand = new Hands();
+                Tors = new Torso();
+                Legs = new Anckles();
+                Boot = new Boots();
+            }
+            public class Hands : Equipment
+            {
+                public Hands() { SetHands(); }
+                public void SetHands()
+                {
+                    Bare = "Пустые руки";
+                    Duster = "Костяной кастет";
+                    Knife = "Древний кинжал";
+                    Sword = "Меч легенды";
+                    Minigun = "Миниган XM214-A";
+                }
+                public string Bare { get; set; }
+                public string Duster { get; set; }
+                public string Knife { get; set; }
+                public string Sword { get; set; }
+                public string Minigun { get; set; }
+            }
+            public class Torso : Equipment
+            {
+                public Torso() { SetTorso(); }
+                public void SetTorso()
+                {
+                    Bare = "Лёгкая рубашка";
+                    Bcoat = "Чёрный кожак";
+                    Ancient = "Древняя броня";
+                    Legend = "Броня легенды";
+                    Serious = "Футболка крутого";
+                }
+                public string Bare { get; set; }
+                public string Bcoat { get; set; }
+                public string Ancient { get; set; }
+                public string Legend { get; set; }
+                public string Serious { get; set; }
+            }
+            public class Anckles : Equipment
+            {
+                public Anckles() { SetLegs(); }
+                public void SetLegs()
+                {
+                    Bare = "Стильные штаны";
+                    Vulture = "Штаны стервятника";
+                    Ancient = "Древние поножи";
+                    Legend = "Поножи легенды";
+                    Serious = "Штаны серьёзного";
+                }
+                public string Bare { get; set; }
+                public string Vulture { get; set; }
+                public string Ancient { get; set; }
+                public string Legend { get; set; }
+                public string Serious { get; set; }
+            }
+            public class Boots : Equipment
+            {
+                public Boots() { SetBoots(); }
+                public void SetBoots()
+                {
+                    Bare = "Начищенные ботинки";
+                    Bboots = "Бинтовая обувь";
+                    Ancient = "Древние сапоги";
+                    Legend = "Сапоги легенды";
+                    Serious = "Армейские ботинки";
+                }
+                public string Bare { get; set; }
+                public string Bboots { get; set; }
+                public string Ancient { get; set; }
+                public string Legend { get; set; }
+                public string Serious { get; set; }
+            }
+            public Hands Hand { get; set; }
+            public Torso Tors { get; set; }
+            public Anckles Legs { get; set; }
+            public Boots Boot { get; set; }
+        }
+        public Foes Foe { get; set; }
+        public Bosses Bos { get; set; }
+        public Docs Doc { get; set; }
+        public Sections Sct { get; set; }
+        public Hints Hnt { get; set; }
+        public Equipment Eqp { get; set; }
+        public Goals Goal { get; set; }
+        public Abililities Skl { get; set; }
+        public BItems Bag { get; set; }
+        public Common Com { get; set; }
+        public CancelOptions Can { get; set; }
+        public FightOptions Fht { get; set; }
     }
     public class Paths
     {
@@ -1025,22 +1394,13 @@ namespace WpfApp1
             }
             public class Misc : Dynamic
             {
-                public Misc()
-                {
-                    SetAllMiscPaths();
-                }
-                public void SetAllMiscPaths()
-                {
-                    Target = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png" };
-                }
+                public Misc() { SetAllMiscPaths(); }
+                public void SetAllMiscPaths() { Target = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png" }; }
                 public string[] Target { get; set; }
             }
             public class Models : Dynamic
             {
-                public Models()
-                {
-                    SetAllPaths();
-                }
+                public Models() { SetAllPaths(); }
                 public void SetAllPaths()
                 {
                     Ancient = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel6.png" };
@@ -1140,10 +1500,14 @@ namespace WpfApp1
         {
             for (Byte i = 0; i < ParamNames.Length; i++)
             {
-                if (NewAnyParams[i].GetType().ToString() == "System.String") { AddProcedureParameter(ParamNames[i], (String)NewAnyParams[i]); continue; }
-                else if (NewAnyParams[i].GetType().ToString() == "System.Boolean") { AddProcedureParameter(ParamNames[i], (Boolean)NewAnyParams[i]); continue; }
-                else if (NewAnyParams[i].GetType().ToString() == "System.UInt16") { AddProcedureParameter(ParamNames[i], (UInt16)NewAnyParams[i]); continue; }
-                else if (NewAnyParams[i].GetType().ToString() == "System.Byte") { AddProcedureParameter(ParamNames[i], (Byte)NewAnyParams[i]); continue; }
+                switch (NewAnyParams[i].GetType().ToString())
+                {
+                    case "System.String": AddProcedureParameter(ParamNames[i], (String)NewAnyParams[i]); continue;
+                    case "System.Boolean": AddProcedureParameter(ParamNames[i], (Boolean)NewAnyParams[i]); continue;
+                    case "System.UInt16": AddProcedureParameter(ParamNames[i], (UInt16)NewAnyParams[i]); continue;
+                    case "System.Byte": AddProcedureParameter(ParamNames[i], (Byte)NewAnyParams[i]); continue;
+                    default: continue;
+                }
             }
         }
         private void CheckIfPlayersListIsNotNull() { if (PlayerLogins.Count > 0) PlayerLogins.Clear(); }
@@ -1259,28 +1623,6 @@ namespace WpfApp1
         public List<string> PlayerLogins { get; set; }
         public string CurrentLogin { get; set; }
     }
-
-    /* SqlInternalException
-     Exception: Something get wrong, Read this: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
- ---> System.ComponentModel.Win32Exception (2): Не удается найти указанный файл.
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
-   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
-   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
-   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
-   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
-   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
-   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
-   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
-   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
-   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at WpfApp1.Sql.NewSqlDataReaderBuild(List`1 Lgs) in D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\MainWindow.xaml.cs:line 306
-   at WpfApp1.Sql.CheckAllRecordedPlayers() in D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\MainWindow.xaml.cs:line 419
-   at WpfApp1.MainWindow..ctor() in D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\MainWindow.xaml.cs:line 896
-ClientConnectionId:00000000-0000-0000-0000-000000000000
-Error Number:2,State:0,Class:20
-    */
 
     //[EN] Foe class, influence on new enemies.
     //[RU] Класс противник, определяет новых противников возникающих в бою.
@@ -1625,31 +1967,6 @@ Error Number:2,State:0,Class:20
         public UInt16 Materials { get; set; }
     }
 
-    //[EN] Menu class, contents info 
-    //[RU] Класс игрового меню, содержит справочную информацию
-    public class Menu
-    {
-        public Menu()
-        {
-            InitOnNewGame();
-        }
-
-        private void InitOnNewGame()
-        {
-            InfoChange1 = 0;
-            HelpInfo1 = new string[,]{ {"Введение","Древние - кто они?","Приключение","Управление","Сражение","Цель боя","Очки здоровья, ОЗ","Урон","Оборона","Побег","Статус","Показатели","Скорость (СКР)","Больше чем бой","Настройки","Проходы","Сундуки","Сила земли","Сцены" },
-            {"Неизвестный...","Предыстория","Розыск","Меню/Выход","Противники","Ходы","Очки действий, ОД","Бой","Умения","Результаты","Уровень","Атака (АТК)","Спец. (СПЦ)","Реестр противников","Разработал","Стены","Опасности","Погостить пришёл","Благодарности" },
-            {"Древние святыни","Артефакты","Главы","Взаимодействие","Боссы","Действия","АВШ","Выбор","Предметы","Прирост","Опыт","Защита (ЗЩТ)","Время игры","Задачи","До новых встреч","Замки","Цветные камушки","Секреты","Финансы" } };
-
-            HelpInfo2 = new string[,] { {"Добро пожаловать, искатели\nприключений! Приветствуем\nвас в кратком своде правил.","Древние - люди, что когда-то\nобладали технологиями, кото-\nрые нам и не снились.","Вам доступно создание\nнового или загрузка старого\nприключения если оно было","Клавиатура обязательна\nПередвижение - WASD,\nВзаимодействие - E","Во время передвижения, на\nвас могут напасть. Не бой-\nтесь сражаться за правое!","Во время сражения нужно\nубрать всех противников и\nбоссов с поля, не погибнув.","Определяют какое количе-\nство урона персонаж может\nвзять, прежде чем умереть.","Числом определяет силу, с\nкоторой бьёт герой или враг,\nприближает к гибели.","Повышает защиту героя в\nдва раза до следующего\nхода.","Существует альтернативный\nспособ выйти из сражения -\nизбежать этим действием.","Выводит состояние героя,\nпри отравлении персонаж\nбудет терять ОЗ.","Влияют на выживаемость\nгероя, каждый отвечает за\nчто-то своё.","Влияет на скорость заполне-\nния АВШ и возможность\nсбежать из боя.","Умения доступны вне боя, а\nещё каждое из них можно\n\"пожамкать\" ^_^.","Не так-то просто справляться\nс шумом? Слишком яркое\nизображение? Не вопрос!","Место, по которому может\nходить герой, обычная\nплита.","Там хранится всевозможное\nоружие и броня древних.\nПочему бы и не одолжить?","Источники, бьющие прямо\nиз огненных песков лечат\nвсе недомогания.","Как никогда лучше показы-\nвают происходящее в\nсамом эпицентре событий." },
-            {"Вы играете за одарённого\nархеолога Рэя, его целью\nявляется поиск артефактов.","После глупых войн и жажды\nвласти, люди истратили нас-\n","Здесь находятся все\nискатели! Можно разделять\nпрогресс с друзьями","Клавиатура обязательна\nОткрыть меню - Left CTRL\nВыйти из игры - ESC","Монстры и прочие чудища,\nвышедшие из под контроля\nжаждут вашей гибели","Действия героя и врагов\nраспределены: они могут\nвыполнять их спустя время","От ОД зависит доступ к осо-\nбым действиям - умениям,\nвызывающие эффекты","Опция позволяющая физи-\nчески атаковать врага\nгерою, зависит от АТК.","Каждое умение тратит ОД и\nможет оказывать эффект\nкак на врага, так и на героя.","Победив, вы получаете\nопыт, материалы и ве-\nщи в конце сражения.","Показывает потенциал\nперсонажа, от него за-\nвисят все показатели.","Урон, наносимый героем\nпри обычной атаке. Может\nбыть увеличена оружием.","Специальное влияет на силу\nэффектов от использования\nумений персонажа.","После открытия умения \"Из-\nучение\", вы сможете смот-\nреть показатели врагов","Прошу любить и жаловать:\nТатаринцев Александр,\nвыступал в роли FullStack.","Препятствия, через которые\nнельзя передвигаться. Из\nних составлены лабиринты.","Какое приключение не обо-\nйдётся без опасностей?\nВсё как положено.","-Алло, это кто?\n-Сэм.\n-Шутник, Сэм, это я.","Посвящается (Вы лучшие):\nМасленников Денис,\nМасленникова Татьяна" },
-            {"Основными местами для\nпоиска сокровищ стали\nсооружения древних.","Артефакты содержат посла-\nния, лежащие в основе\nключа к мудрости веков","Приключение рассказывает\nисторию, основные события\nкоторой показаны в главах","Все нажатия на кнопки\nосуществляются с помощью\nлевой кнопки мыши (ЛКМ)","Древние стражи и могучие\nвластители, пробудившиеся\nото сна ждут боя.","Совокупность опций возни-\nкающих около персонажа.\nНужны для победы в бою.","Активная временная шкала\nпосле заполнения, даёт ход\nгерою, отображая действия.","Для выбора зоны пораже-\nния. Отмена - вернуться к\nпредыдущим опциям","Использование предметов,\nполученных после боя или\nсозданных материалами.","При повышении уровня, по-\nказатели героя вырастут,\nоблегчая новые задачи.","При сборе достаточного\nколичества - повышает\nуровень.","Снижает урон, получаемый\nот врагов. Может быть\nувеличена доспехами.","Всему своё время и приклю-\nчение - не исключение, бе-\nрегите глаза, друзья!","Для понимания основной\nцели - она разбита на\nзадачи.","Надеюсь данное руководст-\nво было вам полезно, даль-\nше для общего развития =)","Закрытые проходы, веду-\nщие через путь к выходу\nк артефактам. ","Артефакты - ключи, ведущие\nк сокровищам, эта основная\nцель приключения.","Каждое сооружение хранит\nсвои секреты. Сможете ли\nвы отыскать их все?","А в плане денег - у нас нет\nденег. Поможете ли доброй\nкопеечкой? 89212049320" } };
-        }
-        public Byte InfoChange1 { get; set; }
-        public string[,] HelpInfo1 { get; set; }
-        public string[,] HelpInfo2 { get; set; }
-    }
-
     //[EN] Misc class, contents engine values
     //[RU] Класс прочее, содержит параметры двигателя игры
     public class Misc
@@ -1750,6 +2067,7 @@ Error Number:2,State:0,Class:20
         }
         private void Functionality()
         {
+            Txt.SetTxt();
             Path.SetPaths();
             Foe1.SetEnemies();
             SetEnemies();
@@ -1759,14 +2077,12 @@ Error Number:2,State:0,Class:20
 
             try { Autorization(); SeeMap(); } catch (Exception ex) { throw new Exception("Something get wrong, Read this: " + ex); }
         }
-        public void Autorization() { DataBaseMSsql.CheckAllRecordedPlayers(); CurrentPlayer.Content = DataBaseMSsql.GetCurrentPlayer(); Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue(); }
-        /*System.Windows.Markup.XamlParseException: "Вызов конструктора для типа "WpfApp1.MainWindow", удовлетворяющего указанным ограничениям привязки, привел к выдаче исключения."*/
-        private void SeeMap() { Byte locs = Bits(DataBaseMSsql.CheckTask());  ChangeBackground(LocationDecode(locs), locs); }
 
+        //[EN] Connection to database and show progress feature
+        //[RU] Подключение к базе данных и особенность показа прогресса.
         Sql DataBaseMSsql = new Sql();
-
-        public static UInt16[] TimeWorldRecord = new UInt16[] { 23, 59, 40, 0 };
-        public static Byte[] FleeTime = new Byte[] { 2, 30 };
+        public void Autorization() { DataBaseMSsql.CheckAllRecordedPlayers(); CurrentPlayer.Content = DataBaseMSsql.GetCurrentPlayer(); Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue(); }
+        private void SeeMap() { Byte locs = Bits(DataBaseMSsql.CheckTask());  ChangeBackground(LocationDecode(locs), locs); }
         private void TryGetOut(object sender, EventArgs e)
         {
             if ((FleeTime[0] > 0) || (FleeTime[1] > 0))
@@ -1792,22 +2108,19 @@ Error Number:2,State:0,Class:20
                 TimeWorldRecord[3]++;
                 for (SByte i=3; i>0; i--) { Byte[] Conds = { 23, 60, 60, 100 }; if (TimeWorldRecord[i] >= Conds[i]) { TimeWorldRecord[i - 1]++; TimeWorldRecord[i] = 0; } }
                 TimeRecordText.Foreground = TimeWorldRecord[0] > 23 ? Brushes.Red : TimeWorldRecord[0] >= 2 ? Brushes.Yellow : TimeWorldRecord[1] >= 30 ? Brushes.Green : Brushes.White;
-                TimeRecordText.Content = TimeWorldRecord[0] > 23 ? "Срочно выключай машину! Время: 23:59:59.99" : ((TimeWorldRecord[0] >= 2 ? "Эй, это уже не шутки! " : TimeWorldRecord[1] >= 30 ? "Пора передохнуть... " : "") + "Время: " + TimeWorldRecord[0] + (TimeWorldRecord[1] >= 10 ? ":" : ":0") + TimeWorldRecord[1] + (TimeWorldRecord[2] >= 10 ? ":" : ":0") + TimeWorldRecord[2] + (TimeWorldRecord[3] >= 10 ? "." : ".0") + TimeWorldRecord[3]);
+                TimeRecordText.Content = TimeWorldRecord[0] > 23 ? Txt.Hnt.Wrn3 + " " + Txt.Com.Time + ": 23:59:59.99" : ((TimeWorldRecord[0] >= 2 ? Txt.Hnt.Wrn2 + " " : TimeWorldRecord[1] >= 30 ? Txt.Hnt.Wrn1 + " " : "") + Txt.Com.Time + ": " + TimeWorldRecord[0] + (TimeWorldRecord[1] >= 10 ? ":" : ":0") + TimeWorldRecord[1] + (TimeWorldRecord[2] >= 10 ? ":" : ":0") + TimeWorldRecord[2] + (TimeWorldRecord[3] >= 10 ? "." : ".0") + TimeWorldRecord[3]);
                 if (TimeWorldRecord[0]>23) TimeRecord.Stop();
         }
         //[EN] Initialize public objects
         //[RU] Инициализация объектов публичного доступа
-        Descriptions.Foes FoesNames = new Descriptions.Foes();
+        Txts Txt = new Txts();
         Paths Path = new Paths();
-        
         Bag BAG = new Bag();
         Characteristics Super1 = new Characteristics { MaxHP = 100, MaxAP = 40, Attack = 25, Defence = 15, Speed = 15, Special = 25 };
         Foe Foe1 = new Foe();
         Misc Sets = new Misc();
         Misc.Adopt Adoptation = new Misc.Adopt();
-        Menu GameMenu = new Menu();
-        private void ChbShow(CheckBox Chb) { Chb.Visibility = Visibility.Visible; Chb.IsEnabled = true; }
-        private void ChbHide(CheckBox Chb) { Chb.Visibility = Visibility.Hidden; Chb.IsEnabled = false; }
+        //Menu GameMenu = new Menu();
         private void SetEnemies()
         {
             Foe1.Spider.PreStats(0);
@@ -1838,12 +2151,6 @@ Error Number:2,State:0,Class:20
         private void MedGrid(MediaElement Med, in Byte row, in Byte col) { Grid.SetRow(Med, row); Grid.SetColumn(Med, col); }
         private void ImgGrid(Image Img, in Byte row, in Byte col) { Grid.SetRow(Img, row); Grid.SetColumn(Img, col); }
         private void ButtonCHFT(Button Btn, in Double fs) { Btn.FontSize = fs; }
-        private void TxtHide(TextBlock Txt) { Txt.Visibility = Visibility.Hidden; Txt.IsEnabled = false; }
-        private void TxtShow(TextBlock Txt) { Txt.Visibility = Visibility.Visible; Txt.IsEnabled = true; }
-        private void TxtHideX(TextBlock[] TextArray) { foreach (TextBlock Txt in TextArray) TxtHide(Txt); }
-        private void TxtShowX(TextBlock[] TextArray) { foreach (TextBlock Txt in TextArray) TxtShow(Txt); }
-        private void SldHide(Slider sld) { sld.Visibility = Visibility.Hidden; sld.IsEnabled = false; }
-        private void SldShow(Slider sld) { sld.Visibility = Visibility.Visible; sld.IsEnabled = true; }
         private void AnyHide(Object Element)
         {
             switch (Element.GetType().ToString())
@@ -1893,7 +2200,6 @@ Error Number:2,State:0,Class:20
         private void AnyGridX(Object[] Elements, in Byte[] rows, in Byte[] columns) { for (Byte i = 0; i < Elements.Length; i++) AnyGrid(Elements[i], rows[i], columns[i]); }
         private void Adaptate()
         {
-            ///In Game with player start
             //[EN] Adaptate mechanics, sreen elements formula: CurrentScreenSize/Recomended(1920X1080)
             //[RU] Механика адаптации, формула расположения элементов: ТекущееРазрешениеЭкрана/Рекомендуемое(1920Х1080)
             Button[] BtnWFM = { Button1, Skip1, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, CancelEq, Button2, Button3, Button4, Abilities, Items, Back2, Back1, Fight, Cancel1, Cancel2, Cure, Torch, Heal, Whip, Super, ACT1, ACT2, textOk2, TextOk1, InfoIndexMinus, InfoIndexPlus };
@@ -1912,9 +2218,6 @@ Error Number:2,State:0,Class:20
             foreach (ProgressBar bar in StBarMS) { BarShrink(bar, bar.Width * 2 * Adoptation.WidthAdBack, bar.Height * Adoptation.HeightAdBack); }
             foreach (ProgressBar bar in BarMS) { BarShrink(bar, bar.Width * Adoptation.WidthAdBack, bar.Height * Adoptation.HeightAdBack); }
             foreach (MediaElement med in MedMS) { MedShrink(med, med.Width * Adoptation.WidthAdBack, med.Height * Adoptation.HeightAdBack); }
-            ///[EN] When fire start, break this, this may make more fun) Or if you want to release where player and Location stands|[RU] Ничего такого, просто способ быстро понять в чём дело, если элементы уехали в сторону
-            //Lab1.Content = Img1.Margin.Top;
-            //ImgShrink(Img2, 9999, 9999);
         }
 
         //D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\
@@ -1962,8 +2265,8 @@ Error Number:2,State:0,Class:20
         //[EN] Initialize all variables
         //[RU] Инициализация всех переменных.
 
-        //[EN] Initialize timers
-        //[RU] Инициализация таймеров.
+        //[EN] Initialize timers for events
+        //[RU] Инициализация таймеров для событий.
         System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer timer2 = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer timer3 = new System.Windows.Threading.DispatcherTimer();
@@ -1995,10 +2298,19 @@ Error Number:2,State:0,Class:20
         public static Int32 rnd = Random1.Next(5, 20);
         public static int poison = 0;
 
+        //[EN] Values for stopwatch and timer
+        //[RU] Значения времени для секундомера и таймера.
+        public static UInt16[] TimeWorldRecord = new UInt16[] { 0, 0, 0, 0 };
+        public static Byte[] FleeTime = new Byte[] { 2, 30 };
+
+        public static Byte CurrentLocation = 0;
+        public static Byte[] EnemyNamesFight = new Byte[] { 0, 0, 0, 0 };
+        public static UInt16 Mat = 0;
+
+        //[EN] New game start and return to normal stats
+        //[RU] Начало новой игры и возврат к исходным значениям.
         private void New_game()
         {
-            //[EN] Return to normal stats
-            //[RU] Возврат к исходным значениям.
             AnyHideX(AddProfile, DeleteProfile, Player1, Player2, Player3, Player4, Player5, Player6, CurrentPlayer, AutorizeImg, Continue, AddPlayer);
 
             DataBaseMSsql.NewGameStart(DataBaseMSsql.CurrentLogin);
@@ -2008,8 +2320,8 @@ Error Number:2,State:0,Class:20
             Foe1.EnemyAppears[0] = "";
             Foe1.EnemyAppears[1] = "";
             Foe1.EnemyAppears[2] = "";
-            Foe1.EnemiesStillAlive = 0;
 
+            Foe1.EnemiesStillAlive = 0;
             Sets.FoeType1Alive = 0;
             Sets.FoeType2Alive = 0;
             Sets.FoeType3Alive = 0;
@@ -2033,46 +2345,60 @@ Error Number:2,State:0,Class:20
             Super1.MenuTask = 0;
             FastImgChange(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Threasure1 }, BmpersToX(Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.Artifact1)));
         }
-        private void HeyPlaySomething(Uri uris) { Sound1.Stop(); Sound1.Source = uris; Sound1.Play(); }
+
+        //[EN] OST play
+        //[RU] Проигрывание оригинального саундтрека
         private void HeyPlaySomething(in string Path) { Sound1.Stop(); Sound1.Source = Ura(Path); Sound1.Play(); }
-        private void Dj(Uri uris) { Sound2.Stop(); Sound2.Source = uris; Sound2.Play(); }
         private void Dj(in string Path) { Sound2.Stop(); Sound2.Source = Ura(Path); Sound2.Play(); }
-        private void SEF(Uri sound) { Sound3.Stop(); Sound3.Source = sound; Sound3.Play(); }
         private void SEF(in string Path) { Sound3.Stop(); Sound3.Source = Ura(Path); Sound3.Play(); }
-        //[EN] Working with Images
-        //[RU] Работа с изображениями
+
+        //[EN] Hide/show elements
+        //[RU] Спрятать/показать элементы
         private void ImgHide(Image Img) { Img.Visibility = Visibility.Hidden; Img.IsEnabled = false; }
         private void ImgShow(Image Img) { Img.Visibility = Visibility.Visible; Img.IsEnabled = true; } 
-        //[EN] Working with Media
-        //[RU] Работа с элементами Медиа (звук, анимация, прочее).
         private void MediaHide(MediaElement Med) { Med.Stop(); Med.Visibility = Visibility.Hidden; Med.IsEnabled = false; }
         private void MediaShow(MediaElement Med) { Med.Visibility = Visibility.Visible; Med.IsEnabled = true; Med.Play(); }
-        //[EN] Working with Buttons
-        //[RU] Работа с кнопками.
-        private void ButtonHide(Button Btn)
-        { Btn.Visibility = Visibility.Hidden; Btn.IsEnabled = false; }
+        private void ButtonHide(Button Btn) { Btn.Visibility = Visibility.Hidden; Btn.IsEnabled = false; }
         private void BtnHideX(Button[] ButtonArray) { foreach (Button Btn in ButtonArray) ButtonHide(Btn); }
         private void ButtonShow(Button Btn) { Btn.Visibility = Visibility.Visible; Btn.IsEnabled = true; }
-        //[EN] Working with Labels
-        //[RU] Работа с метками (надписями).
         private void LabHide(Label Lab) { Lab.Visibility = Visibility.Hidden; Lab.IsEnabled = false; }
         private void LabShow(Label Lab) { Lab.Visibility = Visibility.Visible; Lab.IsEnabled = true; }
-        //[EN] Working with bars
-        //[RU] Работа со шкалами.
         private void BarShow(ProgressBar Bar) { Bar.Visibility = Visibility.Visible; Bar.IsEnabled = true; }
         private void BarHide(ProgressBar Bar) { Bar.Visibility = Visibility.Hidden; Bar.IsEnabled = false; }
+        private void TxtHide(TextBlock Txt) { Txt.Visibility = Visibility.Hidden; Txt.IsEnabled = false; }
+        private void TxtShow(TextBlock Txt) { Txt.Visibility = Visibility.Visible; Txt.IsEnabled = true; }
+        private void SldHide(Slider sld) { sld.Visibility = Visibility.Hidden; sld.IsEnabled = false; }
+        private void SldShow(Slider sld) { sld.Visibility = Visibility.Visible; sld.IsEnabled = true; }
+        private void ChbShow(CheckBox Chb) { Chb.Visibility = Visibility.Visible; Chb.IsEnabled = true; }
+        private void ChbHide(CheckBox Chb) { Chb.Visibility = Visibility.Hidden; Chb.IsEnabled = false; }
+        private void TBoxShow(TextBox tbx) { tbx.Visibility = Visibility.Visible; tbx.IsEnabled = true; }
+        private void TBoxHide(TextBox tbx) { tbx.Visibility = Visibility.Hidden; tbx.IsEnabled = false; }
+        private void ImgShowX(in Image[] ImagesArray) { foreach (Image img in ImagesArray) ImgShow(img); }
+        private void LabShowX(in Label[] LabelArray) { foreach (Label Lab in LabelArray) LabShow(Lab); }
+        private void BarShowX(in ProgressBar[] ProgressBarArray) { foreach (ProgressBar Bar in ProgressBarArray) BarShow(Bar); }
+        private void BtnShowX(in Button[] ButtonArray) { foreach (Button Btn in ButtonArray) ButtonShow(Btn); }
+        private void ImgGridX(in Image[] ImageArray, in Byte[] rows, in Byte[] cols) { for (Byte i = 0; i < ImageArray.Length; i++) ImgGrid(ImageArray[i], rows[i], cols[i]); }
+        private void LabGridX(in Label[] LabelArray, in Byte[] rows, in Byte[] cols) { for (Byte i = 0; i < LabelArray.Length; i++) LabGrid(LabelArray[i], rows[i], cols[i]); }
+        private void BarGridX(in ProgressBar[] ProgressBarArray, in Byte[] rows, in Byte[] cols) { for (Byte i = 0; i < ProgressBarArray.Length; i++) BarGrid(ProgressBarArray[i], rows[i], cols[i]); }
+        private void LabHideX(Label[] LabelArray) { foreach (Label Lab in LabelArray) LabHide(Lab); }
+        private void ImgHideX(Image[] ImageArray) { foreach (Image Img in ImageArray) ImgHide(Img); }
         private void Button1_Click(object sender, RoutedEventArgs e)
         {
             New_game();
             MediaShow(Med1);
             AnyHideX(Lab1, Button1);
-            //ButtonShow(Skip1);
             HeyPlaySomething(Path.GameMusic.Prologue);
         }
+        //[EN] Bitmapimages and URI from string converting
+        //[RU] Преобразование в изображения и URI из строки
         public Uri Ura(in string Path) { return new Uri(Path, UriKind.RelativeOrAbsolute); }
         public BitmapImage Bmper(string UriToBmp) { return new BitmapImage(new Uri(UriToBmp, UriKind.RelativeOrAbsolute)); }
         public BitmapImage[] BmpersToX(params BitmapImage[] bitmapImages) { return bitmapImages; }
+        public BitmapImage[] BmpersToX(params string[] texts) { List<BitmapImage> bmps = new List<BitmapImage>(); foreach (string txt in texts) bmps.Add(Bmper(txt)); return bmps.ToArray(); }
         private void AnyShowX(in Boolean[] Conditions, Object[] Objects) { for (Byte i = 0; i < Conditions.Length; i++) if (Conditions[i]) AnyShow(Objects[i]); }
+
+        //[EN] Map builder
+        //[RU] Построитель карт
         private void MapBuild(in Byte Loc)
         {
             switch (Loc)
@@ -2236,23 +2562,19 @@ Error Number:2,State:0,Class:20
                 default: break;
             }
         }
-        private void Med1_MediaFailed(object sender, ExceptionRoutedEventArgs e) { MessageBox(); }
-        private void MessageBox() { throw new NotImplementedException(); }
 
         //[EN] Activate/Deactivate all .. | [RU] Активировать/Деактивировать все...
         //[EN] Chests+Tables/
         //[RU] Сундуки+Таблички/
         private void ChestsAndTablesAllTurnOn1() { ImgShowX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3 }); }
         private void ChestsAndTablesAllTurnOff1() { ImgHideX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3 }); }
-        //[EN] keys/
-        //[RU] ключи/
         private void Map1ModelsAllTurnOn1() { ImgShowX(new Image[] { KeyImg1, KeyImg2, KeyImg3, LockImg1, LockImg2, LockImg3 }); }
         private void Map1ModelsAllTurnOff1() { ImgHideX(new Image[] { LockImg1, LockImg2, LockImg3, KeyImg1, KeyImg2, KeyImg3 }); }
+        private void CheckIfInteracted() { Image[] images = { ChestMessage1, TaskCompletedImg, PainImg }; foreach (Image image in images) if (image.IsEnabled) ImgHide(image); }
 
         //[EN] After game intro has been ended
         //[RU] После завершения пролога.
         private void Med1_MediaEnded(object sender, RoutedEventArgs e) { Img1.Source = Bmper(Path.Backgrounds.Normal); AnyShowX(Img1, ChapterIntroduction); AnyHideX(Med1, Skip1); HeyPlaySomething(Path.GameMusic.AncientPyramid); }
-        private void CheckIfInteracted() { Image[] images = { ChestMessage1, TaskCompletedImg, PainImg }; foreach (Image image in images) if (image.IsEnabled) ImgHide(image); }
         //[EN] Complete tasks
         //[RU] Завершение задач.
         private void CollectKey(Image Key, Image Lock)
@@ -2270,177 +2592,23 @@ Error Number:2,State:0,Class:20
             Lever.Source = Bmper(Path.MapModels.LeverOn);
             SEF(Path.GameSounds.DoorOpened);
         }
-        private void HPenemyBARwidth(in double maxHp)
-        {
-            if (maxHp > 3500) { HPenemyBar.Width = HPenemyBar.Maximum / 16; HPenemyBar.Foreground= new SolidColorBrush(Color.FromRgb(0, 243, 255)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 243, 255)); }
-            else if (maxHp > 500) { HPenemyBar.Width = HPenemyBar.Maximum / 4; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(14, 222, 175)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(14, 222, 175)); }
-            else { HPenemyBar.Width = HPenemyBar.Maximum; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(50, 172, 40)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(50, 172, 40)); }
-        }
-        //[EN] Target select mech
-        //[RU] Механика выбора цели.
-        private void NormalTarget() { Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } }; ImgGrid(TrgtImg, grRowColumn[0, Sets.SelectedTarget], grRowColumn[1, Sets.SelectedTarget]); }
-        private void MegaTarget() { Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } }; ImgGrid(TrgtImg, Bits(grRowColumn[0, Sets.SelectedTarget] - 5), grRowColumn[1, Sets.SelectedTarget]); }
-        private void InfoAboutEnemies()
-        {
-            //Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } };
-            int[][] newHP = { new int[] { Foe1.Spider.EnemyMHP, Foe1.Mummy.EnemyMHP, Foe1.Zombie.EnemyMHP, Foe1.Bones.EnemyMHP, Foe1.BOSS1.EnemyMHP, Foe1.SecretBOSS1.EnemyMHP }, new int[] { Foe1.Vulture.EnemyMHP, Foe1.Ghoul.EnemyMHP, Foe1.GrimReaper.EnemyMHP, Foe1.Scarab.EnemyMHP, Foe1.BOSS2.EnemyMHP  }, new int[] { Foe1.KillerMole.EnemyMHP, Foe1.Imp.EnemyMHP, Foe1.Worm.EnemyMHP, Foe1.Master.EnemyMHP, Foe1.BOSS3.EnemyMHP } };
-            string[][] EnemySource = new string[][] { new string[] { Path.FoesStatePath.SpiderIcon, Path.FoesStatePath.MummyIcon, Path.FoesStatePath.ZombieIcon, Path.FoesStatePath.BonesIcon, Path.BossesStatePath.PharaohIcon, Path.BossesStatePath.UghZanIcon }, new string[] { Path.FoesStatePath.VultureIcon, Path.FoesStatePath.GhoulIcon, Path.FoesStatePath.GrimReaperIcon, Path.FoesStatePath.ScarabIcon, Path.BossesStatePath.WarriorIcon }, new string[] { Path.FoesStatePath.KillerMoleIcon, Path.FoesStatePath.ImpIcon, Path.FoesStatePath.WormIcon, Path.FoesStatePath.MasterIcon, Path.BossesStatePath.MrOfAllIcon } };
-            for (int en = 0; en < Foe1.EnemyName[CurrentLocation].Length; en++)
-                if (Foe1.EnemyAppears[Sets.SelectedTarget] == Foe1.EnemyName[CurrentLocation][en])
-                {
-                    BattleText1.Content = Foe1.EnemyName[CurrentLocation][en];
-                    HPenemyBar.Maximum = newHP[CurrentLocation][en];
-                    HPenemyBARwidth(HPenemyBar.Maximum);
-                    EnemyImg.Source = Bmper(EnemySource[CurrentLocation][en]);
-                    Grid.SetColumn(BattleText1, 17);
-                    break;
-                }
-            if (Sets.SpecialBattle == 0) { NormalTarget(); } else { MegaTarget(); };
-            //ImgGrid(TrgtImg, ((Foe1.EnemyAppears[0] == "Фараон") || (Foe1.EnemyAppears[0] == "Угх-зан I") || (Foe1.EnemyAppears[0] == "????") || (Foe1.EnemyAppears[0] == "Владыка")) ? Bits(grRowColumn[0, Sets.SelectedTarget] - 5) : grRowColumn[0, Sets.SelectedTarget], grRowColumn[1, Sets.SelectedTarget]);
-            HPenemyBar.Value = Foe1.EnemyHP[Sets.SelectedTarget];
-            HPenemy.Content = HPenemyBar.Value + "/" + HPenemyBar.Maximum;
-            RefreshAllHP();
-            LabShowX(new Label[] { HPenemy, BattleText1 });
-        }
-        private void SelectWithKeyBoard(bool Left)
-        {
-            if (Left)
-            {
-                if (Sets.SelectedTarget > 0)
-                {
-                    if (Foe1.EnemyHP[1] == 0) Sets.SelectedTarget = Bits(Foe1.EnemyHP[0] != 0 ? Sets.SelectedTarget - 2 : Sets.SelectedTarget);
-                    else if (Foe1.EnemyHP[0] == 0) Sets.SelectedTarget = Bits(Sets.SelectedTarget > 1 ? Sets.SelectedTarget - 1 : Sets.SelectedTarget);
-                    else Sets.SelectedTarget--;
-                    InfoAboutEnemies();
-                }
-            }
-            else
-                if (Sets.SelectedTarget < Sets.Rnd1 - 1)
-                {
-                    if (Foe1.EnemyHP[1] == 0) Sets.SelectedTarget = Bits(Foe1.EnemyHP[2] != 0 ? Sets.SelectedTarget + 2 : Sets.SelectedTarget);
-                    else if (Foe1.EnemyHP[0] == 0) Sets.SelectedTarget = Bits(Sets.SelectedTarget < 2 ? Sets.SelectedTarget + 1 : Sets.SelectedTarget);
-                    else Sets.SelectedTarget++;
-                    InfoAboutEnemies();
-                }
-        }
-        private void BallRoll(object sender, EventArgs e)
-        {
-            Byte[] MapModel = CheckModelCoord(7);
-            if ((MapModel[0] == Adoptation.ImgYbounds) && (MapModel[1] == Adoptation.ImgXbounds)) { ImgShow(PainImg); if (Super1.CurrentHP - 50 >= 0) Super1.CurrentHP -= 50; else { WonOrDied(); MediaShow(GameOver); } }
-            ChangeMapToVoid(7);
-            if (MapScheme[MapModel[0] + 1, MapModel[1]] != 1)
-            {
-                MapModel[0]++;
-                ReplaceModel(MapModel[0], MapModel[1], 7);
-                ImgGrid(Boulder1, MapModel[0], MapModel[1]);
-                Boulder1.RenderTransform = new RotateTransform(45 * MapModel[0], 16, 15);
-            }
-            else { ImgHide(Boulder1); timer.Stop(); }
-        }
-        private void LetsBattle() { Sets.StepsToBattle--; Dj(Path.GameNoises.Danger); MediaShow(Med2); }
-        private void WhatsGoingOn(in Byte SecretBattlesIndex) { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0; Sets.SpecialBattle = SecretBattlesIndex; ImgShrink(TrgtImg, 475, 475); }
-        private void GroundCheck(in Byte Interaction)
-        {
-            switch (Interaction)
-            {
-                case 0: break;
-                case 6: Super1.CurrentHP--; ImgShow(PainImg); break;
-                case 8: Super1.CurrentHP-=10; ImgShow(PainImg); break;
-                case 9: Super1.CurrentHP-=25; ImgShow(PainImg); break;
-                case 104: ChangeMapToVoidOrWallX(new Byte[] { 104, 134 }, 0); ImgHide(JailImg1); Sets.EnemyRate = 5; Super1.MenuTask++; break;
-                case 105: ChangeMapToVoidOrWallX(new Byte[] { 105, 135 }, 0); ImgHideX((CurrentLocation == 1) ? new Image[] {  JailImg2, JailImg3 } : new Image[] { JailImg2 }); WidelyUsedAnyTimer(out timer, new EventHandler(BallRoll), new TimeSpan(0, 0, 0, 1)); break;
-                case 106: ChangeMapToVoidOrWallX(new Byte[] { 106, 136 }, 0); ImgHide(JailImg5); if (CurrentLocation == 1) Super1.MenuTask++; break;
-                case 107: ChangeMapToVoidOrWallX(new Byte[] { 107, 137 }, 0); ImgHide(JailImg6); break;
-                case 108: ChangeMapToVoidOrWallX(new Byte[] { 108, 138 }, 0); ImgHide(JailImg7); break;
-                case 150: if (DataBaseMSsql.CurrentLogin != "????") { SaveGame(); SEF(Path.GameSounds.ControlSave); } break;
-                case 151: Super1.CurrentHP = Super1.MaxHP; Dj(Path.GameNoises.Cure); break;
-                case 152: Super1.CurrentAP = Super1.MaxAP; Dj(Path.GameNoises.Cure); break;
-                case 170: TimeToGetAway.Stop(); FleeTime = new Byte[] { 2, 30 }; TimerFlees.Content = TimerFlees1.Content = "2:30"; AnyHide(Img2); Super1.MenuTask++; MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Ending), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey);  Img1.Source = Bmper(Path.Backgrounds.Normal); break;
-                case 191: WhatsGoingOn(200); LetsBattle(); break;
-                case 192: ChangeMapToVoid(192); PlayerSetLocation(1,57); break;
-                default: break;
-            }
-        }
         private Byte Bits(Object obj) { return Convert.ToByte(obj); }
         private Int32 Numb(Object obj) { return Convert.ToInt32(obj); }
         private UInt16 Shrt(Object obj) { return Convert.ToUInt16(obj); }
-        private Byte TColMgs(in Image img) { return Numb(img.GetValue(Grid.ColumnProperty)) - 5 > 0 ? Bits(Bits(img.GetValue(Grid.ColumnProperty)) - 5) : Bits(0); }
-        private Byte TRowMgs(in Image img) { return Numb(img.GetValue(Grid.RowProperty)) - 8 > 0 ? Bits(Bits(img.GetValue(Grid.RowProperty)) - 8) : Bits(0); }
-        private Byte ColMgs(in Image img) { return Numb(img.GetValue(Grid.ColumnProperty)) - 3 > 0 ? Bits(Bits(img.GetValue(Grid.ColumnProperty)) - 3) : Bits(0); }
-        private Byte RowMgs(in Image img) { return Numb(img.GetValue(Grid.RowProperty)) - 5 > 0 ? Bits(Bits(img.GetValue(Grid.RowProperty)) - 5) : Bits(0); }
-        private Byte CheckGuy()
-        {
-            String[] Direction = { Path.Ray.StaticRight, Path.Ray.GoRight, Path.Ray.StaticDown, Path.Ray.GoDown1, Path.Ray.GoDown2, Path.Ray.StaticLeft, Path.Ray.GoLeft, Path.Ray.StaticUp, Path.Ray.GoUp1, Path.Ray.GoUp2 };
-            SByte[,] Dir1 = { { 0, 0, 1, 1, 1, 0, 0, -1, -1, -1 }, { 1, 1, 0, 0, 0, -1, -1, 0, 0, 0 } };
-            for (Byte i = 0; i < Direction.Length; i++) if (Img2.Source.ToString().Contains(Direction[i])) return MapScheme[Adoptation.ImgYbounds + Dir1[0, i], Adoptation.ImgXbounds + Dir1[1, i]];
-            return 0;
-        }
-        private void TablesSetInfo()
-        {
-            if (Sets.TableEN || TableMessage1.IsEnabled) ImgHide(TableMessage1);
-            Sets.TableEN = !Sets.TableEN && !TableMessage1.IsEnabled;
-            Byte Interaction = CheckGuy();
-            Byte[] Conditions = { 171, 172, 173, 174, 175, 176, 177, 178, 179 };
-            BitmapImage[] images = BmpersToX(Bmper(Path.Msg.Tb1_Msg1), Bmper(Path.Msg.Tb2_Msg1), Bmper(Path.Msg.Tb3_Msg1), Bmper(Path.Msg.Tb1_Msg2), Bmper(Path.Msg.Tb2_Msg2), Bmper(Path.Msg.Tb3_Msg2), Bmper(Path.Msg.Tb1_Msg3), Bmper(Path.Msg.Tb2_Msg3), Bmper(Path.Msg.Tb3_Msg3));
-            Image[] Mess = { Table1, Table2, Table3, Table1, Table2, Table3, Table1, Table2, Table3 };
-            for (Byte i = 0; i < Conditions.Length; i++) if (Interaction == Conditions[i]) SetTablesMessage(images[i], TRowMgs(Mess[i]), TColMgs(Mess[i]));
-        }
-        private void SetTablesMessage(BitmapImage image, Byte X, Byte Y)
-        {
-            TableMessage1.Source = image;
-            if (!Sets.TableEN) Sets.TableEN = true;
-            ImgGrid(TableMessage1, X, Y);
-            ImgShow(TableMessage1);
-        }
+        
+        //[EN] Multibar health feature
+        //[RU] Особенность многошкального здоровья.
         private void MaxAndWidthHPcalculate()
         {
-            if (Super1.MaxHP >= 666)
-            {
-                HPbar.Maximum = 333;
-                HPbar.Width = HPbar.Maximum;
-                HPbarOver333.Maximum = 333;
-                HPbarOver333.Width = HPbarOver333.Maximum;
-                HPbarOver666.Maximum = Super1.MaxHP - 666;
-                HPbarOver666.Width = HPbarOver666.Maximum;
-            }
-            else if (Super1.MaxHP >= 333)
-            {
-                HPbar.Maximum = 333;
-                HPbar.Width = HPbar.Maximum;
-                HPbarOver333.Maximum = Super1.MaxHP - 333;
-                HPbarOver333.Width = HPbarOver333.Maximum;
-            }
-            else
-            {
-                HPbar.Maximum = Super1.MaxHP;
-                HPbar.Width = HPbar.Maximum;
-            }
+            if (Super1.MaxHP > 333) NewMaximumX(Super1.MaxHP > 666 ? new UInt16[] { 333, 333, Shrt(Super1.MaxHP - 666) } : new UInt16[] { 333, Shrt(Super1.MaxHP - 333) },
+                Super1.MaxHP > 666 ? new ProgressBar[] { HPbar, HPbarOver333, HPbarOver666 } : new ProgressBar[] { HPbar, HPbarOver333 });
+            else NewMaximum(HPbar, Super1.MaxHP);
         }
         private void MaxAndWidthAPcalculate()
         {
-            if (Super1.MaxAP > 666)
-            {
-                APbar.Maximum = 333;
-                APbar.Width = APbar.Maximum;
-                APbarOver333.Maximum = 333;
-                APbarOver333.Width = APbarOver333.Maximum;
-                APbarOver666.Maximum = Super1.MaxAP - 666;
-                APbarOver666.Width = APbarOver666.Maximum;
-            }
-            else if (Super1.MaxAP > 333)
-            {
-                APbar.Maximum = 333;
-                APbar.Width = APbar.Maximum;
-                APbarOver333.Maximum = Super1.MaxAP - 333;
-                APbarOver333.Width = APbarOver333.Maximum;
-            }
-            else
-            {
-                APbar.Maximum = Super1.MaxAP;
-                APbar.Width = APbar.Maximum;
-            }
+            if (Super1.MaxAP > 333) NewMaximumX(Super1.MaxAP > 666 ? new UInt16[] { 333, 333, Shrt(Super1.MaxAP - 666) } : new UInt16[] { 333, Shrt(Super1.MaxAP - 333) },
+                Super1.MaxAP > 666 ? new ProgressBar[] { APbar, APbarOver333, APbarOver666 } : new ProgressBar[] { APbar, APbarOver333 }); else NewMaximum(APbar, Super1.MaxAP);
         }
-
         private void CurrentHPcalculate()
         {
             if (Super1.CurrentHP > 666)
@@ -2468,7 +2636,6 @@ Error Number:2,State:0,Class:20
             }
             RefreshAllHP();
         }
-
         private void CurrentAPcalculate()
         {
             if (Super1.CurrentAP > 666)
@@ -2498,6 +2665,16 @@ Error Number:2,State:0,Class:20
             RefreshAllAP();
         }
         private void CurrentHpApCalculate() { CurrentHPcalculate(); CurrentAPcalculate(); }
+
+        //[EN] Movement and map interaction
+        //[RU] Передвижение и взаимодействие с картой.
+        private Byte CheckGuy()
+        {
+            String[] Direction = { Path.Ray.StaticRight, Path.Ray.GoRight, Path.Ray.StaticDown, Path.Ray.GoDown1, Path.Ray.GoDown2, Path.Ray.StaticLeft, Path.Ray.GoLeft, Path.Ray.StaticUp, Path.Ray.GoUp1, Path.Ray.GoUp2 };
+            SByte[,] Dir1 = { { 0, 0, 1, 1, 1, 0, 0, -1, -1, -1 }, { 1, 1, 0, 0, 0, -1, -1, 0, 0, 0 } };
+            for (Byte i = 0; i < Direction.Length; i++) if (Img2.Source.ToString().Contains(Direction[i])) return MapScheme[Adoptation.ImgYbounds + Dir1[0, i], Adoptation.ImgXbounds + Dir1[1, i]];
+            return 0;
+        }
         private void GetPoisoned()
         {
             if (Super1.PlayerStatus == 1) Super1.CurrentHP--;
@@ -2521,7 +2698,6 @@ Error Number:2,State:0,Class:20
             PlayerSetLocation(Bits(Adoptation.ImgYbounds), Bits(Adoptation.ImgXbounds));
             GroundCheck(MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds]);
             TablesSetInfo();
-            //string[] AmbushRef = { Path.CutScene.Ambushed, Path.CutScene.BattleStations, Path.CutScene.NotAgain };
             if (CurrentLocation < 3) { if (Sets.StepsToBattle >= rnd) { AnyHideX(PainImg, Img2); Sound1.Stop(); Dj(Path.GameNoises.Danger); LetsBattle(); } Sets.StepsToBattle++; }
             GetPoisoned();
         }
@@ -2534,18 +2710,79 @@ Error Number:2,State:0,Class:20
             WidelyUsedAnyTimer(out BossAppear1, Event, new TimeSpan(0, 0, 0, 0, 20));
             Dj(Noise);
         }
-        private void GetSecretReward() { Exp += 250; Mat += 250; Super1.MiniTask = true; ShowAfterBattleMenu(); }
         private Boolean IsWayNext(Byte map)
         {
             switch (map)
             {
-                case 0: case 6: case 7: case 8: case 9: case 104: case 105: case 106: case 107: case 108: case 112: case 113: case 114: case 115: case 116: case 117: case 118: case 119: case 120: case 150: case 151:
+                case 0: case 6: case 7: case 8: case 9: case 104: case 105: case 106: case 107: case 108: case 112:
+                case 113: case 114: case 115: case 116: case 117: case 118: case 119: case 120: case 150: case 151:
                 case 152: case 170: case 191: case 192: return true;
                 default: return false;
             }
         }
-        //[EN] Movement (W,A,S,D), actions on map (E), open menu (LCtrl), target select in fight (W,A,S,D)
-        //[RU] Передвижение (W,A,S,D), действия при нахождении на локации (E), открыть меню (LCtrl), выбор цели (W,A,S,D)
+        private void CheckMapIfModelExistsX(in Byte[] Models, in Image[] images) { for (Byte i = 0; i < Models.Length; i++) if (CheckMapIfModelExists(Models[i])) ImgShow(images[i]); }
+        private Byte TColMgs(in Image img) { return Numb(img.GetValue(Grid.ColumnProperty)) - 5 > 0 ? Bits(Bits(img.GetValue(Grid.ColumnProperty)) - 5) : Bits(0); }
+        private Byte TRowMgs(in Image img) { return Numb(img.GetValue(Grid.RowProperty)) - 8 > 0 ? Bits(Bits(img.GetValue(Grid.RowProperty)) - 8) : Bits(0); }
+        private Byte ColMgs(in Image img) { return Numb(img.GetValue(Grid.ColumnProperty)) - 3 > 0 ? Bits(Bits(img.GetValue(Grid.ColumnProperty)) - 3) : Bits(0); }
+        private Byte RowMgs(in Image img) { return Numb(img.GetValue(Grid.RowProperty)) - 5 > 0 ? Bits(Bits(img.GetValue(Grid.RowProperty)) - 5) : Bits(0); }
+        
+        private void TablesSetInfo()
+        {
+            if (Sets.TableEN || TableMessage1.IsEnabled) ImgHide(TableMessage1);
+            Sets.TableEN = !Sets.TableEN && !TableMessage1.IsEnabled;
+            Byte Interaction = CheckGuy();
+            Byte[] Conditions = { 171, 172, 173, 174, 175, 176, 177, 178, 179 };
+            BitmapImage[] images = BmpersToX(Bmper(Path.Msg.Tb1_Msg1), Bmper(Path.Msg.Tb2_Msg1), Bmper(Path.Msg.Tb3_Msg1), Bmper(Path.Msg.Tb1_Msg2), Bmper(Path.Msg.Tb2_Msg2), Bmper(Path.Msg.Tb3_Msg2), Bmper(Path.Msg.Tb1_Msg3), Bmper(Path.Msg.Tb2_Msg3), Bmper(Path.Msg.Tb3_Msg3));
+            Image[] Mess = { Table1, Table2, Table3, Table1, Table2, Table3, Table1, Table2, Table3 };
+            for (Byte i = 0; i < Conditions.Length; i++) if (Interaction == Conditions[i]) SetTablesMessage(images[i], TRowMgs(Mess[i]), TColMgs(Mess[i]));
+        }
+        private void SetTablesMessage(BitmapImage image, Byte X, Byte Y)
+        {
+            TableMessage1.Source = image;
+            if (!Sets.TableEN) Sets.TableEN = true;
+            ImgGrid(TableMessage1, X, Y);
+            ImgShow(TableMessage1);
+        }
+        private void BallRoll(object sender, EventArgs e)
+        {
+            Byte[] MapModel = CheckModelCoord(7);
+            if ((MapModel[0] == Adoptation.ImgYbounds) && (MapModel[1] == Adoptation.ImgXbounds)) { ImgShow(PainImg); if (Super1.CurrentHP - 50 >= 0) Super1.CurrentHP -= 50; else { WonOrDied(); MediaShow(GameOver); } }
+            ChangeMapToVoid(7);
+            if (MapScheme[MapModel[0] + 1, MapModel[1]] != 1)
+            {
+                MapModel[0]++;
+                ReplaceModel(MapModel[0], MapModel[1], 7);
+                ImgGrid(Boulder1, MapModel[0], MapModel[1]);
+                Boulder1.RenderTransform = new RotateTransform(45 * MapModel[0], 16, 15);
+            }
+            else { ImgHide(Boulder1); timer.Stop(); }
+        }
+        private void LetsBattle() { Sets.StepsToBattle--; Dj(Path.GameNoises.Danger); MediaShow(Med2); }
+        private void WhatsGoingOn(in Byte SecretBattlesIndex) { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0; Sets.SpecialBattle = SecretBattlesIndex; ImgShrink(TrgtImg, 475, 475); }
+        private void GroundCheck(in Byte Interaction)
+        {
+            switch (Interaction)
+            {
+                case 0: break;
+                case 6: Super1.CurrentHP--; ImgShow(PainImg); break;
+                case 8: Super1.CurrentHP -= 10; ImgShow(PainImg); break;
+                case 9: Super1.CurrentHP -= 25; ImgShow(PainImg); break;
+                case 104: ChangeMapToVoidOrWallX(new Byte[] { 104, 134 }, 0); ImgHide(JailImg1); Sets.EnemyRate = 5; Super1.MenuTask++; break;
+                case 105: ChangeMapToVoidOrWallX(new Byte[] { 105, 135 }, 0); ImgHideX((CurrentLocation == 1) ? new Image[] { JailImg2, JailImg3 } : new Image[] { JailImg2 }); WidelyUsedAnyTimer(out timer, new EventHandler(BallRoll), new TimeSpan(0, 0, 0, 1)); break;
+                case 106: ChangeMapToVoidOrWallX(new Byte[] { 106, 136 }, 0); ImgHide(JailImg5); if (CurrentLocation == 1) Super1.MenuTask++; break;
+                case 107: ChangeMapToVoidOrWallX(new Byte[] { 107, 137 }, 0); ImgHide(JailImg6); break;
+                case 108: ChangeMapToVoidOrWallX(new Byte[] { 108, 138 }, 0); ImgHide(JailImg7); break;
+                case 150: if (DataBaseMSsql.CurrentLogin != "????") { SaveGame(); SEF(Path.GameSounds.ControlSave); } break;
+                case 151: Super1.CurrentHP = Super1.MaxHP; Dj(Path.GameNoises.Cure); break;
+                case 152: Super1.CurrentAP = Super1.MaxAP; Dj(Path.GameNoises.Cure); break;
+                case 170: TimeToGetAway.Stop(); FleeTime = new Byte[] { 2, 30 }; TimerFlees.Content = TimerFlees1.Content = "2:30"; AnyHide(Img2); Super1.MenuTask++; MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Ending), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
+                case 191: WhatsGoingOn(200); LetsBattle(); break;
+                case 192: ChangeMapToVoid(192); PlayerSetLocation(1, 57); break;
+                default: break;
+            }
+        }
+        //[EN] Movement (W,A,S,D)/target select (W,A,S,D), actions on map (E), open menu (LCtrl)
+        //[RU] Передвижение (W,A,S,D)/выбор цели (W,A,S,D), действия при нахождении на локации (E), открыть меню (LCtrl).
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             CheckIfInteracted();
@@ -2603,12 +2840,7 @@ Error Number:2,State:0,Class:20
                 if (Fight.IsEnabled || ACT1.IsEnabled || ACT2.IsEnabled || ACT3.IsEnabled) if (e.Key == Key.W || e.Key == Key.A || e.Key == Key.S || e.Key == Key.D) SelectWithKeyBoard(e.Key == Key.W || e.Key == Key.A);
             if (e.Key == Key.LeftCtrl)
                 if (Img2.IsEnabled)
-                    if (!Menu1.IsEnabled)
-                    {
-                        if (Sets.TableEN) ImgHide(TableMessage1);
-                        Sets.TableEN = !Sets.TableEN;
-                        HeroStatus();
-                    }
+                    if (!Menu1.IsEnabled) HeroStatus();
                     else
                     {
                         MegaHide();
@@ -2617,6 +2849,9 @@ Error Number:2,State:0,Class:20
                     }
             if (e.Key == Key.Escape) Form1.Close();
         }
+
+        //[EN] Objects interaction
+        //[RU] Взаимодействие с объектами.
         private void ChestOpen(Image Chest, in BitmapImage Message, in BitmapImage ChestOpened, in Byte Class, in Byte Quality)
         {
             ImgShow(ChestMessage1);
@@ -2633,17 +2868,17 @@ Error Number:2,State:0,Class:20
             SEF(Path.GameSounds.ChestOpened);
             ImgGrid(ChestMessage1, Bits(Bits(Chest.GetValue(Grid.RowProperty)) - 5), Bits(Bits(Chest.GetValue(Grid.ColumnProperty)) - 3));
         }
+        private void GetSecretReward() { Exp += 250; Mat += 250; Super1.MiniTask = true; ShowAfterBattleMenu(); }
+        
+        //[EN] Mini cutscenes
+        //[RU] Мини сцены.
         private void PharaohAppear_Time51(object sender, EventArgs e)
         {
             if (!PharaohAppears.IsEnabled) ImgShow(PharaohAppears);
             if (PharaohAppears.Opacity < 1) PharaohAppears.Opacity += 0.01;
             else
             {
-                if ((byte)((Int32)PharaohAppears.GetValue(Grid.RowProperty) - 1) < 6)
-                {
-                    LetsBattle();
-                    BossAppear1.Stop();
-                }
+                if (Bits(Numb(PharaohAppears.GetValue(Grid.RowProperty)) - 1) < 6) { LetsBattle(); BossAppear1.Stop(); }
                 ImgGrid(PharaohAppears, Bits(Numb(PharaohAppears.GetValue(Grid.RowProperty)) - 1), Bits(Numb(PharaohAppears.GetValue(Grid.ColumnProperty))));
             }
         }
@@ -2670,30 +2905,9 @@ Error Number:2,State:0,Class:20
         private void AncientAppear_Phase1(in Byte App) { Ancient.Source = Bmper(Path.AniModel.Ancient[App]); }
         private void AncientAppear_Phase2(in Byte App) { Warrior.Source = Bmper(Path.AniModel.Warrior[App]); }
         private void AncientAppear_Phase3() { ImgGrid(Warrior, (byte)((Int32)Warrior.GetValue(Grid.RowProperty)), (byte)((Int32)Warrior.GetValue(Grid.ColumnProperty)+1)); }
-        private void StatusCalculate() { StatsMeaning(); MenuHpApExp(); }
-        private void FastTextChange(Label[] Labs, in String[] texts) { for (Byte i = 0; i < Labs.Length; i++) Labs[i].Content = texts[i]; }
-        private void HeroStatus()
-        {
-            StatusCalculate();
-            AnyShowX(Menu1, Img2, Img1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, HPbar1, APbar1, ExpBar1, Name0, Level0, StatusP, Exp1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, DescribeHeader, Describe1);
-            AnyGridX(new Object[] { HPbar1, APbar1, StatusP, HPtext1, APtext1 }, new Byte[] { 7, 9, 2, 7, 9 }, new Byte[] { 11, 11, 14, 2, 2 });
-            LabGridX(new Label[] { HP1, AP1, Exp1 }, new byte[] { Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new byte[] { Bits(Numb(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(HPbar1.Width) / 32)), Bits(Numb(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(APbar1.Width) / 32)), Bits(Numb(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(ExpBar1.Width) / 32)) });
-            RightPanelMenuTurnON();
-            if (!TimerTurnOn.IsChecked.Value) LabShow(TimeRecordText);
-            if (CurrentLocation==3) AnyShow(TimerFlees1);
-            PlayerSetLocation(Bits(Adoptation.ImgYbounds), Bits(Adoptation.ImgXbounds));
-            Status.IsEnabled = false;
-            FastTextChange(new Label[] { Describe1, Describe2 }, new String[] { "ОЗ имеет тенденцию падать до 0. Враги только этого и добиваются.\nПохоже им уже давно пора задать трёпку.", "Статус героя" });
-        }
-        private void ImgShowX(in Image[] ImagesArray) { foreach (Image img in ImagesArray) ImgShow(img); }
-        private void LabShowX(in Label[] LabelArray) { foreach (Label Lab in LabelArray) LabShow(Lab); }
-        private void BarShowX(in ProgressBar[] ProgressBarArray) { foreach (ProgressBar Bar in ProgressBarArray) BarShow(Bar); }
-        private void BtnShowX(in Button[] ButtonArray) { foreach (Button Btn in ButtonArray) ButtonShow(Btn); }
-        private void ImgGridX(in Image[] ImageArray, in Byte[] rows, in Byte[] cols) { for (Byte i = 0; i < ImageArray.Length; i++) ImgGrid(ImageArray[i], rows[i], cols[i]); }
-        private void LabGridX(in Label[] LabelArray, in Byte[] rows, in Byte[] cols) { for (Byte i = 0; i < LabelArray.Length; i++) LabGrid(LabelArray[i], rows[i], cols[i]); }
-        private void BarGridX(in ProgressBar[] ProgressBarArray, in Byte[] rows, in Byte[] cols) { for (Byte i = 0; i < ProgressBarArray.Length; i++) BarGrid(ProgressBarArray[i], rows[i], cols[i]); }
-        private void LabHideX(Label[] LabelArray) { foreach (Label Lab in LabelArray) LabHide(Lab); }
-        private void ImgHideX(Image[] ImageArray) { foreach (Image Img in ImageArray) ImgHide(Img); }
+
+        //[EN] Menu : Player status
+        //[RU] Меню : Статус игрока
         private void MegaHide()
         {
             AnyHideX(InfoText1, InfoText2, InfoText3, MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness, TimerTurnOn, DescribeHeader, TimerFlees1,
@@ -2708,8 +2922,21 @@ Error Number:2,State:0,Class:20
                 BuffUp1, ToughenUp1, Regen1, Control1, Herbs1, Ether2Out, SleepBag1, Elixir1, CraftBedbag, CraftElixir, CraftHerbs, CraftPerfboots, CraftEther2);
         }
 
-        public static Byte[] EnemyNamesFight = new Byte[] { 0, 0, 0, 0 };
-        public static UInt16 Mat = 0;
+        private void StatusCalculate() { StatsMeaning(); MenuHpApExp(); }
+        private void FastTextChange(Label[] Labs, in String[] texts) { for (Byte i = 0; i < Labs.Length; i++) Labs[i].Content = texts[i]; }
+        private void HeroStatus()
+        {
+            StatusCalculate();
+            AnyShowX(Menu1, Img2, Img1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, HPbar1, APbar1, ExpBar1, Name0, Level0, StatusP, Exp1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, DescribeHeader, Describe1);
+            AnyGridX(new Object[] { HPbar1, APbar1, StatusP, HPtext1, APtext1 }, new Byte[] { 7, 9, 2, 7, 9 }, new Byte[] { 11, 11, 14, 2, 2 });
+            LabGridX(new Label[] { HP1, AP1, Exp1 }, new byte[] { Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new byte[] { Bits(Numb(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(HPbar1.Width) / 32)), Bits(Numb(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(APbar1.Width) / 32)), Bits(Numb(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(ExpBar1.Width) / 32)) });
+            RightPanelMenuTurnON();
+            if (!TimerTurnOn.IsChecked.Value) LabShow(TimeRecordText);
+            if (CurrentLocation==3) AnyShow(TimerFlees1);
+            PlayerSetLocation(Bits(Adoptation.ImgYbounds), Bits(Adoptation.ImgXbounds));
+            Status.IsEnabled = false;
+            FastTextChange(new Label[] { Describe1, Describe2 }, new String[] { Txt.Hnt.Status, Txt.Sct.Status });
+        }
 
         private void EnemiesTotal(in Byte num, in string EnemyKind, in Byte CountEnemy)
         {
@@ -2731,7 +2958,7 @@ Error Number:2,State:0,Class:20
                 {
                     Foe1.EnemyHP[i] = EnHP[CurrentLocation][FoeIndex];
                     Enemies[i].Source = Bmper(RegularEnemiesImg[CurrentLocation, FoeIndex]);
-                    Foe1.EnemyAppears[i] = FoesNames.GetByIndexes[CurrentLocation, FoeIndex];
+                    Foe1.EnemyAppears[i] = Txt.Foe.GetByIndexes[CurrentLocation, FoeIndex];
                     break;
                 }
             Exp += Exper;
@@ -2753,6 +2980,31 @@ Error Number:2,State:0,Class:20
             Byte[] Mapawe = { 0, 1, 2, 3 };
             foreach (Byte i in Mapawe) if (i != Index) msp.Add(i);
             if (EnemyNamesFight[Index] == 0) EnemyNamesFight[Index] = Bits((EnemyNamesFight[msp[0]] != 1) && (EnemyNamesFight[msp[1]] != 1) && (EnemyNamesFight[msp[2]] != 1)? 1 : (EnemyNamesFight[msp[0]] != 2) && (EnemyNamesFight[msp[1]] != 2) && (EnemyNamesFight[msp[2]] != 2)? 2 : 3);
+        }
+        private void CalculateBattleStatus()
+        {
+            EnemyNamesFight = new Byte[] { 0, 0, 0, 0 };            
+            if (Img2.Source.ToString().Contains(Path.Ray.GoUp1) || Img2.Source.ToString().Contains(Path.Ray.GoUp2)) Img2.Source = Bmper(Path.Ray.StaticUp);
+            else if (Img2.Source.ToString().Contains(Path.Ray.GoLeft)) Img2.Source = Bmper(Path.Ray.StaticLeft);
+            else if (Img2.Source.ToString().Contains(Path.Ray.GoDown1) || Img2.Source.ToString().Contains(Path.Ray.GoDown2)) Img2.Source = Bmper(Path.Ray.StaticDown);
+            else if (Img2.Source.ToString().Contains(Path.Ray.GoRight)) Img2.Source = Bmper(Path.Ray.StaticRight);
+            LevelText.Content = Super1.CurrentLevel < 10 ? Txt.Com.Lv + ". " + Super1.CurrentLevel : Txt.Com.Lv + "." + Super1.CurrentLevel;
+            if (Sets.TableEN) ImgHide(TableMessage1);
+            MaxAndWidthHPcalculate();
+            MaxAndWidthAPcalculate();
+            CurrentHpApCalculate();
+            speed = 0;
+            Lab2.Foreground = Brushes.Yellow;
+            AnyShowX(LevelText, Lab2, HP, AP, HPtext, APtext, Img3, Img4, Img5, TimeTurnImg, HPbar, APbar, Time1);
+            AnyHideX(Threasure1, Med2, Img1, Img2, PharaohAppears, SaveProgress, JailImg1, JailImg2, JailImg3, JailImg5, JailImg6, JailImg7, Boulder1, Ancient, Warrior, FinalAppears);
+            Map1ModelsAllTurnOff1();
+            ChestsAndTablesAllTurnOff1();
+            if (Sets.SpecialBattle != 200) FightMenuBack();
+            ImgGrid(Img6, 23, 2);
+            AbilityBonuses[0] = 0;
+            AbilityBonuses[1] = 0;
+            Time1.Value = 100;
+            Icon0.Source = Super1.PlayerStatus == 0 ? Bmper(Path.IconStatePath.Usual) : Bmper(Path.IconStatePath.Poison);
         }
         private void RegularBattle()
         {
@@ -2791,37 +3043,12 @@ Error Number:2,State:0,Class:20
             BattleText2.Content = Sets.FoeType2Alive;
             AnyShow(BattleText2);
         }
-        private void CalculateBattleStatus()
-        {
-            EnemyNamesFight = new Byte[] { 0, 0, 0, 0 };
-            if (Img2.Source.ToString().Contains(Path.Ray.GoUp1) || Img2.Source.ToString().Contains(Path.Ray.GoUp2)) Img2.Source = Bmper(Path.Ray.StaticUp);
-            else if (Img2.Source.ToString().Contains(Path.Ray.GoLeft)) Img2.Source = Bmper(Path.Ray.StaticLeft);
-            else if (Img2.Source.ToString().Contains(Path.Ray.GoDown1) || Img2.Source.ToString().Contains(Path.Ray.GoDown2)) Img2.Source = Bmper(Path.Ray.StaticDown);
-            else if (Img2.Source.ToString().Contains(Path.Ray.GoRight)) Img2.Source = Bmper(Path.Ray.StaticRight);
-            LevelText.Content = Super1.CurrentLevel < 10 ? "Ур. " + Super1.CurrentLevel : "Ур." + Super1.CurrentLevel;
-            if (Sets.TableEN) ImgHide(TableMessage1);
-            MaxAndWidthHPcalculate();
-            MaxAndWidthAPcalculate();
-            CurrentHpApCalculate();
-            speed = 0;
-            Lab2.Foreground = Brushes.Yellow;
-            AnyShowX(LevelText, Lab2, HP, AP, HPtext, APtext, Img3, Img4, Img5, TimeTurnImg, HPbar, APbar, Time1);
-            AnyHideX(Threasure1, Med2, Img1, Img2, PharaohAppears, SaveProgress, JailImg1, JailImg2, JailImg3, JailImg5, JailImg6, JailImg7, Boulder1, Ancient, Warrior, FinalAppears);
-            Map1ModelsAllTurnOff1();
-            ChestsAndTablesAllTurnOff1();
-            if (Sets.SpecialBattle != 200) FightMenuBack();
-            ImgGrid(Img6, 23, 2);
-            AbilityBonuses[0] = 0;
-            AbilityBonuses[1] = 0;
-            Time1.Value = 100;
-            Icon0.Source = Super1.PlayerStatus == 0 ? Bmper(Path.IconStatePath.Usual) : Bmper(Path.IconStatePath.Poison);
-        }
         private void BossBattle1()
         {
             CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
-            BattleText3.Content = "Фараон: " + Foe1.EnemiesStillAlive;
+            BattleText3.Content = Txt.Bos.Pharaoh +": " + Foe1.EnemiesStillAlive;
             LabShow(BattleText3);
             Foe1.EnemyAppears[0] = "Фараон";
             Foe1.EnemyHP[0] = 500;
@@ -2840,7 +3067,7 @@ Error Number:2,State:0,Class:20
             CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
-            BattleText3.Content = "????: " + Foe1.EnemiesStillAlive;
+            BattleText3.Content = Txt.Bos.Friend + ": " + Foe1.EnemiesStillAlive;
             LabShow(BattleText3);
             Foe1.EnemyAppears[0] = "????";
             Foe1.EnemyHP[0] = 2000;
@@ -2859,7 +3086,7 @@ Error Number:2,State:0,Class:20
             CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
-            BattleText3.Content = "Владыка: " + Foe1.EnemiesStillAlive;
+            BattleText3.Content = Txt.Bos.AMaster+": " + Foe1.EnemiesStillAlive;
             LabShow(BattleText3);
             Foe1.EnemyAppears[0] = "Владыка";
             Foe1.EnemyHP[0] = 10000;
@@ -2880,7 +3107,7 @@ Error Number:2,State:0,Class:20
             CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
-            BattleText3.Content = "Угх-зан I: " + Foe1.EnemiesStillAlive;
+            BattleText3.Content = Txt.Bos.UghZan + ": " + Foe1.EnemiesStillAlive;
             LabShow(BattleText3);
             Foe1.EnemyAppears[0] = "Угх-зан I";
             Foe1.EnemyHP[0] = 500;
@@ -2935,6 +3162,59 @@ Error Number:2,State:0,Class:20
             BtnShowX(new Button[] { Fight, Cancel1 });
             SelectTarget();
         }
+        //[EN] Target select mech
+        //[RU] Механика выбора цели.
+        private void NormalTarget() { Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } }; ImgGrid(TrgtImg, grRowColumn[0, Sets.SelectedTarget], grRowColumn[1, Sets.SelectedTarget]); }
+        private void MegaTarget() { Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } }; ImgGrid(TrgtImg, Bits(grRowColumn[0, Sets.SelectedTarget] - 5), grRowColumn[1, Sets.SelectedTarget]); }
+        private void SelectWithKeyBoard(bool Left)
+        {
+            if (Left)
+            {
+                if (Sets.SelectedTarget > 0)
+                {
+                    if (Foe1.EnemyHP[1] == 0) Sets.SelectedTarget = Bits(Foe1.EnemyHP[0] != 0 ? Sets.SelectedTarget - 2 : Sets.SelectedTarget);
+                    else if (Foe1.EnemyHP[0] == 0) Sets.SelectedTarget = Bits(Sets.SelectedTarget > 1 ? Sets.SelectedTarget - 1 : Sets.SelectedTarget);
+                    else Sets.SelectedTarget--;
+                    InfoAboutEnemies();
+                }
+            }
+            else
+                if (Sets.SelectedTarget < Sets.Rnd1 - 1)
+            {
+                if (Foe1.EnemyHP[1] == 0) Sets.SelectedTarget = Bits(Foe1.EnemyHP[2] != 0 ? Sets.SelectedTarget + 2 : Sets.SelectedTarget);
+                else if (Foe1.EnemyHP[0] == 0) Sets.SelectedTarget = Bits(Sets.SelectedTarget < 2 ? Sets.SelectedTarget + 1 : Sets.SelectedTarget);
+                else Sets.SelectedTarget++;
+                InfoAboutEnemies();
+            }
+        }
+        //[EN] Info about enemies
+        //[RU] Информация по врагам.
+        private void InfoAboutEnemies()
+        {
+            int[][] newHP = { new int[] { Foe1.Spider.EnemyMHP, Foe1.Mummy.EnemyMHP, Foe1.Zombie.EnemyMHP, Foe1.Bones.EnemyMHP, Foe1.BOSS1.EnemyMHP, Foe1.SecretBOSS1.EnemyMHP }, new int[] { Foe1.Vulture.EnemyMHP, Foe1.Ghoul.EnemyMHP, Foe1.GrimReaper.EnemyMHP, Foe1.Scarab.EnemyMHP, Foe1.BOSS2.EnemyMHP }, new int[] { Foe1.KillerMole.EnemyMHP, Foe1.Imp.EnemyMHP, Foe1.Worm.EnemyMHP, Foe1.Master.EnemyMHP, Foe1.BOSS3.EnemyMHP } };
+            string[][] EnemySource = new string[][] { new string[] { Path.FoesStatePath.SpiderIcon, Path.FoesStatePath.MummyIcon, Path.FoesStatePath.ZombieIcon, Path.FoesStatePath.BonesIcon, Path.BossesStatePath.PharaohIcon, Path.BossesStatePath.UghZanIcon }, new string[] { Path.FoesStatePath.VultureIcon, Path.FoesStatePath.GhoulIcon, Path.FoesStatePath.GrimReaperIcon, Path.FoesStatePath.ScarabIcon, Path.BossesStatePath.WarriorIcon }, new string[] { Path.FoesStatePath.KillerMoleIcon, Path.FoesStatePath.ImpIcon, Path.FoesStatePath.WormIcon, Path.FoesStatePath.MasterIcon, Path.BossesStatePath.MrOfAllIcon } };
+            for (int en = 0; en < Foe1.EnemyName[CurrentLocation].Length; en++)
+                if (Foe1.EnemyAppears[Sets.SelectedTarget] == Foe1.EnemyName[CurrentLocation][en])
+                {
+                    BattleText1.Content = Foe1.EnemyName[CurrentLocation][en];
+                    HPenemyBar.Maximum = newHP[CurrentLocation][en];
+                    HPenemyBARwidth(HPenemyBar.Maximum);
+                    EnemyImg.Source = Bmper(EnemySource[CurrentLocation][en]);
+                    Grid.SetColumn(BattleText1, 17);
+                    break;
+                }
+            if (Sets.SpecialBattle == 0) { NormalTarget(); } else { MegaTarget(); };
+            HPenemyBar.Value = Foe1.EnemyHP[Sets.SelectedTarget];
+            HPenemy.Content = HPenemyBar.Value + "/" + HPenemyBar.Maximum;
+            RefreshAllHP();
+            LabShowX(new Label[] { HPenemy, BattleText1 });
+        }
+        private void HPenemyBARwidth(in double maxHp)
+        {
+            if (maxHp > 3500) { HPenemyBar.Width = HPenemyBar.Maximum / 16; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(0, 243, 255)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 243, 255)); }
+            else if (maxHp > 500) { HPenemyBar.Width = HPenemyBar.Maximum / 4; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(14, 222, 175)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(14, 222, 175)); }
+            else { HPenemyBar.Width = HPenemyBar.Maximum; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(50, 172, 40)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(50, 172, 40)); }
+        }
         public void SelectTarget()
         {
             Uri[] EnemySource = new Uri[] { Ura(Path.FoesStatePath.SpiderIcon), Ura(Path.FoesStatePath.MummyIcon), Ura(Path.FoesStatePath.ZombieIcon), Ura(Path.FoesStatePath.BonesIcon), Ura(Path.BossesStatePath.PharaohIcon), Ura(Path.BossesStatePath.UghZanIcon) };
@@ -2943,7 +3223,6 @@ Error Number:2,State:0,Class:20
             InfoAboutEnemies();
             WidelyUsedAnyTimer(out timer9, Target_Time_Tick16, new TimeSpan(0, 0, 0, 0, Shrt(100 / GameSpeed.Value)));
         }
-        private void CheckMapIfModelExistsX(in Byte[] Models, in Image[] images) { for (Byte i = 0; i < Models.Length; i++) if (CheckMapIfModelExists(Models[i])) ImgShow(images[i]); }
         private void AfterAction()
         {
             BattleText3.Foreground = Brushes.White;
@@ -2984,14 +3263,11 @@ Error Number:2,State:0,Class:20
             {
                 if (HPRegenerate != null) { HPRegenerate.IsEnabled = !HPRegenerate.IsEnabled; HPRegenerate.Stop(); }
                 if (APRegenerate != null) { APRegenerate.IsEnabled = !APRegenerate.IsEnabled; APRegenerate.Stop(); }
-                //ChestsAndTablesAllTurnOn1();
-                //if (CheckMapIfModelExists(7)) ImgShow(Boulder1);
-                //if (CurrentLocation == 0) Map1EnableModels(); else if (CurrentLocation == 1) ImgShowX(new Image[] { SecretChestImg1, SecretChestImg2 });
                 Sound1.Stop();
                 SEF(Path.GameSounds.NowTheWinnerIs);
                 Grid.SetColumn(BattleText1, 22);
                 AnyHideX(BattleText3, BattleText4, BattleText5);
-                FastTextChange(new Label[] { BattleText1, BattleText2 }, new string[] { "Победа!", "Пора переходить к добыче" });
+                FastTextChange(new Label[] { BattleText1, BattleText2 }, new string[] { Txt.Com.Won, Txt.Com.Thres });
                 AnyShowX(Img4, BattleText1, BattleText2, textOk2);
             }
             else if (Super1.CurrentHP > 0) Time();
@@ -3015,6 +3291,9 @@ Error Number:2,State:0,Class:20
             Dj(Path.GameNoises.StrongStand);
             Time();
         }
+
+        //[EN] Player and foes timing
+        //[RU] Соблюдение времени игроком и врагами.
         private void Time()
         {
             if ((Time1.Value == 100) && (HPbar.Value != 0))
@@ -3028,6 +3307,9 @@ Error Number:2,State:0,Class:20
             else WidelyUsedAnyTimer(out timer, Player_Time_Tick, new TimeSpan(0, 0, 0, 0, Shrt(240 / Super1.Speed / GameSpeed.Value)));
         }
         private void TimeEnemy() { Byte aglfoe = 25; if ((Foe1.EnemyHP[0] > 0) || (Foe1.EnemyHP[1] > 0) || (Foe1.EnemyHP[2] > 0)) WidelyUsedAnyTimer(out timer2, EnemyTime_Tick2, new TimeSpan(0, 0, 0, 0, Shrt((50 - aglfoe) / GameSpeed.Value))); }
+        
+        //[EN] Get necessary information from foes fast
+        //[RU] Быстрое получение нужной информации от врагов.
         private int CheckEnemies(out UInt16 EnemyAttack, Byte pos)
         {
             Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
@@ -3096,7 +3378,9 @@ Error Number:2,State:0,Class:20
         public static Byte PlayerHurt = 0;
         public static Byte PlayerHurtM = 0;
         public static Byte[] EnemyAtck = new Byte[] { 0, 0, 0 };
-        //public static string DamageGet = "";
+
+        //[EN] Fast setting values
+        //[RU] Быстрая установка значений.
         public void SetAnyValues(Object[] Properties, params Object[] Values)
         {
             for (Byte i = 0; i < Values.Length; i++)
@@ -3181,16 +3465,7 @@ Error Number:2,State:0,Class:20
             GetOut(out fagl);
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
-            if (agl > fagl)
-            {
-                timer2.Stop();
-                speed = 1;
-            }
-            else
-            {
-                BattleText2.Content = "Не удается сбежать!";
-                LabShow(BattleText2);
-            }
+            if (agl > fagl) { timer2.Stop(); speed = 1; }
             WidelyUsedAnyTimer(out timer8, Escape_Time_Tick9, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
             Dj(Path.GameNoises.FleeAway);
         }
@@ -3289,7 +3564,7 @@ Error Number:2,State:0,Class:20
 
         private void SuperDmg_Time_Tick22(object sender, EventArgs e)
         {
-            UInt16 supersp = Shrt(Foe1.EnemyAppears[0] != "Фараон"? Super1.Special * 2 : Super1.Special);
+            UInt16 supersp = Shrt(Foe1.EnemyAppears[0] != "Фараон" ? Super1.Special * 2 : Super1.Special);
             supersp += Shrt(Super1.Special * Super1.Speed * 0.01);
             UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
@@ -3459,7 +3734,7 @@ Error Number:2,State:0,Class:20
         private void FightStaticButtons_MouseEnter(object sender, MouseEventArgs e)
         {
             Button[] FightMenu = { Cancel1, Cancel2, Back1, Back2 };
-            String[] BattleTxt = { "Отменить нападение", "Отменить умение", "Обратно к действиям", "Обратно к действиям" };
+            String[] BattleTxt = { Txt.Can.Fgt, Txt.Can.Act, Txt.Can.Back, Txt.Can.Back };
             for (Byte i = 0; i < FightMenu.Length; i++)
                 if (sender.Equals(FightMenu[i]))
                 {
@@ -3485,7 +3760,7 @@ Error Number:2,State:0,Class:20
             Button[] FightMenu = { Button2, Button3, Button4, Items, Abilities, Fight, ACT1, ACT2, ACT3 };
             Image[] images = { FightImg, DefenceImg, EscapeFromBattleImg, ItemsImg, AbilitiesImg, SelectTrgt1Img, SelectTrgt2Img, SelectTrgt3Img, SelectTrgt4Img };
             BitmapImage[] Btim = { Bmper(Path.BtnAfter.Fight), Bmper(Path.BtnAfter.Defence), Bmper(Path.BtnAfter.Escape), Bmper(Path.BtnAfter.Bag), Bmper(Path.BtnAfter.Skills), Bmper(Path.BtnAfter.Select), Bmper(Path.BtnAfter.Select), Bmper(Path.BtnAfter.Select), Bmper(Path.BtnAfter.Select) };
-            String[] text = { "Атаковать выбранного врага", "Встать в стойку (Защита X2)", "Сбежать из боя", "Посмотреть инвентарь", "Особые умения", "Подтвердить цель", "Поджечь выбранного врага", "Ударить врага хлыстом", "Подстрелить врага" };
+            String[] text = { Txt.Fht.Atk, Txt.Fht.Def, Txt.Fht.Esc, Txt.Fht.Inv, Txt.Fht.Act, Txt.Fht.Trg, Txt.Fht.S1, Txt.Fht.S2, Txt.Fht.S3 };
             for (Byte i = 0; i < FightMenu.Length; i++)
                 if (sender.Equals(FightMenu[i]))
                 {
@@ -3496,28 +3771,10 @@ Error Number:2,State:0,Class:20
                 }
         }
         private void HideFightIconPersActions() { AnyHideX(HPenemyBar, BattleText4, BattleText5, BattleText6, HPenemy, ItemText, ItemsCountImg, Img4, Img5, TrgtImg, Cure, Heal, Torch, Whip, Super, Back1, Button2, Button3, Button4, Items, Abilities, Fight, Cancel1, ACT1, ACT2, Cancel2); }
-        private void GameOver_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            /*AnyHideX(Button2, Button3, Button4, Threasure1, GameOver);
-            AnyShowX(Img1, Button1, Lab1);
-            Map1ModelsAllTurnOff1();
-            ChestsAndTablesAllTurnOff1();
-            HideFightIconPersActions();
-            WonOrDied();
-            if (timer != null) timer.Stop();
-            Sound1.Position = new TimeSpan(0, 0, 0, 0, 0);
-            Img1.Source = Bmper(Path.Backgrounds.Main);
-            HeyPlaySomething(Path.GameMusic.MainTheme);*/
-            Form1.Close();
-            Form1.Show();
-        }
+        private void GameOver_MediaEnded(object sender, RoutedEventArgs e) { Form1.Close(); Form1.Show(); }
         public static Byte[] AbilityBonuses = new Byte[] { 0, 0, 0, 0 };
         private void AbilitiesMakeDisappear1() { BtnHideX(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake, Learn, Back1, SwitchAbils }); }
-        private void Back1_Click(object sender, RoutedEventArgs e)
-        {
-            AbilitiesMakeDisappear1();
-            FightMenuBack();
-        }
+        private void Back1_Click(object sender, RoutedEventArgs e) { AbilitiesMakeDisappear1(); FightMenuBack(); }
         private void PersonTextAnimationStart(in EventHandler PersonAction, in EventHandler TextAction, in UInt16 PersonSpeed, in UInt16 TextSpeed)
         {
             WidelyUsedAnyTimer(out timer8, PersonAction, new TimeSpan(0, 0, 0, 0, PersonSpeed));
@@ -3630,10 +3887,10 @@ Error Number:2,State:0,Class:20
                         Super1.Experience = 0;
                         NextExpBar.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
                         NextExpBar.Value = 0;
-                        FastTextChange(new Label[] { AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel }, new string[] { "+" + (Super1.MaxHP - CurrentNextHPAP[0]), "+" + (Super1.MaxAP - CurrentNextHPAP[1]), "+" + (Super1.Attack - CurrentNextParams[0]), "+" + (Super1.Defence - CurrentNextParams[1]), "+" + (Super1.Speed - CurrentNextParams[2]), "+" + (Super1.Special - CurrentNextParams[3]), "Опыт " + NextExpBar.Value + "/" + NextExpBar.Maximum, "Уровень " + Super1.CurrentLevel });
+                        FastTextChange(new Label[] { AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel }, new string[] { "+" + (Super1.MaxHP - CurrentNextHPAP[0]), "+" + (Super1.MaxAP - CurrentNextHPAP[1]), "+" + (Super1.Attack - CurrentNextParams[0]), "+" + (Super1.Defence - CurrentNextParams[1]), "+" + (Super1.Speed - CurrentNextParams[2]), "+" + (Super1.Special - CurrentNextParams[3]), Txt.Com.Exp + " " + NextExpBar.Value + "/" + NextExpBar.Maximum, Txt.Com.Lv + " " + Super1.CurrentLevel });
 
                         if (!NewLevelGet.IsEnabled) LevelUpShow();
-                        NewLevelGet.Content = (LevelUpCount > 1? "Новый уровень! X" + LevelUpCount : "Новый уровень!");
+                        NewLevelGet.Content = (LevelUpCount > 1? Txt.Com.NewLv + " X" + LevelUpCount : Txt.Com.NewLv);
                         LevelUpCount += 1;
                         Dj(Path.GameNoises.LevelUp);
                         if (!timer2.IsEnabled)
@@ -3645,8 +3902,7 @@ Error Number:2,State:0,Class:20
                     {
                         Super1.Experience = Shrt(NextExpBar.Maximum);
                         NextExpBar.Value = NextExpBar.Maximum;
-                        //                "Максимальный"
-                        ExpText.Content = "Профессионал";
+                        ExpText.Content = Txt.Com.Expert;
                         Exp = 0;
                         timer12.Stop();
                         if (!NewLevelGet.IsEnabled) ButtonShow(TextOk1); else WidelyUsedAnyTimer(out timer13, AddingStats_Time_Tick41, new TimeSpan(0, 0, 0, 0, 25));
@@ -3656,7 +3912,7 @@ Error Number:2,State:0,Class:20
                 {
                     Super1.Experience++;
                     NextExpBar.Value= Super1.Experience;
-                    ExpText.Content = "Опыт " + NextExpBar.Value + "/" + NextExpBar.Maximum;
+                    ExpText.Content = Txt.Com.Exp + " " + NextExpBar.Value + "/" + NextExpBar.Maximum;
                 }
                 Exp--;
             }
@@ -3694,7 +3950,7 @@ Error Number:2,State:0,Class:20
                 FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Path.PersonStatePath.Usual), Bmper(Path.IconStatePath.Usual)));
                 BAG.Armor[3] = true;
                 BAG.Jacket = Super1.PlayerEQ[1] == 0;
-                ItemsGetSlot1.Content += "Футболка серьёзного \n";
+                ItemsGetSlot1.Content += Txt.Eqp.Tors.Serious+" \n";
                 LabShow(ItemsGetSlot1);
             }
             AnyHideX(HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, textOk2);
@@ -3730,7 +3986,7 @@ Error Number:2,State:0,Class:20
                 APbarOver666.Value = (APbarOver333.Width < 333 ? 0 : APbarOver666.Value);
             }
             SetAnyValues(new object[] { BeforeHPbar.Value, AfterHPbar.Value, BeforeHPbarOver333.Value, AfterHPbarOver333.Value, BeforeHPbarOver666.Value, AfterHPbarOver666.Value, BeforeAPbar.Value, AfterAPbar.Value, BeforeAPbarOver333.Value, AfterAPbarOver333.Value, BeforeAPbarOver666.Value, AfterAPbarOver666.Value }, new object[] { HPbar.Value, HPbar.Value, HPbarOver333.Value, HPbarOver333.Value, HPbarOver666.Value, HPbarOver666.Value, APbar.Value, APbar.Value, APbarOver333.Value, APbarOver333.Value, APbarOver666.Value, APbarOver666.Value });
-            FastTextChange(new Label[] { MaterialsOnHand, MaterialsAdd, AfterLevel }, new string[] { "" + BAG.Materials, "+" + Mat, "Уровень " + Super1.CurrentLevel });
+            FastTextChange(new Label[] { MaterialsOnHand, MaterialsAdd, AfterLevel }, new string[] { "" + BAG.Materials, "+" + Mat, Txt.Com.Lv + " " + Super1.CurrentLevel });
             AnyShowX(ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg, NextExpBar, BeforeHPbar, BeforeAPbar);
             ItemsGetSlot1.Content = "";
             WidelyUsedAnyTimer(out timer12, Levelling_Time_Tick40, new TimeSpan(0, 0, 0, 0, 0));
@@ -3741,11 +3997,15 @@ Error Number:2,State:0,Class:20
             BAG.BandageITM = ItemsGetAfterFight(1, BAG.BandageITM);
             BAG.EtherITM = ItemsGetAfterFight(2, BAG.EtherITM);
             BAG.FusedITM = ItemsGetAfterFight(3, BAG.FusedITM);
+            BAG.HerbsITM = ItemsGetAfterFight(4, BAG.HerbsITM);
+            BAG.Ether2ITM = ItemsGetAfterFight(5, BAG.Ether2ITM);
+            BAG.SleepBagITM = ItemsGetAfterFight(6, BAG.SleepBagITM);
+            BAG.ElixirITM = ItemsGetAfterFight(7, BAG.ElixirITM);
         }
         private Byte ItemsGetAfterFight(in Byte ItemNo, Byte Value)
         {
             Byte item = 0;
-            String[] ItemNames = { "Антидот", "Бинт", "Эфир", "Смесь" };
+            String[] ItemNames = { "Антидот", "Бинт", "Эфир", "Смесь", "Целебные травы", "Бутыль эфира", "Спальный мешок", "Эликсир" };
             if (Sets.ItemsDropRate[ItemNo] != 0)
                 while (Sets.ItemsDropRate[ItemNo] != 0)
                 {
@@ -3769,8 +4029,7 @@ Error Number:2,State:0,Class:20
         }
 
         private void InBattleHighSkillsMenu()
-        {
-            //throw new Exception(Path.BtnCustomize.ArrowPrev);
+        {             
             if (ToNextImg.Source.ToString().Contains(Path.BtnCustomize.ArrowNext))
             {
                 BtnHideX(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control });
@@ -3845,16 +4104,11 @@ Error Number:2,State:0,Class:20
         }
         private void SuperCheckFoes(in Byte seltrg)
         {
-            //Label[] Enemies = { BattleText3, BattleText4, BattleText5 };
             Byte[] FoesAlive = { Sets.FoeType1Alive, Sets.FoeType2Alive, Sets.FoeType3Alive, Sets.FoeType4Alive };
             for (Byte i = 0; i < FoesAlive.Length; i++)
                 if (Foe1.EnemyAppears[seltrg] == Foe1.EnemyName[CurrentLocation][i])
                 {
-                    if (FoesAlive[i] - 1 <= 0)
-                    {
-                        Sets.EnemiesGetLost(i);
-                        FoesAlive[i] = 0;
-                    }
+                    if (FoesAlive[i] - 1 <= 0) { Sets.EnemiesGetLost(i); FoesAlive[i] = 0; }
                     else
                     {
                         Sets.EnemiesGetDown(i);
@@ -3925,7 +4179,7 @@ Error Number:2,State:0,Class:20
             BarColoring(HPbar1, 0);
             BarColoring(APbar1, 1);
             Icon0.Source = Bmper(Super1.PlayerStatus == 0 ? Path.IconStatePath.Usual : Path.IconStatePath.Poison);
-            StatusP.Content = Super1.PlayerStatus == 0 ? "Статус: здоров ♫" : "Статус: отравлен §";
+            StatusP.Content = Super1.PlayerStatus == 0 ? Txt.Com.Hlthy + " ♫" : Txt.Com.Ill + " §";
         }
         private void BarColoring(ProgressBar Bar, in Byte color)
         {
@@ -3968,17 +4222,11 @@ Error Number:2,State:0,Class:20
             MegaHide();
             HeroAbilities();
             Abils.IsEnabled = false;
-            //                  "                                                                       "                                                                       ""                                                                       "
-            FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { "Каждое умение становится доступным при достижении определённого\nуровня. Используя их правильно, можно свернуть горы!", "Умения героя" });
+            FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Skills, Txt.Sct.Skills });
             AnyShowX(Describe2, DescribeHeader, Describe1);
         }
         private void CheckAccessItems(in Byte[] bag, Button[] btn, Label[] lab) { for (Byte i = 0; i < lab.Length; i++) if (bag[i] >= 1) { ButtonShow(btn[i]); LabShow(lab[i]); } }
-        private void CheckAccessItems(in Byte[] bag, Button[] btn)
-        {
-            for (Byte i = 0; i < btn.Length; i++)            
-                if (bag[i] >= 1) ButtonShow(btn[i]);
-                else ButtonHide(btn[i]);
-        }
+        private void CheckAccessItems(in Byte[] bag, Button[] btn) { for (Byte i = 0; i < btn.Length; i++) if (bag[i] >= 1) ButtonShow(btn[i]); else ButtonHide(btn[i]); }
         private void HeroItems()
         {
             MenuHpApExp();            
@@ -3989,7 +4237,7 @@ Error Number:2,State:0,Class:20
             FastEnableDisableBtn(new Boolean[] { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] != 150, false }, new Button[] { SleepBag1, Items0 });
             CraftSwitch.Content = "Создание";
             MaterialsCraft.Content = BAG.Materials;
-            FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { "Инвентарь", "Предметы бывают очень полезными как в бою, так и вне боя. Лучше\nвсего перевязывать раны - иначе этот напалм не выдержать." });
+            FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Items, Txt.Sct.Items });
             AnyShowX(DescribeHeader, Describe2, Describe1, StatusP, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, MaterialsCraft, HPbar1, APbar1, CraftSwitch, Menu1, Icon0, MaterialsCraftImg);
         }
         private void Items0_Click(object sender, RoutedEventArgs e)
@@ -4013,7 +4261,7 @@ Error Number:2,State:0,Class:20
             LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 2, 4, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 7, 7, Bits(Numb(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(HPbar1.Width) / 32)), Bits(Numb(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(APbar1.Width) / 32)), Bits(Numb(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(ExpBar1.Width) / 32)) });
             AnyShowX(Menu1, Img2, Img1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, HPbar1, APbar1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, DescribeHeader, Describe1, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4);
             FastEnableDisableBtn(false, new Button[] { Equip, Remove1, Remove2, Remove3, Remove4, Equip1, Equip2, Equip3, Equip4 });
-            FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { "Снаряжение героя", "Отличное оснащение даёт преимущество в бою." });
+            FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Equip, Txt.Sct.Equip });
         }
         private void FastEnableDisableBtn(Boolean enabled, params Button[] buttons) { foreach (Button btn in buttons) btn.IsEnabled = enabled; }
         private void FastEnableDisableBtn(Boolean[] enabled, params Button[] buttons) { for (Byte i=0;i<enabled.Length;i++) buttons[i].IsEnabled = enabled[i]; }
@@ -4031,12 +4279,12 @@ Error Number:2,State:0,Class:20
             AnyShowX(Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4);
             FastEnableDisableBtn(new Boolean[] { BAG.Hands && (Super1.PlayerEQ[0] == 0), BAG.Jacket && (Super1.PlayerEQ[1] == 0), BAG.Legs && (Super1.PlayerEQ[2] == 0), BAG.Boots && (Super1.PlayerEQ[3] == 0), !BAG.Hands && (Super1.PlayerEQ[0] != 0),!BAG.Jacket && (Super1.PlayerEQ[1] != 0),!BAG.Legs && (Super1.PlayerEQ[2] != 0),!BAG.Boots && (Super1.PlayerEQ[3] != 0) }, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4);
         }
-        private void StatsMeaning() { FastTextChange(new Label[] { Level0, ATK1, DEF1, AG1, SP1 }, new string[] { "Уровень: " + Super1.CurrentLevel, Convert.ToString(Super1.Attack + Super1.PlayerEQ[0] + Sets.SeriousBonus), Convert.ToString(Super1.Defence + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3]+Sets.SeriousBonus), Convert.ToString(Super1.Speed), Convert.ToString(Super1.Special) }); }
+        private void StatsMeaning() { FastTextChange(new Label[] { Level0, ATK1, DEF1, AG1, SP1 }, new string[] { Txt.Com.Lv + ": " + Super1.CurrentLevel, Convert.ToString(Super1.Attack + Super1.PlayerEQ[0] + Sets.SeriousBonus), Convert.ToString(Super1.Defence + Super1.PlayerEQ[1] + Super1.PlayerEQ[2] + Super1.PlayerEQ[3]+Sets.SeriousBonus), Convert.ToString(Super1.Speed), Convert.ToString(Super1.Special) }); }
         private void OnRemove_Click(object sender, RoutedEventArgs e)
         {
             Button[] buttons = { Remove1, Remove2, Remove3, Remove4 };
             Label[] labels = { EquipH, EquipB, EquipL, EquipD };
-            string[] descr = { "Правая рука","Тело","Ноги","Ступни" };
+            string[] descr = { Txt.Eqp.Hand.Bare, Txt.Eqp.Tors.Bare, Txt.Eqp.Legs.Bare, Txt.Eqp.Boot.Bare };
             for (Byte i=0;i < buttons.Length; i++)
                 if (sender.Equals(buttons[i]))
                 {
@@ -4071,54 +4319,44 @@ Error Number:2,State:0,Class:20
             ButtonShow(CancelEq);
         }
         private void CancelEq_Click(object sender, RoutedEventArgs e) { BtnHideX(new Button[] { Equipments, Equipments2, Equipments3, Equipments4, CancelEq }); }
+        private void ShowSomeTasks(Label[] labs, Image[] imgs, in string[] texts, in string[] bmps)
+        {
+            AnyShowX(labs, imgs);
+            FastTextChange(labs, texts);
+            FastImgChange(imgs, BmpersToX(bmps));
+        }
+        private void ShowSomeTasks(Label labs, Image imgs, in string texts, in string bmps)
+        {
+            AnyShowX(labs, imgs);
+            labs.Content = texts;
+            imgs.Source = Bmper(bmps);
+        }
+        private void RealTasks()
+        {
+            string[] TasksText = { Txt.Goal.T1, Txt.Goal.T2, Txt.Goal.T3, Txt.Goal.T4, Txt.Goal.T5, Txt.Goal.T6, Txt.Goal.T7, Txt.Goal.T8, Txt.Goal.T9, Txt.Goal.T10 };
+            string[] uriSources = new string[] { Path.MenuImgs.UsualTask, Path.MenuImgs.Completed };
+            switch (Super1.MenuTask)
+            {
+                case 0: ShowSomeTasks(Task1, Task1Img, TasksText[0], uriSources[0]); break;
+                case 1: ShowSomeTasks(new Label[] { Task1, Task2 }, new Image[] { Task1Img, Task2Img }, new string[] { TasksText[0], TasksText[1] }, new string[] { uriSources[1], uriSources[0] }); break;
+                case 2: ShowSomeTasks(new Label[] { Task1, Task2, Task3 }, new Image[] { Task1Img, Task2Img, Task3Img }, new string[] { TasksText[0], TasksText[1], TasksText[2] }, new string[] { uriSources[1], uriSources[1], uriSources[0] }); break;
+                case 3: ShowSomeTasks(new Label[] { Task1, Task2, Task3, Task4 }, new Image[] { Task1Img, Task2Img, Task3Img, Task4Img }, new string[] { TasksText[0], TasksText[1], TasksText[2], TasksText[3] }, new string[] { uriSources[1], uriSources[1], uriSources[1], uriSources[0] }); break;
+                case 4: ShowSomeTasks(Task1, Task1Img, TasksText[4], uriSources[0]); break;
+                case 5: ShowSomeTasks(new Label[] { Task1, Task2 }, new Image[] { Task1Img, Task2Img }, new string[] { TasksText[4], TasksText[5] }, new string[] { uriSources[1], uriSources[0] }); break;
+                case 6: ShowSomeTasks(new Label[] { Task1, Task2, Task3 }, new Image[] { Task1Img, Task2Img, Task3Img }, new string[] { TasksText[4], TasksText[5], TasksText[6] }, new string[] { uriSources[1], uriSources[1], uriSources[0] }); break;
+                case 7: ShowSomeTasks(Task1, Task1Img, TasksText[7], uriSources[0]); break;
+                case 8: ShowSomeTasks(new Label[] { Task1, Task2 }, new Image[] { Task1Img, Task2Img }, new string[] { TasksText[7], TasksText[8] }, new string[] { uriSources[1], uriSources[0] }); break;
+                default: ShowSomeTasks(Task1, Task1Img, TasksText[9], uriSources[0]); break;
+            }
+        }
         private void HeroTasks()
         {
             if (!Items0.IsEnabled) Dj(Path.GameNoises.BagClose);
             MegaHide();
             RightPanelMenuTurnON();
             Tasks.IsEnabled = false;
-            string[] TasksText = { "Найдите способ открыть дверь", "Соберите другой ключ", "Соберите последний ключ", "Проверьте загадочный артефакт", "Найдите другой способ открыть врата","Откройте путь до артефакта", "Проверьте загадочный артефакт", "Найдите переправу через пропасть","Выдвините мост к артефакту","Заберите последний ключ древних тайн" };
-            string[] uriSources = new string[] { Path.MenuImgs.UsualTask, Path.MenuImgs.Completed };
-            switch (Super1.MenuTask)
-            {
-                case 0:
-                    AnyShowX(Task1, Task1Img);
-                    Task1.Content = TasksText[0];
-                    Task1Img.Source = Bmper(uriSources[0]);
-                    break;
-                case 1:
-                    AnyShowX(Task1, Task2, Task1Img, Task2Img);  
-                    FastTextChange(new Label[] { Task1, Task2 }, new string[] { TasksText[0], TasksText[1] });
-                    FastImgChange(new Image[] { Task1Img, Task2Img }, BmpersToX(Bmper(uriSources[1]), Bmper(uriSources[0])));
-                    break;
-                case 2:
-                    AnyShowX(Task1, Task2, Task3, Task1Img, Task2Img, Task3Img);
-                    FastTextChange(new Label[] { Task1, Task2, Task3 }, new string[] { TasksText[0], TasksText[1], TasksText[2] });
-                    FastImgChange(new Image[] { Task1Img, Task2Img, Task3Img }, BmpersToX(Bmper(uriSources[1]), Bmper(uriSources[1]), Bmper(uriSources[0])));
-                    break;
-                case 3:
-                    AnyShowX(Task1, Task2, Task3, Task4, Task1Img, Task2Img, Task3Img, Task4Img);
-                    FastTextChange(new Label[] { Task1, Task2, Task3, Task4 }, new string[] { TasksText[0], TasksText[1], TasksText[2], TasksText[3] });
-                    FastImgChange(new Image[] { Task1Img, Task2Img, Task3Img, Task4Img }, BmpersToX(Bmper(uriSources[1]), Bmper(uriSources[1]), Bmper(uriSources[1]), Bmper(uriSources[0])));
-                    break;
-                case 4:
-                    AnyShowX(Task1, Task1Img);
-                    FastTextChange(new Label[] { Task1 }, new string[] { TasksText[4] });
-                    Task1Img.Source = Bmper(uriSources[0]);
-                    break;
-                case 5:
-                    AnyShowX(Task1, Task2, Task1Img, Task2Img);
-                    FastTextChange(new Label[] { Task1, Task2 }, new string[] { TasksText[4], TasksText[5] });
-                    FastImgChange(new Image[] { Task1Img, Task2Img }, BmpersToX(Bmper(uriSources[1]), Bmper(uriSources[0])));
-                    break;
-                case 6:
-                    AnyShowX(Task1, Task2, Task3, Task1Img, Task2Img, Task3Img);
-                    FastTextChange(new Label[] { Task1, Task2, Task3 }, new string[] { TasksText[4], TasksText[5], TasksText[6] });
-                    FastImgChange(new Image[] { Task1Img, Task2Img, Task3Img }, BmpersToX(Bmper(uriSources[1]), Bmper(uriSources[1]), Bmper(uriSources[0])));
-                    break;
-                default: AnyShowX(Task1, Task1Img); break;
-            }
-            FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { "Выполняя задачи нужно оставаться предельно осторожным. Никто не\nзнает, что поджидает в святилищах древних.", "Текущие цели" });            
+            RealTasks();
+            FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Tasks, Txt.Sct.Tasks });            
             AnyShowX(Describe1, Describe2, DescribeHeader);
         }
         private void Tasks_Click(object sender, RoutedEventArgs e) { HeroTasks(); }
@@ -4128,9 +4366,9 @@ Error Number:2,State:0,Class:20
             MegaHide();
             RightPanelMenuTurnON();
             Info.IsEnabled = false;
-            GameMenu.InfoChange1 = 0;
-            FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { GameMenu.HelpInfo2[0, GameMenu.InfoChange1], GameMenu.HelpInfo2[1, GameMenu.InfoChange1], GameMenu.HelpInfo2[2, GameMenu.InfoChange1] }, new string[] { GameMenu.HelpInfo1[0, GameMenu.InfoChange1], GameMenu.HelpInfo1[1, GameMenu.InfoChange1], GameMenu.HelpInfo1[2, GameMenu.InfoChange1] });
-            FastTextChange(new Label[] { InfoIndex, Describe1, Describe2 }, new string[] { GameMenu.InfoChange1 + 1 + "/19", "Герой! Контролируй прогресс\nу точек контроля со знаком \"S\"", "Руководство игрока" });
+            Txt.Doc.InfoChange1 = 0;
+            FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { Txt.Doc.HelpInfo2[0, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo2[1, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo2[2, Txt.Doc.InfoChange1] }, new string[] { Txt.Doc.HelpInfo1[0, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo1[1, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo1[2, Txt.Doc.InfoChange1] });
+            FastTextChange(new Label[] { InfoIndex, Describe1, Describe2 }, new string[] { Txt.Doc.InfoChange1 + 1 + "/19", Txt.Hnt.Infos, Txt.Sct.Infos });
             AnyShowX(DescribeHeader, Describe1, Describe2, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, InfoIndexPlus, InfoText1, InfoText2, InfoText3, InfoImg1, InfoImg2, InfoImg3);
             GameHint();
         }
@@ -4138,20 +4376,20 @@ Error Number:2,State:0,Class:20
         private void FastImgChange(Image[] ImageArray, BitmapImage[] bitmapImage) { for (Byte i = 0; i < ImageArray.Length; i++) ImageArray[i].Source = bitmapImage[i]; }
         private void InfoIndexPlus_Click(object sender, RoutedEventArgs e)
         {
-            GameMenu.InfoChange1 += 1;
-            FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { GameMenu.HelpInfo2[0, GameMenu.InfoChange1], GameMenu.HelpInfo2[1, GameMenu.InfoChange1], GameMenu.HelpInfo2[2, GameMenu.InfoChange1] }, new string[] { GameMenu.HelpInfo1[0, GameMenu.InfoChange1], GameMenu.HelpInfo1[1, GameMenu.InfoChange1], GameMenu.HelpInfo1[2, GameMenu.InfoChange1] });
-            InfoIndex.Content = (GameMenu.InfoChange1 + 1) + "/19";
+            Txt.Doc.InfoChange1 += 1;
+            FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { Txt.Doc.HelpInfo2[0, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo2[1, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo2[2, Txt.Doc.InfoChange1] }, new string[] { Txt.Doc.HelpInfo1[0, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo1[1, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo1[2, Txt.Doc.InfoChange1] });
+            InfoIndex.Content = (Txt.Doc.InfoChange1 + 1) + "/19";
             ButtonShow(InfoIndexMinus);
-            if (GameMenu.InfoChange1 >= 18) ButtonHide(InfoIndexPlus);
+            if (Txt.Doc.InfoChange1 >= 18) ButtonHide(InfoIndexPlus);
             GameHint();
         }
         private void InfoIndexMinus_Click(object sender, RoutedEventArgs e)
         {
-            GameMenu.InfoChange1 -= 1;
-            FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { GameMenu.HelpInfo2[0, GameMenu.InfoChange1], GameMenu.HelpInfo2[1, GameMenu.InfoChange1], GameMenu.HelpInfo2[2, GameMenu.InfoChange1] }, new string[] { GameMenu.HelpInfo1[0, GameMenu.InfoChange1], GameMenu.HelpInfo1[1, GameMenu.InfoChange1], GameMenu.HelpInfo1[2, GameMenu.InfoChange1] });
-            InfoIndex.Content = GameMenu.InfoChange1 + 1 + "/19";
+            Txt.Doc.InfoChange1 -= 1;
+            FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { Txt.Doc.HelpInfo2[0, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo2[1, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo2[2, Txt.Doc.InfoChange1] }, new string[] { Txt.Doc.HelpInfo1[0, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo1[1, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo1[2, Txt.Doc.InfoChange1] });
+            InfoIndex.Content = Txt.Doc.InfoChange1 + 1 + "/19";
             ButtonShow(InfoIndexPlus);
-            if (GameMenu.InfoChange1 <= 0) ButtonHide(InfoIndexMinus);
+            if (Txt.Doc.InfoChange1 <= 0) ButtonHide(InfoIndexMinus);
             GameHint();
         }
         private void PharaohBattle_MediaEnded(object sender, RoutedEventArgs e)
@@ -4175,13 +4413,11 @@ Error Number:2,State:0,Class:20
                 case 8: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter3), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); break;
                 case 9: MediaShowAdvanced(ChapterIntroduction, Ura(Path.CutScene.PreChapter4), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.GetAway); break;
                 case 10: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Titres), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.SayGoodbye); Super1.MenuTask++; break;
-                case 11: // break;
                 default: Form1.Close(); break;
             }
         }
         private void Sound3_MediaEnded(object sender, RoutedEventArgs e) { Sound3.Stop(); Sound3.Position = new TimeSpan(0, 0, 0, 0, 0); }
         private void Win_MediaOpened(object sender, RoutedEventArgs e) { WonOrDied(); }
-        private void Trgt_MediaFailed(object sender, ExceptionRoutedEventArgs e) { Trgt.Stop(); Trgt.Play(); }
         private void Med1_MediaOpened(object sender, RoutedEventArgs e) { AnyHideX(Button1, Img1, Lab1, Skip1); AnyShow(Skip1); }
         private void PharaohBattle_MediaFailed(object sender, ExceptionRoutedEventArgs e)
         {
@@ -4209,7 +4445,7 @@ Error Number:2,State:0,Class:20
         private void RemoveButtons_MouseLeave(object sender, MouseEventArgs e) { LabHide(sender.Equals(Remove1) ? AddATK1 : AddDEF1); }
         private void CheckAccessMaterials(in UInt16[] bag, Button[] btn) { for (Byte i = 0; i < btn.Length; i++) if (BAG.Materials >= bag[i]) ButtonShow(btn[i]); else ButtonHide(btn[i]); }
         private void TooManyItems(in Byte[] bag, Button[] btn) { for (Byte i = 0; i < btn.Length; i++) btn[i].IsEnabled = bag[i] < 255; }
-        private void FastBtnsDisable(in Boolean Logic, params Button[] buttons) { foreach (Button btn in buttons) btn.IsEnabled = false; }
+        private void FastBtnsDisable(in Boolean Logic, params Button[] buttons) { foreach (Button btn in buttons) btn.IsEnabled = Logic; }
         private void CraftSwitch_Click(object sender, RoutedEventArgs e)
         {
             if (CraftSwitch.Content.ToString() == "Создание") {
@@ -4236,6 +4472,9 @@ Error Number:2,State:0,Class:20
             RefreshAllHPAP();
             MenuHpApExp();
         }
+
+        //[EN] Game settings
+        //[RU] Настройки игры.
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             Settings.IsEnabled = false;
@@ -4243,11 +4482,7 @@ Error Number:2,State:0,Class:20
             ChbShow(TimerTurnOn);
             HeroSettings();
         }
-        private void MusicLoud_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Sound1.Volume = MusicLoud.Value;
-            if (MusicPercent != null) MusicPercent.Content = Bits(Sound1.Volume * 100) + "%";
-        }
+        private void MusicLoud_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) { Sound1.Volume = MusicLoud.Value; if (MusicPercent != null) MusicPercent.Content = Bits(Sound1.Volume * 100) + "%"; }
         private void SoundsLoud_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Sound3.Volume = SoundsLoud.Value;
@@ -4262,19 +4497,12 @@ Error Number:2,State:0,Class:20
             if (NoisePercent != null) NoisePercent.Content = Bits(Sound2.Volume * 100) + "%";
         }
         private void GameSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) { if (GameSpeedX != null) GameSpeedX.Content = "x" + Math.Round(GameSpeed.Value, 2); }
-        private void Brightness_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (BrightnessPercent != null)
-            {
-                BrightnessImg.Opacity = 1 - Brightness.Value;
-                BrightnessPercent.Content = Bits(Brightness.Value * 100) + "%";
-            }
-        }
+        private void Brightness_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) { if (BrightnessPercent != null) { BrightnessImg.Opacity = 1 - Brightness.Value; BrightnessPercent.Content = Bits(Brightness.Value * 100) + "%"; } }
         private void HeroSettings()
         {
             RightPanelMenuTurnON();
             AnyShowX(MusicText, SoundsText, NoiseText, GameSpeedText, BrightnessText, MusicPercent, SoundsPercent, NoisePercent, BrightnessPercent, GameSpeedX, MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness, DescribeHeader, Describe1, Menu1);
-            FastTextChange(new Label[] { Describe2 }, new string[] { "Настройки", "Настройки помогают определить предпочтения. Помимо стандартного\nизменения громкости и яркости, вы можете регулировать скорость боя" });
+            FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Setts, Txt.Sct.Setts });
         }
         private void TimerTurnOn_Checked(object sender, RoutedEventArgs e) { TimeRecord.Stop(); }
         private void TimerTurnOn_Unchecked(object sender, RoutedEventArgs e) { WidelyUsedAnyTimer(out TimeRecord, WorldRecord, new TimeSpan(0, 0, 0, 0, 1)); }
@@ -4309,7 +4537,6 @@ Error Number:2,State:0,Class:20
         }
         private void MediaShowAdvanced(MediaElement Media, Uri Source, TimeSpan timeSpan)
         {
-           // Media.Stop();
             Media.Visibility = Visibility.Visible;
             Media.IsEnabled = true;
             Media.Source = Source;
@@ -4321,8 +4548,6 @@ Error Number:2,State:0,Class:20
             if (AutorizeImg.Source.ToString().Contains(Path.Backgrounds.UnRegister)) AnyHideX(AddProfile, DeleteProfile, Player1, Player2, Player3, Player4, Player5, Player6, AddPlayer); else CheckRecords();
             AutorizeImg.Source = Bmper(AutorizeImg.Source.ToString().Contains(Path.Backgrounds.UnRegister) ? Path.Backgrounds.Register : Path.Backgrounds.UnRegister);
         }
-        private void TBoxShow(TextBox tbx) { tbx.Visibility = Visibility.Visible; tbx.IsEnabled = true; }
-        private void TBoxHide(TextBox tbx) { tbx.Visibility = Visibility.Hidden; tbx.IsEnabled = false; }
         private void AddProfile_Click(object sender, RoutedEventArgs e)
         {
             AddPlayer.Text = (AddPlayer.Text == "Никем быть нельзя!") || (AddPlayer.Text == "Один уже есть") ? "" : AddPlayer.Text;
@@ -4407,12 +4632,7 @@ Error Number:2,State:0,Class:20
                 DataBaseMSsql.SavePlayerSettings(new string[] { "@LOGIN", "@MUS", "@SND", "@NS", "@FS", "@BR", "@TMR" }, new Object[] { DataBaseMSsql.CurrentLogin, Bits(MusicLoud.Value * 100), Bits(SoundsLoud.Value * 100), Bits(NoiseLoud.Value * 100), Bits(GameSpeed.Value * 100), Bits(Brightness.Value * 100), TimerTurnOn.IsChecked.Value });
                 DataBaseMSsql.SavePlayerStats(new string[] { "@LOGIN", "@LV", "@LC", "@HP", "@AP", "@XP", "@TK", "@LN", "@TR" }, Super1.GetPlayerRecord(DataBaseMSsql.CurrentLogin));
             }
-            catch (Exception ex)
-            {
-                //Byte[] CipherValue = new Byte[] { 1, 2, 4, 8 };
-                //"Login: "+DataBaseMSsql.CurrentLogin+ "MATERIALS: " + Super1.CurrentHP.GetType() + "Arm: " + Super1.PlayerEQ[1] + "Legs: " + Super1.PlayerEQ[2] + "Bts: " + Super1.PlayerEQ[3] + "Wcp: " + Encoder(CipherValue, BAG.Weapon, Bits(BAG.Weapon.Length))+ "Acp: "+ Encoder(CipherValue, BAG.Armor, Bits(BAG.Armor.Length)) + "Lcp: " + Encoder(CipherValue, BAG.Pants, Bits(BAG.Pants.Length)) + "Bcp: " + Encoder(CipherValue, BAG.ArmBoots, Bits(BAG.ArmBoots.Length))+
-                throw new Exception("Something get wrong, Read this: " + ex);
-            }
+            catch (Exception ex) { throw new Exception("Something get wrong, Read this: " + ex); }
         }
         private Byte Encoder(in Byte[] CipherValues, in Boolean[] ToEncode, in Byte length) { Byte Cipher = 0; for (Byte i = 0; i < length; i++) if (ToEncode[i]) Cipher += CipherValues[i]; return Cipher; }
         private Boolean[] Decoder(in Byte[] CipherValues, Byte Cipher, in Byte length)
@@ -4506,7 +4726,6 @@ Error Number:2,State:0,Class:20
                 case 3: ChangeMapToVoidOrWallX(new Byte[] { 101, 131, 102, 132, 103, 133 }, 0); Sets.EnemyRate += 3; break;
             }
             ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress }, new Byte[] { 27, 24, 7, 9, 33, 25, 10, 4, 17 }, new Byte[] { 19, 11, 21, 20, 18, 15, 38, 36, 29 });
-            //PlayerSetLocation(Bits(Super1.MenuTask<=0 ? 34 : 5), Bits(Super1.MenuTask <= 0 ? 18 : 36));
             PlayerSetLocation(Bits(Super1.MenuTask <= 0 ? 34 : 17), Bits(Super1.MenuTask <= 0 ? 18 : 29));
             Sets.LockIndex = Bits(3 - Super1.MenuTask);
             if (BAG.Armor[3]) ChangeMapToVoid(191);
@@ -4606,14 +4825,14 @@ Error Number:2,State:0,Class:20
                 Super1.Experience = Shrt(NextExpBar.Maximum);
                 NextExpBar.Value = NextExpBar.Maximum;
                 ExpBar1.Value = ExpBar1.Maximum;
-                FastTextChange(new Label[] { ExpText, Exp1 }, new string[] { "Профессионал", "Профессионал" });
+                FastTextChange(new Label[] { ExpText, Exp1 }, new string[] { Txt.Com.Expert, Txt.Com.Expert });
             }
             else
             {
                 NextExpBar.Value = Super1.Experience;
                 ExpBar1.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
                 ExpBar1.Value = NextExpBar.Value;
-                FastTextChange(new Label[] { ExpText, Exp1 }, new string[] { "Опыт " + NextExpBar.Value + "/" + NextExpBar.Maximum, "Опыт " + ExpBar1.Value + "/" + ExpBar1.Maximum });
+                FastTextChange(new Label[] { ExpText, Exp1 }, new string[] { Txt.Com.Exp + " " + NextExpBar.Value + "/" + NextExpBar.Maximum, Txt.Com.Exp + " " + ExpBar1.Value + "/" + ExpBar1.Maximum });
 
             }
             WeaponCheckPoint();
@@ -4625,44 +4844,44 @@ Error Number:2,State:0,Class:20
         {
             switch (Super1.PlayerEQ[0])
             {
-                case 10: EquipH.Content = "Костяной кастет"; break;
-                case 50: EquipH.Content = "Древний кинжал"; break;
-                case 200: EquipH.Content = "Легендарный меч"; break;
-                case 165: EquipH.Content = "Миниган XM214-A"; break;
-                default: break;
+                case 10: EquipH.Content = Txt.Eqp.Hand.Duster; break;
+                case 50: EquipH.Content = Txt.Eqp.Hand.Knife; break;
+                case 200: EquipH.Content = Txt.Eqp.Hand.Sword; break;
+                case 165: EquipH.Content = Txt.Eqp.Hand.Minigun; break;
+                default: EquipH.Content = Txt.Eqp.Hand.Bare; break;
             }
         }
         private void ArmorCheckPoint()
         {
             switch (Super1.PlayerEQ[1])
             {
-                case 5: EquipB.Content = "Чёрный кожак"; break;
-                case 25: EquipB.Content = "Древняя броня"; break;
-                case 90:  EquipB.Content = "Броня легенд"; break;
-                case 85: EquipB.Content = "Футболка крутого"; break;
-                default: break;
+                case 5: EquipB.Content = Txt.Eqp.Tors.Bcoat; break;
+                case 25: EquipB.Content = Txt.Eqp.Tors.Ancient; break;
+                case 90:  EquipB.Content = Txt.Eqp.Tors.Legend; break;
+                case 85: EquipB.Content = Txt.Eqp.Tors.Serious; break;
+                default: EquipB.Content = Txt.Eqp.Tors.Bare; break;
             }
         }
         private void PantsCheckPoint()
         {
             switch (Super1.PlayerEQ[2])
             {
-                case 4: EquipL.Content = "Штаны стервятника"; break;
-                case 15: EquipL.Content = "Поножи воина"; break;
-                case 65: EquipL.Content = "Поножи легенды"; break;
-                case 55: EquipL.Content = "Штаны серьёзного"; break;
-                default: break;
+                case 4: EquipL.Content = Txt.Eqp.Legs.Vulture; break;
+                case 15: EquipL.Content = Txt.Eqp.Legs.Ancient; break;
+                case 65: EquipL.Content = Txt.Eqp.Legs.Legend; break;
+                case 55: EquipL.Content = Txt.Eqp.Legs.Serious; break;
+                default: EquipL.Content = Txt.Eqp.Legs.Bare; break;
             }
         }
         private void BootsCheckPoint()
         {
             switch (Super1.PlayerEQ[3])
             {
-                case 1:  EquipD.Content = "Бинтовая обувь"; break;
-                case 10: EquipD.Content = "Сапоги мужества"; break;
-                case 45: EquipD.Content = "Легендарная обувь"; break;
-                case 25: EquipD.Content = "Армейские ботинки"; break;
-                default: break;
+                case 1:  EquipD.Content = Txt.Eqp.Boot.Bboots; break;
+                case 10: EquipD.Content = Txt.Eqp.Boot.Ancient; break;
+                case 45: EquipD.Content = Txt.Eqp.Boot.Legend; break;
+                case 25: EquipD.Content = Txt.Eqp.Boot.Serious; break;
+                default: EquipD.Content = Txt.Eqp.Boot.Bare; break;
             }
         }
         private void ReplaceModel(in Byte y, in Byte x, in Byte Model) { MapScheme[y, x]=Model; }
@@ -4794,15 +5013,14 @@ Error Number:2,State:0,Class:20
         private void AbilitiesInFight_MouseEnter(object sender, MouseEventArgs e)
         {
             Button[] buttons = { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake, Learn };
-            String[] ondescr = { "Восстановление ОЗ, [-2 ОД]", "ОЗ 100% мгновенно, [-10 ОД]", "Лечение статуса, [-3 ОД]", "Повышает атаку, [-12 ОД]", "Повышает защиту, [-8 ОД]", "Постепенно ОЗ+, [-15 ОД]", "Постепенно ОД+, [0 ОД]",
-                                 "Поджигает врагов, [-4 ОД]", "Дробит кости, [-6 ОД]", "Подстрелить врага, [-15 ОД]", "Кровавая бойня, [-10 ОД]", "Порезы ветром, [-20 ОД]", "Обвал грудой камней, [-30 ОД]", "Изучить противника, [-2 ОД]" };
+            String[] ondescr = { Txt.Skl.Cur, Txt.Skl.Cr2, Txt.Skl.Hl, Txt.Skl.Bf, Txt.Skl.Tg, Txt.Skl.Rg, Txt.Skl.Cn, Txt.Skl.Tr, Txt.Skl.Wh, Txt.Skl.Th, Txt.Skl.Sp, Txt.Skl.Sp2, Txt.Skl.Sp3, Txt.Skl.Ln };
             for (Byte i=0;i<buttons.Length;i++) if (sender.Equals(buttons[i])) BattleText2.Content = ondescr[i];
             LabShow(BattleText2);
         }
         private void AbilitiesOutFight_MouseEnter(object sender, MouseEventArgs e)
         {
             Button[] buttons = { Cure1, Cure2Out, Heal1, BuffUp1, ToughenUp1, Regen1, Control1, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1 };
-            String[] ondescr = { "-2", "-10", "-3", "-12", "-8", "-15", "0", "-4", "-6", "-15", "-10", "-20", "-30", "-2" };
+            SByte[] ondescr = { -2, -10, -3, -12, -8, -15, 0, -4, -6, -15, -10, -20, -30, -2 };
             for (Byte i = 0; i < buttons.Length; i++) if (sender.Equals(buttons[i])) AbilsCost.Content = ondescr[i];
             LabShow(AbilsCost);
         }
@@ -4839,7 +5057,7 @@ Error Number:2,State:0,Class:20
                         Time1.Value = 0;
                         CheckAccessItems(Counts, Items);
                         if (Counts[i] <= 0) AnyHide(Describes[i]);
-                        CountText.Content = "Всего" + Counts[i];
+                        CountText.Content = Txt.Com.Total + ": " + Counts[i];
                         break;
                     }
             BAG.ItemsSet(Counts[0], BAG.AntidoteITM, Counts[1], Counts[2], Counts[3], Counts[6], Counts[4], Counts[5]);
@@ -4904,19 +5122,18 @@ Error Number:2,State:0,Class:20
         {
             Button[] cbuttons = new Button[] { Antidote1, Bandage1, Ether,  Fused1, Herbs, Ether2, Elixir };
             Byte[] ItemsCount = { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM };
-            String[] descrypt = { "Избавляет от яда", "+50 ОЗ", "+50 ОД", "+80 ОЗ и ОД", "+350 ОЗ", "+300 ОД", "100% ОЗ и ОД" };
+            String[] descrypt = { Txt.Bag.Ant, Txt.Bag.Ban, Txt.Bag.Etr, Txt.Bag.Bld, Txt.Bag.Hrb, Txt.Bag.Er2, Txt.Bag.Elx };
             for (Byte i = 0; i < cbuttons.Length; i++)
             {
                 if (sender.Equals(cbuttons[i]))
                 {
-                    ItemText.Content = "Всего: " + ItemsCount[i];
+                    ItemText.Content = Txt.Com.Total + ": " + ItemsCount[i];
                     BattleText2.Content = descrypt[i];
                     LabShowX(new Label[] { BattleText2, ItemText });
                 }
             }
         }
         private void ItemsUseInBattle_MouseLeave(object sender, MouseEventArgs e) { ItemText.Content = ""; LabHideX(new Label[] { ItemText, BattleText2 }); }
-        public static Byte CurrentLocation=0;
         private void ChangeOnChapter(in Byte Loc)
         {
             BitmapImage[][] MapAndBattle = { BmpersToX(Bmper(Path.Backgrounds.Location1), Bmper(Path.Fighting.Battle1)), BmpersToX(Bmper(Path.Backgrounds.Location2), Bmper(Path.Fighting.Battle2)), BmpersToX(Bmper(Path.Backgrounds.Location3), Bmper(Path.Fighting.Battle2)), BmpersToX(Bmper(Path.Backgrounds.Location4), Bmper(Path.Fighting.Battle2)) };
@@ -4947,19 +5164,19 @@ Error Number:2,State:0,Class:20
         {
             LabShow(Describe1);
             Button[] EquipmentsBt = new Button[] { Equipments, Equipments2, Equipments3, Equipments4 };
-            String[,] Descryption = new String[,] { { "Прочный костяной кастет. Одно из лучших средств показать свою мощь!", "Черная кожаная куртка. Никто не ценит ничего так сильно, как\nнадёжный кожак в жуткую погоду.", "Штаны из перьев стервятника. Вполне сгодится и на огородное пугало...", "Бинтовая обувь. Спасает от ужасной жары здешних песков как никогда." }, { "Закалённый острый кинжал, пробивающий камни насквозь. Крайне\nсмертоносная игрушка.", "Отлично сохранившиеся доспехи древних воинов. Кажется, что\nради хороших вещей древние даже золота не жалели.", "Поножи из могучих раздробленных пластин, защищают даже от\nукуса комара.", "Сапоги прирождённых солдат, покрыты слоём железа и укрепл-\nены пластинами." }, { "Меч грёз, рассекающий воздух.", "Нагрудник, отполированный настолько, что в нём видно отражение\n приближающихся врагов.", "Поножи, способные полностью закрыть талию от любого вреда.", "Невесомые сапоги, из невероятно прочного материала." }, { "Размер не имеет  значения, главное как его используют", "Футболка для настоящих ценителей", "Штаны серьёзных намерений", "Прочные сапоги из натуральной дублёной кожи" } };
-            String[,] ParamsUp = new String[,] { { "+10", "+5", "+4", "+1" }, { "+50", "+25", "+15", "+10" }, { "+200", "+90", "+65", "+45" }, { "+165", "+85", "+55", "+25" } };
+            String[,] Descryption = new String[,] { { Txt.Hnt.EqWpn1, Txt.Hnt.EqArm1, Txt.Hnt.EqPnt1, Txt.Hnt.EqBts1 }, { Txt.Hnt.EqWpn2, Txt.Hnt.EqArm2, Txt.Hnt.EqPnt2, Txt.Hnt.EqBts2 }, { Txt.Hnt.EqWpn3, Txt.Hnt.EqArm3, Txt.Hnt.EqPnt3, Txt.Hnt.EqBts3 }, { Txt.Hnt.EqWpn4, Txt.Hnt.EqArm4, Txt.Hnt.EqPnt4, Txt.Hnt.EqBts4 } };
+            Byte[,] ParamsUp = new Byte[,] { { 10, 5, 4, 1 }, { 50, 25, 15, 10 }, { 200, 90, 65, 45 }, { 165, 85, 55, 25 } };
             for (Byte i=0;i<EquipmentsBt.Length;i++)
             {
                 if (sender.Equals(EquipmentsBt[i]))
                 {
                     switch (Sets.EquipmentClass)
                     {
-                        case 0: EquipCollectInfo(Descryption[i, 0], AddATK1, ParamsUp[i, 0]); break;
-                        case 1: EquipCollectInfo(Descryption[i, 1], AddDEF1, ParamsUp[i, 1]); break;
-                        case 2: EquipCollectInfo(Descryption[i, 2], AddDEF1, ParamsUp[i, 2]); break;
-                        case 3: EquipCollectInfo(Descryption[i, 3], AddDEF1, ParamsUp[i, 3]); break;
-                        default: EquipCollectInfo(Descryption[i, 0], AddATK1, ParamsUp[i, 0]); break;
+                        case 0: EquipCollectInfo(Descryption[i, 0], AddATK1, "+" + ParamsUp[i, 0]); break;
+                        case 1: EquipCollectInfo(Descryption[i, 1], AddDEF1, "+" + ParamsUp[i, 1]); break;
+                        case 2: EquipCollectInfo(Descryption[i, 2], AddDEF1, "+" + ParamsUp[i, 2]); break;
+                        case 3: EquipCollectInfo(Descryption[i, 3], AddDEF1, "+" + ParamsUp[i, 3]); break;
+                        default: EquipCollectInfo(Descryption[i, 0], AddATK1, "+" + ParamsUp[i, 0]); break;
                     }
                     break;
                 }
@@ -4969,7 +5186,7 @@ Error Number:2,State:0,Class:20
         {
             LabShow(Describe1);
             Button[] EquipmentsBt = new Button[] { Equipments, Equipments2, Equipments3, Equipments4 };
-            String[,] Descryption = new String[,] { { "Древний кастет", "Чёрный кожак", "Штаны стервятника", "Бинтовая обувь" }, { "Древний кинжал", "Древняя броня", "Поножи воина", "Сапоги мужества" }, { "Меч легенды", "Броня легенды", "Поножи легенды", "Сапоги легенды" }, { "Миниган XM214-A", "Футболка крутого", "Штаны серьёзного", "Военные ботинки" } };
+            String[,] Descryption = new String[,] { { Txt.Eqp.Hand.Duster, Txt.Eqp.Tors.Bcoat, Txt.Eqp.Legs.Vulture, Txt.Eqp.Boot.Bboots }, { Txt.Eqp.Hand.Knife, Txt.Eqp.Tors.Ancient, Txt.Eqp.Legs.Ancient, Txt.Eqp.Boot.Ancient }, { Txt.Eqp.Hand.Sword, Txt.Eqp.Tors.Legend, Txt.Eqp.Legs.Legend, Txt.Eqp.Boot.Legend }, { Txt.Eqp.Hand.Minigun, Txt.Eqp.Tors.Serious, Txt.Eqp.Legs.Serious, Txt.Eqp.Boot.Serious } };
             Byte[,] ParamsUp = new Byte[,] { { 10, 5, 4, 1 }, { 50, 25, 15, 10 }, { 200, 90, 65, 45 }, { 165, 85, 55, 25 } };
             for (Byte i = 0; i < EquipmentsBt.Length; i++)
             {
@@ -5083,6 +5300,13 @@ Error Number:2,State:0,Class:20
                 return false;
             }
         }
+
+        private void AllDamaged(in UInt16 strength)
+        {
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            AllDmgTimeTextChangeConstruction(Shrt(strength > EnemyAura ? strength - EnemyAura : 0));
+            FoesKicked();
+        }
         private void FoeAttack1_Time_Tick5(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(0)) timer5.Stop(); }
         private void FoeAttack2_Time_Tick6(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(1)) timer6.Stop(); }
         private void FoeAttack3_Time_Tick7(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(2)) timer7.Stop(); }
@@ -5093,8 +5317,6 @@ Error Number:2,State:0,Class:20
         private void Escape_Time_Tick9(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Escape, Path.IconAnimatePath.Escape); }
         private void Items_Time_Tick10(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.BagUse, Path.IconAnimatePath.BagUse); }
         private void Cure_Time_Tick11(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Cure, Path.IconAnimatePath.Cure); }
-        //Где найти вдохновение
-        //https://www.youtube.com/results?search_query=dq+2+battle+theme
         private void Heal_Time_Tick12(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Heal, Path.IconAnimatePath.Heal); }
         private void Torch_Time_Tick13(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Torch, Path.IconAnimatePath.Torch); }
         private void Whip_Time_Tick14(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Whip, Path.IconAnimatePath.Whip); }
@@ -5123,22 +5345,10 @@ Error Number:2,State:0,Class:20
         }
         private void Thrower_Time_Tick37(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Thrower, Path.IconAnimatePath.Thrower); }
         private void Tornado_Time_Tick38(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Tornado, Path.IconAnimatePath.Tornado); }
-        private void TornadoDmg_Time_Tick39(object sender, EventArgs e)
-        {
-            UInt16 strength = Shrt(Super1.Special * 3 + Super1.Special * Super1.Speed * 0.01);
-            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
-            AllDmgTimeTextChangeConstruction(Shrt(strength > EnemyAura ? strength - EnemyAura : 0));
-            FoesKicked();
-        }
+        private void TornadoDmg_Time_Tick39(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 3 + Super1.Special * Super1.Speed * 0.01)); }
         private void SeriousMinigun_Time_Tick39(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SeriousMg, Path.IconAnimatePath.SeriousMg); }
         private void Quake_Time_Tick43(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Quake, Path.IconAnimatePath.Quake); }
-        private void QuakeDmg_Time_Tick44(object sender, EventArgs e)
-        {
-            UInt16 strength = Shrt(Super1.Special * 4 + Super1.Special * Super1.Speed * 0.01);
-            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
-            AllDmgTimeTextChangeConstruction(Shrt(strength > EnemyAura ? strength - EnemyAura : 0));
-            FoesKicked();
-        }
+        private void QuakeDmg_Time_Tick44(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 4 + Super1.Special * Super1.Speed * 0.01)); }
         private void SeriousSwitch_Time_Tick45(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SSwitch, Path.IconAnimatePath.SSwitch); }
         private void HerbsHP_Time_Tick46(object sender, EventArgs e) { CureHealTxt.Content = "+350"; CureOrHeal(); }
         private void Ether2AP_Time_Tick47(object sender, EventArgs e) { RecoverAPTxt.Content = "+300"; RestoreAP(); }
@@ -5149,16 +5359,16 @@ Error Number:2,State:0,Class:20
             for (Byte i = 0; i < 3; i++) Labs[i].Content = Foe1.EnemyHP[i] > 0 ? ActionPower : Labs[i].Content;
         }
         private void Med2_MediaOpened(object sender, RoutedEventArgs e) { /*AnyHideX(Img3, Img1);*/ }
-        private void Med2_MediaFailed(object sender, ExceptionRoutedEventArgs e) { throw new Exception("Path isn't right!!!"); }
-        private void ChapterIntroduction_MediaFailed(object sender, ExceptionRoutedEventArgs e) { throw new Exception("Path isn't right!!!"); }
-        private void TheEnd_MediaFailed(object sender, ExceptionRoutedEventArgs e) { throw new Exception("Path isn't right!!! Dropped at task: "+Super1.MenuTask); }
+
+        //[EN] Game interactive documentation
+        //[RU] Игровое интерактивное руководство.
         private void InfoImgs_MouseEnter(object sender, MouseEventArgs e)
         {
             Image[] imgs = { InfoImg1, InfoImg2, InfoImg3 };
             string[,] inf = { { Path.AftMInfoImgs.Help1_1, Path.AftMInfoImgs.Help2_1, Path.AftMInfoImgs.Help3_1, Path.AftMInfoImgs.Help4_1, Path.AftMInfoImgs.Help5_1, Path.AftMInfoImgs.Help6_1, Path.AftMInfoImgs.Help7_1, Path.AftMInfoImgs.Help8_1, Path.AftMInfoImgs.Help9_1, Path.AftMInfoImgs.Help10_1, Path.AftMInfoImgs.Help11_1, Path.AftMInfoImgs.Help12_1, Path.AftMInfoImgs.Help13_1, Path.AftMInfoImgs.Help14_1, Path.AftMInfoImgs.Help15_1, Path.AftMInfoImgs.Help16_1, Path.AftMInfoImgs.Help17_1, Path.AftMInfoImgs.Help18_1, Path.AftMInfoImgs.Help19_1 },
             { Path.AftMInfoImgs.Help1_2, Path.AftMInfoImgs.Help2_2, Path.AftMInfoImgs.Help3_2, Path.AftMInfoImgs.Help4_2, Path.AftMInfoImgs.Help5_2, Path.AftMInfoImgs.Help6_2, Path.AftMInfoImgs.Help7_2, Path.AftMInfoImgs.Help8_2, Path.AftMInfoImgs.Help9_2, Path.AftMInfoImgs.Help10_2, Path.AftMInfoImgs.Help11_2, Path.AftMInfoImgs.Help12_2, Path.AftMInfoImgs.Help13_2, Path.AftMInfoImgs.Help14_2, Path.AftMInfoImgs.Help15_2, Path.AftMInfoImgs.Help16_2, Path.AftMInfoImgs.Help17_2, Path.AftMInfoImgs.Help18_2, Path.AftMInfoImgs.Help19_2 },
             { Path.AftMInfoImgs.Help1_3, Path.AftMInfoImgs.Help2_3, Path.AftMInfoImgs.Help3_3, Path.AftMInfoImgs.Help4_3, Path.AftMInfoImgs.Help5_3, Path.AftMInfoImgs.Help6_3, Path.AftMInfoImgs.Help7_3, Path.AftMInfoImgs.Help8_3, Path.AftMInfoImgs.Help9_3, Path.AftMInfoImgs.Help10_3, Path.AftMInfoImgs.Help11_3, Path.AftMInfoImgs.Help12_3, Path.AftMInfoImgs.Help13_3, Path.AftMInfoImgs.Help14_3, Path.AftMInfoImgs.Help15_3, Path.AftMInfoImgs.Help16_3, Path.AftMInfoImgs.Help17_3, Path.AftMInfoImgs.Help18_3, Path.AftMInfoImgs.Help19_3 } };
-            for (Byte i = 0;i < imgs.Length;i++) if (sender.Equals(imgs[i])) imgs[i].Source = Bmper(inf[i, GameMenu.InfoChange1]);
+            for (Byte i = 0;i < imgs.Length;i++) if (sender.Equals(imgs[i])) imgs[i].Source = Bmper(inf[i, Txt.Doc.InfoChange1]);
         }
         private void InfoImgs_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -5166,16 +5376,21 @@ Error Number:2,State:0,Class:20
             string[,] inf = { { Path.BefMInfoImgs.Help1_1, Path.BefMInfoImgs.Help2_1, Path.BefMInfoImgs.Help3_1, Path.BefMInfoImgs.Help4_1, Path.BefMInfoImgs.Help5_1, Path.BefMInfoImgs.Help6_1, Path.BefMInfoImgs.Help7_1, Path.BefMInfoImgs.Help8_1, Path.BefMInfoImgs.Help9_1, Path.BefMInfoImgs.Help10_1, Path.BefMInfoImgs.Help11_1, Path.BefMInfoImgs.Help12_1, Path.BefMInfoImgs.Help13_1, Path.BefMInfoImgs.Help14_1, Path.BefMInfoImgs.Help15_1, Path.BefMInfoImgs.Help16_1, Path.BefMInfoImgs.Help17_1, Path.BefMInfoImgs.Help18_1, Path.BefMInfoImgs.Help19_1 },
             { Path.BefMInfoImgs.Help1_2, Path.BefMInfoImgs.Help2_2, Path.BefMInfoImgs.Help3_2, Path.BefMInfoImgs.Help4_2, Path.BefMInfoImgs.Help5_2, Path.BefMInfoImgs.Help6_2, Path.BefMInfoImgs.Help7_2, Path.BefMInfoImgs.Help8_2, Path.BefMInfoImgs.Help9_2, Path.BefMInfoImgs.Help10_2, Path.BefMInfoImgs.Help11_2, Path.BefMInfoImgs.Help12_2, Path.BefMInfoImgs.Help13_2, Path.BefMInfoImgs.Help14_2, Path.BefMInfoImgs.Help15_2, Path.BefMInfoImgs.Help16_2, Path.BefMInfoImgs.Help17_2, Path.BefMInfoImgs.Help18_2, Path.BefMInfoImgs.Help19_2 },
             { Path.BefMInfoImgs.Help1_3, Path.BefMInfoImgs.Help2_3, Path.BefMInfoImgs.Help3_3, Path.BefMInfoImgs.Help4_3, Path.BefMInfoImgs.Help5_3, Path.BefMInfoImgs.Help6_3, Path.BefMInfoImgs.Help7_3, Path.BefMInfoImgs.Help8_3, Path.BefMInfoImgs.Help9_3, Path.BefMInfoImgs.Help10_3, Path.BefMInfoImgs.Help11_3, Path.BefMInfoImgs.Help12_3, Path.BefMInfoImgs.Help13_3, Path.BefMInfoImgs.Help14_3, Path.BefMInfoImgs.Help15_3, Path.BefMInfoImgs.Help16_3, Path.BefMInfoImgs.Help17_3, Path.BefMInfoImgs.Help18_3, Path.BefMInfoImgs.Help19_3 } };
-            for (Byte i = 0; i < imgs.Length; i++) if (sender.Equals(imgs[i])) imgs[i].Source = Bmper(inf[i, GameMenu.InfoChange1]);
+            for (Byte i = 0; i < imgs.Length; i++) if (sender.Equals(imgs[i])) imgs[i].Source = Bmper(inf[i, Txt.Doc.InfoChange1]);
         }
         private void GameHint()
         {
             string[,] inf = { { Path.BefMInfoImgs.Help1_1, Path.BefMInfoImgs.Help2_1, Path.BefMInfoImgs.Help3_1, Path.BefMInfoImgs.Help4_1, Path.BefMInfoImgs.Help5_1, Path.BefMInfoImgs.Help6_1, Path.BefMInfoImgs.Help7_1, Path.BefMInfoImgs.Help8_1, Path.BefMInfoImgs.Help9_1, Path.BefMInfoImgs.Help10_1, Path.BefMInfoImgs.Help11_1, Path.BefMInfoImgs.Help12_1, Path.BefMInfoImgs.Help13_1, Path.BefMInfoImgs.Help14_1, Path.BefMInfoImgs.Help15_1, Path.BefMInfoImgs.Help16_1, Path.BefMInfoImgs.Help17_1, Path.BefMInfoImgs.Help18_1, Path.BefMInfoImgs.Help19_1 },
             { Path.BefMInfoImgs.Help1_2, Path.BefMInfoImgs.Help2_2, Path.BefMInfoImgs.Help3_2, Path.BefMInfoImgs.Help4_2, Path.BefMInfoImgs.Help5_2, Path.BefMInfoImgs.Help6_2, Path.BefMInfoImgs.Help7_2, Path.BefMInfoImgs.Help8_2, Path.BefMInfoImgs.Help9_2, Path.BefMInfoImgs.Help10_2, Path.BefMInfoImgs.Help11_2, Path.BefMInfoImgs.Help12_2, Path.BefMInfoImgs.Help13_2, Path.BefMInfoImgs.Help14_2, Path.BefMInfoImgs.Help15_2, Path.BefMInfoImgs.Help16_2, Path.BefMInfoImgs.Help17_2, Path.BefMInfoImgs.Help18_2, Path.BefMInfoImgs.Help19_2 },
             { Path.BefMInfoImgs.Help1_3, Path.BefMInfoImgs.Help2_3, Path.BefMInfoImgs.Help3_3, Path.BefMInfoImgs.Help4_3, Path.BefMInfoImgs.Help5_3, Path.BefMInfoImgs.Help6_3, Path.BefMInfoImgs.Help7_3, Path.BefMInfoImgs.Help8_3, Path.BefMInfoImgs.Help9_3, Path.BefMInfoImgs.Help10_3, Path.BefMInfoImgs.Help11_3, Path.BefMInfoImgs.Help12_3, Path.BefMInfoImgs.Help13_3, Path.BefMInfoImgs.Help14_3, Path.BefMInfoImgs.Help15_3, Path.BefMInfoImgs.Help16_3, Path.BefMInfoImgs.Help17_3, Path.BefMInfoImgs.Help18_3, Path.BefMInfoImgs.Help19_3 } };
-            FastImgChange(new Image[] { InfoImg1, InfoImg2, InfoImg3 }, BmpersToX(Bmper(inf[0, GameMenu.InfoChange1]), Bmper(inf[1, GameMenu.InfoChange1]), Bmper(inf[2, GameMenu.InfoChange1])));
+            FastImgChange(new Image[] { InfoImg1, InfoImg2, InfoImg3 }, BmpersToX(Bmper(inf[0, Txt.Doc.InfoChange1]), Bmper(inf[1, Txt.Doc.InfoChange1]), Bmper(inf[2, Txt.Doc.InfoChange1])));
         }
         private void GameStartBtns_MouseEnter(object sender, MouseEventArgs e) { if (sender.Equals(Button1)) NewAdv.Source = Bmper(Path.Adv.AfterNewAdv); else ConAdv.Source = Bmper(Path.Adv.AfterConAdv); }
         private void GameStartBtns_MouseLeave(object sender, MouseEventArgs e) { if (sender.Equals(Button1)) NewAdv.Source = Bmper(Path.Adv.BeforeNewAdv); else ConAdv.Source = Bmper(Path.Adv.BeforeConAdv); }
+        private void MediaErrorEncountered(object sender, ExceptionRoutedEventArgs e) { throw new Exception("The video got some Exception! Read the message: " + e); }
+        private void Trgt_MediaFailed(object sender, ExceptionRoutedEventArgs e) { Trgt.Stop(); Trgt.Play(); }
     }
 }
+
+//Где найти вдохновение
+//https://www.youtube.com/results?search_query=dq+2+battle+theme
