@@ -330,6 +330,9 @@ namespace WpfApp1
                 T8 = "Найдите переправу через пропасть";
                 T9 = "Заберите последний ключ древних тайн";
                 T10 = "Выберетесь из лабиринта до обвала!";
+                E1 = "Найдите и изучите древнее чудовище";
+                E2 = "Найдите золотой анх";
+                E3 = "Найдите серябрянный фрагмент удачи";
             }
             public string T1 { get; set; }
             public string T2 { get; set; }
@@ -341,6 +344,9 @@ namespace WpfApp1
             public string T8 { get; set; }
             public string T9 { get; set; }
             public string T10 { get; set; }
+            public string E1 { get; set; }
+            public string E2 { get; set; }
+            public string E3 { get; set; }
         }
         public class Equipment : Txts
         {
@@ -797,6 +803,7 @@ namespace WpfApp1
                     {
                         UsualTask = @"ActiveTask.png";
                         Completed = @"CompletedTask.png";
+                        ExperTask = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ExperTask.png";
                     }
                     public String UsualTask { get; set; }
                     public String ExperTask { get; set; }
@@ -1997,16 +2004,12 @@ namespace WpfApp1
             {
                 WidthAdBack = 1;
                 HeightAdBack = 1;
-                ImgLeftStep = 62;
-                ImgTopStep = 30;
                 ImgXbounds = 18;
                 ImgYbounds = 34;
             }
             public void SetBounds(in Boolean LeftRightOrUpDown, in Byte RowOrColumn) { if (LeftRightOrUpDown) ImgYbounds = RowOrColumn; else ImgXbounds = RowOrColumn; }
             public double WidthAdBack { get; set; }
             public double HeightAdBack { get; set; }
-            public double ImgLeftStep { get; set; }
-            public double ImgTopStep { get; set; }
             public int ImgXbounds { get; set; }
             public int ImgYbounds { get; set; }
         }
@@ -2183,6 +2186,7 @@ namespace WpfApp1
         private void BarShrink(ProgressBar Bar, in Double W, in Double H) { Bar.Width = W; Bar.Height = H; }
         private void MedShrink(MediaElement Med, in Double W, in Double H) { Med.Width = W; Med.Height = H; }
         private void LabShrink(Label Lab, in Double fs) { Lab.FontSize = fs; }
+        private void TxtShrink(TextBlock Txt, in Double fs) { Txt.FontSize = fs; }
         private void LabGrid(Label Lab, in Byte row, in Byte col) { Grid.SetRow(Lab, row); Grid.SetColumn(Lab, col); }
         private void BtnGrid(Button Btn, in Byte row, in Byte col) { Grid.SetRow(Btn, row); Grid.SetColumn(Btn, col); }
         private void BarGrid(ProgressBar Bar, in Byte row, in Byte col) { Grid.SetRow(Bar, row); Grid.SetColumn(Bar, col); }
@@ -2233,6 +2237,8 @@ namespace WpfApp1
                 case "System.Windows.Controls.ProgressBar": BarGrid((ProgressBar)Element, row, column); break;
             }
         }
+        private void SldShrink(Slider sld, in Double W, in Double H) { sld.Width = W; sld.Height = H; }
+        //private void SldShrinkX(Object[] Elements, in double[] fs) { for (Byte i = 0; i<Elements.Length; i++) SldShrink((Slider)Elements[i], fs[i]); }
         private void AnyHideX(params Object[] Elements) { foreach (Object Element in Elements) AnyHide(Element); }
         private void AnyShowX(params Object[] Elements) { foreach (Object Element in Elements) AnyShow(Element); }
         private void AnyGridX(Object[] Elements, in Byte[] rows, in Byte[] columns) { for (Byte i = 0; i < Elements.Length; i++) AnyGrid(Elements[i], rows[i], columns[i]); }
@@ -2240,64 +2246,58 @@ namespace WpfApp1
         {
             //[EN] Adaptate mechanics, sreen elements formula: CurrentScreenSize/Recomended(1920X1080)
             //[RU] Механика адаптации, формула расположения элементов: ТекущееРазрешениеЭкрана/Рекомендуемое(1920Х1080)
-            Button[] BtnWFM = { Button1, Skip1, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, CancelEq, Button2, Button3, Button4, Abilities, Items, Back2, Back1, Fight, Cancel1, Cancel2, Cure, Torch, Heal, Whip, Super, ACT1, ACT2, textOk2, TextOk1, InfoIndexMinus, InfoIndexPlus };
-            Button[] BtnM = { Cure1, Heal1, Bandage, Ether1, Antidote, Fused, Equipments, Status, Abils, Items0, Tasks, Info, Equip, Bandage1, Antidote1, Ether, Fused1 };
+
+            //Button[] BtnM = { Cure1, Heal1, Bandage, Ether1, Antidote, Fused, Equipments, Status, Abils, Items0, Tasks, Info, Equip, Bandage1, Antidote1, Ether, Fused1 };
             //TimeImg
-            Label[] LabMS = { Lab1, Lab2, FightSkills, MiscSkills, HealCost, AbilsCost, CostText, BandageText, EtherText, AntidoteText, FusedText, CountText, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, Describe1, Describe2, BattleText1, BattleText2, HPtext, APtext, LevelText, ExpText, ItemText, BattleText3, BattleText4, BattleText5, BattleText6, HPenemy, BandageText, EtherText, AntidoteText, FusedText, CountText, ATK, FightSkills, MiscSkills, HealCost, AbilsCost, CostText, Name0, Level0, StatusP, HPtext1, APtext1, Exp1, ATK1, DEF1, AG1, SP1, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, HP1, AP1, EquipH, EquipB, EquipL, EquipD, EquipText, HP, AP };
-            Image[] ImgMS = { Icon0, ATKImg, DEFImg, AGImg, SPImg, EquipHImg, EquipBImg, EquipLImg, EquipDImg, Task1Img, Task2Img, Task3Img, Task4Img, Img4, Img5, ItemsCountImg, Img6, Img7, Img8, ChestImg4, ChestImg3, ChestImg2, ChestImg1, LockImg3, LockImg2, LockImg1, KeyImg3, KeyImg2, KeyImg1, Threasure1, Table1, Table2, Table3, TableMessage1, ChestMessage1 };
+            Button[] BtnWFM = { Button1, Skip1, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, CancelEq, CraftSwitch, AddProfile, DeleteProfile };
+            FullImgMedAutoShrink(Numb(1920*Adoptation.WidthAdBack), Numb(1080 * Adoptation.HeightAdBack));
+            Label[] LabMS = { CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6, Lab1, TimerFlees, TimerFlees1, CureHealTxt, RecoverAPTxt, BuffUpTxt, DamageFoe, DamageFoe2, DamageFoe3, Lab2, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, HPtext, APtext, LevelText, HP, AP, HPenemy, ItemText, ATK, ExpText, AfterLevel, AfterName, AfterStatus, NewLevelGet, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterBattleGet, MaterialsGet, MaterialsAdd, MaterialsOnHand, ItemsGet, ItemsGetSlot1, Name0, Level0, StatusP, HPtext1, APtext1, HP1, AP1, Exp1, TimeRecordText, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, ATK1, AddATK1, DEF1, AddDEF1, AG1, SP1, EquipText, EquipH, EquipB, EquipL, EquipD, CostText, AbilsCost, HealCost, FightSkills, MiscSkills, BandageText, HerbsText, EtherText, Ether2OutText, SleepBagText, ElixirText, AntidoteText, FusedText, CountText, MaterialsCraft, CrftAntidoteCostTxt, CrftBandageCostTxt, CrftEtherCostTxt, CrftFusedCostTxt, CrftHerbsCostTxt, CrftEther2CostTxt, CrftBedbagCostTxt, CrftElixirCostTxt, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, DescribeHeader, Describe1, Describe2, MusicText, MusicPercent, SoundsText, SoundsPercent, NoiseText, NoisePercent, BrightnessText, BrightnessPercent, GameSpeedText, GameSpeedX, FoeAtk1, FoeDef1, FoeSpd1, FoeSpc1, FoeWkn1, FoeNam1, FoeDsc1, FoeAtk2, FoeDef2, FoeSpd2, FoeSpc2, FoeWkn2, FoeNam2, FoeDsc2, FoeAtk3, FoeDef3, FoeSpd3, FoeSpc3, FoeWkn3, FoeNam3, FoeDsc3, FoeAtk4, FoeDef4, FoeSpd4, FoeSpc4, FoeWkn4, FoeNam4, FoeDsc4, FoeAtk5, FoeDef5, FoeSpd5, FoeSpc5, FoeWkn5, FoeNam5, FoeDsc5, FoeAtk6, FoeDef6, FoeSpd6, FoeSpc6, FoeWkn6, FoeNam6, FoeDsc6, FoeAtk7, FoeDef7, FoeSpd7, FoeSpc7, FoeWkn7, FoeNam7, FoeDsc7, FoeAtk8, FoeDef8, FoeSpd8, FoeSpc8, FoeWkn8, FoeNam8, FoeDsc8, FoeAtk9, FoeDef9, FoeSpd9, FoeSpc9, FoeWkn9, FoeNam9, FoeDsc9, FoeAtk10, FoeDef10, FoeSpd10, FoeSpc10, FoeWkn10, FoeNam10, FoeDsc10, FoeAtk11, FoeDef11, FoeSpd11, FoeSpc11, FoeWkn11, FoeNam11, FoeDsc11, FoeAtk12, FoeDef12, FoeSpd12, FoeSpc12, FoeWkn12, FoeNam12, FoeDsc12, FoeAtk13, FoeDef13, FoeSpd13, FoeSpc13, FoeWkn13, FoeNam13, FoeDsc13, FoeAtk14, FoeDef14, FoeSpd14, FoeSpc14, FoeWkn14, FoeNam14, FoeDsc14, FoeAtk15, FoeDef15, FoeSpd15, FoeSpc15, FoeWkn15, FoeNam15, FoeDsc15, FoeAtk16, FoeDef16, FoeSpd16, FoeSpc16, FoeWkn16, FoeNam16, FoeDsc16 };
+            TextBlock[] blocks = { InfoText1, InfoText2, InfoText3 };
+            ProgressBar[] BarMS = { Time1, HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, HPenemyBar, NextExpBar, BeforeHPbar, BeforeHPbarOver333, BeforeHPbarOver666, BeforeAPbar, BeforeAPbarOver333, BeforeAPbarOver666, AfterHPbar, AfterHPbarOver333, AfterHPbarOver666, AfterAPbar, AfterAPbarOver333, AfterAPbarOver666, HPbar1, APbar1, ExpBar1 };
+            Slider[] sld = { MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness };
+            foreach (Slider sld1 in sld) { SldShrink(sld1, sld1.Width * Adoptation.WidthAdBack, sld1.Height * Adoptation.HeightAdBack); }
+            TimerTurnOn.Width *= Adoptation.WidthAdBack;
+            TimerTurnOn.Height *= Adoptation.HeightAdBack;
+            TimerTurnOn.FontSize *= Adoptation.WidthAdBack;
+            /*Image[] ImgMS = { Icon0, ATKImg, DEFImg, AGImg, SPImg, EquipHImg, EquipBImg, EquipLImg, EquipDImg, Task1Img, Task2Img, Task3Img, Task4Img, Img4, Img5, ItemsCountImg, Img6, Img7, Img8, ChestImg4, ChestImg3, ChestImg2, ChestImg1, LockImg3, LockImg2, LockImg1, KeyImg3, KeyImg2, KeyImg1, Threasure1, Table1, Table2, Table3, TableMessage1, ChestMessage1 };
             ProgressBar[] StBarMS = { HPbar1, APbar1, ExpBar1 };
             ProgressBar[] BarMS = { HPbar, APbar, NextExpBar, Time1, HPenemyBar };
-            MediaElement[] MedMS = { PharaohBattle, Trgt };
+            MediaElement[] MedMS = { PharaohBattle, Trgt };*/
             //Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, ATK1, DEF1, AG1, SP1, EquipText, EquipH, EquipB, EquipL, EquipD, Exp1,
-            foreach (Button btn in BtnWFM) { BtnShrink(btn, (btn.Width * Adoptation.WidthAdBack), (btn.Height * Adoptation.HeightAdBack)); ButtonCHFT(btn, btn.FontSize * Adoptation.WidthAdBack); }
-            foreach (Button btn in BtnM) { BtnShrink(btn, (btn.Width * Adoptation.WidthAdBack), (btn.Height * Adoptation.HeightAdBack)); }
-            foreach (Label lab in LabMS) { LabShrink(lab, lab.FontSize * Adoptation.WidthAdBack); }
-            foreach (Image img in ImgMS) { ImgShrink(img, img.Width * Adoptation.WidthAdBack, img.Height * Adoptation.HeightAdBack); }
+            //BtnShrink(btn, (btn.Width * Adoptation.WidthAdBack), (btn.Height * Adoptation.HeightAdBack));
+            foreach (Button btn in BtnWFM) { ButtonCHFT(btn, btn.FontSize * Adoptation.WidthAdBack); }
+            //foreach (Button btn in BtnM) { BtnShrink(btn, (btn.Width * Adoptation.WidthAdBack), (btn.Height * Adoptation.HeightAdBack)); }
+            //throw new Exception(""+ Numb(Lab1.FontSize * Adoptation.WidthAdBack));
+            foreach (Label lab in LabMS) { LabShrink(lab, Numb(lab.FontSize * Adoptation.WidthAdBack) > 0 ? Numb(lab.FontSize * Adoptation.WidthAdBack) : 1); }
+            foreach (TextBlock blk in blocks) { TxtShrink(blk, Numb(blk.FontSize * Adoptation.WidthAdBack) > 0 ? Numb(blk.FontSize * Adoptation.WidthAdBack) : 1); }
+            foreach (ProgressBar bar in BarMS) { BarShrink(bar, bar.Width * Adoptation.WidthAdBack, bar.Height * Adoptation.HeightAdBack); }
+            /*foreach (Image img in ImgMS) { ImgShrink(img, img.Width * Adoptation.WidthAdBack, img.Height * Adoptation.HeightAdBack); }
             foreach (ProgressBar bar in StBarMS) { BarShrink(bar, bar.Width * 2 * Adoptation.WidthAdBack, bar.Height * Adoptation.HeightAdBack); }
             foreach (ProgressBar bar in BarMS) { BarShrink(bar, bar.Width * Adoptation.WidthAdBack, bar.Height * Adoptation.HeightAdBack); }
-            foreach (MediaElement med in MedMS) { MedShrink(med, med.Width * Adoptation.WidthAdBack, med.Height * Adoptation.HeightAdBack); }
+            foreach (MediaElement med in MedMS) { MedShrink(med, med.Width * Adoptation.WidthAdBack, med.Height * Adoptation.HeightAdBack); }*/
         }
 
         //D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\
 
         private void FullImgMedAutoShrink(in int W, in int H)
         {
-            ImgShrink(Menu1, W, H);
+            //ImgShrink(Menu1, W, H);
             MedShrink(Med1, W, H);
             MedShrink(Med2, W, H);
             MedShrink(Win, W, H);
             MedShrink(GameOver, W, H);
+            MedShrink(ChapterIntroduction, W, H);
             MedShrink(TheEnd, W, H);
-            ImgShrink(Img1, W, H);
+            //ImgShrink(Img1, W, H);
         }
         private void CheckScreenProperties()
         {
-            int[,] ScreenSize = { { 800, 1024, 1152, 1280, 1280, 1280, 1280, 1280, 1360, 1366, 1440, 1600, 1600, 1680, 3840 }, { 600, 768, 864, 720, 768, 800, 960, 1024, 768, 768, 900, 900, 1024, 1050, 2160 } };
-            double[,] WHB = { { 0.416667, 0.533333, 0.6, 0.666667, 0.666667, 0.666667, 0.666667, 0.666667, 0.708333, 0.711458, 0.75, 0.833333, 0.833333, 0.875, 2 }, { 0.555556, 0.711111, 0.8, 0.666667, 0.711111, 0.740741, 0.888889, 0.948148, 0.711111, 0.711111, 0.833333, 0.833333, 0.948148, 0.972222, 2 } };
-            double[,] I2S = { { 12.92, 16.53, 18.6, 20.67, 20.67, 20.67, 20.67, 20.67, 21.96, 22.06, 23.25, 25.83, 25.83, 27.125, 62 }, { 16.67, 21.33, 24, 20.1, 21.33, 22.22, 26.67, 28.44, 21.33, 21.33, 25, 25, 28.44, 29.16, 60 } };
-            String Screen = SystemParameters.VirtualScreenWidth + "X" + SystemParameters.VirtualScreenHeight;
-            if (Screen != "1920X1080") {
-                for (int j = 0; j < ScreenSize.GetLength(1); j++)
-                {
-                    if (Screen == (ScreenSize[0, j] + "X" + ScreenSize[1, j]))
-                    {
-                        Adoptation.HeightAdBack = WHB[1, j];
-                        Adoptation.WidthAdBack = WHB[0, j];
-                        ImgShrink(Img2, I2S[0, j], I2S[1, j]);
-                        FullImgMedAutoShrink(ScreenSize[0, j], ScreenSize[1, j]);
-                        Adoptation.ImgLeftStep = I2S[0, j] * 2;
-                        Adoptation.ImgTopStep = I2S[1, j];
-                        Adaptate();
-                        break;
-                    }
-                    if (j == ScreenSize.GetLength(1))
-                    {
-                        MessageBoxResult MR = System.Windows.MessageBox.Show("Приложение не поддерживает данный\nтип разрешения на этом устройстве\n" + "\nДоступные разрешения:\n800x600;         1024X768;\n1152x864;       1280X720;\n1280x768;       1280X800;\n1280x960;       1280X1024;\n1360x768;       1366X768;\n1440x900;       1600X900;\n1600x1024;     1680X1050;\n1920x1080;     3840X2160;\n" + "\nТекущее разрешение экрана: " + Screen, "Ошибка адаптации разрешения", MessageBoxButton.OK, MessageBoxImage.Error);
-                        if (MR == MessageBoxResult.OK) Form1.Close();
-                    }
-                }
-            }
-            else { Adoptation.ImgLeftStep = 62; Adoptation.ImgTopStep = 30; }
+            Adoptation.HeightAdBack = SystemParameters.VirtualScreenHeight / 1080;
+            Adoptation.WidthAdBack = SystemParameters.VirtualScreenWidth / 1920;
+
+            //ImgShrink(Img2, 32 * Adoptation.WidthAdBack, 30 * Adoptation.HeightAdBack);
+            //FullImgMedAutoShrink(Numb(1920 * Adoptation.WidthAdBack), Numb(1080 * Adoptation.HeightAdBack));
+            Adaptate();
         }
 
         //[EN] Initialize all variables
@@ -2373,7 +2373,7 @@ namespace WpfApp1
 
             MapBuild(0);
             ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress, PharaohAppears }, new Byte[] { 27, 24, 7, 9, 33, 25, 10, 4, 17, 8 }, new Byte[] { 19, 11, 21, 20, 18, 13, 38, 36, 29, 36 });
-            Super1.SetStats(25, 999, 999, 255, 10, 10, 10);
+            Super1.SetStats(25, 999, 999, 255, 255, 255, 255);
             Super1.SetCurrentHpAp(999, 999);
             Time1.Maximum = TimeFormula();
             PlayerSetLocation(34, 18);
@@ -2743,7 +2743,6 @@ namespace WpfApp1
         }
         private void SomeRudeAppears(in Byte BattleIndex, in EventHandler Event, in string Noise)
         {
-            ImgShrink(TrgtImg, 475, 475);
             Sets.SpecialBattle = BattleIndex;
             Img2.IsEnabled = false;
             Sound1.Stop();
@@ -2798,7 +2797,7 @@ namespace WpfApp1
             else { ImgHide(Boulder1); timer.Stop(); }
         }
         private void LetsBattle() { Sets.StepsToBattle--; Dj(Path.GameNoises.Danger); MediaShow(Med2); }
-        private void WhatsGoingOn(in Byte SecretBattlesIndex) { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0; Sets.SpecialBattle = SecretBattlesIndex; ImgShrink(TrgtImg, 475, 475); }
+        private void WhatsGoingOn(in Byte SecretBattlesIndex) { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0; Sets.SpecialBattle = SecretBattlesIndex; }
         private void GroundCheck(in Byte Interaction)
         {
             switch (Interaction)
@@ -2992,7 +2991,7 @@ namespace WpfApp1
         }
         private void AncientAppear_Phase1(in Byte App) { Ancient.Source = Bmper(Path.AniModel.Ancient[App]); }
         private void AncientAppear_Phase2(in Byte App) { Warrior.Source = Bmper(Path.AniModel.Warrior[App]); }
-        private void AncientAppear_Phase3() { ImgGrid(Warrior, (byte)((Int32)Warrior.GetValue(Grid.RowProperty)), (byte)((Int32)Warrior.GetValue(Grid.ColumnProperty)+1)); }
+        private void AncientAppear_Phase3() { ImgGrid(Warrior, Bits(Warrior.GetValue(Grid.RowProperty)), Bits((Int32)Warrior.GetValue(Grid.ColumnProperty)+1)); }
 
         //[EN] Menu : Player status
         //[RU] Меню : Статус игрока
@@ -3006,7 +3005,7 @@ namespace WpfApp1
                 AbilsCost, HealCost, CountText, CostText, FightSkills, MiscSkills, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3,
                 InfoIndex, Level0, AntidoteText, EtherText, BandageText, FusedText, MaterialsCraft, Ether1, Bandage, Antidote, Cure1, Fused, Equip1, Equip2,
                 Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, Equipments, CancelEq, InfoIndexPlus, InfoIndexMinus, CraftSwitch, CraftAntidote, InfoImg1, InfoImg2, InfoImg3,
-                CraftBandage, CraftFused, CraftEther, Torch1, Whip1, Super0, Heal1, Cure2Out, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1,
+                CraftBandage, CraftFused, CraftEther, Torch1, Whip1, Super0, Heal1, Cure2Out, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1, Task5, Task5Img,
                 BuffUp1, ToughenUp1, Regen1, Control1, Herbs1, Ether2Out, SleepBag1, Elixir1, CraftBedbag, CraftElixir, CraftHerbs, CraftPerfboots, CraftEther2);
         }
 
@@ -3018,7 +3017,7 @@ namespace WpfApp1
             AnyHideX(Img2, Img1);
             AnyShowX(Menu1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, HPbar1, APbar1, ExpBar1, Name0, Level0, StatusP, Exp1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, DescribeHeader, Describe1);
             AnyGridX(new Object[] { HPbar1, APbar1, StatusP, HPtext1, APtext1 }, new Byte[] { 7, 9, 2, 7, 9 }, new Byte[] { 11, 11, 14, 2, 2 });
-            LabGridX(new Label[] { HP1, AP1, Exp1 }, new byte[] { Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new byte[] { Bits(Numb(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(HPbar1.Width) / 32)), Bits(Numb(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(APbar1.Width) / 32)), Bits(Numb(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(ExpBar1.Width) / 32)) });
+            LabGridX(new Label[] { HP1, AP1, Exp1 }, new byte[] { Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new byte[] { Bits(Bits(HPbar1.GetValue(Grid.ColumnProperty)) + Bits(HPbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(APbar1.GetValue(Grid.ColumnProperty)) + Bits(APbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(ExpBar1.GetValue(Grid.ColumnProperty)) + Bits(ExpBar1.GetValue(Grid.ColumnSpanProperty))) });
             RightPanelMenuTurnON();
             if (!TimerTurnOn.IsChecked.Value) LabShow(TimeRecordText);
             if (CurrentLocation==3) AnyShow(TimerFlees1);
@@ -3133,6 +3132,11 @@ namespace WpfApp1
             BattleText2.Content = Sets.FoeType2Alive;
             AnyShow(BattleText2);
         }
+        private void SizeEnemy(Image img, in Boolean huge)
+        {
+            Grid.SetColumnSpan(img == null ? img : Img6, huge ? 15 : 11);
+            Grid.SetRowSpan(img == null ? img : Img6, huge ? 15 : 11);
+        }
         private void BossBattle1()
         {
             CalculateBattleStatus();
@@ -3144,8 +3148,7 @@ namespace WpfApp1
             Foe1.EnemyHP[0] = 500;
             Img6.Source = Bmper(Path.BossesStatePath.Pharaoh);
             ImgGrid(Img6, 18, 2);
-            ImgShrink(Img6, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
-            MedShrink(Trgt, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
+            SizeEnemy(Img6, true);
             ImgShow(Img6);
             Exp += 125;
             Mat += 250;
@@ -3163,8 +3166,7 @@ namespace WpfApp1
             Foe1.EnemyHP[0] = 2000;
             Img6.Source = Bmper(Path.BossesStatePath.Warrior);
             ImgGrid(Img6, 18, 2);
-            ImgShrink(Img6, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
-            MedShrink(Trgt, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
+            SizeEnemy(Img6, true);
             ImgShow(Img6);
             Exp += 255;
             Mat += 255;
@@ -3182,8 +3184,7 @@ namespace WpfApp1
             Foe1.EnemyHP[0] = 10000;
             Img6.Source = Bmper(Path.BossesStatePath.MrOfAll);
             ImgGrid(Img6, 18, 2);
-            ImgShrink(Img6, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
-            MedShrink(Trgt, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
+            SizeEnemy(Img6, true);
             ImgShow(Img6);
             Exp += 255;
             Mat += 255;
@@ -3227,7 +3228,7 @@ namespace WpfApp1
             HeyPlaySomething(Path.GameMusic.SeriousIsMe);
             TimeEnemy();
         }
-        private void NewMaximum(ProgressBar Bar, in UInt16 Max) { Bar.Maximum = Max; Bar.Width = Bar.Maximum; }
+        private void NewMaximum(ProgressBar Bar, in UInt16 Max) { Bar.Maximum = Max; Bar.Width = Bar.Maximum * Adoptation.WidthAdBack; }
         private void NewMaximumX(in UInt16[] Maxes, params ProgressBar[] Bars) { for (Byte i=0;i<Bars.Length;i++) NewMaximum(Bars[i], Maxes[i]); }
         private void NewMaximumX(in UInt16 Max, params ProgressBar[] Bars) { foreach (ProgressBar Bar in Bars) NewMaximum(Bar, Max); }
         private void FullRecover(ProgressBar Bar) { Bar.Value=Bar.Maximum; }
@@ -3254,8 +3255,8 @@ namespace WpfApp1
         }
         //[EN] Target select mech
         //[RU] Механика выбора цели.
-        private void NormalTarget() { Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } }; ImgGrid(TrgtImg, grRowColumn[0, Sets.SelectedTarget], grRowColumn[1, Sets.SelectedTarget]); }
-        private void MegaTarget() { Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } }; ImgGrid(TrgtImg, Bits(grRowColumn[0, Sets.SelectedTarget] - 5), grRowColumn[1, Sets.SelectedTarget]); }
+        private void NormalTarget() { Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } }; ImgGrid(TrgtImg, grRowColumn[0, Sets.SelectedTarget], grRowColumn[1, Sets.SelectedTarget]); SizeEnemy(TrgtImg, false); }
+        private void MegaTarget() { Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } }; ImgGrid(TrgtImg, Bits(grRowColumn[0, Sets.SelectedTarget] - 5), grRowColumn[1, Sets.SelectedTarget]); SizeEnemy(TrgtImg, true); }
         private void SelectWithKeyBoard(bool Left)
         {
             if (Left)
@@ -3570,6 +3571,7 @@ namespace WpfApp1
             if (agl > fagl) { timer2.Stop(); speed = 1; }
             WidelyUsedAnyTimer(out timer8, Escape_Time_Tick9, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
             Dj(Path.GameNoises.FleeAway);
+            LabHide(BattleText2);
         }
         private void FightMenuBack()
         {
@@ -3855,7 +3857,8 @@ namespace WpfApp1
             Button[] FightMenu = { Button2, Button3, Button4, Items, Abilities, Fight, ACT1, ACT2, ACT3, ACT4 };
             Image[] images = { FightImg, DefenceImg, EscapeFromBattleImg, ItemsImg, AbilitiesImg, SelectTrgt1Img, SelectTrgt2Img, SelectTrgt3Img, SelectTrgt4Img, SelectTrgt5Img };
             BitmapImage[] Btim = { Bmper(Path.BtnBefore.Fight), Bmper(Path.BtnBefore.Defence), Bmper(Path.BtnBefore.Escape), Bmper(Path.BtnBefore.Bag), Bmper(Path.BtnBefore.Skills), Bmper(Path.BtnBefore.Select), Bmper(Path.BtnBefore.Select), Bmper(Path.BtnBefore.Select), Bmper(Path.BtnBefore.Select), Bmper(Path.BtnBefore.Select) };
-            for (Byte i = 0; i < FightMenu.Length; i++) if (sender.Equals(FightMenu[i])) { images[i].Source = Btim[i]; LabHide(BattleText2); break; }
+            for (Byte i = 0; i < FightMenu.Length; i++) if (sender.Equals(FightMenu[i])) { images[i].Source = Btim[i]; break; }
+            LabHide(BattleText2);
         }
         private void FightDynamicButtons_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -4046,14 +4049,11 @@ namespace WpfApp1
                 Super1.SetCurrentHpAp(RememberHPAP[0], RememberHPAP[1]);
                 RefreshAllHPAP();
                 Sets.SpecialBattle = 0;
-                TrgtImg.Width = 325;
-                TrgtImg.Height = 325;
-                Img6.Width = 325;
-                Img6.Height = 325;
                 FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Path.PersonStatePath.Usual), Bmper(Path.IconStatePath.Usual)));
                 BAG.Armor[3] = true;
                 BAG.Jacket = Super1.PlayerEQ[1] == 0;
                 ItemsGetSlot1.Content += Txt.Eqp.Tors.Serious+" \n";
+                Super1.MiniTask = true;
                 LabShow(ItemsGetSlot1);
             }
             AnyHideX(HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, textOk2);
@@ -4331,7 +4331,7 @@ namespace WpfApp1
             RightPanelMenuTurnON();
             AnyShowX(Menu1, Icon0, HPbar1, APbar1, Name0, StatusP, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, CostText, MiscSkills, FightSkills);
             BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 4, 26 }, new Byte[] { 16, 11 });
-            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 4, 26, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 7, 2, Bits(Numb(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(HPbar1.Width) / 32)), Bits(Numb(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(APbar1.Width) / 32)), Bits(Numb(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(ExpBar1.Width) / 32)) });
+            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 4, 26, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 7, 2, Bits(Bits(HPbar1.GetValue(Grid.ColumnProperty)) + Bits(HPbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(APbar1.GetValue(Grid.ColumnProperty)) + Bits(APbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(ExpBar1.GetValue(Grid.ColumnProperty)) + Bits(ExpBar1.GetValue(Grid.ColumnSpanProperty))) });
             CheckAccessAbilities(new Button[] { Cure1, Heal1, Cure2Out, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1, BuffUp1, ToughenUp1, Regen1, Control1 }, new Byte[] { 2, 4, 21, 3, 6, 11, 7, 13, 18, 5, 16, 14, 20, 25 }, new Byte[] { 5, 3, 10, 4, 6, 15, 10, 20, 30, 2, 12, 8, 15, 0 });
         }
         private void Abils_Click(object sender, RoutedEventArgs e)
@@ -4350,7 +4350,7 @@ namespace WpfApp1
             MenuHpApExp();            
             RightPanelMenuTurnON();
             BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 2, 4 }, new Byte[] { 16, 16 });
-            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 7, 2, 4, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 2, 7, 7, Bits(Numb(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(HPbar1.Width) / 32)), Bits(Numb(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(APbar1.Width) / 32)), Bits(Numb(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(ExpBar1.Width) / 32)) });
+            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 7, 2, 4, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 2, 7, 7, Bits(Bits(HPbar1.GetValue(Grid.ColumnProperty)) + Bits(HPbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(APbar1.GetValue(Grid.ColumnProperty)) + Bits(APbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(ExpBar1.GetValue(Grid.ColumnProperty)) + Bits(ExpBar1.GetValue(Grid.ColumnSpanProperty))) });
             CheckAccessItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { Antidote, Bandage, Ether1, Fused, Herbs1, Ether2Out, SleepBag1, Elixir1 }, new Label[] { AntidoteText, BandageText, EtherText, FusedText, HerbsText, Ether2OutText, SleepBagText, ElixirText });
             FastEnableDisableBtn(new Boolean[] { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] != 150, false }, new Button[] { SleepBag1, Items0 });
             CraftSwitch.Content = "Создание";
@@ -4376,8 +4376,8 @@ namespace WpfApp1
             StatusCalculate();
             RightPanelMenuTurnON();
             BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 2, 4 }, new Byte[] { 16, 16 });
-            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 2, 4, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 7, 7, Bits(Numb(HPbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(HPbar1.Width) / 32)), Bits(Numb(APbar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(APbar1.Width) / 32)), Bits(Numb(ExpBar1.GetValue(Grid.ColumnProperty)) + 1 + (Numb(ExpBar1.Width) / 32)) });
-            AnyShowX(Menu1, Img2, Img1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, HPbar1, APbar1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, DescribeHeader, Describe1, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4);
+            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 2, 4, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 7, 7, Bits(Bits(HPbar1.GetValue(Grid.ColumnProperty)) + Bits(HPbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(APbar1.GetValue(Grid.ColumnProperty)) + Bits(APbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(ExpBar1.GetValue(Grid.ColumnProperty)) + Bits(ExpBar1.GetValue(Grid.ColumnSpanProperty))) });
+            AnyShowX(Menu1, Img1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, HPbar1, APbar1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, DescribeHeader, Describe1, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4);
             FastEnableDisableBtn(false, new Button[] { Equip, Remove1, Remove2, Remove3, Remove4, Equip1, Equip2, Equip3, Equip4 });
             FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Equip, Txt.Sct.Equip });
         }
@@ -4439,7 +4439,8 @@ namespace WpfApp1
         private void CancelEq_Click(object sender, RoutedEventArgs e) { BtnHideX(new Button[] { Equipments, Equipments2, Equipments3, Equipments4, CancelEq }); }
         private void ShowSomeTasks(Label[] labs, Image[] imgs, in string[] texts, in string[] bmps)
         {
-            AnyShowX(labs, imgs);
+            AnyShowX(labs);
+            AnyShowX(imgs);
             FastTextChange(labs, texts);
             FastImgChange(imgs, BmpersToX(bmps));
         }
@@ -4467,6 +4468,12 @@ namespace WpfApp1
                 default: ShowSomeTasks(Task1, Task1Img, TasksText[9], uriSources[0]); break;
             }
         }
+        private void MiniTasks()
+        {
+            string[] TasksText = { Txt.Goal.E1, Txt.Goal.E2, Txt.Goal.E3 };
+            string[] uriSources = new string[] { Path.MenuImgs.ExperTask, Path.MenuImgs.Completed };
+            if (CurrentLocation<3) ShowSomeTasks(Task5, Task5Img, TasksText[CurrentLocation], uriSources[Super1.MiniTask ? 1 : 0]);
+        }
         private void HeroTasks()
         {
             if (!Items0.IsEnabled) Dj(Path.GameNoises.BagClose);
@@ -4474,6 +4481,7 @@ namespace WpfApp1
             RightPanelMenuTurnON();
             Tasks.IsEnabled = false;
             RealTasks();
+            MiniTasks();
             FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Tasks, Txt.Sct.Tasks });            
             AnyShowX(Describe1, Describe2, DescribeHeader);
         }
@@ -5279,11 +5287,11 @@ namespace WpfApp1
             MapBuild(CurrentLocation);
             switch (Super1.MenuTask)
             {
-                case 0: ChangeOnChapter(0); Location1_AncientPyramid(); ImgShowX(new Image[] { Threasure1, SaveProgress }); Threasures(); TablesSetInfo(); break;
+                case 0: ChangeOnChapter(0); Location1_AncientPyramid(); ImgShowX(new Image[] { Threasure1, SaveProgress }); Threasures(); Super1.MiniTask = false; TablesSetInfo(); break;
                 case 3:
-                case 4: ChangeOnChapter(1); Location2_WaterTemple(); Threasures(); SaveGame(); AnyShow(SaveProgress); break;
+                case 4: ChangeOnChapter(1); Location2_WaterTemple(); Threasures(); Super1.MiniTask = false; SaveGame(); AnyShow(SaveProgress); break;
                 case 6:
-                case 7: ChangeOnChapter(2); Location3_LavaTemple(); Threasures(); SaveGame(); AnyShow(SaveProgress); break;
+                case 7: ChangeOnChapter(2); Location3_LavaTemple(); Threasures(); Super1.MiniTask = false; SaveGame(); AnyShow(SaveProgress); break;
                 case 8: case 9: ChangeOnChapter(3); Location4_BigRun(); SaveGame(); break;
                 case 10: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Titres), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.SayGoodbye); break;
                 default: Form1.Close(); break;
