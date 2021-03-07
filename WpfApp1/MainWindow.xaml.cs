@@ -168,8 +168,8 @@ namespace WpfApp1
             private void SetDocs()
             {
                 InfoChange1 = 0;
-                HelpInfo1 = new string[,]{ {"Введение","Древние - кто они?","Приключение","Управление","Сражение","Цель боя","Очки здоровья, ОЗ","Урон","Оборона","Побег","Статус","Показатели","Скорость (СКР)","Больше чем бой","Настройки","Проходы","Сундуки","Сила земли","Сцены" },
-                {"Неизвестный...","Предыстория","Розыск","Меню/Выход","Противники","Ходы","Очки действий, ОД","Бой","Умения","Результаты","Уровень","Атака (АТК)","Спец. (СПЦ)","Реестр противников","Разработал","Стены","Опасности","Погостить пришёл","Благодарности" },
+                HelpInfo1 = new string[,]{ {"Введение","Древние - кто они?","Приключение","Управление","Сражение","Цель боя","Очки здоровья","Урон","Оборона","Побег","Статус","Показатели","Скорость (СКР)","Больше чем бой","Настройки","Проходы","Сундуки","Сила земли","Сцены" },
+                {"Неизвестный...","Предыстория","Розыск","Меню/Выход","Противники","Ходы","Очки действий","Бой","Умения","Результаты","Уровень","Атака (АТК)","Спец. (СПЦ)","Бестиарий","Разработал","Стены","Опасности","Погостить пришёл","Благодарности" },
                 {"Древние святыни","Артефакты","Главы","Взаимодействие","Боссы","Действия","АВШ","Выбор","Предметы","Прирост","Опыт","Защита (ЗЩТ)","Время игры","Задачи","До новых встреч","Замки","Цветные камушки","Секреты","Финансы" } };
                 HelpInfo2 = new string[,] { {"Добро пожаловать, искатели\nприключений! Приветствуем\nвас в кратком своде правил.","Древние - люди, что когда-то\nобладали технологиями, кото-\nрые нам и не снились.","Вам доступно создание\nнового или загрузка старого\nприключения если оно было","Клавиатура обязательна\nПередвижение - WASD,\nВзаимодействие - E","Во время передвижения, на\nвас могут напасть. Не бой-\nтесь сражаться за правое!","Во время сражения нужно\nубрать всех противников и\nбоссов с поля, не погибнув.","Определяют какое количе-\nство урона персонаж может\nвзять, прежде чем умереть.","Числом определяет силу, с\nкоторой бьёт герой или враг,\nприближает к гибели.","Повышает защиту героя в\nдва раза до следующего\nхода.","Существует альтернативный\nспособ выйти из сражения -\nизбежать этим действием.","Выводит состояние героя,\nпри отравлении персонаж\nбудет терять ОЗ.","Влияют на выживаемость\nгероя, каждый отвечает за\nчто-то своё.","Влияет на скорость заполне-\nния АВШ и возможность\nсбежать из боя.","Умения доступны вне боя, а\nещё каждое из них можно\n\"пожамкать\" ^_^.","Не так-то просто справляться\nс шумом? Слишком яркое\nизображение? Не вопрос!","Место, по которому может\nходить герой, обычная\nплита.","Там хранится всевозможное\nоружие и броня древних.\nПочему бы и не одолжить?","Источники, бьющие прямо\nиз огненных песков лечат\nвсе недомогания.","Как никогда лучше показы-\nвают происходящее в\nсамом эпицентре событий." },
                 {"Вы играете за одарённого\nархеолога Рэя, его целью\nявляется поиск артефактов.","После глупых войн и жажды\nвласти, люди истратили нас-\n","Здесь находятся все\nискатели! Можно разделять\nпрогресс с друзьями","Клавиатура обязательна\nОткрыть меню - Left CTRL\nВыйти из игры - ESC","Монстры и прочие чудища,\nвышедшие из под контроля\nжаждут вашей гибели","Действия героя и врагов\nраспределены: они могут\nвыполнять их спустя время","От ОД зависит доступ к осо-\nбым действиям - умениям,\nвызывающие эффекты","Опция позволяющая физи-\nчески атаковать врага\nгерою, зависит от АТК.","Каждое умение тратит ОД и\nможет оказывать эффект\nкак на врага, так и на героя.","Победив, вы получаете\nопыт, материалы и ве-\nщи в конце сражения.","Показывает потенциал\nперсонажа, от него за-\nвисят все показатели.","Урон, наносимый героем\nпри обычной атаке. Может\nбыть увеличена оружием.","Специальное влияет на силу\nэффектов от использования\nумений персонажа.","После открытия умения \"Из-\nучение\", вы сможете смот-\nреть показатели врагов","Прошу любить и жаловать:\nТатаринцев Александр,\nвыступал в роли FullStack.","Препятствия, через которые\nнельзя передвигаться. Из\nних составлены лабиринты.","Какое приключение не обо-\nйдётся без опасностей?\nВсё как положено.","-Алло, это кто?\n-Сэм.\n-Шутник, Сэм, это я.","Посвящается (Вы лучшие):\nМасленников Денис,\nМасленникова Татьяна" },
@@ -274,8 +274,8 @@ namespace WpfApp1
                 Th = "Подстрелить врага, [-15 ОД]";
                 Sp = "Мощное комбо, [-10 ОД]";
                 Sp2 = "Порезы ветром, [-20 ОД]";
-                Sp3 = "Обвал грудой камней, [-30 ОД]";
-                Ln = "Изучить противника, [-2 ОД]";
+                Sp3 = "Обвал камнями, [-30 ОД]";
+                Ln = "Анализ врага, [-2 ОД]";
             }
             public string Cur { get; set; }
             public string Cr2 { get; set; }
@@ -516,23 +516,32 @@ namespace WpfApp1
         {
             public class Music : OST
             {
-                public Music()
-                {
-                    SetAllPaths();
-                }
+                public Music() { SetAllPaths(); }
                 public void SetAllPaths()
                 {
-                    MainTheme = @"Begin2.mp3";
-                    Prologue = @"Intro1.mp3";
-                    AncientPyramid = @"Main_theme.mp3";
+                    MainTheme = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\Main_theme.mp3";
+                    Prologue = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\Intro.mp3";
+
+                    AncientPyramid = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\AncientPyramid_theme.mp3";
                     WaterTemple = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\WaterTemple_theme.mp3";
                     LavaTemple = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\FireTemple_theme.mp3";
-                    FoesChase = @"Battle_theme2.mp3";
-                    LookWhoAwake = @"Pharaoh.mp3";
-                    SeriousIsMe = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SecretBossFight1.mp3";
-                    AncientKey = @"Final1.mp3";
                     GetAway = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\GetAway.mp3";
-                    SayGoodbye = @"Titres.mp3";
+
+                    FoesChase = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BattleTheme1.mp3";
+                    HandleThis = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BattleTheme2.mp3";
+                    StampSmth = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BattleTheme3.mp3";
+
+                    LookWhoAwake = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BossBattle1.mp3";
+                    SayHello = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BossBattle2.mp3";
+                    SeriousTalk = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\FinalBoss_theme.mp3";
+                    SeriousIsMe = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\SecretBossFight.mp3";
+
+                    AncientKey = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\ChFin1.mp3";
+                    Conversation = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\ChFin2.mp3";
+                    Threasures = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\ChFin3.mp3";
+                    PutTheEnd = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\Ending.mp3";
+
+                    SayGoodbye = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\Titres.mp3";
                 }
                 public String MainTheme { get; set; }
                 public String Prologue { get; set; }
@@ -540,29 +549,46 @@ namespace WpfApp1
                 public String WaterTemple { get; set; }
                 public String LavaTemple { get; set; }
                 public String FoesChase { get; set; }
+                public String HandleThis { get; set; }
+                public String StampSmth { get; set; }
                 public String LookWhoAwake { get; set; }
+                public String SayHello { get; set; }
+                public String SeriousTalk { get; set; }
                 public String SeriousIsMe { get; set; }
                 public String AncientKey { get; set; }
+                public String Conversation { get; set; }
+                public String Threasures { get; set; }
+                public String PutTheEnd { get; set; }
                 public String GetAway { get; set; }
                 public String SayGoodbye { get; set; }
             }
             public class Sounds : OST
             {
-                public Sounds()
-                {
-                    SetAllPaths();
-                }
+                public Sounds() { SetAllPaths(); }
                 public void SetAllPaths()
                 {
-                    DoorOpened = @"DoorOpened1.mp3";
-                    ChestOpened = @"ChestOpened1.mp3";
-                    ControlSave = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SaveSound.mp3";
-                    NowTheWinnerIs = @"YouWon.mp3";
-                    SpiderDied = @"SpiderDied.mp3";
-                    MummyDied = @"MummyDied.mp3";
-                    ZombieDied = @"ZombieDied.mp3";
-                    BonesDied = @"BonesDied.mp3";
-                    PhaGetLost = @"DefeatPharaoh.mp3";
+                    DoorOpened = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\DoorOpened.mp3";
+                    ChestOpened = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\ChestOpened.mp3";
+                    ControlSave = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\SaveSound.mp3";
+                    NowTheWinnerIs = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\YouWon.mp3";
+
+                    SpiderDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\SpiderDied.mp3";
+                    MummyDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\MummyDied.mp3";
+                    ZombieDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\ZombieDied.mp3";
+                    BonesDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\BonesDied.mp3";
+                    VultureDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\VultureDied.mp3";
+                    GhoulDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\GhoulDied.mp3";
+                    GrimReaperDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\GrimReaperDied.mp3";
+                    ScarabDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\ScarabDied.mp3";
+                    KillerMoleDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\KillerMoleDied.mp3";
+                    ImpDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\ImpDied.mp3";
+                    WormDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\WormDied.mp3";
+                    MasterDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\MasterDied.mp3";
+
+                    PhaGetLost = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\DefeatPharaoh.mp3";
+                    ByeFriend = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\DefeatFriend.mp3";
+                    ThisIsAll = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\DefeatMasterOfAll.mp3";
+                    HereGetSome = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\UghZan1Died.mp3";
                 }
                 public String DoorOpened { get; set; }
                 public String ChestOpened { get; set; }
@@ -572,7 +598,18 @@ namespace WpfApp1
                 public String MummyDied { get; set; }
                 public String ZombieDied { get; set; }
                 public String BonesDied { get; set; }
+                public String VultureDied { get; set; }
+                public String GhoulDied { get; set; }
+                public String GrimReaperDied { get; set; }
+                public String ScarabDied { get; set; }
+                public String KillerMoleDied { get; set; }
+                public String ImpDied { get; set; }
+                public String WormDied { get; set; }
+                public String MasterDied { get; set; }
                 public String PhaGetLost { get; set; }
+                public String ByeFriend { get; set; }
+                public String ThisIsAll { get; set; }
+                public String HereGetSome { get; set; }
             }
             public class Noises : OST
             {
@@ -582,33 +619,64 @@ namespace WpfApp1
                 }
                 public void SetAllPaths()
                 {
-                    Danger = @"Ambushed.mp3";
-                    Horror = @"Horror.mp3";
-                    EgoRage = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\PharaohRoar(Boss2)_1.mp3";
-                    StrongStand = @"Defence.mp3";
-                    FleeAway = @"Escape.mp3";
-                    HandAttack = @"Punch.mp3";
-                    Cure = @"Cure.mp3";
-                    Heal = @"Heal.mp3";
-                    Torch = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Torch.mp3";
-                    Whip = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Whip.mp3";
-                    Super = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Super.mp3";
-                    BagOpen = @"ItemsOpen.mp3";
-                    BagClose = @"ItemsClose.mp3";
-                    UseItems = @"ItemsUsed.mp3";
-                    LevelUp = "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp.mp3";
+                    Danger = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Ambushed.mp3";
+                    Danger2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\FoesNearby.mp3";
+                    Danger3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\GetReady.mp3";
+                    Horror = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Horror.mp3";
+                    EgoRage = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\PharaohRoar.mp3";
+                    
+                    StrongStand = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Defence.mp3";
+                    FleeAway = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Escape.mp3";
+                    HandAttack = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Punch.mp3";
+                    Knife = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Knife.mp3";
+                    Sword = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Sword.mp3";
+                    Minigun = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Minigun.mp3";
+
+                    Cure = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Cure.mp3";
+                    Cure2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Cure2.mp3";
+                    Heal = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Heal.mp3";
+                    PowUp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\PowUp.mp3";
+                    Shield = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Shield.mp3";
+                    HpUp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\HpUp.mp3";
+                    ApUp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Control.mp3";
+                    Torch = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Torch.mp3";
+                    Whip = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Whip.mp3";
+                    Thrower = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Thrower.mp3";
+                    Super = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Super.mp3";
+                    Whirl = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Wind.mp3";
+                    Quake = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Quake.mp3";
+                    Learn = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Scan.mp3";
+
+                    BagOpen = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\ItemsOpen.mp3";
+                    BagClose = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\ItemsClose.mp3";
+                    UseItems = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\ItemsUsed.mp3";
+                    LevelUp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\LevelUp.mp3";
                 }
                 public String Danger { get; set; }
+                public String Danger2 { get; set; }
+                public String Danger3 { get; set; }
                 public String Horror { get; set; }
                 public String EgoRage { get; set; }
                 public String StrongStand { get; set; }
                 public String FleeAway { get; set; }
                 public String HandAttack { get; set; }
+                public String Knife { get; set; }
+                public String Sword { get; set; }
+                public String Minigun { get; set; }
                 public String Cure { get; set; }
+                public String Cure2 { get; set; }
                 public String Heal { get; set; }
+                public String PowUp { get; set; }
+                public String Shield { get; set; }
+                public String HpUp { get; set; }
+                public String ApUp { get; set; }
                 public String Torch { get; set; }
                 public String Whip { get; set; }
+                public String Thrower { get; set; }
                 public String Super { get; set; }
+                public String Whirl { get; set; }
+                public String Quake { get; set; }
+                public String Learn { get; set; }
                 public String BagOpen { get; set; }
                 public String BagClose { get; set; }
                 public String UseItems { get; set; }
@@ -1243,11 +1311,13 @@ namespace WpfApp1
                     Poison = "IconPoisoned.png";
                     Serious = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSam.png";
                     Defensive = @"IconDefence1.png";
+                    LevelUp = "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon9.png";
                 }
                 public String Usual { get; set; }
                 public String Poison { get; set; }
                 public String Serious { get; set; }
                 public String Defensive { get; set; }
+                public String LevelUp { get; set; }
             }
         }
         public class Dynamic : Paths
@@ -1292,11 +1362,13 @@ namespace WpfApp1
                 {
                     Pharaoh = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
                     UghZan = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
-                    Warrior = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks1.png", };
+                    Warrior = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks1.png" };
+                    MrOfAll = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll5.png" };
                 }
                 public String[] Pharaoh { get; set; }
                 public String[] UghZan { get; set; }
                 public String[] Warrior { get; set; }
+                public String[] MrOfAll { get; set; }
             }
             public class Person : Dynamic
             {
@@ -1671,7 +1743,7 @@ namespace WpfApp1
                 Byte[] Vital   = {   3,  7,  5, 15, 25, 40, 20, 80,100,120, 70,150, 40,120,255, 50 };
                 Byte[] Speed   = {  10, 17, 25, 35, 65, 30, 45, 80,100, 90,130,150, 40, 90,255, 50 };
                 Byte[] Abils   = {   0,  2,  5,  7, 30, 20, 60, 80, 75,110, 70,150, 35,140,255, 50 };
-                Byte[] Exper   = {   5,  8, 12, 15, 35, 75,100, 60,175,140,200,225,100,200,255,150 };
+                Byte[] Exper   = {   5, 8, 12, 15, 35, 75,100, 60,175,140,200,225,100,200,255,150 };
                 Byte[] Mater   = {   5, 10, 35, 75, 60,110, 80,255,105,180,150,255,100,200,255,150 };
                 Byte[] Drops =   { 0,1,2,3, 6,4,5,7, 6,5,5,7, 3, 7, 7, 5 };
                 EnemyAttack = Power[FoeIndex];
@@ -2088,6 +2160,7 @@ namespace WpfApp1
             Txt.SetTxt();
             Path.SetPaths();
             Foe1.SetEnemies();
+            RegCon();
             SetEnemies();
             ShowFoesStats();
             WidelyUsedAnyTimer(out TimeRecord, WorldRecord, new TimeSpan(0, 0, 0, 0, 1));
@@ -2237,7 +2310,7 @@ namespace WpfApp1
                 case "System.Windows.Controls.ProgressBar": BarGrid((ProgressBar)Element, row, column); break;
             }
         }
-        private void SldShrink(Slider sld, in Double W, in Double H) { sld.Width = W; sld.Height = H; }
+        private void Scales(ScaleTransform scl, in Double W, in Double H) { scl.ScaleX = W; scl.ScaleY = H; }
         //private void SldShrinkX(Object[] Elements, in double[] fs) { for (Byte i = 0; i<Elements.Length; i++) SldShrink((Slider)Elements[i], fs[i]); }
         private void AnyHideX(params Object[] Elements) { foreach (Object Element in Elements) AnyHide(Element); }
         private void AnyShowX(params Object[] Elements) { foreach (Object Element in Elements) AnyShow(Element); }
@@ -2251,11 +2324,11 @@ namespace WpfApp1
             //TimeImg
             Button[] BtnWFM = { Button1, Skip1, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, CancelEq, CraftSwitch, AddProfile, DeleteProfile };
             FullImgMedAutoShrink(Numb(1920*Adoptation.WidthAdBack), Numb(1080 * Adoptation.HeightAdBack));
-            Label[] LabMS = { CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6, Lab1, TimerFlees, TimerFlees1, CureHealTxt, RecoverAPTxt, BuffUpTxt, DamageFoe, DamageFoe2, DamageFoe3, Lab2, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, HPtext, APtext, LevelText, HP, AP, HPenemy, ItemText, ATK, ExpText, AfterLevel, AfterName, AfterStatus, NewLevelGet, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterBattleGet, MaterialsGet, MaterialsAdd, MaterialsOnHand, ItemsGet, ItemsGetSlot1, Name0, Level0, StatusP, HPtext1, APtext1, HP1, AP1, Exp1, TimeRecordText, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, ATK1, AddATK1, DEF1, AddDEF1, AG1, SP1, EquipText, EquipH, EquipB, EquipL, EquipD, CostText, AbilsCost, HealCost, FightSkills, MiscSkills, BandageText, HerbsText, EtherText, Ether2OutText, SleepBagText, ElixirText, AntidoteText, FusedText, CountText, MaterialsCraft, CrftAntidoteCostTxt, CrftBandageCostTxt, CrftEtherCostTxt, CrftFusedCostTxt, CrftHerbsCostTxt, CrftEther2CostTxt, CrftBedbagCostTxt, CrftElixirCostTxt, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, DescribeHeader, Describe1, Describe2, MusicText, MusicPercent, SoundsText, SoundsPercent, NoiseText, NoisePercent, BrightnessText, BrightnessPercent, GameSpeedText, GameSpeedX, FoeAtk1, FoeDef1, FoeSpd1, FoeSpc1, FoeWkn1, FoeNam1, FoeDsc1, FoeAtk2, FoeDef2, FoeSpd2, FoeSpc2, FoeWkn2, FoeNam2, FoeDsc2, FoeAtk3, FoeDef3, FoeSpd3, FoeSpc3, FoeWkn3, FoeNam3, FoeDsc3, FoeAtk4, FoeDef4, FoeSpd4, FoeSpc4, FoeWkn4, FoeNam4, FoeDsc4, FoeAtk5, FoeDef5, FoeSpd5, FoeSpc5, FoeWkn5, FoeNam5, FoeDsc5, FoeAtk6, FoeDef6, FoeSpd6, FoeSpc6, FoeWkn6, FoeNam6, FoeDsc6, FoeAtk7, FoeDef7, FoeSpd7, FoeSpc7, FoeWkn7, FoeNam7, FoeDsc7, FoeAtk8, FoeDef8, FoeSpd8, FoeSpc8, FoeWkn8, FoeNam8, FoeDsc8, FoeAtk9, FoeDef9, FoeSpd9, FoeSpc9, FoeWkn9, FoeNam9, FoeDsc9, FoeAtk10, FoeDef10, FoeSpd10, FoeSpc10, FoeWkn10, FoeNam10, FoeDsc10, FoeAtk11, FoeDef11, FoeSpd11, FoeSpc11, FoeWkn11, FoeNam11, FoeDsc11, FoeAtk12, FoeDef12, FoeSpd12, FoeSpc12, FoeWkn12, FoeNam12, FoeDsc12, FoeAtk13, FoeDef13, FoeSpd13, FoeSpc13, FoeWkn13, FoeNam13, FoeDsc13, FoeAtk14, FoeDef14, FoeSpd14, FoeSpc14, FoeWkn14, FoeNam14, FoeDsc14, FoeAtk15, FoeDef15, FoeSpd15, FoeSpc15, FoeWkn15, FoeNam15, FoeDsc15, FoeAtk16, FoeDef16, FoeSpd16, FoeSpc16, FoeWkn16, FoeNam16, FoeDsc16 };
+            Label[] LabMS = { CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6, Lab1, TimerFlees, TimerFlees1, CureHealTxt, RecoverAPTxt, BuffUpTxt, DamageFoe, DamageFoe2, DamageFoe3, Lab2, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, HPtext, APtext, LevelText, HP, AP, HPenemy, ItemText, ATK, ExpText, AfterLevel, AfterName, AfterStatus, NewLevelGet, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterBattleGet, MaterialsGet, MaterialsAdd, MaterialsOnHand, ItemsGet, ItemsGetSlot1, Name0, Level0, StatusP, HPtext1, APtext1, HP1, AP1, Exp1, TimeRecordText, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, ATK1, AddATK1, DEF1, AddDEF1, AG1, SP1, EquipText, EquipH, EquipB, EquipL, EquipD, CostText, AbilsCost, HealCost, FightSkills, MiscSkills, BandageText, HerbsText, EtherText, Ether2OutText, SleepBagText, ElixirText, AntidoteText, FusedText, CountText, MaterialsCraft, CrftAntidoteCostTxt, CrftBandageCostTxt, CrftEtherCostTxt, CrftFusedCostTxt, CrftHerbsCostTxt, CrftEther2CostTxt, CrftBedbagCostTxt, CrftElixirCostTxt, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, DescribeHeader, Describe1, Describe2, MusicText, MusicPercent, SoundsText, SoundsPercent, NoiseText, NoisePercent, BrightnessText, BrightnessPercent, GameSpeedText, GameSpeedX, FoeAtk1, FoeDef1, FoeSpd1, FoeSpc1, FoeWkn1, FoeNam1, FoeDsc1, FoeAtk2, FoeDef2, FoeSpd2, FoeSpc2, FoeWkn2, FoeNam2, FoeDsc2, FoeAtk3, FoeDef3, FoeSpd3, FoeSpc3, FoeWkn3, FoeNam3, FoeDsc3, FoeAtk4, FoeDef4, FoeSpd4, FoeSpc4, FoeWkn4, FoeNam4, FoeDsc4, FoeAtk5, FoeDef5, FoeSpd5, FoeSpc5, FoeWkn5, FoeNam5, FoeDsc5, FoeAtk6, FoeDef6, FoeSpd6, FoeSpc6, FoeWkn6, FoeNam6, FoeDsc6, FoeAtk7, FoeDef7, FoeSpd7, FoeSpc7, FoeWkn7, FoeNam7, FoeDsc7, FoeAtk8, FoeDef8, FoeSpd8, FoeSpc8, FoeWkn8, FoeNam8, FoeDsc8, FoeAtk9, FoeDef9, FoeSpd9, FoeSpc9, FoeWkn9, FoeNam9, FoeDsc9, FoeAtk10, FoeDef10, FoeSpd10, FoeSpc10, FoeWkn10, FoeNam10, FoeDsc10, FoeAtk11, FoeDef11, FoeSpd11, FoeSpc11, FoeWkn11, FoeNam11, FoeDsc11, FoeAtk12, FoeDef12, FoeSpd12, FoeSpc12, FoeWkn12, FoeNam12, FoeDsc12, FoeAtk13, FoeDef13, FoeSpd13, FoeSpc13, FoeWkn13, FoeNam13, FoeDsc13, FoeAtk14, FoeDef14, FoeSpd14, FoeSpc14, FoeWkn14, FoeNam14, FoeDsc14, FoeAtk15, FoeDef15, FoeSpd15, FoeSpc15, FoeWkn15, FoeNam15, FoeDsc15, FoeAtk16, FoeDef16, FoeSpd16, FoeSpc16, FoeWkn16, FoeNam16, FoeDsc16, Task5 };
             TextBlock[] blocks = { InfoText1, InfoText2, InfoText3 };
             ProgressBar[] BarMS = { Time1, HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, HPenemyBar, NextExpBar, BeforeHPbar, BeforeHPbarOver333, BeforeHPbarOver666, BeforeAPbar, BeforeAPbarOver333, BeforeAPbarOver666, AfterHPbar, AfterHPbarOver333, AfterHPbarOver666, AfterAPbar, AfterAPbarOver333, AfterAPbarOver666, HPbar1, APbar1, ExpBar1 };
-            Slider[] sld = { MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness };
-            foreach (Slider sld1 in sld) { SldShrink(sld1, sld1.Width * Adoptation.WidthAdBack, sld1.Height * Adoptation.HeightAdBack); }
+            ScaleTransform[] scls = { MuLd, SnLd, NsLd, Gs, Brgt, TmOn };
+            foreach (ScaleTransform scl in scls) { Scales(scl, scl.ScaleX * Adoptation.WidthAdBack, scl.ScaleY * Adoptation.HeightAdBack); }
             TimerTurnOn.Width *= Adoptation.WidthAdBack;
             TimerTurnOn.Height *= Adoptation.HeightAdBack;
             TimerTurnOn.FontSize *= Adoptation.WidthAdBack;
@@ -2373,8 +2446,14 @@ namespace WpfApp1
 
             MapBuild(0);
             ImgGridX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3, Threasure1, SaveProgress, PharaohAppears }, new Byte[] { 27, 24, 7, 9, 33, 25, 10, 4, 17, 8 }, new Byte[] { 19, 11, 21, 20, 18, 13, 38, 36, 29, 36 });
-            Super1.SetStats(25, 999, 999, 255, 255, 255, 255);
-            Super1.SetCurrentHpAp(999, 999);
+            //[EN] DevOp
+            //[RU] Разработчик
+            //Super1.SetStats(25, 999, 999, 255, 255, 255, 255);
+            //Super1.SetCurrentHpAp(999, 999);
+            //[EN] Normal
+            //[RU] Обычный
+            Super1.SetStats(1, 100, 40, 25, 15, 15, 25);
+            Super1.SetCurrentHpAp(100, 40);
             Time1.Maximum = TimeFormula();
             PlayerSetLocation(34, 18);
             MaxAndWidthHPcalculate();
@@ -2796,7 +2875,7 @@ namespace WpfApp1
             }
             else { ImgHide(Boulder1); timer.Stop(); }
         }
-        private void LetsBattle() { Sets.StepsToBattle--; Dj(Path.GameNoises.Danger); MediaShow(Med2); }
+        private void LetsBattle() { Sets.StepsToBattle--; string[] dng = { Path.GameNoises.Danger, Path.GameNoises.Danger2, Path.GameNoises.Danger3 }; Dj(dng[CurrentLocation]); MediaShow(Med2); }
         private void WhatsGoingOn(in Byte SecretBattlesIndex) { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0; Sets.SpecialBattle = SecretBattlesIndex; }
         private void GroundCheck(in Byte Interaction)
         {
@@ -2812,9 +2891,9 @@ namespace WpfApp1
                 case 107: ChangeMapToVoidOrWallX(new Byte[] { 107, 137 }, 0); ImgHide(JailImg6); break;
                 case 108: ChangeMapToVoidOrWallX(new Byte[] { 108, 138 }, 0); ImgHide(JailImg7); break;
                 case 150: if (DataBaseMSsql.CurrentLogin != "????") { SaveGame(); SEF(Path.GameSounds.ControlSave); } break;
-                case 151: Super1.CurrentHP = Super1.MaxHP; Dj(Path.GameNoises.Cure); break;
-                case 152: Super1.CurrentAP = Super1.MaxAP; Dj(Path.GameNoises.Cure); break;
-                case 170: TimeToGetAway.Stop(); FleeTime = new Byte[] { 2, 30 }; TimerFlees.Content = TimerFlees1.Content = "2:30"; AnyHide(Img2); Super1.MenuTask++; MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Ending), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
+                case 151: Super1.CurrentHP = Super1.MaxHP; Dj(Path.GameNoises.Cure2); break;
+                case 152: Super1.CurrentAP = Super1.MaxAP; Dj(Path.GameNoises.ApUp); break;
+                case 170: TimeToGetAway.Stop(); FleeTime = new Byte[] { 2, 30 }; TimerFlees.Content = TimerFlees1.Content = "2:30"; AnyHide(Img2); Super1.MenuTask++; MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Ending), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.PutTheEnd); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
                 case 191: WhatsGoingOn(200); LetsBattle(); break;
                 case 192: ChangeMapToVoid(192); PlayerSetLocation(1, 57); break;
                 default: break;
@@ -2870,15 +2949,16 @@ namespace WpfApp1
                         case 225: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpSbg1, SpSbg2, SpSbg3, SpSbg4, SpSbg5, SpSbg6, SpSbg7, SpSbg8, SpSbg9, SpSbg10, SpSbg11); if (BAG.SleepBagITM < 255) BAG.SleepBagITM++; break;
                         case 226: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpSer); BAG.Weapon[3] = true; break;
                         case 232: ChestOpen(SecretChestImg2, Bmper(Path.Msg.Completed), Bmper(ChestOp[CurrentLocation]), 2, 3); GetSecretReward(); break;
-                        case 233: GetSecretReward(); break;
+                        case 233: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpTsk); GetSecretReward(); break;
                         default: break;
                     }
                 }
+                if (e.Key == Key.LeftCtrl) { HeroStatus(); }
+                if (e.Key == Key.I) { Bestiary(); }
             }
-            else
-                if (Fight.IsEnabled || ACT1.IsEnabled || ACT2.IsEnabled || ACT3.IsEnabled || ACT4.IsEnabled) if (e.Key == Key.W || e.Key == Key.A || e.Key == Key.S || e.Key == Key.D) SelectWithKeyBoard(e.Key == Key.W || e.Key == Key.A);
-            if (e.Key == Key.LeftCtrl) { HideMenus(); if (Img2.IsEnabled) { HeroStatus(); } else AnyShow(Img2); }
-            if (e.Key == Key.I) { HideMenus(); if (Img2.IsEnabled) { Bestiary(); } else AnyShow(Img2); }
+            else if (Fight.IsEnabled || ACT1.IsEnabled || ACT2.IsEnabled || ACT3.IsEnabled || ACT4.IsEnabled) { if (e.Key == Key.W || e.Key == Key.A || e.Key == Key.S || e.Key == Key.D) SelectWithKeyBoard(e.Key == Key.W || e.Key == Key.A); }
+            else if (e.Key == Key.LeftCtrl) { if (BestiaryImg.IsEnabled || Menu1.IsEnabled) { HideMenus(); AnyShow(Img2); } }
+            else if (e.Key == Key.I) { if (BestiaryImg.IsEnabled || Menu1.IsEnabled) { HideMenus(); AnyShow(Img2); } }
             if (e.Key == Key.Escape) Form1.Close();
         }
         private void HideMenus() {
@@ -3101,8 +3181,9 @@ namespace WpfApp1
             Byte[][] Mat = { new Byte[] { Foe1.Spider.Materials, Foe1.Mummy.Materials, Foe1.Zombie.Materials, Foe1.Bones.Materials, Foe1.BOSS1.Materials, Foe1.SecretBOSS1.Materials }, new Byte[] { Foe1.Vulture.Materials, Foe1.Ghoul.Materials, Foe1.GrimReaper.Materials, Foe1.Scarab.Materials }, new Byte[] { Foe1.KillerMole.Materials, Foe1.Imp.Materials, Foe1.Worm.Materials, Foe1.Master.Materials } };
             Byte[][] XP = { new Byte[] { Foe1.Spider.Experience, Foe1.Mummy.Experience, Foe1.Zombie.Experience, Foe1.Bones.Experience, Foe1.BOSS1.Experience, Foe1.SecretBOSS1.Experience }, new Byte[] { Foe1.Vulture.Experience, Foe1.Ghoul.Experience, Foe1.GrimReaper.Experience, Foe1.Scarab.Experience }, new Byte[] { Foe1.KillerMole.Experience, Foe1.Imp.Experience, Foe1.Worm.Experience, Foe1.Master.Experience } };
             Byte[][] DrRt = { new Byte[] { Foe1.Spider.DropRate, Foe1.Mummy.DropRate, Foe1.Zombie.DropRate, Foe1.Bones.DropRate, Foe1.BOSS1.DropRate, Foe1.SecretBOSS1.DropRate }, new Byte[] { Foe1.Vulture.DropRate, Foe1.Ghoul.DropRate, Foe1.GrimReaper.DropRate, Foe1.Scarab.DropRate }, new Byte[] { Foe1.KillerMole.DropRate, Foe1.Imp.DropRate, Foe1.Worm.DropRate, Foe1.Master.DropRate } };
-            HeyPlaySomething(Path.GameMusic.FoesChase);
-
+            string[] themes = { Path.GameMusic.FoesChase, Path.GameMusic.HandleThis, Path.GameMusic.StampSmth };
+            HeyPlaySomething(themes[CurrentLocation]);
+            SizeEnemy(Img6, false);
             Sets.StepsToBattle = 0;
             Byte[] LEncounter = { 5, 10, 15 }; Byte[] HEncounter = { 20, 30, 40 };
             rnd = Random1.Next((CurrentLocation < 3 ? LEncounter[CurrentLocation] : 5), (CurrentLocation < 3 ? HEncounter[CurrentLocation] : 20));
@@ -3134,8 +3215,9 @@ namespace WpfApp1
         }
         private void SizeEnemy(Image img, in Boolean huge)
         {
-            Grid.SetColumnSpan(img == null ? img : Img6, huge ? 15 : 11);
-            Grid.SetRowSpan(img == null ? img : Img6, huge ? 15 : 11);
+            Grid.SetColumnSpan(img ?? Img6, huge ? 15 : 11);
+            Grid.SetRowSpan(img ?? Img6, huge ? 15 : 11);
+            ImgShrink(img ?? Img6, huge ? 480*Adoptation.WidthAdBack : 320 * Adoptation.WidthAdBack, huge ? 390 * Adoptation.HeightAdBack : 300 * Adoptation.HeightAdBack);
         }
         private void BossBattle1()
         {
@@ -3170,7 +3252,7 @@ namespace WpfApp1
             ImgShow(Img6);
             Exp += 255;
             Mat += 255;
-            HeyPlaySomething(Path.GameMusic.LookWhoAwake);
+            HeyPlaySomething(Path.GameMusic.SayHello);
             TimeEnemy();
         }
         private void BossBattle3()
@@ -3188,7 +3270,7 @@ namespace WpfApp1
             ImgShow(Img6);
             Exp += 255;
             Mat += 255;
-            HeyPlaySomething(Path.GameMusic.LookWhoAwake);
+            HeyPlaySomething(Path.GameMusic.SeriousTalk);
             TimeEnemy();
         }
         public static UInt16[] RememberHPAP = { 0, 0, 0, 0 };
@@ -3302,9 +3384,9 @@ namespace WpfApp1
         }
         private void HPenemyBARwidth(in double maxHp)
         {
-            if (maxHp > 3500) { HPenemyBar.Width = HPenemyBar.Maximum / 16; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(0, 243, 255)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 243, 255)); }
-            else if (maxHp > 500) { HPenemyBar.Width = HPenemyBar.Maximum / 4; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(14, 222, 175)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(14, 222, 175)); }
-            else { HPenemyBar.Width = HPenemyBar.Maximum; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(50, 172, 40)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(50, 172, 40)); }
+            if (maxHp > 3500) { HPenemyBar.Width = HPenemyBar.Maximum / 16 * Adoptation.WidthAdBack; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(0, 243, 255)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 243, 255)); }
+            else if (maxHp > 500) { HPenemyBar.Width = HPenemyBar.Maximum / 4 * Adoptation.WidthAdBack; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(14, 222, 175)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(14, 222, 175)); }
+            else { HPenemyBar.Width = HPenemyBar.Maximum * Adoptation.WidthAdBack; HPenemyBar.Foreground = new SolidColorBrush(Color.FromRgb(50, 172, 40)); HPenemyBar.BorderBrush = new SolidColorBrush(Color.FromRgb(50, 172, 40)); }
         }
         public void SelectTarget()
         {
@@ -3323,8 +3405,8 @@ namespace WpfApp1
             LabHideX(new Label[] { BattleText1, BattleText2 });
             if (speed > 0)
             {
-                if (HPRegenerate != null) { HPRegenerate.IsEnabled = !HPRegenerate.IsEnabled; HPRegenerate.Stop(); }
-                if (APRegenerate != null) { APRegenerate.IsEnabled = !APRegenerate.IsEnabled; APRegenerate.Stop(); }
+                if (HPRegenerate.IsEnabled) { HPRegenerate.Stop(); HPRegenerate.IsEnabled = false; }
+                if (APRegenerate.IsEnabled) { APRegenerate.Stop(); APRegenerate.IsEnabled = false; }
                 Sets.FoeType1Alive = 0;
                 Sets.FoeType2Alive = 0;
                 Sets.FoeType3Alive = 0;
@@ -3352,8 +3434,8 @@ namespace WpfApp1
             else
             if (Foe1.EnemiesStillAlive <= 0)
             {
-                if (HPRegenerate != null) { HPRegenerate.IsEnabled = !HPRegenerate.IsEnabled; HPRegenerate.Stop(); }
-                if (APRegenerate != null) { APRegenerate.IsEnabled = !APRegenerate.IsEnabled; APRegenerate.Stop(); }
+                if (HPRegenerate.IsEnabled) { HPRegenerate.Stop(); HPRegenerate.IsEnabled = false; }
+                if (APRegenerate.IsEnabled) { APRegenerate.Stop(); APRegenerate.IsEnabled = false; }
                 Sound1.Stop();
                 SEF(Path.GameSounds.NowTheWinnerIs);
                 Grid.SetColumn(BattleText1, 22);
@@ -3361,8 +3443,7 @@ namespace WpfApp1
                 FastTextChange(new Label[] { BattleText1, BattleText2 }, new string[] { Txt.Com.Won, Txt.Com.Thres });
                 AnyShowX(Img4, BattleText1, BattleText2, textOk2);
             }
-            else if (Super1.CurrentHP > 0) Time();
-            AnyShow(BattleText2);
+            else if (Super1.CurrentHP > 0) { Time(); AnyHideX(BattleText1, BattleText2); }
         }
         private void Button3_Click(object sender, RoutedEventArgs e)
         {
@@ -3405,7 +3486,7 @@ namespace WpfApp1
         {
             Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
             EnemyAttack = 25;
-            for (Byte i = 0; i < Foe1.EnemyName.Length; i++) if (Foe1.EnemyAppears[pos - 1] == Foe1.EnemyName[CurrentLocation][i]) { EnemyAttack = Shrt(FS[CurrentLocation][i].EnemyAttack + FS[CurrentLocation][i].EnemyAttack*(FS[CurrentLocation][i].EnemySpeed*0.01)); break; }
+            for (Byte i = 0; i < Foe1.EnemyName[CurrentLocation].Length; i++) if (Foe1.EnemyAppears[pos - 1] == Foe1.EnemyName[CurrentLocation][i]) { EnemyAttack = Shrt(FS[CurrentLocation][i].EnemyAttack + FS[CurrentLocation][i].EnemyAttack*(FS[CurrentLocation][i].EnemySpeed*0.01)); break; }
             return 25;
         }
         private int GetOut(out Byte Speed)
@@ -3424,26 +3505,26 @@ namespace WpfApp1
         private UInt16 EnemyTough(Byte pos)
         {
             Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
-            for (Byte i = 0; i < Foe1.EnemyName.Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { return Shrt(FS[CurrentLocation][i].EnemyDefence + FS[CurrentLocation][i].EnemyAgility * (FS[CurrentLocation][i].EnemySpeed * 0.01)); }
+            for (Byte i = 0; i < Foe1.EnemyName[CurrentLocation].Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { return Shrt(FS[CurrentLocation][i].EnemyDefence + FS[CurrentLocation][i].EnemyAgility * (FS[CurrentLocation][i].EnemySpeed * 0.01)); }
             return 25;
         }
         private UInt16 EnemyAntiSkill(Byte pos)
         {
             Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
-            for (Byte i = 0; i < Foe1.EnemyName.Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { return Shrt(FS[CurrentLocation][i].EnemyAgility + FS[CurrentLocation][i].EnemySpeed); }
+            for (Byte i = 0; i < Foe1.EnemyName[CurrentLocation].Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { return Shrt(FS[CurrentLocation][i].EnemyAgility + FS[CurrentLocation][i].EnemySpeed); }
             return 25;
         }
         private string NameEnemies(out string enemy, Byte pos)
         {
             Foe.Stats[][] FS = new Foe.Stats[][] { new Foe.Stats[] { Foe1.Spider, Foe1.Mummy, Foe1.Zombie, Foe1.Bones, Foe1.BOSS1, Foe1.SecretBOSS1 }, new Foe.Stats[] { Foe1.Vulture, Foe1.Ghoul, Foe1.GrimReaper, Foe1.Scarab, Foe1.BOSS2 }, new Foe.Stats[] { Foe1.KillerMole, Foe1.Imp, Foe1.Worm, Foe1.Master, Foe1.BOSS3 } };
             enemy = "Паук";
-            for (Byte i = 0; i < Foe1.EnemyName.Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { enemy = FS[CurrentLocation][i].EnemyName[CurrentLocation][i]; break; }
+            for (Byte i = 0; i < Foe1.EnemyName[CurrentLocation].Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { enemy = FS[CurrentLocation][i].EnemyName[CurrentLocation][i]; break; }
             return enemy;
         }
         private string EnemySounds(in Byte pos)
         {
-            string[] sounds = { Path.GameSounds.SpiderDied, Path.GameSounds.MummyDied, Path.GameSounds.ZombieDied, Path.GameSounds.BonesDied, Path.GameSounds.PhaGetLost };
-            for (Byte i = 0; i < Foe1.EnemyName.Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { return sounds[i]; }
+            string[][] sounds = { new string[] { Path.GameSounds.SpiderDied, Path.GameSounds.MummyDied, Path.GameSounds.ZombieDied, Path.GameSounds.BonesDied, Path.GameSounds.PhaGetLost, Path.GameSounds.HereGetSome }, new string[] { Path.GameSounds.VultureDied, Path.GameSounds.GhoulDied, Path.GameSounds.GrimReaperDied, Path.GameSounds.ScarabDied, Path.GameSounds.ByeFriend }, new string[] { Path.GameSounds.KillerMoleDied, Path.GameSounds.ImpDied, Path.GameSounds.WormDied, Path.GameSounds.MasterDied, Path.GameSounds.ThisIsAll } };
+            for (Byte i = 0; i < Foe1.EnemyName[CurrentLocation].Length; i++) if (Foe1.EnemyAppears[pos] == Foe1.EnemyName[CurrentLocation][i]) { return sounds[CurrentLocation][i]; }
             return Path.GameSounds.SpiderDied;
         }
         private void EnemyOnAttack(in string enemy, in UInt16 dmg)
@@ -3592,21 +3673,24 @@ namespace WpfApp1
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             timer9.Stop();
+            timer9.Tick -= Target_Time_Tick16;
             SelectedTrgt = Sets.SelectedTarget;
-            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0]+Sets.SeriousBonus);
+            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus);
             UInt16 EnemyDefence = EnemyTough(SelectedTrgt);
             AnyHideX(BattleText1, HPenemyBar, HPenemy, Fight, Cancel1, TrgtImg, EnemyImg);
+            //WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
             WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
+            
             LabShow(BattleText1);
 
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
 
-            Foe1.EnemyHP[Sets.SelectedTarget] = Shrt(Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence) < 0 ? 0 : Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence));
+            Foe1.EnemyHP[Sets.SelectedTarget] = Shrt(Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence) <= 0 ? 0 : Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence));
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
             {
                 string res = Path.GameSounds.SpiderDied;
-                try { res = EnemySounds(Sets.SelectedTarget); } catch { res = Path.GameSounds.SpiderDied; }
+                try { res = EnemySounds(Sets.SelectedTarget); } catch (Exception ex) { res = Path.GameSounds.SpiderDied; throw new Exception("Read this: " + ex); }
                 SEF(res);
             }
             if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
@@ -3618,7 +3702,7 @@ namespace WpfApp1
                     case 2: ImgHide(Img8); break;
                 }
                 SuperCheckFoes(Bits(Sets.SelectedTarget));
-                Sets.SelectedTarget = Bits(Foe1.EnemyHP[0] != 0? 0 : Foe1.EnemyHP[1] != 0? 1 : Foe1.EnemyHP[2] != 0? 2 : 0);
+                Sets.SelectedTarget = Bits(Foe1.EnemyHP[0] > 0? 0 : Foe1.EnemyHP[1] > 0 ? 1 : Foe1.EnemyHP[2] > 0 ? 2 : 0);
 
                 Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } };
                 ImgGrid(TrgtImg, grRowColumn[0, Sets.SelectedTarget], grRowColumn[1, Sets.SelectedTarget]);
@@ -3632,20 +3716,23 @@ namespace WpfApp1
                     }
             }
             EventHandler WeaponCharacter = (Sets.SpecialBattle == 200 ? SeriousMinigun_Time_Tick39 : (Super1.PlayerEQ[0]==10 ? HandAttack_Time_Tick8: Super1.PlayerEQ[0] == 50 ? KnifeAttack_Time_Tick8 : Super1.PlayerEQ[0] == 200 ? SwordAttack_Time_Tick8_1 : Super1.PlayerEQ[0] == 165 ? (EventHandler)MinigunAttack_Time_Tick8_2 : HandAttack_Time_Tick8));
+            //WidelyUsedAnyTimer(out timer8, WeaponCharacter, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
             WidelyUsedAnyTimer(out timer8, WeaponCharacter, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
-            Dj(Path.GameNoises.HandAttack);
+            string[] atk = { Path.GameNoises.HandAttack, Path.GameNoises.Knife, Path.GameNoises.Sword, Path.GameNoises.Minigun };
+            Dj(BAG.PlayerEQ[0] == 200 ? atk[3] : BAG.PlayerEQ[0] == 165 ? atk[2] : BAG.PlayerEQ[0] == 50 ? atk[1] : atk[0]);
         }
         public static Byte Actions = 0;
         public static UInt16 FoeDamage = 0;
         private void DamageFoe_Time_Tick17(object sender, EventArgs e)
         {
-            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus - EnemyTough(Sets.SelectedTarget));
+            UInt16 pow = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus);
+            UInt16 strength = Shrt(pow - EnemyTough(Sets.SelectedTarget) <=0 ? 0 : pow - EnemyTough(Sets.SelectedTarget));
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            Labs[SelectedTrgt].Content = Shrt(strength);
+            Labs[SelectedTrgt].Content = strength;
             FoesKicked();
         }
-        private void CureHP_Time_Tick18(object sender, EventArgs e) { CureHealTxt.Content = "+" + Super1.Special * 2; CureOrHeal(); }
-        private void HealPsn_Time_Tick19(object sender, EventArgs e) { CureHealTxt.Content = "-Яд"; CureOrHeal(); }
+        private void CureHP_Time_Tick18(object sender, EventArgs e) { CureHealTxt.Content = "+" + Super1.Special * 2; CureOrHeal(CureHP_Time_Tick18); }
+        private void HealPsn_Time_Tick19(object sender, EventArgs e) { CureHealTxt.Content = "-Яд"; CureOrHeal(HealPsn_Time_Tick19); }
         private void TorchDmg_Time_Tick20(object sender, EventArgs e)
         {
             UInt16 trchsp = Shrt((Foe1.EnemyAppears[SelectedTrgt] == "Паук") || (Foe1.EnemyAppears[SelectedTrgt] == "Мумия") ? Super1.Special * 2.5 : Foe1.EnemyAppears[SelectedTrgt] == "Фараон" ? Super1.Special * 0.5 : Super1.Special * 1.25);
@@ -3677,7 +3764,7 @@ namespace WpfApp1
         }
         public static Byte CureCurrent = 0;
         public static Byte RAPCurrent = 0;
-        private void CureOrHeal()
+        private void CureOrHeal(EventHandler Eh)
         {
             Byte[] RowSet2 = { 22, 21, 20, 19, 18 };
             if (!CureHealTxt.IsEnabled) LabShow(CureHealTxt);
@@ -3685,6 +3772,7 @@ namespace WpfApp1
             {
                 CureCurrent = 0;
                 timer11.Stop();
+                timer11.Tick -= Eh;
                 LabHide(CureHealTxt);
             }
             else
@@ -3694,11 +3782,11 @@ namespace WpfApp1
             }
         }
         
-        private void RestoreAP()
+        private void RestoreAP(EventHandler Eh)
         {
             Byte[] RowSet2 = { 24, 23, 22, 21, 20 };
             if (!RecoverAPTxt.IsEnabled) LabShow(RecoverAPTxt);
-            if (RAPCurrent == RowSet2.Length - 1) { RAPCurrent = 0; timer11.Stop(); LabHide(RecoverAPTxt); }
+            if (RAPCurrent == RowSet2.Length - 1) { RAPCurrent = 0; timer11.Stop(); timer11.Tick -= Eh; LabHide(RecoverAPTxt); }
             else { Grid.SetRow(RecoverAPTxt, RowSet2[RAPCurrent]); RAPCurrent++; }
         }
 
@@ -3738,6 +3826,44 @@ namespace WpfApp1
                 }
             }
         }
+        private void FoesKicked(EventHandler Eh)
+        {
+            Byte[,] RowSet2 = new Byte[,] { { 26, 25, 26, 25, 26 }, { 18, 17, 18, 17, 18 }, { 24, 23, 24, 23, 24 } };
+            Byte[,] ColumnSet2 = new Byte[,] { { 4, 3, 2, 1, 0 }, { 15, 14, 13, 12, 11 }, { 26, 25, 24, 23, 22 } };
+            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
+            if (SelectedTrgt < 3)
+            {
+                if (!Labs[SelectedTrgt].IsEnabled) LabShow(Labs[SelectedTrgt]);
+                if (FoeDamage == ColumnSet2.GetLength(1) - 1)
+                {
+                    FoeDamage = 0;
+                    timer10.Stop();
+                    timer10.Tick -= Eh;
+                    LabHide(Labs[SelectedTrgt]);
+                }
+                else
+                {
+                    LabGrid(Labs[SelectedTrgt], RowSet2[SelectedTrgt, FoeDamage], ColumnSet2[SelectedTrgt, FoeDamage]);
+                    FoeDamage++;
+                }
+            }
+            else
+            {
+                for (Byte i = 0; i < 3; i++) if ((!Labs[i].IsEnabled) && (Foe1.EnemyHP[i] != 0)) LabShow(Labs[i]);
+                if (FoeDamage == ColumnSet2.GetLength(1) - 1)
+                {
+                    FoeDamage = 0;
+                    timer10.Stop();
+                    timer10.Tick -= Eh;
+                    LabHideX(Labs);
+                }
+                else
+                {
+                    for (Byte i = 0; i < 3; i++) if (Foe1.EnemyHP[i] != 0) LabGrid(Labs[i], RowSet2[i, FoeDamage], ColumnSet2[i, FoeDamage]);
+                    FoeDamage++;
+                }
+            }
+        }
         private void IconActions(Image icon, in string[] ico)
         {
             icon.Source = Bmper(ico[Actions]);
@@ -3760,6 +3886,20 @@ namespace WpfApp1
                     Bmper(Sets.SpecialBattle == 200 ? @Path.IconStatePath.Serious : Super1.PlayerStatus == 1 ? @Path.IconStatePath.Poison : @Path.IconStatePath.Usual)));
                 AfterAction();
                 timer8.Stop();
+            }
+            else Actions++;
+        }
+        private void ActionsTickCheck(in string[] pers, in string[] ico, EventHandler Eh)
+        {
+            FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(pers[Actions]), Bmper(ico[Actions])));
+            if (Actions == pers.Length - 1)
+            {
+                Actions = 0;
+                FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Sets.SpecialBattle != 200 ? @Path.PersonStatePath.Usual : @Path.PersonStatePath.Serious),
+                    Bmper(Sets.SpecialBattle == 200 ? @Path.IconStatePath.Serious : Super1.PlayerStatus == 1 ? @Path.IconStatePath.Poison : @Path.IconStatePath.Usual)));
+                AfterAction();
+                timer8.Stop();
+                timer8.Tick -= Eh;
             }
             else Actions++;
         }
@@ -3807,6 +3947,7 @@ namespace WpfApp1
         private void HideAfterBattleMenu() { AnyHideX(NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1, AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg, AfterHPbar, AfterAPbar, NextExpBar, BeforeHPbar, BeforeAPbar, BeforeHPbarOver333, AfterHPbarOver333, BeforeHPbarOver666, AfterHPbarOver666, BeforeAPbarOver333, AfterAPbarOver333, BeforeAPbarOver666, AfterAPbarOver666, TextOk1); }
         private void TextOk1_Click(object sender, RoutedEventArgs e)
         {
+            AfterIcon.Source = Bmper(Path.IconStatePath.Usual);
             Win.Source = CurrentLocation == 2 ? Ura(Path.CutScene.PowerRanger) : CurrentLocation ==1? Ura(Path.CutScene.WasteTime) : Ura(Path.CutScene.Victory);
             MaterialsAdd.Content = "";
             if (timer.IsEnabled) timer.Stop();
@@ -3876,7 +4017,7 @@ namespace WpfApp1
                 }
         }
         private void HideFightIconPersActions() { AnyHideX(HPenemyBar, BattleText4, BattleText5, BattleText6, HPenemy, ItemText, ItemsCountImg, Img4, Img5, TrgtImg, Cure, Heal, Torch, Whip, Super, Back1, Button2, Button3, Button4, Items, Abilities, Fight, Cancel1, ACT1, ACT2, Cancel2); }
-        private void GameOver_MediaEnded(object sender, RoutedEventArgs e) { Form1.Close(); Form1.Show(); }
+        private void GameOver_MediaEnded(object sender, RoutedEventArgs e) { Form1.Close(); }
         public static Byte[] AbilityBonuses = new Byte[] { 0, 0, 0, 0 };
         private void AbilitiesMakeDisappear1() { BtnHideX(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake, Learn, Back1, SwitchAbils }); }
         private void Back1_Click(object sender, RoutedEventArgs e) { AbilitiesMakeDisappear1(); FightMenuBack(); }
@@ -3884,6 +4025,11 @@ namespace WpfApp1
         {
             WidelyUsedAnyTimer(out timer8, PersonAction, new TimeSpan(0, 0, 0, 0, PersonSpeed));
             WidelyUsedAnyTimer(out timer11, TextAction, new TimeSpan(0, 0, 0, 0, TextSpeed));
+        }
+        private void PersonTextAnimationStart(out System.Windows.Threading.DispatcherTimer timer, out System.Windows.Threading.DispatcherTimer timer2, in EventHandler PersonAction, in EventHandler TextAction, in UInt16 PersonSpeed, in UInt16 TextSpeed)
+        {
+            WidelyUsedAnyTimer(out timer, PersonAction, new TimeSpan(0, 0, 0, 0, PersonSpeed));
+            WidelyUsedAnyTimer(out timer2, TextAction, new TimeSpan(0, 0, 0, 0, TextSpeed));
         }
         private void DmgTextAnimationStart(in EventHandler PersonAction, in EventHandler TextAction, in UInt16 PersonSpeed, in UInt16 TextSpeed)
         {
@@ -3903,8 +4049,8 @@ namespace WpfApp1
         {
             CheckAccessAbilities(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control }, new Byte[] { 2, 21, 4, 16, 14, 20, 25 }, new Byte[] { 5, 10, 3, 12, 8, 15, 0 });
             BtnShowX(new Button[] { SwitchAbils, Back1 });
-            if (APRegenerate != null) Control.IsEnabled = !APRegenerate.IsEnabled;
-            if (HPRegenerate != null) Regen.IsEnabled = !HPRegenerate.IsEnabled;
+            Control.IsEnabled = !HPRegenerate.IsEnabled;
+            Regen.IsEnabled = !APRegenerate.IsEnabled;
             FastEnableDisableBtn(new Boolean[] { AbilityBonuses[0] <= 0, AbilityBonuses[1] <= 0 }, BuffUp, ToughenUp);
             ToNextImg.Source = Bmper(Path.BtnCustomize.ArrowNext);
             FightMenuMakesDisappear();
@@ -3922,11 +4068,11 @@ namespace WpfApp1
                 if (CurrentNextHPAP[0] < Super1.MaxHP)
                 {
                     CurrentNextHPAP[0]++;
-                    if (AfterHPbar.Width < 333) NewMaximum(AfterHPbar, CurrentNextHPAP[0]);
+                    if (AfterHPbar.Maximum < 333) NewMaximum(AfterHPbar, CurrentNextHPAP[0]);
                     else
                     {
-                        NewMaximumX(AfterHPbar.Width < 333? new UInt16[] { 333, Shrt(CurrentNextHPAP[0] - 333) } : new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[0] - 333) }, AfterHPbar.Width < 333 ? new ProgressBar[] { AfterHPbar, AfterHPbarOver333 }: new ProgressBar[] { AfterHPbar, AfterHPbarOver333, AfterHPbarOver666 });
-                        BarShowX(AfterHPbar.Width < 333 ? new ProgressBar[] { AfterHPbarOver333 }: new ProgressBar[] { AfterHPbarOver333, AfterHPbarOver666 });
+                        NewMaximumX(AfterHPbar.Maximum < 333? new UInt16[] { 333, Shrt(CurrentNextHPAP[0] - 333) } : new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[0] - 333) }, AfterHPbar.Maximum < 333 ? new ProgressBar[] { AfterHPbar, AfterHPbarOver333 }: new ProgressBar[] { AfterHPbar, AfterHPbarOver333, AfterHPbarOver666 });
+                        BarShowX(AfterHPbar.Maximum < 333 ? new ProgressBar[] { AfterHPbarOver333 }: new ProgressBar[] { AfterHPbarOver333, AfterHPbarOver666 });
                     }
                     FastTextChange(new Label[] { AddHP, AfterHP }, new string[] { "+" + (Super1.MaxHP - CurrentNextHPAP[0]), Super1.CurrentHP + "/" + CurrentNextHPAP[0] });
                 }
@@ -3935,11 +4081,11 @@ namespace WpfApp1
                 if (CurrentNextHPAP[1] < Super1.MaxAP)
                 {
                     CurrentNextHPAP[1]++;
-                    if (AfterAPbar.Width < 333) NewMaximum(AfterAPbar, CurrentNextHPAP[1]);
+                    if (AfterAPbar.Maximum < 333) NewMaximum(AfterAPbar, CurrentNextHPAP[1]);
                     else
                     {
-                        NewMaximumX(AfterAPbar.Width < 333 ? new UInt16[] { 333, Shrt(CurrentNextHPAP[1] - 333) } : new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[1] - 333) }, AfterAPbar.Width < 333 ? new ProgressBar[] { AfterAPbar, AfterAPbarOver333 } : new ProgressBar[] { AfterAPbar, AfterAPbarOver333, AfterAPbarOver666 });
-                        BarShowX(AfterAPbar.Width < 333 ? new ProgressBar[] { AfterAPbarOver333 } : new ProgressBar[] { AfterAPbarOver333, AfterAPbarOver666 });
+                        NewMaximumX(AfterAPbar.Maximum < 333 ? new UInt16[] { 333, Shrt(CurrentNextHPAP[1] - 333) } : new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[1] - 333) }, AfterAPbar.Maximum < 333 ? new ProgressBar[] { AfterAPbar, AfterAPbarOver333 } : new ProgressBar[] { AfterAPbar, AfterAPbarOver333, AfterAPbarOver666 });
+                        BarShowX(AfterAPbar.Maximum < 333 ? new ProgressBar[] { AfterAPbarOver333 } : new ProgressBar[] { AfterAPbarOver333, AfterAPbarOver666 });
                     }
                     FastTextChange(new Label[] { AddAP, AfterAP }, new string[] { "+" + (Super1.MaxAP - CurrentNextHPAP[1]), Super1.CurrentAP + "/" + CurrentNextHPAP[1] });
                 }
@@ -3968,9 +4114,9 @@ namespace WpfApp1
         {
             if ((Mat > 0) && (BAG.Materials + 1 < 65535))
             {
-                BAG.Materials++;
+                BAG.Materials+= Shrt(Mat - 10000 >= 0 ? 10000 : Mat - 1000 >= 0 ? 1000 : Mat - 100 >= 0 ? 100 : Mat - 10 >= 0 ? 10 : 1);
                 MaterialsOnHand.Content = BAG.Materials;
-                Mat--;
+                Mat-= Shrt(Mat - 10000 >= 0 ? 10000 : Mat - 1000 >= 0 ? 1000 : Mat - 100 >= 0 ? 100 : Mat - 10 >= 0 ? 10 : 1);
                 MaterialsAdd.Content = "+" + Mat;
             } else
             {
@@ -3980,30 +4126,32 @@ namespace WpfApp1
                 timer.Stop();
             }
         }
+        private void RecursiveLevelUp(UInt16 cnt)
+        {
+            Super1.CurrentLevel += 1;
+            Super1.SetStats(Bits(Super1.CurrentLevel - 1));
+            Time1.Maximum = TimeFormula();
+
+            cnt = Shrt(cnt - (NextExpBar.Maximum - Super1.Experience));
+            Super1.Experience = 0;
+            NextExpBar.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
+            NextExpBar.Value = 0;
+            FastTextChange(new Label[] { AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel }, new string[] { "+" + (Super1.MaxHP - CurrentNextHPAP[0]), "+" + (Super1.MaxAP - CurrentNextHPAP[1]), "+" + (Super1.Attack - CurrentNextParams[0]), "+" + (Super1.Defence - CurrentNextParams[1]), "+" + (Super1.Speed - CurrentNextParams[2]), "+" + (Super1.Special - CurrentNextParams[3]), Txt.Com.Exp + " " + NextExpBar.Value + "/" + NextExpBar.Maximum, Txt.Com.Lv + " " + Super1.CurrentLevel });
+
+            NewLevelGet.Content = LevelUpCount > 1 ? Txt.Com.NewLv + " X" + LevelUpCount : Txt.Com.NewLv;
+            LevelUpCount += 1;
+            Dj(Path.GameNoises.LevelUp);
+            if (cnt >= NextExpBar.Maximum) RecursiveLevelUp(cnt);
+            AfterIcon.Source = Bmper(Path.IconStatePath.LevelUp);
+        }
         private void Levelling_Time_Tick40(object sender, EventArgs e)
         {
             if ((Exp > 0) && (Super1.CurrentLevel < 25)) {
-                if (Super1.Experience + 1 >= NextExpBar.Maximum)
+                if (Super1.Experience + Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1) >= NextExpBar.Maximum)
                 {
                     if (Super1.CurrentLevel < 25) {
-                        Super1.CurrentLevel += 1;
-                        Super1.SetStats(Bits(Super1.CurrentLevel-1));
-                        Time1.Maximum = TimeFormula();
-
-                        Super1.Experience = 0;
-                        NextExpBar.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
-                        NextExpBar.Value = 0;
-                        FastTextChange(new Label[] { AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel }, new string[] { "+" + (Super1.MaxHP - CurrentNextHPAP[0]), "+" + (Super1.MaxAP - CurrentNextHPAP[1]), "+" + (Super1.Attack - CurrentNextParams[0]), "+" + (Super1.Defence - CurrentNextParams[1]), "+" + (Super1.Speed - CurrentNextParams[2]), "+" + (Super1.Special - CurrentNextParams[3]), Txt.Com.Exp + " " + NextExpBar.Value + "/" + NextExpBar.Maximum, Txt.Com.Lv + " " + Super1.CurrentLevel });
-
+                        RecursiveLevelUp(Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1));
                         if (!NewLevelGet.IsEnabled) LevelUpShow();
-                        NewLevelGet.Content = (LevelUpCount > 1? Txt.Com.NewLv + " X" + LevelUpCount : Txt.Com.NewLv);
-                        LevelUpCount += 1;
-                        Dj(Path.GameNoises.LevelUp);
-                        if (!timer2.IsEnabled)
-                        {
-                            WidelyUsedAnyTimer(out timer2, LevelingUPImage_Time_Tick44, new TimeSpan(0, 0, 0, 0, 25));
-                            timer2.IsEnabled = true;
-                        }
                     } else
                     {
                         Super1.Experience = Shrt(NextExpBar.Maximum);
@@ -4016,11 +4164,11 @@ namespace WpfApp1
                 }
                 else
                 {
-                    Super1.Experience++;
+                    Super1.Experience+= Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1); ;
                     NextExpBar.Value= Super1.Experience;
                     ExpText.Content = Txt.Com.Exp + " " + NextExpBar.Value + "/" + NextExpBar.Maximum;
                 }
-                Exp--;
+                Exp -= Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1);
             }
             else if (!NewLevelGet.IsEnabled)
             {
@@ -4078,27 +4226,27 @@ namespace WpfApp1
             CurrentNextParams = SetAnyValues(CurrentNextParams, Super1.Attack, Super1.Defence, Super1.Speed, Super1.Special);
             CurrentNextHPAP = SetAnyValues(CurrentNextHPAP, Super1.MaxHP, Super1.MaxAP);
             FastTextChange(new Label[] { BeforeATK, BeforeDEF, BeforeAG, BeforeSP, BeforeHP, BeforeAP, AfterATK, AfterDEF, AfterAG, AfterSP, AfterHP, AfterAP }, new string[] { Convert.ToString(CurrentNextParams[0]), Convert.ToString(CurrentNextParams[1]), Convert.ToString(CurrentNextParams[2]), Convert.ToString(CurrentNextParams[3]), Super1.CurrentHP + "/" + CurrentNextHPAP[0], Super1.CurrentAP + "/" + CurrentNextHPAP[1], Convert.ToString(CurrentNextParams[0]), Convert.ToString(CurrentNextParams[1]), Convert.ToString(CurrentNextParams[2]), Convert.ToString(CurrentNextParams[3]), Super1.CurrentHP + "/" + CurrentNextHPAP[0], Super1.CurrentAP + "/" + CurrentNextHPAP[1] });
-            if (HPbar.Width < 333)
+            if (HPbar.Maximum < 333)
             {
                 NewMaximumX(CurrentNextHPAP[0], BeforeHPbar, AfterHPbar);
                 SetAnyValues(new object[] { HPbarOver333.Value, HPbarOver666.Value }, 0, 0);
             }
             else
             {
-                NewMaximumX(HPbarOver333.Width < 333 ? new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[0] - 333), Shrt(CurrentNextHPAP[0] - 333) } : new UInt16[] { 333, 333, 333, 333, Shrt(CurrentNextHPAP[0] - 666), Shrt(CurrentNextHPAP[0] - 666) }, HPbarOver333.Width < 333 ? new ProgressBar[] { BeforeHPbar, AfterHPbar, BeforeHPbarOver333, AfterHPbarOver333 } : new ProgressBar[] { BeforeHPbar, AfterHPbar, BeforeHPbarOver333, AfterHPbarOver333, BeforeHPbarOver666, AfterHPbarOver666 });
-                BarShowX(HPbarOver333.Width < 333 ? new ProgressBar[] { BeforeHPbarOver333 } : new ProgressBar[] { BeforeHPbarOver333, BeforeHPbarOver666 });
-                HPbarOver666.Value = (HPbarOver333.Width < 333 ? 0 : HPbarOver666.Value);
+                NewMaximumX(HPbarOver333.Maximum < 333 ? new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[0] - 333), Shrt(CurrentNextHPAP[0] - 333) } : new UInt16[] { 333, 333, 333, 333, Shrt(CurrentNextHPAP[0] - 666), Shrt(CurrentNextHPAP[0] - 666) }, HPbarOver333.Width < 333 ? new ProgressBar[] { BeforeHPbar, AfterHPbar, BeforeHPbarOver333, AfterHPbarOver333 } : new ProgressBar[] { BeforeHPbar, AfterHPbar, BeforeHPbarOver333, AfterHPbarOver333, BeforeHPbarOver666, AfterHPbarOver666 });
+                BarShowX(HPbarOver333.Maximum < 333 ? new ProgressBar[] { BeforeHPbarOver333 } : new ProgressBar[] { BeforeHPbarOver333, BeforeHPbarOver666 });
+                HPbarOver666.Value = (HPbarOver333.Maximum < 333 ? 0 : HPbarOver666.Value);
             }
-            if (APbar.Width < 333)
+            if (APbar.Maximum < 333)
             {
                 NewMaximumX(CurrentNextHPAP[1], BeforeAPbar, AfterAPbar);
                 SetAnyValues(new object[] { APbarOver333.Value, APbarOver666.Value }, 0, 0);
             }
             else
             {
-                NewMaximumX(APbarOver333.Width < 333 ? new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[1] - 333), Shrt(CurrentNextHPAP[1] - 333) } : new UInt16[] { 333, 333, 333, 333, Shrt(CurrentNextHPAP[1] - 666), Shrt(CurrentNextHPAP[1] - 666) }, HPbarOver333.Width < 333 ? new ProgressBar[] { BeforeAPbar, AfterAPbar, BeforeAPbarOver333, AfterAPbarOver333 } : new ProgressBar[] { BeforeAPbar, AfterAPbar, BeforeAPbarOver333, AfterAPbarOver333, BeforeAPbarOver666, AfterAPbarOver666 });
-                BarShowX(APbarOver333.Width < 333 ? new ProgressBar[] { BeforeAPbarOver333 } : new ProgressBar[] { BeforeAPbarOver333, BeforeAPbarOver666 });
-                APbarOver666.Value = (APbarOver333.Width < 333 ? 0 : APbarOver666.Value);
+                NewMaximumX(APbarOver333.Maximum < 333 ? new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[1] - 333), Shrt(CurrentNextHPAP[1] - 333) } : new UInt16[] { 333, 333, 333, 333, Shrt(CurrentNextHPAP[1] - 666), Shrt(CurrentNextHPAP[1] - 666) }, HPbarOver333.Width < 333 ? new ProgressBar[] { BeforeAPbar, AfterAPbar, BeforeAPbarOver333, AfterAPbarOver333 } : new ProgressBar[] { BeforeAPbar, AfterAPbar, BeforeAPbarOver333, AfterAPbarOver333, BeforeAPbarOver666, AfterAPbarOver666 });
+                BarShowX(APbarOver333.Maximum < 333 ? new ProgressBar[] { BeforeAPbarOver333 } : new ProgressBar[] { BeforeAPbarOver333, BeforeAPbarOver666 });
+                APbarOver666.Value = APbarOver333.Maximum < 333 ? 0 : APbarOver666.Value;
             }
             SetAnyValues(new object[] { BeforeHPbar.Value, AfterHPbar.Value, BeforeHPbarOver333.Value, AfterHPbarOver333.Value, BeforeHPbarOver666.Value, AfterHPbarOver666.Value, BeforeAPbar.Value, AfterAPbar.Value, BeforeAPbarOver333.Value, AfterAPbarOver333.Value, BeforeAPbarOver666.Value, AfterAPbarOver666.Value }, new object[] { HPbar.Value, HPbar.Value, HPbarOver333.Value, HPbarOver333.Value, HPbarOver666.Value, HPbarOver666.Value, APbar.Value, APbar.Value, APbarOver333.Value, APbarOver333.Value, APbarOver666.Value, APbarOver666.Value });
             FastTextChange(new Label[] { MaterialsOnHand, MaterialsAdd, AfterLevel }, new string[] { "" + BAG.Materials, "+" + Mat, Txt.Com.Lv + " " + Super1.CurrentLevel });
@@ -4159,10 +4307,10 @@ namespace WpfApp1
                 BtnHideX(new Button[] { Torch, Whip, Thrower, Super, Tornado, Quake, Learn });
                 CheckAccessAbilities(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control }, new Byte[] { 2, 21, 4, 16, 14, 20, 25 }, new Byte[] { 5, 10, 3, 12, 8, 15, 0 });
                 ButtonShow(SwitchAbils);
-                BuffUp.IsEnabled = AbilityBonuses[0] > 0? false : true;
-                ToughenUp.IsEnabled = AbilityBonuses[1] > 0 ? false : true;
-                if (APRegenerate != null) Control.IsEnabled = !APRegenerate.IsEnabled;
-                if (HPRegenerate != null) Regen.IsEnabled = !HPRegenerate.IsEnabled;
+                BuffUp.IsEnabled = AbilityBonuses[0] == 0;
+                ToughenUp.IsEnabled = AbilityBonuses[1] == 0;
+                Control.IsEnabled = !HPRegenerate.IsEnabled;
+                Regen.IsEnabled = !APRegenerate.IsEnabled;
                 ToNextImg.Source = Bmper(Path.BtnCustomize.ArrowNext);
             }
         }
@@ -4187,7 +4335,7 @@ namespace WpfApp1
             if (Foe1.EnemyHP[Sets.SelectedTarget] <= 0)
             {
                 string res;
-                try { res = EnemySounds(Sets.SelectedTarget); } catch { res = Path.GameSounds.SpiderDied; }
+                try { res = EnemySounds(Sets.SelectedTarget); } catch (Exception ex) { res = Path.GameSounds.SpiderDied; throw new Exception("Read this: "+ex); }
                 SEF(res);
                 SuperCheckFoes(Sets.SelectedTarget);
             }
@@ -4263,6 +4411,7 @@ namespace WpfApp1
                 Foe1.EnemyAppears[CheckIndex] = "";
             }
             else if (Foe1.EnemyAppears[CheckIndex] != "") Foe1.EnemyHP[CheckIndex] = Shrt(strength > EnemyAura ? (Foe1.EnemyHP[CheckIndex] - strength + EnemyAura) : Foe1.EnemyHP[CheckIndex]);
+            //throw new Exception(Foe1.EnemyHP[CheckIndex]+"");
         }
         private void Items_Click(object sender, RoutedEventArgs e)
         {
@@ -4352,7 +4501,7 @@ namespace WpfApp1
             BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 2, 4 }, new Byte[] { 16, 16 });
             LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 7, 2, 4, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 2, 7, 7, Bits(Bits(HPbar1.GetValue(Grid.ColumnProperty)) + Bits(HPbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(APbar1.GetValue(Grid.ColumnProperty)) + Bits(APbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(ExpBar1.GetValue(Grid.ColumnProperty)) + Bits(ExpBar1.GetValue(Grid.ColumnSpanProperty))) });
             CheckAccessItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { Antidote, Bandage, Ether1, Fused, Herbs1, Ether2Out, SleepBag1, Elixir1 }, new Label[] { AntidoteText, BandageText, EtherText, FusedText, HerbsText, Ether2OutText, SleepBagText, ElixirText });
-            FastEnableDisableBtn(new Boolean[] { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] != 150, false }, new Button[] { SleepBag1, Items0 });
+            FastEnableDisableBtn(new Boolean[] { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 150, false }, new Button[] { SleepBag1, Items0 });
             CraftSwitch.Content = "Создание";
             MaterialsCraft.Content = BAG.Materials;
             FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Items, Txt.Sct.Items });
@@ -4534,9 +4683,9 @@ namespace WpfApp1
             {
                 case 3: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter1), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); break;
                 case 4: MediaShowAdvanced(ChapterIntroduction, Ura(Path.CutScene.PreChapter2), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.WaterTemple); break;
-                case 6: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter2), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal);  break;
+                case 6: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter2), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.Conversation); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal);  break;
                 case 7: MediaShowAdvanced(ChapterIntroduction, Ura(Path.CutScene.PreChapter3), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.LavaTemple); break;
-                case 8: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter3), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); break;
+                case 8: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter3), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.Threasures); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); break;
                 case 9: MediaShowAdvanced(ChapterIntroduction, Ura(Path.CutScene.PreChapter4), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.GetAway); break;
                 case 10: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Titres), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.SayGoodbye); Super1.MenuTask++; break;
                 default: Form1.Close(); break;
@@ -4589,8 +4738,8 @@ namespace WpfApp1
         }
         private void AbilsMenu_Click(object sender, RoutedEventArgs e)
         {
-            Button[] abils = new Button[] { Cure1, Cure2Out, Heal1, Torch1, Whip1, Super0 };
-            string[] uris = new string[] { Path.GameNoises.Cure, Path.GameNoises.Cure, Path.GameNoises.Heal, Path.GameNoises.Torch, Path.GameNoises.Whip, Path.GameNoises.Super };
+            Button[] abils = new Button[] { Cure1, Cure2Out, Heal1, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1, BuffUp1, ToughenUp1, Regen1, Control1 };
+            string[] uris = new string[] { Path.GameNoises.Cure, Path.GameNoises.Cure, Path.GameNoises.Heal, Path.GameNoises.Torch, Path.GameNoises.Whip, Path.GameNoises.Thrower, Path.GameNoises.Super, Path.GameNoises.Whirl, Path.GameNoises.Quake, Path.GameNoises.Learn, Path.GameNoises.PowUp, Path.GameNoises.Shield, Path.GameNoises.HpUp, Path.GameNoises.ApUp };
             for (Byte i=0;i< abils.Length; i++) if (sender.Equals(abils[i])) Dj(uris[i]);
             if (sender.Equals(Cure1)) Super1.SetCurrentHpAp(Shrt(Super1.CurrentHP + Shrt(Super1.Special * 2) >= Super1.MaxHP ? Super1.MaxHP : Super1.CurrentHP + Shrt(Super1.Special * 2)), Shrt(Super1.CurrentAP - 5));
             if (sender.Equals(Cure2Out)) Super1.SetCurrentHpAp(Super1.MaxHP, Shrt(Super1.CurrentAP - 10));
@@ -4656,10 +4805,22 @@ namespace WpfApp1
         }
         private void WidelyUsedAnyTimer(out System.Windows.Threading.DispatcherTimer timer, EventHandler SomeEvent, TimeSpan timeSpan)
         {
+            //timer = timer;
             timer = new System.Windows.Threading.DispatcherTimer();
             timer.Tick += new EventHandler(SomeEvent);
             timer.Interval = timeSpan;
             timer.Start();
+        }
+        private void Tuse(ref System.Windows.Threading.DispatcherTimer timer, EventHandler SomeEvent, TimeSpan timeSpan)
+        {
+            timer.Tick += new EventHandler(SomeEvent);
+            timer.Interval = timeSpan;
+            timer.Start();
+        }
+        private void ChangeTimer(ref System.Windows.Threading.DispatcherTimer timer, EventHandler SomeEvent, TimeSpan timeSpan)
+        {
+            timer.Tick += new EventHandler(SomeEvent);
+            timer.Interval = timeSpan;
         }
         private void MediaShowAdvanced(MediaElement Media, Uri Source, TimeSpan timeSpan)
         {
@@ -4800,7 +4961,7 @@ namespace WpfApp1
             Super1.SetCurrentHpAp(Shrt(Bag[2]), Shrt(Bag[3]));
             Super1.Experience = Shrt(Bag[4]);
             Super1.MiniTask = Convert.ToBoolean(Bag[5]);
-            Super1.Learned = Bits(Bag[6]);
+            Super1.Learned = Shrt(Bag[6]);
 
             NextExpBar.Value = Super1.Experience;
             NextExpBar.Maximum = Super1.NextLevel[Super1.CurrentLevel - 1];
@@ -5042,7 +5203,7 @@ namespace WpfApp1
         {
             Super1.SetCurrentHpAp(Super1.MaxHP, Shrt(Super1.CurrentAP-10));
             PersonTextAnimationStart(Cure2_Time_Tick27, CureHP2_Time_Tick28, Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));
-            Dj(Path.GameNoises.Cure);
+            Dj(Path.GameNoises.Cure2);
             CurrentHpApCalculate();
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
@@ -5051,6 +5212,7 @@ namespace WpfApp1
         {
             AbilityBonuses[0] = Super1.Special;
             Super1.CurrentAP -= 12;
+            Dj(Path.GameNoises.PowUp);
             PersonTextAnimationStart(BuffUp_Time_Tick29, BuffUpVal_Time_Tick30, Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));            
             CurrentAPcalculate();
             AbilitiesMakeDisappear1();
@@ -5073,25 +5235,36 @@ namespace WpfApp1
         {
             AbilityBonuses[1] = Super1.Special;
             Super1.CurrentAP -= 8;
+            Dj(Path.GameNoises.Shield);
             PersonTextAnimationStart(Toughen_Time_Tick31, BuffUpVal_Time_Tick30, Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));            
             CurrentAPcalculate();
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
         }
+        private void RegCon()
+        {
+            ChangeTimer(ref HPRegenerate, RegenHP_Time_Tick33, new TimeSpan(0, 0, 0, 0, 20));
+            ChangeTimer(ref APRegenerate, ControlAP_Time_Tick34, new TimeSpan(0, 0, 0, 0, 20));
+        }
         private void Regen_Click(object sender, RoutedEventArgs e)
         {
             Super1.CurrentAP -= 15;
-            PersonTextAnimationStart(Regen_Time_Tick32, RegenHP_Time_Tick33, Shrt(25 / GameSpeed.Value), Shrt(6375 / Super1.Special / GameSpeed.Value));
+            Dj(Path.GameNoises.HpUp);
             HPRegenerate.IsEnabled = true;
+            HPRegenerate.Start();
+            WidelyUsedAnyTimer(out timer8, Regen_Time_Tick32, new TimeSpan(Shrt(25 / GameSpeed.Value)));
             CurrentAPcalculate();
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
         }
         private void Control_Click(object sender, RoutedEventArgs e)
         {
-            PersonTextAnimationStart(Control_Time_Tick35, ControlAP_Time_Tick34, Shrt(25 / GameSpeed.Value), Shrt(6375 / Super1.Special / GameSpeed.Value));
-            AbilitiesMakeDisappear1();
+            Dj(Path.GameNoises.ApUp);
             APRegenerate.IsEnabled = true;
+            //WidelyUsedAnyTimer(out APRegenerate, ControlAP_Time_Tick34, new TimeSpan(0, 0, 0, 0, Shrt(6375 / Super1.Special / GameSpeed.Value > 1 ? 6375 / Super1.Special / GameSpeed.Value : 1)));
+            APRegenerate.Start();
+            WidelyUsedAnyTimer(out timer8, Control_Time_Tick35, new TimeSpan(Shrt(25 / GameSpeed.Value)));
+            AbilitiesMakeDisappear1();
             Time1.Value = 0;
         }
         private void Thrower_Click(object sender, RoutedEventArgs e)
@@ -5105,7 +5278,7 @@ namespace WpfApp1
         private void ActionOnOne_Click(object sender, RoutedEventArgs e)
         {
             EventHandler[,] ActTime = { { Torch_Time_Tick13, Whip_Time_Tick14, Thrower_Time_Tick37 }, { TorchDmg_Time_Tick20, WhipDmg_Time_Tick21, Thrower_Time_Tick36 } };
-            string[] ActSounds = { Path.GameNoises.Torch, Path.GameNoises.Whip, Path.GameNoises.Whip };
+            string[] ActSounds = { Path.GameNoises.Torch, Path.GameNoises.Whip, Path.GameNoises.Thrower };
             Byte[] Cost = { 4, 6, 15 };
             Button[] Actions = { ACT1, ACT2, ACT3 };
             SelectedTrgt = Sets.SelectedTarget;
@@ -5119,14 +5292,14 @@ namespace WpfApp1
                     AnyHideX(TrgtImg, Actions[i], Cancel2);
                     DmgTextAnimationStart(ActTime[0, i], ActTime[1, i], Shrt(25 / GameSpeed.Value), Shrt(50 / GameSpeed.Value));
                     break;
-                }            
+                }
             CurrentAPcalculate();
             timer9.Stop();
         }
         private void ActionOnAll_Click(object sender, RoutedEventArgs e)
         {
             EventHandler[,] ActTime = { { Super_Time_Tick15, Tornado_Time_Tick38, Quake_Time_Tick43 }, { SuperDmg_Time_Tick22, TornadoDmg_Time_Tick39, QuakeDmg_Time_Tick44 } };
-            string[] ActSounds = { Path.GameNoises.Super, Path.GameNoises.Super, Path.GameNoises.Super };
+            string[] ActSounds = { Path.GameNoises.Super, Path.GameNoises.Whirl, Path.GameNoises.Quake };
             Byte[] Cost = { 10, 20, 30 };
             UInt16[] AbilityPowers = { Shrt(Super1.Special * 2), Shrt(Super1.Special * 3), Shrt(Super1.Special * 4) };
             Button[] Actions = { Super, Tornado, Quake };
@@ -5141,7 +5314,7 @@ namespace WpfApp1
                     AnyHideX(TrgtImg, Actions[i], Cancel2);
                     DmgTextAnimationStart(ActTime[0, i], ActTime[1, i], Shrt(25 / GameSpeed.Value), Shrt(50 / GameSpeed.Value));
                     break;
-                }            
+                }
             CurrentAPcalculate();
         }
         private void AbilitiesInFight_MouseLeave(object sender, MouseEventArgs e) { LabHide(BattleText2); }
@@ -5287,11 +5460,11 @@ namespace WpfApp1
             MapBuild(CurrentLocation);
             switch (Super1.MenuTask)
             {
-                case 0: ChangeOnChapter(0); Location1_AncientPyramid(); ImgShowX(new Image[] { Threasure1, SaveProgress }); Threasures(); Super1.MiniTask = false; TablesSetInfo(); break;
+                case 0: Super1.MiniTask = false; ChangeOnChapter(0); Location1_AncientPyramid(); ImgShowX(new Image[] { Threasure1, SaveProgress }); Threasures(); TablesSetInfo(); break;
                 case 3:
-                case 4: ChangeOnChapter(1); Location2_WaterTemple(); Threasures(); Super1.MiniTask = false; SaveGame(); AnyShow(SaveProgress); break;
+                case 4: Super1.MiniTask = false; ChangeOnChapter(1); Location2_WaterTemple(); Threasures(); SaveGame(); AnyShow(SaveProgress); break;
                 case 6:
-                case 7: ChangeOnChapter(2); Location3_LavaTemple(); Threasures(); Super1.MiniTask = false; SaveGame(); AnyShow(SaveProgress); break;
+                case 7: Super1.MiniTask = false; ChangeOnChapter(2); Location3_LavaTemple(); Threasures(); SaveGame(); AnyShow(SaveProgress); break;
                 case 8: case 9: ChangeOnChapter(3); Location4_BigRun(); SaveGame(); break;
                 case 10: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Titres), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.SayGoodbye); break;
                 default: Form1.Close(); break;
@@ -5394,6 +5567,8 @@ namespace WpfApp1
                 "Прислужник" => Path.FoesStatePath.Imp,
                 "П. червь" => Path.FoesStatePath.Worm,
                 "Мастер" => Path.FoesStatePath.Master,
+                "????" => Path.BossesStatePath.Warrior,
+                "Владыка" => Path.BossesStatePath.MrOfAll,
                 _ => Path.FoesStatePath.Spider,
             };
         }
@@ -5414,6 +5589,8 @@ namespace WpfApp1
                 "Прислужник" => Path.FoesAnimatePath.Imp,
                 "П. червь" => Path.FoesAnimatePath.Worm,
                 "Мастер" => Path.FoesAnimatePath.Master,
+                "????" => Path.BossesAnimatePath.Warrior,
+                "Владыка" => Path.BossesAnimatePath.MrOfAll,
                 _ => Path.FoesAnimatePath.Spider,
             };
         }
@@ -5438,39 +5615,39 @@ namespace WpfApp1
                 return false;
             }
         }
-        private void AllDamaged(in UInt16 strength)
+        private void AllDamaged(in UInt16 strength, EventHandler Eh)
         {
             UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
             AllDmgTimeTextChangeConstruction(Shrt(strength > EnemyAura ? strength - EnemyAura : 0));
-            FoesKicked();
+            FoesKicked(Eh);
         }
         private void FoeAttack1_Time_Tick5(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(0)) timer5.Stop(); }
         private void FoeAttack2_Time_Tick6(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(1)) timer6.Stop(); }
         private void FoeAttack3_Time_Tick7(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(2)) timer7.Stop(); }
-        private void HandAttack_Time_Tick8(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.HdAttack, Path.IconAnimatePath.HdAttack); }
-        private void KnifeAttack_Time_Tick8(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.KnAttack, Path.IconAnimatePath.KnAttack); }
-        private void SwordAttack_Time_Tick8_1(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SwAttack, Path.IconAnimatePath.SwAttack); }
-        private void MinigunAttack_Time_Tick8_2(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.MgAttack, Path.IconAnimatePath.MgAttack); }
-        private void Escape_Time_Tick9(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Escape, Path.IconAnimatePath.Escape); }
-        private void Items_Time_Tick10(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.BagUse, Path.IconAnimatePath.BagUse); }
-        private void Cure_Time_Tick11(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Cure, Path.IconAnimatePath.Cure); }
-        private void Heal_Time_Tick12(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Heal, Path.IconAnimatePath.Heal); }
-        private void Torch_Time_Tick13(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Torch, Path.IconAnimatePath.Torch); }
-        private void Whip_Time_Tick14(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Whip, Path.IconAnimatePath.Whip); }
-        private void Super_Time_Tick15(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Super, Path.IconAnimatePath.Super); }
+        private void HandAttack_Time_Tick8(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.HdAttack, Path.IconAnimatePath.HdAttack, HandAttack_Time_Tick8); }
+        private void KnifeAttack_Time_Tick8(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.KnAttack, Path.IconAnimatePath.KnAttack, KnifeAttack_Time_Tick8); }
+        private void SwordAttack_Time_Tick8_1(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SwAttack, Path.IconAnimatePath.SwAttack, SwordAttack_Time_Tick8_1); }
+        private void MinigunAttack_Time_Tick8_2(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.MgAttack, Path.IconAnimatePath.MgAttack, MinigunAttack_Time_Tick8_2); }
+        private void Escape_Time_Tick9(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Escape, Path.IconAnimatePath.Escape, Escape_Time_Tick9); }
+        private void Items_Time_Tick10(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.BagUse, Path.IconAnimatePath.BagUse, Items_Time_Tick10); }
+        private void Cure_Time_Tick11(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Cure, Path.IconAnimatePath.Cure, Cure_Time_Tick11); }
+        private void Heal_Time_Tick12(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Heal, Path.IconAnimatePath.Heal, Heal_Time_Tick12); }
+        private void Torch_Time_Tick13(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Torch, Path.IconAnimatePath.Torch, Torch_Time_Tick13); }
+        private void Whip_Time_Tick14(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Whip, Path.IconAnimatePath.Whip, Whip_Time_Tick14); }
+        private void Super_Time_Tick15(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Super, Path.IconAnimatePath.Super, Super_Time_Tick15); }
         private void Target_Time_Tick16(object sender, EventArgs e) { UnlimitedActionsTickCheck(Path.MiscAnimatePath.Target); }
-        private void Bandage_Time_Tick23(object sender, EventArgs e) { CureHealTxt.Content = "+50"; CureOrHeal(); }
-        private void Ether_Time_Tick24(object sender, EventArgs e) { RecoverAPTxt.Content = "+50"; RestoreAP(); }
-        private void Fused_Time_Tick25(object sender, EventArgs e) { FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "+80", "+80" }); CureOrHeal(); RestoreAP(); }
-        private void Antidote_Time_Tick26(object sender, EventArgs e) { CureHealTxt.Content = "-Яд"; CureOrHeal(); }
-        private void Cure2_Time_Tick27(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Cure2, Path.IconAnimatePath.Cure2); }
-        private void CureHP2_Time_Tick28(object sender, EventArgs e) { CureHealTxt.Content = "100%"; CureOrHeal(); }
-        private void BuffUp_Time_Tick29(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.BuffUp, Path.IconAnimatePath.BuffUp); }
-        private void Regen_Time_Tick32(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Regen, Path.IconAnimatePath.Regen); }
-        private void Toughen_Time_Tick31(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.ToughenUp, Path.IconAnimatePath.ToughenUp); }
-        private void RegenHP_Time_Tick33(object sender, EventArgs e) { if (Super1.CurrentHP < Super1.MaxHP) { Super1.CurrentHP++; CurrentHPcalculate(); } }
-        private void ControlAP_Time_Tick34(object sender, EventArgs e) { if (Super1.CurrentAP < Super1.MaxAP) { Super1.CurrentAP++; CurrentAPcalculate(); } }
-        private void Control_Time_Tick35(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Control, Path.IconAnimatePath.Control); }
+        private void Bandage_Time_Tick23(object sender, EventArgs e) { CureHealTxt.Content = "+50"; CureOrHeal(Bandage_Time_Tick23); }
+        private void Ether_Time_Tick24(object sender, EventArgs e) { RecoverAPTxt.Content = "+50"; RestoreAP(Ether_Time_Tick24); }
+        private void Fused_Time_Tick25(object sender, EventArgs e) { FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "+80", "+80" }); CureOrHeal(Fused_Time_Tick25); RestoreAP(Fused_Time_Tick25); }
+        private void Antidote_Time_Tick26(object sender, EventArgs e) { CureHealTxt.Content = "-Яд"; CureOrHeal(Antidote_Time_Tick26); }
+        private void Cure2_Time_Tick27(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Cure2, Path.IconAnimatePath.Cure2, Cure2_Time_Tick27); }
+        private void CureHP2_Time_Tick28(object sender, EventArgs e) { CureHealTxt.Content = "100%"; CureOrHeal(CureHP2_Time_Tick28); }
+        private void BuffUp_Time_Tick29(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.BuffUp, Path.IconAnimatePath.BuffUp, BuffUp_Time_Tick29); }
+        private void Regen_Time_Tick32(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Regen, Path.IconAnimatePath.Regen, Regen_Time_Tick32); }
+        private void Toughen_Time_Tick31(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.ToughenUp, Path.IconAnimatePath.ToughenUp, Toughen_Time_Tick31); }
+        private void RegenHP_Time_Tick33(object sender, EventArgs e) { if (Super1.CurrentHP == Super1.MaxHP) { HPRegenerate.IsEnabled = false; HPRegenerate.Stop(); HPRegenerate.Tick -= RegenHP_Time_Tick33; } else { Super1.CurrentHP++; CurrentHPcalculate(); } }//throw new Exception("End? "+APRegenerate.IsEnabled);
+        private void ControlAP_Time_Tick34(object sender, EventArgs e) { if (Super1.CurrentAP == Super1.MaxAP) { APRegenerate.IsEnabled = false; APRegenerate.Stop(); APRegenerate.Tick -= ControlAP_Time_Tick34; } else { Super1.CurrentAP++; CurrentAPcalculate(); } }
+        private void Control_Time_Tick35(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Control, Path.IconAnimatePath.Control, Control_Time_Tick35); }
         private void Thrower_Time_Tick36(object sender, EventArgs e)
         {
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
@@ -5478,19 +5655,19 @@ namespace WpfApp1
             UInt16 strength = Shrt((Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[4] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[8] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[9] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[11] ? Super1.Special * 5 : Super1.Special * 2.5) + Super1.Special * Super1.Speed * 0.01);
             UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
             Labs[SelectedTrgt].Content = Shrt(strength > EnemyAura ? strength - EnemyAura : 0);
-            FoesKicked();
+            FoesKicked(Thrower_Time_Tick36);
         }
-        private void Thrower_Time_Tick37(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Thrower, Path.IconAnimatePath.Thrower); }
-        private void Tornado_Time_Tick38(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Tornado, Path.IconAnimatePath.Tornado); }
-        private void TornadoDmg_Time_Tick39(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 3 + Super1.Special * Super1.Speed * 0.01)); }
-        private void SeriousMinigun_Time_Tick39(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SeriousMg, Path.IconAnimatePath.SeriousMg); }
-        private void Quake_Time_Tick43(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Quake, Path.IconAnimatePath.Quake); }
-        private void QuakeDmg_Time_Tick44(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 4 + Super1.Special * Super1.Speed * 0.01)); }
-        private void SeriousSwitch_Time_Tick45(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SSwitch, Path.IconAnimatePath.SSwitch); }
-        private void HerbsHP_Time_Tick46(object sender, EventArgs e) { CureHealTxt.Content = "+350"; CureOrHeal(); }
-        private void Ether2AP_Time_Tick47(object sender, EventArgs e) { RecoverAPTxt.Content = "+300"; RestoreAP(); }
-        private void ElixirHPAP_Time_Tick48(object sender, EventArgs e) { FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "100%", "100%" }); CureOrHeal(); RestoreAP(); }
-        private void Learn_Time_Tick49(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Learn, Path.IconAnimatePath.Learn); }
+        private void Thrower_Time_Tick37(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Thrower, Path.IconAnimatePath.Thrower, Thrower_Time_Tick37); }
+        private void Tornado_Time_Tick38(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Tornado, Path.IconAnimatePath.Tornado, Tornado_Time_Tick38); }
+        private void TornadoDmg_Time_Tick39(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 3 + Super1.Special * Super1.Speed * 0.01), TornadoDmg_Time_Tick39); }
+        private void SeriousMinigun_Time_Tick39(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SeriousMg, Path.IconAnimatePath.SeriousMg, SeriousMinigun_Time_Tick39); }
+        private void Quake_Time_Tick43(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Quake, Path.IconAnimatePath.Quake, Quake_Time_Tick43); }
+        private void QuakeDmg_Time_Tick44(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 4 + Super1.Special * Super1.Speed * 0.01), QuakeDmg_Time_Tick44); }
+        private void SeriousSwitch_Time_Tick45(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SSwitch, Path.IconAnimatePath.SSwitch, SeriousSwitch_Time_Tick45); }
+        private void HerbsHP_Time_Tick46(object sender, EventArgs e) { CureHealTxt.Content = "+350"; CureOrHeal(HerbsHP_Time_Tick46); }
+        private void Ether2AP_Time_Tick47(object sender, EventArgs e) { RecoverAPTxt.Content = "+300"; RestoreAP(Ether2AP_Time_Tick47); }
+        private void ElixirHPAP_Time_Tick48(object sender, EventArgs e) { FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "100%", "100%" }); CureOrHeal(ElixirHPAP_Time_Tick48); RestoreAP(ElixirHPAP_Time_Tick48); }
+        private void Learn_Time_Tick49(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Learn, Path.IconAnimatePath.Learn, Learn_Time_Tick49); }
         private void AllDmgTimeTextChangeConstruction(in UInt16 ActionPower)
         {
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
@@ -5539,7 +5716,7 @@ namespace WpfApp1
             Super1.CurrentAP -= 2;
             CurrentAPcalculate();
             AnyHideX(BattleText1, HPenemyBar, HPenemy, TrgtImg, EnemyImg, ACT4, Cancel2);
-            SEF(Path.GameSounds.SpiderDied);
+            Dj(Path.GameNoises.Learn);
             WidelyUsedAnyTimer(out timer8, Learn_Time_Tick49, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
             timer9.Stop();
         }
