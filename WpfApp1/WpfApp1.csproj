@@ -41,6 +41,7 @@
     <None Remove="Boots2.png" />
     <None Remove="Boulder.png" />
     <None Remove="Bridge.png" />
+    <None Remove="Cancel.png" />
     <None Remove="CancelImg.png" />
     <None Remove="ChestClosed%28ver1%29.png" />
     <None Remove="ChestClosed%28ver2%29.png" />
@@ -59,6 +60,7 @@
     <None Remove="EagleWearsItems.png" />
     <None Remove="ElixirItem.png" />
     <None Remove="EnemyCursor.png" />
+    <None Remove="Equip.png" />
     <None Remove="EquipButton.png" />
     <None Remove="EquipButton2.png" />
     <None Remove="EscapeBeforeImg.png" />
@@ -132,6 +134,7 @@
     <None Remove="PharaohModel.png" />
     <None Remove="Quake.png" />
     <None Remove="Regen.png" />
+    <None Remove="Remove.png" />
     <None Remove="SafeArea.png" />
     <None Remove="Scarab.png" />
     <None Remove="SeriousBoots.png" />
@@ -206,6 +209,7 @@
     <Resource Include="Boots2.png" />
     <Resource Include="Boulder.png" />
     <Resource Include="Bridge.png" />
+    <Resource Include="Cancel.png" />
     <Resource Include="CancelImg.png" />
     <Resource Include="ChestClosed(ver2).png" />
     <Resource Include="Confirm.png" />
@@ -216,6 +220,7 @@
     <Resource Include="DefenceBeforeImg.png" />
     <Resource Include="DefenceUP.png" />
     <Resource Include="ElixirItem.png" />
+    <Resource Include="Equip.png" />
     <Resource Include="EquipButton2.png" />
     <Resource Include="EscapeBeforeImg.png" />
     <Resource Include="Ether2Item.png" />
@@ -256,6 +261,7 @@
     <Resource Include="PharaohModel.png" />
     <Resource Include="Quake.png" />
     <Resource Include="Regen.png" />
+    <Resource Include="Remove.png" />
     <Resource Include="SafeArea.png" />
     <Resource Include="Scarab.png" />
     <Resource Include="SeriousBoots.png" />

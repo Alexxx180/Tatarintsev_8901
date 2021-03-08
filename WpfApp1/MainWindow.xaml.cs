@@ -53,7 +53,7 @@ namespace WpfApp1
                 Lv = "Ур";
                 NewLv = "Новый уровень!";
                 Won = "Победа!";
-                Thres = "Пора переходить к добыче";
+                Thres = "Похоже что-то есть...";
                 Time = "Время";
                 QMark = "Что это?";
                 Expert = "Профессионал";
@@ -324,15 +324,15 @@ namespace WpfApp1
                 T2 = "Соберите другой ключ";
                 T3 = "Соберите последний ключ";
                 T4 = "Проверьте загадочный артефакт";
-                T5 = "Найдите другой способ открыть врата";
+                T5 = "Другой способ открыть врата";
                 T6 = "Откройте путь до артефакта";
                 T7 = "Проверьте загадочный артефакт";
-                T8 = "Найдите переправу через пропасть";
-                T9 = "Заберите последний ключ древних тайн";
+                T8 = "Переправа через пропасть";
+                T9 = "Заберите последний ключ";
                 T10 = "Выберетесь из лабиринта до обвала!";
                 E1 = "Найдите и изучите древнее чудовище";
                 E2 = "Найдите золотой анх";
-                E3 = "Найдите серябрянный фрагмент удачи";
+                E3 = "Найдите фрагмент удачи";
             }
             public string T1 { get; set; }
             public string T2 { get; set; }
@@ -630,7 +630,7 @@ namespace WpfApp1
                     HandAttack = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Punch.mp3";
                     Knife = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Knife.mp3";
                     Sword = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Sword.mp3";
-                    Minigun = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Minigun.mp3";
+                    Minigun = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Minigun2.mp3";
 
                     Cure = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Cure.mp3";
                     Cure2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Cure2.mp3";
@@ -1743,7 +1743,7 @@ namespace WpfApp1
                 Byte[] Vital   = {   3,  7,  5, 15, 25, 40, 20, 80,100,120, 70,150, 40,120,255, 50 };
                 Byte[] Speed   = {  10, 17, 25, 35, 65, 30, 45, 80,100, 90,130,150, 40, 90,255, 50 };
                 Byte[] Abils   = {   0,  2,  5,  7, 30, 20, 60, 80, 75,110, 70,150, 35,140,255, 50 };
-                Byte[] Exper   = {   5, 8, 12, 15, 35, 75,100, 60,175,140,200,225,100,200,255,150 };
+                Byte[] Exper   = { 255,255,255,255, 35, 75,100, 60,175,140,200,225,100,200,255,150 };
                 Byte[] Mater   = {   5, 10, 35, 75, 60,110, 80,255,105,180,150,255,100,200,255,150 };
                 Byte[] Drops =   { 0,1,2,3, 6,4,5,7, 6,5,5,7, 3, 7, 7, 5 };
                 EnemyAttack = Power[FoeIndex];
@@ -2160,10 +2160,10 @@ namespace WpfApp1
             Txt.SetTxt();
             Path.SetPaths();
             Foe1.SetEnemies();
-            RegCon();
             SetEnemies();
+            SetAllTimeTriggers();
             ShowFoesStats();
-            WidelyUsedAnyTimer(out TimeRecord, WorldRecord, new TimeSpan(0, 0, 0, 0, 1));
+            TimerOn(ref WRecd);
             HeyPlaySomething(Path.GameMusic.MainTheme);
             CheckScreenProperties();
 
@@ -2175,7 +2175,7 @@ namespace WpfApp1
         Sql DataBaseMSsql = new Sql();
         public void Autorization() { DataBaseMSsql.CheckAllRecordedPlayers(); CurrentPlayer.Content = DataBaseMSsql.GetCurrentPlayer(); Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue(); ConAdv.Source = Bmper(Continue.IsEnabled ? Path.Adv.BeforeConAdv : Path.Adv.AdventureLock); }
         private void SeeMap() { Byte locs = Bits(DataBaseMSsql.CheckTask()); ChangeBackground(LocationDecode(locs), locs); }
-        private void TryGetOut(object sender, EventArgs e)
+        private bool TimeChamber()
         {
             if ((FleeTime[0] > 0) || (FleeTime[1] > 0))
             {
@@ -2186,22 +2186,23 @@ namespace WpfApp1
             }
             else
             {
-                TimeToGetAway.Stop();
                 AnyHideX(TimerFlees, TimerFlees1);
                 TimerFlees.Foreground = TimerFlees1.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                 TimerFlees.BorderBrush = TimerFlees1.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 220, 255));
                 FleeTime = new Byte[] { 2, 30 };
                 TimerFlees.Content = TimerFlees1.Content = FleeTime[0] + ":" + FleeTime[1];
                 WonOrDied(); MediaShow(GameOver);
+                return true;
             }
+            return false;
         }
-        private void WorldRecord(object sender, EventArgs e)
+        private bool WorldRecord()
         {
             TimeWorldRecord[3]++;
             for (SByte i = 3; i > 0; i--) { Byte[] Conds = { 23, 60, 60, 100 }; if (TimeWorldRecord[i] >= Conds[i]) { TimeWorldRecord[i - 1]++; TimeWorldRecord[i] = 0; } }
             TimeRecordText.Foreground = TimeWorldRecord[0] > 23 ? Brushes.Red : TimeWorldRecord[0] >= 2 ? Brushes.Yellow : TimeWorldRecord[1] >= 30 ? Brushes.Green : Brushes.White;
             TimeRecordText.Content = TimeWorldRecord[0] > 23 ? Txt.Hnt.Wrn3 + " " + Txt.Com.Time + ": 23:59:59.99" : ((TimeWorldRecord[0] >= 2 ? Txt.Hnt.Wrn2 + " " : TimeWorldRecord[1] >= 30 ? Txt.Hnt.Wrn1 + " " : "") + Txt.Com.Time + ": " + TimeWorldRecord[0] + (TimeWorldRecord[1] >= 10 ? ":" : ":0") + TimeWorldRecord[1] + (TimeWorldRecord[2] >= 10 ? ":" : ":0") + TimeWorldRecord[2] + (TimeWorldRecord[3] >= 10 ? "." : ".0") + TimeWorldRecord[3]);
-            if (TimeWorldRecord[0] > 23) TimeRecord.Stop();
+            return TimeWorldRecord[0] > 23;
         }
         //[EN] Initialize public objects
         //[RU] Инициализация объектов публичного доступа
@@ -2322,9 +2323,9 @@ namespace WpfApp1
 
             //Button[] BtnM = { Cure1, Heal1, Bandage, Ether1, Antidote, Fused, Equipments, Status, Abils, Items0, Tasks, Info, Equip, Bandage1, Antidote1, Ether, Fused1 };
             //TimeImg
-            Button[] BtnWFM = { Button1, Skip1, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, CancelEq, CraftSwitch, AddProfile, DeleteProfile };
+            Button[] BtnWFM = { CraftSwitch, AddProfile, DeleteProfile };
             FullImgMedAutoShrink(Numb(1920*Adoptation.WidthAdBack), Numb(1080 * Adoptation.HeightAdBack));
-            Label[] LabMS = { CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6, Lab1, TimerFlees, TimerFlees1, CureHealTxt, RecoverAPTxt, BuffUpTxt, DamageFoe, DamageFoe2, DamageFoe3, Lab2, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, HPtext, APtext, LevelText, HP, AP, HPenemy, ItemText, ATK, ExpText, AfterLevel, AfterName, AfterStatus, NewLevelGet, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterBattleGet, MaterialsGet, MaterialsAdd, MaterialsOnHand, ItemsGet, ItemsGetSlot1, Name0, Level0, StatusP, HPtext1, APtext1, HP1, AP1, Exp1, TimeRecordText, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, ATK1, AddATK1, DEF1, AddDEF1, AG1, SP1, EquipText, EquipH, EquipB, EquipL, EquipD, CostText, AbilsCost, HealCost, FightSkills, MiscSkills, BandageText, HerbsText, EtherText, Ether2OutText, SleepBagText, ElixirText, AntidoteText, FusedText, CountText, MaterialsCraft, CrftAntidoteCostTxt, CrftBandageCostTxt, CrftEtherCostTxt, CrftFusedCostTxt, CrftHerbsCostTxt, CrftEther2CostTxt, CrftBedbagCostTxt, CrftElixirCostTxt, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, DescribeHeader, Describe1, Describe2, MusicText, MusicPercent, SoundsText, SoundsPercent, NoiseText, NoisePercent, BrightnessText, BrightnessPercent, GameSpeedText, GameSpeedX, FoeAtk1, FoeDef1, FoeSpd1, FoeSpc1, FoeWkn1, FoeNam1, FoeDsc1, FoeAtk2, FoeDef2, FoeSpd2, FoeSpc2, FoeWkn2, FoeNam2, FoeDsc2, FoeAtk3, FoeDef3, FoeSpd3, FoeSpc3, FoeWkn3, FoeNam3, FoeDsc3, FoeAtk4, FoeDef4, FoeSpd4, FoeSpc4, FoeWkn4, FoeNam4, FoeDsc4, FoeAtk5, FoeDef5, FoeSpd5, FoeSpc5, FoeWkn5, FoeNam5, FoeDsc5, FoeAtk6, FoeDef6, FoeSpd6, FoeSpc6, FoeWkn6, FoeNam6, FoeDsc6, FoeAtk7, FoeDef7, FoeSpd7, FoeSpc7, FoeWkn7, FoeNam7, FoeDsc7, FoeAtk8, FoeDef8, FoeSpd8, FoeSpc8, FoeWkn8, FoeNam8, FoeDsc8, FoeAtk9, FoeDef9, FoeSpd9, FoeSpc9, FoeWkn9, FoeNam9, FoeDsc9, FoeAtk10, FoeDef10, FoeSpd10, FoeSpc10, FoeWkn10, FoeNam10, FoeDsc10, FoeAtk11, FoeDef11, FoeSpd11, FoeSpc11, FoeWkn11, FoeNam11, FoeDsc11, FoeAtk12, FoeDef12, FoeSpd12, FoeSpc12, FoeWkn12, FoeNam12, FoeDsc12, FoeAtk13, FoeDef13, FoeSpd13, FoeSpc13, FoeWkn13, FoeNam13, FoeDsc13, FoeAtk14, FoeDef14, FoeSpd14, FoeSpc14, FoeWkn14, FoeNam14, FoeDsc14, FoeAtk15, FoeDef15, FoeSpd15, FoeSpc15, FoeWkn15, FoeNam15, FoeDsc15, FoeAtk16, FoeDef16, FoeSpd16, FoeSpc16, FoeWkn16, FoeNam16, FoeDsc16, Task5 };
+            Label[] LabMS = { CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6, Lab1, TimerFlees, TimerFlees1, CureHealTxt, RecoverAPTxt, BuffUpTxt, DamageFoe, DamageFoe2, DamageFoe3, Lab2, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, HPtext, APtext, LevelText, HP, AP, HPenemy, ItemText, ATK, ExpText, AfterLevel, AfterName, AfterStatus, NewLevelGet, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterBattleGet, MaterialsGet, MaterialsAdd, MaterialsOnHand, ItemsGet, ItemsGetSlot1, Name0, Level0, StatusP, HPtext1, APtext1, HP1, AP1, Exp1, TimeRecordText, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, ATK1, AddATK1, DEF1, AddDEF1, AG1, SP1, EquipText, EquipH, EquipB, EquipL, EquipD, CostText, AbilsCost, HealCost, FightSkills, MiscSkills, BandageText, HerbsText, EtherText, Ether2OutText, SleepBagText, ElixirText, AntidoteText, FusedText, CountText, MaterialsCraft, CrftAntidoteCostTxt, CrftBandageCostTxt, CrftEtherCostTxt, CrftFusedCostTxt, CrftHerbsCostTxt, CrftEther2CostTxt, CrftBedbagCostTxt, CrftElixirCostTxt, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, DescribeHeader, Describe1, Describe2, MusicText, MusicPercent, SoundsText, SoundsPercent, NoiseText, NoisePercent, BrightnessText, BrightnessPercent, GameSpeedText, GameSpeedX, FoeAtk1, FoeDef1, FoeSpd1, FoeSpc1, FoeWkn1, FoeNam1, FoeDsc1, FoeAtk2, FoeDef2, FoeSpd2, FoeSpc2, FoeWkn2, FoeNam2, FoeDsc2, FoeAtk3, FoeDef3, FoeSpd3, FoeSpc3, FoeWkn3, FoeNam3, FoeDsc3, FoeAtk4, FoeDef4, FoeSpd4, FoeSpc4, FoeWkn4, FoeNam4, FoeDsc4, FoeAtk5, FoeDef5, FoeSpd5, FoeSpc5, FoeWkn5, FoeNam5, FoeDsc5, FoeAtk6, FoeDef6, FoeSpd6, FoeSpc6, FoeWkn6, FoeNam6, FoeDsc6, FoeAtk7, FoeDef7, FoeSpd7, FoeSpc7, FoeWkn7, FoeNam7, FoeDsc7, FoeAtk8, FoeDef8, FoeSpd8, FoeSpc8, FoeWkn8, FoeNam8, FoeDsc8, FoeAtk9, FoeDef9, FoeSpd9, FoeSpc9, FoeWkn9, FoeNam9, FoeDsc9, FoeAtk10, FoeDef10, FoeSpd10, FoeSpc10, FoeWkn10, FoeNam10, FoeDsc10, FoeAtk11, FoeDef11, FoeSpd11, FoeSpc11, FoeWkn11, FoeNam11, FoeDsc11, FoeAtk12, FoeDef12, FoeSpd12, FoeSpc12, FoeWkn12, FoeNam12, FoeDsc12, FoeAtk13, FoeDef13, FoeSpd13, FoeSpc13, FoeWkn13, FoeNam13, FoeDsc13, FoeAtk14, FoeDef14, FoeSpd14, FoeSpc14, FoeWkn14, FoeNam14, FoeDsc14, FoeAtk15, FoeDef15, FoeSpd15, FoeSpc15, FoeWkn15, FoeNam15, FoeDsc15, FoeAtk16, FoeDef16, FoeSpd16, FoeSpc16, FoeWkn16, FoeNam16, FoeDsc16, Task5, CrftCraftPerfbootsCostTxt };
             TextBlock[] blocks = { InfoText1, InfoText2, InfoText3 };
             ProgressBar[] BarMS = { Time1, HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, HPenemyBar, NextExpBar, BeforeHPbar, BeforeHPbarOver333, BeforeHPbarOver666, BeforeAPbar, BeforeAPbarOver333, BeforeAPbarOver666, AfterHPbar, AfterHPbarOver333, AfterHPbarOver666, AfterAPbar, AfterAPbarOver333, AfterAPbarOver666, HPbar1, APbar1, ExpBar1 };
             ScaleTransform[] scls = { MuLd, SnLd, NsLd, Gs, Brgt, TmOn };
@@ -2354,31 +2355,219 @@ namespace WpfApp1
 
         private void FullImgMedAutoShrink(in int W, in int H)
         {
-            //ImgShrink(Menu1, W, H);
             MedShrink(Med1, W, H);
             MedShrink(Med2, W, H);
             MedShrink(Win, W, H);
             MedShrink(GameOver, W, H);
             MedShrink(ChapterIntroduction, W, H);
             MedShrink(TheEnd, W, H);
-            //ImgShrink(Img1, W, H);
         }
         private void CheckScreenProperties()
         {
             Adoptation.HeightAdBack = SystemParameters.VirtualScreenHeight / 1080;
             Adoptation.WidthAdBack = SystemParameters.VirtualScreenWidth / 1920;
-
-            //ImgShrink(Img2, 32 * Adoptation.WidthAdBack, 30 * Adoptation.HeightAdBack);
-            //FullImgMedAutoShrink(Numb(1920 * Adoptation.WidthAdBack), Numb(1080 * Adoptation.HeightAdBack));
             Adaptate();
         }
+        private void SetAllTimeTriggers()
+        {
+            EventHandler[] events = new EventHandler[]
+            {
+                 PHurt_D_T1,   //[EN] Damage: Player | [RU] Урон: Игрок
+                 THurt_D_T2,   //[EN] Damage: Texts  | [RU] Урон: Текст
+                 E1Atk_D_T3,   //[EN] Attack: Enemy1 | [RU] Атака: Враг1
+                 E2Atk_D_T4,   //[EN] Attack: Enemy2 | [RU] Атака: Враг2
+                 E3Atk_D_T5,   //[EN] Attack: Enemy3 | [RU] Атака: Враг3
+                 PHAtk_D_T6,   //[EN] Attack: Punch  | [RU] Атака: Кулак
+                 PKAtk_D_T7,   //[EN] Attack: Knife  | [RU] Атака: Нож
+                 PSAtk_D_T8,   //[EN] Attack: Sword  | [RU] Атака: Меч
+                 PMAtk_D_T9,   //[EN] Attack: XM214  | [RU] Атака: Миниган XM214-A
+                 PFlee_D_T10,  //[EN] Battle: Escape | [RU] Битва: Побег
+                 PItem_D_T11,  //[EN] Battle: Items  | [RU] Битва: Предметы
+                 Pure1_D_T12,  //[EN] Skills: Cure   | [RU] Умения: Лечение
+                 Pure2_D_T13,  //[EN] Skills: Cure2  | [RU] Умения: Лечение 2
+                 PHeal_D_T14,  //[EN] Skills: Heal   | [RU] Умения: Исцеление
+                 PBuff_D_T15,  //[EN] Skills: Buff   | [RU] Умения: Усиление
+                 PTogh_D_T16,  //[EN] Skills: Shield | [RU] Умения: Щит
+                 PHpUp_D_T17,  //[EN] Skills: Hp up  | [RU] Умения: Подъём ОЗ
+                 PApUp_D_T18,  //[EN] Skills: Ap up  | [RU] Умения: Подъём ОД
+                 PTrch_D_T19,  //[EN] Skills: Torch  | [RU] Умения: Факел
+                 PWhip_D_T20,  //[EN] Skills: Whip   | [RU] Умения: Кнут
+                 PThrw_D_T21,  //[EN] Skills: Sling  | [RU] Умения: Рогатка
+                 Puper_D_T22,  //[EN] Skills: Combo  | [RU] Умения: Комбо
+                 Pnado_D_T23,  //[EN] Skills: Wind   | [RU] Умения: Ветер
+                 Puake_D_T24,  //[EN] Skills: Stones | [RU] Умения: Камни
+                 Pearn_D_T25,  //[EN] Skills: Learn  | [RU] Умения: Изучение
+                 SMini_D_T26,  //[EN] Scene: S-size  | [RU] Сцена: S-размер
+                 SSwth_D_T27,  //[EN] Scene: SSwitch | [RU] Сцена: Серьёзный обмен
+                 Targt_D_T28,  //[EN] Active: Target | [RU] Активное: Цель
+                 PBndg_D_T29,  //[EN] Items: Bandage | [RU] Предметы: Бинт
+                 PEthr_D_T30,  //[EN] Items: Ether   | [RU] Предметы: Эфир
+                 PHerb_D_T31,  //[EN] Items: Herbs   | [RU] Предметы: Травы
+                 PEtr2_D_T32,  //[EN] Items: Ether 2 | [RU] Предметы: Эфир 2
+                 PAtdt_D_T33,  //[EN] Items: Antidote| [RU] Предметы: Противоядие
+                 PCur2_D_T34,  //[EN] Texts: Cure 2  | [RU] Текст: Лечение 2
+                 PFusd_D_T35,  //[EN] Items: Bone mix| [RU] Предметы: Смесь костной муки
+                 PElxr_D_T36,  //[EN] Items: Elixir  | [RU] Предметы: Эликсир
+                 PRegn_F_T37,  //[EN] Texts: Regen   | [RU] Текст: Регенерация
+                 PCtrl_F_T38,  //[EN] Texts: Control | [RU] Текст: Контроль
+                 PThwr_I_T39,  //[EN] Damage: Throw  | [RU] Урон: Бросок
+                 PWhrl_I_T40,  //[EN] Damage: Whirl  | [RU] Урон: Вихрь
+                 PQuak_I_T41,  //[EN] Damage: Quake  | [RU] Урон: Тряска
+                 PTurn_I_T42,  //[EN] Turns: Player  | [RU] Ходы: Игрок
+                 ETurn_I_T43,  //[EN] Turns: Enemy   | [RU] Ходы: Враг
+                 WRecd_R_T44,  //[EN] Run: Speed     | [RU] Прохождение: Скорость
+                 Boss1_C_T45,  //[EN] Cut': Boss 1   | [RU] Вырезка: Босс 1
+                 Boss2_C_T46,  //[EN] Cut': Boss 2   | [RU] Вырезка: Босс 2
+                 Boss3_C_T47,  //[EN] Cut': Boss 3   | [RU] Вырезка: Босс 3
+                 RRoll_L_T48,  //[EN] Live: RockRoll | [RU] Живая: Рок н' ролл (перекати шар)
+                 EHurt_D_T49,  //[EN] Damage: Enemy  | [RU] Урон: Противник
+                 PCure_D_T50,  //[EN] Texts: Cure    | [RU] Текст: Лечение
+                 PAtxc_D_T51,  //[EN] Texts: Heal    | [RU] Текст: Исцеление
+                 PToch_D_T52,  //[EN] Damage: Torch  | [RU] Урон: Факел
+                 PWhpd_D_T53,  //[EN] Damage: Whip   | [RU] Урон: Кнут
+                 PSupr_D_T54,  //[EN] Damage: Super  | [RU] Урон: Супер
+                 PPowr_D_T55,  //[EN] Texts: Buff    | [RU] Текст: Усиление
+                 AStat_F_T56,  //[EN] Exp: Stat add  | [RU] Опыт: Повышение параметра
+                 AMats_F_T57,  //[EN] Exp: Materials | [RU] Опыт: Материалы
+                 NLevl_F_T58,  //[EN] Exp: New level | [RU] Опыт: Новый уровень
+                 TRout_F_T59   //[EN] Live: Get away!| [RU] Живая: Бежим!
+            };
 
+            TimeSpan[] spans = new TimeSpan[]
+            {
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(100/ GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, 20),
+                new TimeSpan(0, 0, 0, 0, 20),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, 1),
+                new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, 1),
+                new TimeSpan(0, 0, 0, 0, 20),
+                new TimeSpan(0, 0, 0, 0, 20),
+                new TimeSpan(0, 0, 0, 0, 20),
+                new TimeSpan(0, 0, 0, 1),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Bits(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, Shrt(75 / GameSpeed.Value)),
+                new TimeSpan(0, 0, 0, 0, 1),
+                new TimeSpan(0, 0, 0, 0, 1),
+                new TimeSpan(0, 0, 0, 0, 1),
+                new TimeSpan(0, 0, 0, 1)
+            };
+            for (Byte i = 0; i < events.Length; i++) {
+                switch (i) {
+                    case 0:  ChangeTimer(ref PHurt, events[i], spans[i]); break;
+                    case 1:  ChangeTimer(ref THurt, events[i], spans[i]); break;
+                    case 2:  ChangeTimer(ref E1Atk, events[i], spans[i]); break;
+                    case 3:  ChangeTimer(ref E2Atk, events[i], spans[i]); break;
+                    case 4:  ChangeTimer(ref E3Atk, events[i], spans[i]); break;
+                    case 5:  ChangeTimer(ref PHAtk, events[i], spans[i]); break;
+                    case 6:  ChangeTimer(ref PKAtk, events[i], spans[i]); break;
+                    case 7:  ChangeTimer(ref PSAtk, events[i], spans[i]); break;
+                    case 8:  ChangeTimer(ref PMAtk, events[i], spans[i]); break;
+                    case 9:  ChangeTimer(ref PFlee, events[i], spans[i]); break;
+                    case 10: ChangeTimer(ref PItem, events[i], spans[i]); break;
+                    case 11: ChangeTimer(ref Pure1, events[i], spans[i]); break;
+                    case 12: ChangeTimer(ref Pure2, events[i], spans[i]); break;
+                    case 13: ChangeTimer(ref PHeal, events[i], spans[i]); break;
+                    case 14: ChangeTimer(ref PBuff, events[i], spans[i]); break;
+                    case 15: ChangeTimer(ref PTogh, events[i], spans[i]); break;
+                    case 16: ChangeTimer(ref PHpUp, events[i], spans[i]); break;
+                    case 17: ChangeTimer(ref PApUp, events[i], spans[i]); break;
+                    case 18: ChangeTimer(ref PTrch, events[i], spans[i]); break;
+                    case 19: ChangeTimer(ref PWhip, events[i], spans[i]); break;
+                    case 20: ChangeTimer(ref PThrw, events[i], spans[i]); break;
+                    case 21: ChangeTimer(ref Puper, events[i], spans[i]); break;
+                    case 22: ChangeTimer(ref Pnado, events[i], spans[i]); break;
+                    case 23: ChangeTimer(ref Puake, events[i], spans[i]); break;
+                    case 24: ChangeTimer(ref Pearn, events[i], spans[i]); break;
+                    case 25: ChangeTimer(ref SMini, events[i], spans[i]); break;
+                    case 26: ChangeTimer(ref SSwth, events[i], spans[i]); break;
+                    case 27: ChangeTimer(ref Targt, events[i], spans[i]); break;
+                    case 28: ChangeTimer(ref PBndg, events[i], spans[i]); break;
+                    case 29: ChangeTimer(ref PEthr, events[i], spans[i]); break;
+                    case 30: ChangeTimer(ref PHerb, events[i], spans[i]); break;
+                    case 31: ChangeTimer(ref PEtr2, events[i], spans[i]); break;
+                    case 32: ChangeTimer(ref PAtdt, events[i], spans[i]); break;
+                    case 33: ChangeTimer(ref PCur2, events[i], spans[i]); break;
+                    case 34: ChangeTimer(ref PFusd, events[i], spans[i]); break;
+                    case 35: ChangeTimer(ref PElxr, events[i], spans[i]); break;
+                    case 36: ChangeTimer(ref PRegn, events[i], spans[i]); break;
+                    case 37: ChangeTimer(ref PCtrl, events[i], spans[i]); break;
+                    case 38: ChangeTimer(ref PThwr, events[i], spans[i]); break;
+                    case 39: ChangeTimer(ref PWhrl, events[i], spans[i]); break;
+                    case 40: ChangeTimer(ref PQuak, events[i], spans[i]); break;
+                    case 41: ChangeTimer(ref PTurn, events[i], spans[i]); break;
+                    case 42: ChangeTimer(ref ETurn, events[i], spans[i]); break;
+                    case 43: ChangeTimer(ref WRecd, events[i], spans[i]); break;
+                    case 44: ChangeTimer(ref Boss1, events[i], spans[i]); break;
+                    case 45: ChangeTimer(ref Boss2, events[i], spans[i]); break;
+                    case 46: ChangeTimer(ref Boss3, events[i], spans[i]); break;
+                    case 47: ChangeTimer(ref RRoll, events[i], spans[i]); break;
+                    case 48: ChangeTimer(ref EHurt, events[i], spans[i]); break;
+                    case 49: ChangeTimer(ref PCure, events[i], spans[i]); break;
+                    case 50: ChangeTimer(ref PAtxc, events[i], spans[i]); break;
+                    case 51: ChangeTimer(ref PToch, events[i], spans[i]); break;
+                    case 52: ChangeTimer(ref PWhpd, events[i], spans[i]); break;
+                    case 53: ChangeTimer(ref PSupr, events[i], spans[i]); break;
+                    case 54: ChangeTimer(ref PPowr, events[i], spans[i]); break;
+                    case 55: ChangeTimer(ref AStat, events[i], spans[i]); break;
+                    case 56: ChangeTimer(ref AMats, events[i], spans[i]); break;
+                    case 57: ChangeTimer(ref NLevl, events[i], spans[i]); break;
+                    case 58: ChangeTimer(ref TRout, events[i], spans[i]); break;
+                }
+            };
+            //timer0
+        }
         //[EN] Initialize all variables
         //[RU] Инициализация всех переменных.
 
         //[EN] Initialize timers for events
         //[RU] Инициализация таймеров для событий.
-        System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
+
+        //[EN] OLD
+        /*System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer timer2 = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer timer3 = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer timer4 = new System.Windows.Threading.DispatcherTimer();
@@ -2395,7 +2584,70 @@ namespace WpfApp1
         System.Windows.Threading.DispatcherTimer BossAppear1 = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer TimeToGetAway = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer HPRegenerate = new System.Windows.Threading.DispatcherTimer();
-        System.Windows.Threading.DispatcherTimer APRegenerate = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer APRegenerate = new System.Windows.Threading.DispatcherTimer();*/
+
+        //[EN] NEW
+        System.Windows.Threading.DispatcherTimer PHurt = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer THurt = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer E1Atk = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer E2Atk = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer E3Atk = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PHAtk = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PKAtk = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PSAtk = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PMAtk = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PFlee = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PItem = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Pure1 = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Pure2 = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PHeal = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PBuff = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PTogh = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PHpUp = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PApUp = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PTrch = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PWhip = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PThrw = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Puper = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Pnado = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Puake = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Pearn = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer SMini = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer SSwth = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Targt = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PBndg = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PEthr = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PHerb = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PEtr2 = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PAtdt = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PCur2 = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PFusd = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PElxr = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PRegn = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PCtrl = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PThwr = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PWhrl = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PQuak = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PTurn = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer ETurn = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer WRecd = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Boss1 = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Boss2 = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer Boss3 = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer RRoll = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer EHurt = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PCure = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PAtxc = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PToch = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PWhpd = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PSupr = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer PPowr = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer AStat = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer AMats = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer NLevl = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer TRout = new System.Windows.Threading.DispatcherTimer();
+
+        System.Windows.Threading.DispatcherTimer ILevl = new System.Windows.Threading.DispatcherTimer();
 
         //[EN] Initialize way to escape and experience
         //[RU] Инициализация состояния побега и количества опыта, получаемого после боя.
@@ -2459,7 +2711,7 @@ namespace WpfApp1
             MaxAndWidthHPcalculate();
             MaxAndWidthAPcalculate();
             BAG.EquipWearSet(false, false, false, false);
-            BAG.ItemsSet(10, 10, 10, 10, 0, 0, 0, 0, 0);
+            BAG.ItemsSet(0, 0, 0, 0, 0, 0, 0, 0, 0);
             Super1.MenuTask = 0;
             FastImgChange(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Threasure1 }, BmpersToX(Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.ChestClosed1), Bmper(Path.MapModels.Artifact1)));
         }
@@ -2806,8 +3058,8 @@ namespace WpfApp1
                 Sound2.Stop();
                 Sound3.Stop();
                 MediaShow(GameOver);
-                timer.Stop();
-                timer2.Stop();
+                if (RRoll.IsEnabled) TimerOff(ref RRoll);
+                if (TRout.IsEnabled) TimerOff(ref TRout);
             }
         }
         private void Movement(in Boolean LeftRightOrUpDown, in BitmapImage bmp, in Byte rowcolumn)
@@ -2820,12 +3072,12 @@ namespace WpfApp1
             if (CurrentLocation < 3) { if (Sets.StepsToBattle >= rnd) { AnyHideX(PainImg, Img2); Sound1.Stop(); Dj(Path.GameNoises.Danger); LetsBattle(); } Sets.StepsToBattle++; }
             GetPoisoned();
         }
-        private void SomeRudeAppears(in Byte BattleIndex, in EventHandler Event, in string Noise)
+        private void SomeRudeAppears(in Byte BattleIndex, ref System.Windows.Threading.DispatcherTimer timer, in string Noise)
         {
             Sets.SpecialBattle = BattleIndex;
             Img2.IsEnabled = false;
             Sound1.Stop();
-            WidelyUsedAnyTimer(out BossAppear1, Event, new TimeSpan(0, 0, 0, 0, 20));
+            TimerOn(ref timer);
             Dj(Noise);
         }
         private Boolean IsWayNext(Byte map)
@@ -2861,20 +3113,6 @@ namespace WpfApp1
             ImgGrid(TableMessage1, X, Y);
             ImgShow(TableMessage1);
         }
-        private void BallRoll(object sender, EventArgs e)
-        {
-            Byte[] MapModel = CheckModelCoord(7);
-            if ((MapModel[0] == Adoptation.ImgYbounds) && (MapModel[1] == Adoptation.ImgXbounds)) { ImgShow(PainImg); if (Super1.CurrentHP - 50 >= 0) Super1.CurrentHP -= 50; else { WonOrDied(); MediaShow(GameOver); } }
-            ChangeMapToVoid(7);
-            if (MapScheme[MapModel[0] + 1, MapModel[1]] != 1)
-            {
-                MapModel[0]++;
-                ReplaceModel(MapModel[0], MapModel[1], 7);
-                ImgGrid(Boulder1, MapModel[0], MapModel[1]);
-                Boulder1.RenderTransform = new RotateTransform(45 * MapModel[0], 16, 15);
-            }
-            else { ImgHide(Boulder1); timer.Stop(); }
-        }
         private void LetsBattle() { Sets.StepsToBattle--; string[] dng = { Path.GameNoises.Danger, Path.GameNoises.Danger2, Path.GameNoises.Danger3 }; Dj(dng[CurrentLocation]); MediaShow(Med2); }
         private void WhatsGoingOn(in Byte SecretBattlesIndex) { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0; Sets.SpecialBattle = SecretBattlesIndex; }
         private void GroundCheck(in Byte Interaction)
@@ -2886,14 +3124,14 @@ namespace WpfApp1
                 case 8: Super1.CurrentHP -= 10; ImgShow(PainImg); break;
                 case 9: Super1.CurrentHP -= 25; ImgShow(PainImg); break;
                 case 104: ChangeMapToVoidOrWallX(new Byte[] { 104, 134 }, 0); ImgHide(JailImg1); Sets.EnemyRate = 5; Super1.MenuTask++; break;
-                case 105: ChangeMapToVoidOrWallX(new Byte[] { 105, 135 }, 0); ImgHideX((CurrentLocation == 1) ? new Image[] { JailImg2, JailImg3 } : new Image[] { JailImg2 }); WidelyUsedAnyTimer(out timer, new EventHandler(BallRoll), new TimeSpan(0, 0, 0, 1)); break;
+                case 105: ChangeMapToVoidOrWallX(new Byte[] { 105, 135 }, 0); ImgHideX((CurrentLocation == 1) ? new Image[] { JailImg2, JailImg3 } : new Image[] { JailImg2 }); TimerOn(ref RRoll); break;
                 case 106: ChangeMapToVoidOrWallX(new Byte[] { 106, 136 }, 0); ImgHide(JailImg5); if (CurrentLocation == 1) Super1.MenuTask++; break;
                 case 107: ChangeMapToVoidOrWallX(new Byte[] { 107, 137 }, 0); ImgHide(JailImg6); break;
                 case 108: ChangeMapToVoidOrWallX(new Byte[] { 108, 138 }, 0); ImgHide(JailImg7); break;
                 case 150: if (DataBaseMSsql.CurrentLogin != "????") { SaveGame(); SEF(Path.GameSounds.ControlSave); } break;
                 case 151: Super1.CurrentHP = Super1.MaxHP; Dj(Path.GameNoises.Cure2); break;
                 case 152: Super1.CurrentAP = Super1.MaxAP; Dj(Path.GameNoises.ApUp); break;
-                case 170: TimeToGetAway.Stop(); FleeTime = new Byte[] { 2, 30 }; TimerFlees.Content = TimerFlees1.Content = "2:30"; AnyHide(Img2); Super1.MenuTask++; MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Ending), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.PutTheEnd); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
+                case 170: if (TRout.IsEnabled) TimerOff(ref TRout); FleeTime = new Byte[] { 2, 30 }; TimerFlees.Content = TimerFlees1.Content = "2:30"; AnyHide(Img2); Super1.MenuTask++; MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Ending), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.PutTheEnd); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
                 case 191: WhatsGoingOn(200); LetsBattle(); break;
                 case 192: ChangeMapToVoid(192); PlayerSetLocation(1, 57); break;
                 default: break;
@@ -2926,9 +3164,9 @@ namespace WpfApp1
                         case 111: ImgGrid(TaskCompletedImg, RowMgs(KeyImg3), 39); PullTheLever(Lever1, new Image[] { Bridge1, Bridge2, Bridge3, Bridge4 }); ChangeMapToWall(111); ChangeMapToVoid(138); Super1.MenuTask = 8; break;
                         case 109: PullTheLever(Lever2, new Image[] { Bridge5, Bridge6 }); ChangeMapToWall(109); ChangeMapToVoid(139); break;
                         case 110: PullTheLever(Lever3, new Image[] { Bridge7, Bridge8 }); ChangeMapToWall(110); ChangeMapToVoid(140); break;
-                        case 161: SomeRudeAppears(1, PharaohAppear_Time51, Path.GameNoises.Horror); break;
-                        case 162: SomeRudeAppears(2, AncientAppear_Time52, Path.GameNoises.EgoRage); break;
-                        case 163: SomeRudeAppears(3, MrOfAllAppear_Time53, Path.GameNoises.EgoRage); break;
+                        case 161: SomeRudeAppears(1, ref Boss1, Path.GameNoises.Horror); break;
+                        case 162: SomeRudeAppears(2, ref Boss2, Path.GameNoises.EgoRage); break;
+                        case 163: SomeRudeAppears(3, ref Boss3, Path.GameNoises.EgoRage); break;
                         case 201: ChestOpen(ChestImg1, Bmper(EquipmentAll[CurrentLocation, 1]), Bmper(ChestOp[CurrentLocation]), 1, CurrentLocation); break;
                         case 202: ChestOpen(ChestImg2, Bmper(EquipmentAll[CurrentLocation, 3]), Bmper(ChestOp[CurrentLocation]), 3, CurrentLocation); break;
                         case 203: ChestOpen(ChestImg3, Bmper(EquipmentAll[CurrentLocation, 0]), Bmper(ChestOp[CurrentLocation]), 0, CurrentLocation); break;
@@ -3037,41 +3275,6 @@ namespace WpfApp1
         }
         private void GetSecretReward() { Exp += 250; Mat += 250; Super1.MiniTask = true; ShowAfterBattleMenu(); }
         
-        //[EN] Mini cutscenes
-        //[RU] Мини сцены.
-        private void PharaohAppear_Time51(object sender, EventArgs e)
-        {
-            if (!PharaohAppears.IsEnabled) ImgShow(PharaohAppears);
-            if (PharaohAppears.Opacity < 1) PharaohAppears.Opacity += 0.01;
-            else
-            {
-                if (Bits(Numb(PharaohAppears.GetValue(Grid.RowProperty)) - 1) < 6) { LetsBattle(); BossAppear1.Stop(); }
-                ImgGrid(PharaohAppears, Bits(Numb(PharaohAppears.GetValue(Grid.RowProperty)) - 1), Bits(Numb(PharaohAppears.GetValue(Grid.ColumnProperty))));
-            }
-        }
-        public static Byte Appearance = 0;
-        private void AncientAppear_Time52(object sender, EventArgs e)
-        {
-            if (!Ancient.IsEnabled) AnyShow(Ancient);
-            if (Ancient.Opacity < 1) Ancient.Opacity += 0.25;
-            else
-            {
-                if (!Warrior.IsEnabled) AnyShow(Warrior);
-                if (Appearance < Path.AniModel.Ancient.Length) AncientAppear_Phase1(Appearance);
-                if (Appearance < 2) AncientAppear_Phase2(Appearance);
-                else if ((Int32)Warrior.GetValue(Grid.ColumnProperty)<5) AncientAppear_Phase3();
-                else { ImgGrid(Warrior, Bits(Numb(Warrior.GetValue(Grid.RowProperty))), Bits(Numb(Warrior.GetValue(Grid.ColumnProperty)) - 1)); BossAppear1.Stop(); LetsBattle(); }
-                Appearance++;
-            }
-        }
-        private void MrOfAllAppear_Time53(object sender, EventArgs e)
-        {
-            if (!FinalAppears.IsEnabled) AnyShow(FinalAppears);
-            if (FinalAppears.Opacity < 1) FinalAppears.Opacity += 0.05; else { BossAppear1.Stop(); LetsBattle(); }
-        }
-        private void AncientAppear_Phase1(in Byte App) { Ancient.Source = Bmper(Path.AniModel.Ancient[App]); }
-        private void AncientAppear_Phase2(in Byte App) { Warrior.Source = Bmper(Path.AniModel.Warrior[App]); }
-        private void AncientAppear_Phase3() { ImgGrid(Warrior, Bits(Warrior.GetValue(Grid.RowProperty)), Bits((Int32)Warrior.GetValue(Grid.ColumnProperty)+1)); }
 
         //[EN] Menu : Player status
         //[RU] Меню : Статус игрока
@@ -3177,6 +3380,7 @@ namespace WpfApp1
         }
         private void RegularBattle()
         {
+            FoesZero();
             CalculateBattleStatus();
             Byte[][] Mat = { new Byte[] { Foe1.Spider.Materials, Foe1.Mummy.Materials, Foe1.Zombie.Materials, Foe1.Bones.Materials, Foe1.BOSS1.Materials, Foe1.SecretBOSS1.Materials }, new Byte[] { Foe1.Vulture.Materials, Foe1.Ghoul.Materials, Foe1.GrimReaper.Materials, Foe1.Scarab.Materials }, new Byte[] { Foe1.KillerMole.Materials, Foe1.Imp.Materials, Foe1.Worm.Materials, Foe1.Master.Materials } };
             Byte[][] XP = { new Byte[] { Foe1.Spider.Experience, Foe1.Mummy.Experience, Foe1.Zombie.Experience, Foe1.Bones.Experience, Foe1.BOSS1.Experience, Foe1.SecretBOSS1.Experience }, new Byte[] { Foe1.Vulture.Experience, Foe1.Ghoul.Experience, Foe1.GrimReaper.Experience, Foe1.Scarab.Experience }, new Byte[] { Foe1.KillerMole.Experience, Foe1.Imp.Experience, Foe1.Worm.Experience, Foe1.Master.Experience } };
@@ -3210,8 +3414,6 @@ namespace WpfApp1
                 }
             }
             TimeEnemy();
-            BattleText2.Content = Sets.FoeType2Alive;
-            AnyShow(BattleText2);
         }
         private void SizeEnemy(Image img, in Boolean huge)
         {
@@ -3219,8 +3421,18 @@ namespace WpfApp1
             Grid.SetRowSpan(img ?? Img6, huge ? 15 : 11);
             ImgShrink(img ?? Img6, huge ? 480*Adoptation.WidthAdBack : 320 * Adoptation.WidthAdBack, huge ? 390 * Adoptation.HeightAdBack : 300 * Adoptation.HeightAdBack);
         }
+        private void FoesZero()
+        {
+            Foe1.EnemyAppears[0] = "";
+            Foe1.EnemyAppears[1] = "";
+            Foe1.EnemyAppears[2] = "";
+            Foe1.EnemyHP[0] = 0;
+            Foe1.EnemyHP[1] = 0;
+            Foe1.EnemyHP[2] = 0;
+        }
         private void BossBattle1()
         {
+            FoesZero();
             CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
@@ -3239,6 +3451,7 @@ namespace WpfApp1
         }
         private void BossBattle2()
         {
+            FoesZero();
             CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
@@ -3257,6 +3470,7 @@ namespace WpfApp1
         }
         private void BossBattle3()
         {
+            FoesZero();
             CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
@@ -3277,6 +3491,7 @@ namespace WpfApp1
         public static Byte[] RememberParams = { 0, 0, 0, 0 };
         private void SecretBossBattle1()
         {
+            FoesZero();
             CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
@@ -3288,7 +3503,7 @@ namespace WpfApp1
             ImgGrid(Img6, 18, 2);
             ImgShrink(Img6, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
             ImgShow(Img6);
-            WidelyUsedAnyTimer(out timer8, SeriousSwitch_Time_Tick45, new TimeSpan(0, 0, 0, 0, Bits(50 / GameSpeed.Value)));
+            TimerOn(ref SSwth, new TimeSpan(0, 0, 0, 0, Bits(50 / GameSpeed.Value)));
             RememberHPAP[0] = Shrt(Super1.CurrentHP);
             RememberHPAP[1] = Shrt(Super1.CurrentAP);
             RememberHPAP[2] = Super1.MaxHP;
@@ -3315,15 +3530,25 @@ namespace WpfApp1
         private void NewMaximumX(in UInt16 Max, params ProgressBar[] Bars) { foreach (ProgressBar Bar in Bars) NewMaximum(Bar, Max); }
         private void FullRecover(ProgressBar Bar) { Bar.Value=Bar.Maximum; }
         private void FullRecoverX(params ProgressBar[] Bars) { foreach (ProgressBar Bar in Bars) FullRecover(Bar); }
+        private void Laugh()
+        {
+            Sound2.SpeedRatio = GameSpeed.Value;
+            Sound3.SpeedRatio = GameSpeed.Value;
+        }
+        private void NotLaugh()
+        {
+            Sound2.SpeedRatio = 1;
+            Sound3.SpeedRatio = 1;
+        }
         private void Med2_MediaEnded(object sender, RoutedEventArgs e)
         {
             switch (Sets.SpecialBattle)
             {
-                case 0: RegularBattle(); break;
-                case 1: BossBattle1(); break;
-                case 2: BossBattle2(); break;
-                case 3: BossBattle3(); break;
-                case 200: SecretBossBattle1(); break;
+                case 0: RegularBattle(); Laugh(); break;
+                case 1: BossBattle1(); Laugh(); break;
+                case 2: BossBattle2(); Laugh(); break;
+                case 3: BossBattle3(); Laugh(); break;
+                case 200: SecretBossBattle1(); Laugh(); break;
                 default: Form1.Close(); break;
             }
         }
@@ -3394,7 +3619,7 @@ namespace WpfApp1
             AnyShowX(HPenemy, HPenemyBar, EnemyImg, TrgtImg);
             RefreshAllHP();
             InfoAboutEnemies();
-            WidelyUsedAnyTimer(out timer9, Target_Time_Tick16, new TimeSpan(0, 0, 0, 0, Shrt(100 / GameSpeed.Value)));
+            TimerOn(ref Targt);
         }
         private void AfterAction()
         {
@@ -3405,8 +3630,8 @@ namespace WpfApp1
             LabHideX(new Label[] { BattleText1, BattleText2 });
             if (speed > 0)
             {
-                if (HPRegenerate.IsEnabled) { HPRegenerate.Stop(); HPRegenerate.IsEnabled = false; }
-                if (APRegenerate.IsEnabled) { APRegenerate.Stop(); APRegenerate.IsEnabled = false; }
+                if (PRegn.IsEnabled) { TimerOff(ref PRegn); }
+                if (PCtrl.IsEnabled) { TimerOff(ref PCtrl); }
                 Sets.FoeType1Alive = 0;
                 Sets.FoeType2Alive = 0;
                 Sets.FoeType3Alive = 0;
@@ -3421,7 +3646,7 @@ namespace WpfApp1
                 ImgShowX(new Image[] { Img1, Img2, Threasure1, SaveProgress });
                 CheckMapIfModelExistsX(new Byte[] { 104, 105, 105, 106, 107, 108 }, new Image[] { JailImg1, JailImg2, JailImg3, JailImg5, JailImg6, JailImg7 });
                 speed = 0;
-                timer2.Stop();
+                if (ETurn.IsEnabled) TimerOff(ref ETurn);
                 Sound1.Stop();
                 ChestsAndTablesAllTurnOn1();
                 if (CurrentLocation == 0) Map1EnableModels(); else if (CurrentLocation == 1) ImgShowX(new Image[] { SecretChestImg1, SecretChestImg2 });
@@ -3434,8 +3659,8 @@ namespace WpfApp1
             else
             if (Foe1.EnemiesStillAlive <= 0)
             {
-                if (HPRegenerate.IsEnabled) { HPRegenerate.Stop(); HPRegenerate.IsEnabled = false; }
-                if (APRegenerate.IsEnabled) { APRegenerate.Stop(); APRegenerate.IsEnabled = false; }
+                if (PRegn.IsEnabled) { TimerOff(ref PRegn); }
+                if (PCtrl.IsEnabled) { TimerOff(ref PCtrl); }
                 Sound1.Stop();
                 SEF(Path.GameSounds.NowTheWinnerIs);
                 Grid.SetColumn(BattleText1, 22);
@@ -3468,7 +3693,7 @@ namespace WpfApp1
         private UInt16 TimeFormula() { return Shrt(305 - Super1.Speed); }
         private void Time()
         {
-            if ((Time1.Value == Time1.Maximum) && (HPbar.Value != 0))
+            if ((Time1.Value >= Time1.Maximum) && (Super1.CurrentHP > 0))
             {
                 Super1.DefenseState = 1;
                 FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Sets.SpecialBattle == 200 ? Path.PersonStatePath.Serious : Path.PersonStatePath.Usual), Bmper(Sets.SpecialBattle == 200 ? Path.IconStatePath.Serious : Super1.PlayerStatus == 1 ? Path.IconStatePath.Poison : Path.IconStatePath.Usual)));
@@ -3476,9 +3701,9 @@ namespace WpfApp1
                 if (Sets.SpecialBattle == 200) BtnHideX(new Button[] { Button4, Items, Abilities });
                 Lab2.Foreground = Brushes.Yellow;
             }
-            else WidelyUsedAnyTimer(out timer, Player_Time_Tick, new TimeSpan(0, 0, 0, 0, 1));
+            else TimerOn(ref PTurn);
         }
-        private void TimeEnemy() { Byte aglfoe = 25; if ((Foe1.EnemyHP[0] > 0) || (Foe1.EnemyHP[1] > 0) || (Foe1.EnemyHP[2] > 0)) WidelyUsedAnyTimer(out timer2, EnemyTime_Tick2, new TimeSpan(0, 0, 0, 0, Shrt((50 - aglfoe) / GameSpeed.Value))); }
+        private void TimeEnemy() { if ((Foe1.EnemyHP[0] > 0) || (Foe1.EnemyHP[1] > 0) || (Foe1.EnemyHP[2] > 0)) TimerOn(ref ETurn); }
         
         //[EN] Get necessary information from foes fast
         //[RU] Быстрое получение нужной информации от врагов.
@@ -3542,13 +3767,8 @@ namespace WpfApp1
             HP.Foreground = Brushes.Red;
             if (Sets.SpecialBattle != 200)
             {
-                UInt16 GameSpeed1 = Shrt(50 / GameSpeed.Value);
-                if (timer3 == null) { WidelyUsedAnyTimer(out timer3, DamageTime_Tick3, new TimeSpan(0, 0, 0, 0, GameSpeed1)); timer3.IsEnabled = true; }
-                else if (Img4.Source.ToString().Contains(Path.PersonStatePath.Usual) && (!timer3.IsEnabled)) { WidelyUsedAnyTimer(out timer3, DamageTime_Tick3, new TimeSpan(0, 0, 0, 0, GameSpeed1)); timer3.IsEnabled = true; }
-                else HP.Foreground = Brushes.White;
-
-                if (timer4 == null) { WidelyUsedAnyTimer(out timer4, HurtTime_Tick4, new TimeSpan(0, 0, 0, 0, GameSpeed1)); timer4.IsEnabled = true; }
-                else if (!timer4.IsEnabled) { WidelyUsedAnyTimer(out timer4, HurtTime_Tick4, new TimeSpan(0, 0, 0, 0, GameSpeed1)); timer4.IsEnabled = true; }
+                if ((!PHurt.IsEnabled) && Img4.Source.ToString().Contains(Path.PersonStatePath.Usual)) { TimerOn(ref PHurt, new TimeSpan(0,0,0,0, Shrt(50 / GameSpeed.Value))); }
+                if (!THurt.IsEnabled) { TimerOn(ref THurt, new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value))); }
                 else HP.Foreground = Brushes.White;
             }
         }
@@ -3590,16 +3810,15 @@ namespace WpfApp1
             if (Foe1.EnemyHP[FoeNo] > 0)
             {
                 UInt16 turn = TimeFoeFormula(GetSpeed(FoeNo));
-                if (Foe1.EnemyTurn[FoeNo] >= turn)
+                if (Foe1.EnemyTurn[FoeNo] >= Shrt(turn / GameSpeed.Value))
                 {
-                    EventHandler[] FoeFights = { FoeAttack1_Time_Tick5, FoeAttack2_Time_Tick6, FoeAttack3_Time_Tick7 };
                     Foe1.EnemyTurn[FoeNo] = 0;
                     CheckEnemies(out EnemyAttack, 1);
                     NameEnemies(out enemy, 1);
                     if (EnemyAttack > PlayerDef)
                     {
                         UInt16 dmg = Shrt(EnemyAttack - PlayerDef);
-                        WidelyUsedAnyTimer(out SomeTimer, FoeFights[FoeNo], new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
+                        TimerOn(ref SomeTimer, new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
                         EnemyOnAttack(enemy, dmg);
                         Super1.PlayerStatus = Bits((Random1.Next(1, 13) == 7) && (Super1.PlayerStatus != 1) && ((Foe1.EnemyAppears[FoeNo] == "Паук") && (Foe1.EnemyAppears[FoeNo] == "Моль-убийца")) ? 1 : 0);
                         AfterIcon.Source = Icon0.Source = Img5.Source = Bmper(Super1.PlayerStatus == 1 ? Path.IconStatePath.Poison : Path.IconStatePath.Usual);
@@ -3610,29 +3829,6 @@ namespace WpfApp1
                     
             }
         }
-        private void EnemyTime_Tick2(object sender, EventArgs e)
-        {
-            if (Super1.CurrentHP <= 0)
-            {
-                Super1.PlayerStatus = 0;
-                Sound1.Stop();
-                Sound2.Stop();
-                Sound3.Stop();
-                LabHide(BattleText3);
-                MediaShow(GameOver);
-                GameOver.Play();
-                if (timer != null) timer.Stop();
-                timer2.Stop();
-            }
-            if ((Super1.PlayerStatus == 1) && (Super1.CurrentHP > 0)) if (poison < 30) poison += 1; else { poison = 0; Super1.CurrentHP = Shrt(Super1.CurrentHP - 1); CurrentHPcalculate(); }
-            if (((Foe1.EnemyHP[0] > 0) || (Foe1.EnemyHP[1] > 0) || (Foe1.EnemyHP[2] > 0)) && (Super1.CurrentHP > 0))
-            {
-                BattleFoeCharges(0, ref timer5);
-                BattleFoeCharges(1, ref timer6);
-                BattleFoeCharges(2, ref timer7);
-            }
-        }
-        private void Player_Time_Tick(object sender, EventArgs e) { if (Time1.Value < Time1.Maximum) Time1.Value += 1; else { timer.Stop(); Time(); } }
         private void Skip1_Click(object sender, RoutedEventArgs e) { ButtonHide(Skip1); Med1.Position = new TimeSpan(0, 0, 0, 7, 500); }
         private void Sound1_MediaEnded(object sender, RoutedEventArgs e)
         {
@@ -3644,13 +3840,12 @@ namespace WpfApp1
         private void Button4_Click(object sender, RoutedEventArgs e)
         {
             Byte agl = Super1.Speed;
-            Byte fagl = 10;
             FightMenuMakesDisappear();
-            GetOut(out fagl);
+            GetOut(out byte fagl);
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
-            if (agl > fagl) { timer2.Stop(); speed = 1; }
-            WidelyUsedAnyTimer(out timer8, Escape_Time_Tick9, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
+            if (agl > fagl) { if (ETurn.IsEnabled) TimerOff(ref ETurn); speed = 1; }
+            TimerOn(ref PFlee, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
             Dj(Path.GameNoises.FleeAway);
             LabHide(BattleText2);
         }
@@ -3672,16 +3867,12 @@ namespace WpfApp1
         public static Byte SelectedTrgt = 0;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            timer9.Stop();
-            timer9.Tick -= Target_Time_Tick16;
+            TimerOff(ref Targt);
             SelectedTrgt = Sets.SelectedTarget;
             UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus);
             UInt16 EnemyDefence = EnemyTough(SelectedTrgt);
             AnyHideX(BattleText1, HPenemyBar, HPenemy, Fight, Cancel1, TrgtImg, EnemyImg);
-            //WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
-            WidelyUsedAnyTimer(out timer10, DamageFoe_Time_Tick17, new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
-            
-            LabShow(BattleText1);
+            TimerOn(ref EHurt, new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
 
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
@@ -3715,82 +3906,55 @@ namespace WpfApp1
                         Foe1.EnemyAppears[Sets.SelectedTarget] = "";
                     }
             }
-            EventHandler WeaponCharacter = (Sets.SpecialBattle == 200 ? SeriousMinigun_Time_Tick39 : (Super1.PlayerEQ[0]==10 ? HandAttack_Time_Tick8: Super1.PlayerEQ[0] == 50 ? KnifeAttack_Time_Tick8 : Super1.PlayerEQ[0] == 200 ? SwordAttack_Time_Tick8_1 : Super1.PlayerEQ[0] == 165 ? (EventHandler)MinigunAttack_Time_Tick8_2 : HandAttack_Time_Tick8));
-            //WidelyUsedAnyTimer(out timer8, WeaponCharacter, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
-            WidelyUsedAnyTimer(out timer8, WeaponCharacter, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
             string[] atk = { Path.GameNoises.HandAttack, Path.GameNoises.Knife, Path.GameNoises.Sword, Path.GameNoises.Minigun };
-            Dj(BAG.PlayerEQ[0] == 200 ? atk[3] : BAG.PlayerEQ[0] == 165 ? atk[2] : BAG.PlayerEQ[0] == 50 ? atk[1] : atk[0]);
+            if (Sets.SpecialBattle != 200)
+                switch (Super1.PlayerEQ[0])
+                {
+                    case 50: TimerOn(ref PKAtk, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value))); Dj(atk[1]); break;
+                    case 165: TimerOn(ref PMAtk, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value))); Dj(atk[3]); break;
+                    case 200: TimerOn(ref PSAtk, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value))); Dj(atk[2]); break;
+                    default: TimerOn(ref PHAtk, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value))); Dj(atk[0]); break;
+                }
+            else TimerOn(ref SMini);
         }
         public static Byte Actions = 0;
         public static UInt16 FoeDamage = 0;
-        private void DamageFoe_Time_Tick17(object sender, EventArgs e)
-        {
-            UInt16 pow = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus);
-            UInt16 strength = Shrt(pow - EnemyTough(Sets.SelectedTarget) <=0 ? 0 : pow - EnemyTough(Sets.SelectedTarget));
-            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            Labs[SelectedTrgt].Content = strength;
-            FoesKicked();
-        }
-        private void CureHP_Time_Tick18(object sender, EventArgs e) { CureHealTxt.Content = "+" + Super1.Special * 2; CureOrHeal(CureHP_Time_Tick18); }
-        private void HealPsn_Time_Tick19(object sender, EventArgs e) { CureHealTxt.Content = "-Яд"; CureOrHeal(HealPsn_Time_Tick19); }
-        private void TorchDmg_Time_Tick20(object sender, EventArgs e)
-        {
-            UInt16 trchsp = Shrt((Foe1.EnemyAppears[SelectedTrgt] == "Паук") || (Foe1.EnemyAppears[SelectedTrgt] == "Мумия") ? Super1.Special * 2.5 : Foe1.EnemyAppears[SelectedTrgt] == "Фараон" ? Super1.Special * 0.5 : Super1.Special * 1.25);
-            trchsp += Shrt(Super1.Special * Super1.Speed * 0.01);
-            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
-            Labs[SelectedTrgt].Content = Shrt(trchsp > EnemyAura ? trchsp - EnemyAura : 0);
-            FoesKicked();
-        }
-
-        private void WhipDmg_Time_Tick21(object sender, EventArgs e)
-        {
-            UInt16 whipsp = Shrt((Foe1.EnemyAppears[SelectedTrgt] == "Зомби") || (Foe1.EnemyAppears[SelectedTrgt] == "Страж") ? Super1.Special * 3 : Foe1.EnemyAppears[SelectedTrgt] == "Фараон" ? Super1.Special * 0.75 : Super1.Special * 1.5);
-            whipsp += Shrt(Super1.Special * Super1.Speed * 0.01);
-            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
-            Labs[SelectedTrgt].Content = Shrt(whipsp > EnemyAura ? whipsp - EnemyAura : 0);
-            FoesKicked();
-        }
-
-        private void SuperDmg_Time_Tick22(object sender, EventArgs e)
-        {
-            UInt16 supersp = Shrt(Foe1.EnemyAppears[0] != "Фараон" ? Super1.Special * 2 : Super1.Special);
-            supersp += Shrt(Super1.Special * Super1.Speed * 0.01);
-            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
-            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            for (Byte i = 0; i < Labs.Length; i++) if (Foe1.EnemyHP[i] != 0) Labs[i].Content = supersp > EnemyAura? supersp - EnemyAura: 0;
-            FoesKicked();
-        }
+        
         public static Byte CureCurrent = 0;
         public static Byte RAPCurrent = 0;
-        private void CureOrHeal(EventHandler Eh)
+        private bool CureOrHeal(string Power)
         {
+            if (CureHealTxt.Content.ToString() != Power) CureHealTxt.Content = Power;
             Byte[] RowSet2 = { 22, 21, 20, 19, 18 };
             if (!CureHealTxt.IsEnabled) LabShow(CureHealTxt);
             if (CureCurrent == RowSet2.Length - 1)
             {
-                CureCurrent = 0;
-                timer11.Stop();
-                timer11.Tick -= Eh;
-                LabHide(CureHealTxt);
+                ReturnLabs();
+                return true;
             }
             else
             {
                 Grid.SetRow(CureHealTxt, RowSet2[CureCurrent]);
                 CureCurrent++;
             }
+            return false;
         }
-        
-        private void RestoreAP(EventHandler Eh)
+        private void ReturnLabs()
+        {
+            CureCurrent = 0;
+            RAPCurrent = 0;
+            AnyHideX(RecoverAPTxt, CureHealTxt);
+        }
+        private bool RestoreAP(string Power)
         {
             Byte[] RowSet2 = { 24, 23, 22, 21, 20 };
+            if (RecoverAPTxt.Content.ToString() != Power) RecoverAPTxt.Content = Power;
             if (!RecoverAPTxt.IsEnabled) LabShow(RecoverAPTxt);
-            if (RAPCurrent == RowSet2.Length - 1) { RAPCurrent = 0; timer11.Stop(); timer11.Tick -= Eh; LabHide(RecoverAPTxt); }
+            if (RAPCurrent == RowSet2.Length - 1) { ReturnLabs(); return true; }
             else { Grid.SetRow(RecoverAPTxt, RowSet2[RAPCurrent]); RAPCurrent++; }
+            return false;
         }
-
-        private void FoesKicked()
+        private bool FoesKicked()
         {
             Byte[,] RowSet2 = new Byte[,] { { 26, 25, 26, 25, 26 }, { 18, 17, 18, 17, 18 }, { 24, 23, 24, 23, 24 } };
             Byte[,] ColumnSet2 = new Byte[,] { { 4, 3, 2, 1, 0 }, { 15, 14, 13, 12, 11 }, { 26, 25, 24, 23, 22 } };
@@ -3801,8 +3965,8 @@ namespace WpfApp1
                 if (FoeDamage == ColumnSet2.GetLength(1) - 1)
                 {
                     FoeDamage = 0;
-                    timer10.Stop();
                     LabHide(Labs[SelectedTrgt]);
+                    return true;
                 }
                 else
                 {
@@ -3816,46 +3980,8 @@ namespace WpfApp1
                 if (FoeDamage == ColumnSet2.GetLength(1) - 1)
                 {
                     FoeDamage = 0;
-                    timer10.Stop();
                     LabHideX(Labs);
-                }
-                else
-                {
-                    for (Byte i=0;i<3;i++) if (Foe1.EnemyHP[i] != 0) LabGrid(Labs[i], RowSet2[i, FoeDamage], ColumnSet2[i, FoeDamage]);
-                    FoeDamage++;
-                }
-            }
-        }
-        private void FoesKicked(EventHandler Eh)
-        {
-            Byte[,] RowSet2 = new Byte[,] { { 26, 25, 26, 25, 26 }, { 18, 17, 18, 17, 18 }, { 24, 23, 24, 23, 24 } };
-            Byte[,] ColumnSet2 = new Byte[,] { { 4, 3, 2, 1, 0 }, { 15, 14, 13, 12, 11 }, { 26, 25, 24, 23, 22 } };
-            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            if (SelectedTrgt < 3)
-            {
-                if (!Labs[SelectedTrgt].IsEnabled) LabShow(Labs[SelectedTrgt]);
-                if (FoeDamage == ColumnSet2.GetLength(1) - 1)
-                {
-                    FoeDamage = 0;
-                    timer10.Stop();
-                    timer10.Tick -= Eh;
-                    LabHide(Labs[SelectedTrgt]);
-                }
-                else
-                {
-                    LabGrid(Labs[SelectedTrgt], RowSet2[SelectedTrgt, FoeDamage], ColumnSet2[SelectedTrgt, FoeDamage]);
-                    FoeDamage++;
-                }
-            }
-            else
-            {
-                for (Byte i = 0; i < 3; i++) if ((!Labs[i].IsEnabled) && (Foe1.EnemyHP[i] != 0)) LabShow(Labs[i]);
-                if (FoeDamage == ColumnSet2.GetLength(1) - 1)
-                {
-                    FoeDamage = 0;
-                    timer10.Stop();
-                    timer10.Tick -= Eh;
-                    LabHideX(Labs);
+                    return true;
                 }
                 else
                 {
@@ -3863,6 +3989,7 @@ namespace WpfApp1
                     FoeDamage++;
                 }
             }
+            return false;
         }
         private void IconActions(Image icon, in string[] ico)
         {
@@ -3871,47 +3998,33 @@ namespace WpfApp1
             {
                 Actions = 0;
                 icon.Source = Bmper(Path.IconStatePath.Usual);
-                timer2.Stop();
-                timer2.IsEnabled = !timer2.IsEnabled;
+                if (ILevl.IsEnabled) TimerOff(ref ILevl);
             }
             else Actions++;
         }
-        private void ActionsTickCheck(in string[] pers, in string[] ico)
+        private bool ActionsTickCheck(in string[] pers, in string[] ico)
         {
             FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(pers[Actions]), Bmper(ico[Actions])));
             if (Actions == pers.Length - 1)
             {
                 Actions = 0;
                 FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Sets.SpecialBattle != 200 ? @Path.PersonStatePath.Usual : @Path.PersonStatePath.Serious),
-                    Bmper(Sets.SpecialBattle == 200 ? @Path.IconStatePath.Serious : Super1.PlayerStatus == 1 ? @Path.IconStatePath.Poison : @Path.IconStatePath.Usual)));
+                Bmper(Sets.SpecialBattle == 200 ? @Path.IconStatePath.Serious : Super1.PlayerStatus == 1 ? @Path.IconStatePath.Poison : @Path.IconStatePath.Usual)));
                 AfterAction();
-                timer8.Stop();
+                return true;
             }
             else Actions++;
-        }
-        private void ActionsTickCheck(in string[] pers, in string[] ico, EventHandler Eh)
-        {
-            FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(pers[Actions]), Bmper(ico[Actions])));
-            if (Actions == pers.Length - 1)
-            {
-                Actions = 0;
-                FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Sets.SpecialBattle != 200 ? @Path.PersonStatePath.Usual : @Path.PersonStatePath.Serious),
-                    Bmper(Sets.SpecialBattle == 200 ? @Path.IconStatePath.Serious : Super1.PlayerStatus == 1 ? @Path.IconStatePath.Poison : @Path.IconStatePath.Usual)));
-                AfterAction();
-                timer8.Stop();
-                timer8.Tick -= Eh;
-            }
-            else Actions++;
+            return false;
         }
         public static Byte trgt = 0;
         private void UnlimitedActionsTickCheck(in string[] spec)
         {
             TrgtImg.Source = new BitmapImage(new Uri(spec[trgt], UriKind.RelativeOrAbsolute));
-            trgt = Bits(trgt == spec.Length - 1? 0 : trgt+1);
+            trgt = Bits(trgt == spec.Length - 1 ? 0 : trgt+1);
         }
         private void Cancel1_Click(object sender, RoutedEventArgs e)
         {
-            timer9.Stop();
+            if (Targt.IsEnabled) TimerOff(ref Targt);
             AnyHideX(Fight, Cancel1, HPenemy, BattleText1, EnemyImg, TrgtImg, HPenemyBar);
             FightMenuBack();
             if (Sets.SpecialBattle == 200) BtnHideX(new Button[] { Button4, Items, Abilities });
@@ -3950,8 +4063,6 @@ namespace WpfApp1
             AfterIcon.Source = Bmper(Path.IconStatePath.Usual);
             Win.Source = CurrentLocation == 2 ? Ura(Path.CutScene.PowerRanger) : CurrentLocation ==1? Ura(Path.CutScene.WasteTime) : Ura(Path.CutScene.Victory);
             MaterialsAdd.Content = "";
-            if (timer.IsEnabled) timer.Stop();
-            BAG.Materials += Shrt(timer.IsEnabled ? Mat : 0);
             Mat = 0;
             if (Sets.SpecialBattle == 0)
             {
@@ -4021,24 +4132,10 @@ namespace WpfApp1
         public static Byte[] AbilityBonuses = new Byte[] { 0, 0, 0, 0 };
         private void AbilitiesMakeDisappear1() { BtnHideX(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake, Learn, Back1, SwitchAbils }); }
         private void Back1_Click(object sender, RoutedEventArgs e) { AbilitiesMakeDisappear1(); FightMenuBack(); }
-        private void PersonTextAnimationStart(in EventHandler PersonAction, in EventHandler TextAction, in UInt16 PersonSpeed, in UInt16 TextSpeed)
-        {
-            WidelyUsedAnyTimer(out timer8, PersonAction, new TimeSpan(0, 0, 0, 0, PersonSpeed));
-            WidelyUsedAnyTimer(out timer11, TextAction, new TimeSpan(0, 0, 0, 0, TextSpeed));
-        }
-        private void PersonTextAnimationStart(out System.Windows.Threading.DispatcherTimer timer, out System.Windows.Threading.DispatcherTimer timer2, in EventHandler PersonAction, in EventHandler TextAction, in UInt16 PersonSpeed, in UInt16 TextSpeed)
-        {
-            WidelyUsedAnyTimer(out timer, PersonAction, new TimeSpan(0, 0, 0, 0, PersonSpeed));
-            WidelyUsedAnyTimer(out timer2, TextAction, new TimeSpan(0, 0, 0, 0, TextSpeed));
-        }
-        private void DmgTextAnimationStart(in EventHandler PersonAction, in EventHandler TextAction, in UInt16 PersonSpeed, in UInt16 TextSpeed)
-        {
-            WidelyUsedAnyTimer(out timer8, PersonAction, new TimeSpan(0, 0, 0, 0, PersonSpeed));
-            WidelyUsedAnyTimer(out timer10, TextAction, new TimeSpan(0, 0, 0, 0, TextSpeed));
-        }
         private void Cure_Click(object sender, RoutedEventArgs e)
         {
-            PersonTextAnimationStart(Cure_Time_Tick11, CureHP_Time_Tick18, Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));
+            TimerOn(ref Pure1, Shrt(25 / GameSpeed.Value));
+            TimerOn(ref PCure, Shrt(75 / GameSpeed.Value));
             Dj(Path.GameNoises.Cure);
             Super1.SetCurrentHpAp(Shrt(Super1.Special * 2 + Super1.CurrentHP >= Super1.MaxHP ? Super1.MaxHP : Super1.CurrentHP + Super1.Special * 2), Shrt(Super1.CurrentAP - 5));
             CurrentHpApCalculate();
@@ -4049,8 +4146,8 @@ namespace WpfApp1
         {
             CheckAccessAbilities(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control }, new Byte[] { 2, 21, 4, 16, 14, 20, 25 }, new Byte[] { 5, 10, 3, 12, 8, 15, 0 });
             BtnShowX(new Button[] { SwitchAbils, Back1 });
-            Control.IsEnabled = !HPRegenerate.IsEnabled;
-            Regen.IsEnabled = !APRegenerate.IsEnabled;
+            Control.IsEnabled = !PCtrl.IsEnabled;
+            Regen.IsEnabled = !PRegn.IsEnabled;
             FastEnableDisableBtn(new Boolean[] { AbilityBonuses[0] <= 0, AbilityBonuses[1] <= 0 }, BuffUp, ToughenUp);
             ToNextImg.Source = Bmper(Path.BtnCustomize.ArrowNext);
             FightMenuMakesDisappear();
@@ -4061,74 +4158,14 @@ namespace WpfApp1
             if (AfterAPbar.Width < 333) BarShow(AfterAPbar); else BarShowX(AfterAPbarOver333.Width < 333 ? new ProgressBar[] { AfterAPbar, AfterAPbarOver333 } : new ProgressBar[] { AfterAPbar, AfterAPbarOver333, AfterAPbarOver666 });
             if (AfterHPbar.Width < 333) BarShow(AfterHPbar); else BarShowX(AfterHPbarOver333.Width < 333? new ProgressBar[] { AfterHPbar, AfterHPbarOver333 } : new ProgressBar[] { AfterHPbar, AfterHPbarOver333, AfterHPbarOver666 });
         }
-        private void AddingStats_Time_Tick41(object sender, EventArgs e)
-        {
-            if ((CurrentNextHPAP[0] < Super1.MaxHP) || (CurrentNextHPAP[1] < Super1.MaxAP) || (CurrentNextParams[0] < Super1.Attack) || (CurrentNextParams[1] < Super1.Defence) || (CurrentNextParams[2] < Super1.Speed) || (CurrentNextParams[3] < Super1.Special))
-            {
-                if (CurrentNextHPAP[0] < Super1.MaxHP)
-                {
-                    CurrentNextHPAP[0]++;
-                    if (AfterHPbar.Maximum < 333) NewMaximum(AfterHPbar, CurrentNextHPAP[0]);
-                    else
-                    {
-                        NewMaximumX(AfterHPbar.Maximum < 333? new UInt16[] { 333, Shrt(CurrentNextHPAP[0] - 333) } : new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[0] - 333) }, AfterHPbar.Maximum < 333 ? new ProgressBar[] { AfterHPbar, AfterHPbarOver333 }: new ProgressBar[] { AfterHPbar, AfterHPbarOver333, AfterHPbarOver666 });
-                        BarShowX(AfterHPbar.Maximum < 333 ? new ProgressBar[] { AfterHPbarOver333 }: new ProgressBar[] { AfterHPbarOver333, AfterHPbarOver666 });
-                    }
-                    FastTextChange(new Label[] { AddHP, AfterHP }, new string[] { "+" + (Super1.MaxHP - CurrentNextHPAP[0]), Super1.CurrentHP + "/" + CurrentNextHPAP[0] });
-                }
-                else LabHide(AddHP);
-
-                if (CurrentNextHPAP[1] < Super1.MaxAP)
-                {
-                    CurrentNextHPAP[1]++;
-                    if (AfterAPbar.Maximum < 333) NewMaximum(AfterAPbar, CurrentNextHPAP[1]);
-                    else
-                    {
-                        NewMaximumX(AfterAPbar.Maximum < 333 ? new UInt16[] { 333, Shrt(CurrentNextHPAP[1] - 333) } : new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[1] - 333) }, AfterAPbar.Maximum < 333 ? new ProgressBar[] { AfterAPbar, AfterAPbarOver333 } : new ProgressBar[] { AfterAPbar, AfterAPbarOver333, AfterAPbarOver666 });
-                        BarShowX(AfterAPbar.Maximum < 333 ? new ProgressBar[] { AfterAPbarOver333 } : new ProgressBar[] { AfterAPbarOver333, AfterAPbarOver666 });
-                    }
-                    FastTextChange(new Label[] { AddAP, AfterAP }, new string[] { "+" + (Super1.MaxAP - CurrentNextHPAP[1]), Super1.CurrentAP + "/" + CurrentNextHPAP[1] });
-                }
-                else LabHide(AddAP);
-
-                CustomAddStat(0, Super1.Attack, AddATK, AfterATK);
-                CustomAddStat(1, Super1.Defence, AddDEF, AfterDEF);
-                CustomAddStat(2, Super1.Speed, AddAG, AfterAG);
-                CustomAddStat(3, Super1.Special, AddSP, AfterSP);
-            }
-            else
-            {
-                timer13.Stop();
-                MaxAndWidthHPcalculate();
-                MaxAndWidthAPcalculate();
-                LabHideX(new Label[] { AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP });
-                ButtonShow(TextOk1);
-            }
-        }
         private void CustomAddStat(in Byte StatNo, in Byte Stat, Label AddPlus, Label Added)
         {
             if (CurrentNextParams[StatNo] < Stat) { CurrentNextParams[StatNo]++; FastTextChange(new Label[] { AddPlus, Added }, new string[] { "+" + (Stat - CurrentNextParams[StatNo]), CurrentNextParams[StatNo].ToString() }); }
             else LabHide(AddPlus);
         }
-        private void AddingMaterials_Time_Tick42(object sender, EventArgs e)
-        {
-            if ((Mat > 0) && (BAG.Materials + 1 < 65535))
-            {
-                BAG.Materials+= Shrt(Mat - 10000 >= 0 ? 10000 : Mat - 1000 >= 0 ? 1000 : Mat - 100 >= 0 ? 100 : Mat - 10 >= 0 ? 10 : 1);
-                MaterialsOnHand.Content = BAG.Materials;
-                Mat-= Shrt(Mat - 10000 >= 0 ? 10000 : Mat - 1000 >= 0 ? 1000 : Mat - 100 >= 0 ? 100 : Mat - 10 >= 0 ? 10 : 1);
-                MaterialsAdd.Content = "+" + Mat;
-            } else
-            {
-                Mat = 0;
-                timer.IsEnabled = false;
-                LabHide(MaterialsAdd);
-                timer.Stop();
-            }
-        }
         private void RecursiveLevelUp(UInt16 cnt)
         {
-            Super1.CurrentLevel += 1;
+            Super1.CurrentLevel = Super1.CurrentLevel < 25 ? Bits(Super1.CurrentLevel + 1) : Bits(25);
             Super1.SetStats(Bits(Super1.CurrentLevel - 1));
             Time1.Maximum = TimeFormula();
 
@@ -4140,55 +4177,16 @@ namespace WpfApp1
 
             NewLevelGet.Content = LevelUpCount > 1 ? Txt.Com.NewLv + " X" + LevelUpCount : Txt.Com.NewLv;
             LevelUpCount += 1;
-            Dj(Path.GameNoises.LevelUp);
-            if (cnt >= NextExpBar.Maximum) RecursiveLevelUp(cnt);
+            if ((cnt >= NextExpBar.Maximum)&&Super1.CurrentLevel<25) RecursiveLevelUp(cnt);
             AfterIcon.Source = Bmper(Path.IconStatePath.LevelUp);
         }
-        private void Levelling_Time_Tick40(object sender, EventArgs e)
-        {
-            if ((Exp > 0) && (Super1.CurrentLevel < 25)) {
-                if (Super1.Experience + Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1) >= NextExpBar.Maximum)
-                {
-                    if (Super1.CurrentLevel < 25) {
-                        RecursiveLevelUp(Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1));
-                        if (!NewLevelGet.IsEnabled) LevelUpShow();
-                    } else
-                    {
-                        Super1.Experience = Shrt(NextExpBar.Maximum);
-                        NextExpBar.Value = NextExpBar.Maximum;
-                        ExpText.Content = Txt.Com.Expert;
-                        Exp = 0;
-                        timer12.Stop();
-                        if (!NewLevelGet.IsEnabled) ButtonShow(TextOk1); else WidelyUsedAnyTimer(out timer13, AddingStats_Time_Tick41, new TimeSpan(0, 0, 0, 0, 25));
-                    }
-                }
-                else
-                {
-                    Super1.Experience+= Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1); ;
-                    NextExpBar.Value= Super1.Experience;
-                    ExpText.Content = Txt.Com.Exp + " " + NextExpBar.Value + "/" + NextExpBar.Maximum;
-                }
-                Exp -= Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1);
-            }
-            else if (!NewLevelGet.IsEnabled)
-            {
-                timer12.Stop();
-                ButtonShow(TextOk1);
-            }
-            else
-            {
-                timer12.Stop();
-                WidelyUsedAnyTimer(out timer13, AddingStats_Time_Tick41, new TimeSpan(0, 0, 0, 0, 25));
-            }
-        }
-
+        
         public static Byte LevelUpCount = 1;
         public static Byte[] CurrentNextParams = new Byte[] { 25, 15, 15, 25 };
         public static UInt16[] CurrentNextHPAP = new UInt16[] { 100, 40 };
-
-        private void LevelingUPImage_Time_Tick44(object sender, EventArgs e) { IconActions(AfterIcon, Path.IconAnimatePath.LevelUp); }
         private void textOk2_Click(object sender, RoutedEventArgs e)
         {
+            NotLaugh();
             ItemsGetSlot1.Content = "";
             if (Sets.SpecialBattle == 200)
             {
@@ -4208,34 +4206,33 @@ namespace WpfApp1
             ShowAfterBattleMenu();
             WonOrDied();
         }
+        private void GoldBar(ProgressBar bar, in UInt16 val) { bar.Value = val; }
+        private void GoldBarX(in UInt16 val, params ProgressBar[] bar) { foreach (ProgressBar b in bar) GoldBar(b, val); }
+        private void GoldBarX(in UInt16[] val, params ProgressBar[] bar) { for (Byte i=0;i<val.Length;i++) GoldBar(bar[i], val[i]); }
         private void ShowAfterBattleMenu()
         {
-            BeforeHPbar.Maximum = HPbar.Maximum;
-            BeforeHPbarOver333.Maximum = HPbarOver333.Maximum;
-            BeforeHPbarOver666.Maximum = HPbarOver666.Maximum;
-            BeforeHPbar.Value = HPbar.Value;
-            BeforeHPbarOver333.Value = HPbarOver333.Value;
-            BeforeHPbarOver666.Value = HPbarOver666.Value;
-            BeforeAPbar.Maximum = APbar.Maximum;
-            BeforeAPbarOver333.Maximum = APbarOver333.Maximum;
-            BeforeAPbarOver666.Maximum = APbarOver666.Maximum;
-            BeforeAPbar.Value = APbar.Value;
-            BeforeAPbarOver333.Value = APbarOver333.Value;
-            BeforeAPbarOver666.Value = APbarOver666.Value;
+            NewMaximumX(new UInt16[] { Super1.MaxHP, Shrt(Super1.MaxHP - 333 >= 1 ? Super1.MaxHP - 333 : 1), Shrt(Super1.MaxHP - 666 >= 1 ? Super1.MaxHP - 666 : 1) }, BeforeHPbar, BeforeHPbarOver333, BeforeHPbarOver666);
+            NewMaximumX(new UInt16[] { Super1.MaxHP, Shrt(Super1.MaxHP - 333 >= 1 ? Super1.MaxHP - 333 : 1), Shrt(Super1.MaxHP - 666 >= 1 ? Super1.MaxHP - 666 : 1) }, AfterHPbar, AfterHPbarOver333, AfterHPbarOver666);
+            NewMaximumX(new UInt16[] { Super1.MaxAP, Shrt(Super1.MaxAP - 333 >= 1 ? Super1.MaxAP - 333 : 1), Shrt(Super1.MaxAP - 666 >= 1 ? Super1.MaxAP - 666 : 1) }, BeforeAPbar, BeforeAPbarOver333, BeforeAPbarOver666);
+            NewMaximumX(new UInt16[] { Super1.MaxAP, Shrt(Super1.MaxAP - 333 >= 1 ? Super1.MaxAP - 333 : 1), Shrt(Super1.MaxAP - 666 >= 1 ? Super1.MaxAP - 666 : 1) }, AfterAPbar, AfterAPbarOver333, AfterAPbarOver666);
+            GoldBarX(new UInt16[] { Super1.CurrentHP, Shrt(Super1.CurrentHP - 333 >= 1 ? Super1.CurrentHP - 333 : 1), Shrt(Super1.CurrentHP - 666 >= 1 ? Super1.CurrentHP - 666 : 1) }, BeforeHPbar, BeforeHPbarOver333, BeforeHPbarOver666);
+            GoldBarX(new UInt16[] { Super1.CurrentHP, Shrt(Super1.CurrentHP - 333 >= 1 ? Super1.CurrentHP - 333 : 1), Shrt(Super1.CurrentHP - 666 >= 1 ? Super1.CurrentHP - 666 : 1) }, AfterHPbar, AfterHPbarOver333, AfterHPbarOver666);
+            GoldBarX(new UInt16[] { Super1.CurrentAP, Shrt(Super1.CurrentAP - 333 >= 1 ? Super1.CurrentAP - 333 : 1), Shrt(Super1.CurrentAP - 666 >= 1 ? Super1.CurrentAP - 666 : 1) }, BeforeAPbar, BeforeAPbarOver333, BeforeAPbarOver666);
+            GoldBarX(new UInt16[] { Super1.CurrentAP, Shrt(Super1.CurrentAP - 333 >= 1 ? Super1.CurrentAP - 333 : 1), Shrt(Super1.CurrentAP - 666 >= 1 ? Super1.CurrentAP - 666 : 1) }, AfterAPbar, AfterAPbarOver333, AfterAPbarOver666);
             LevelUpCount = 1;
             CurrentNextParams = SetAnyValues(CurrentNextParams, Super1.Attack, Super1.Defence, Super1.Speed, Super1.Special);
             CurrentNextHPAP = SetAnyValues(CurrentNextHPAP, Super1.MaxHP, Super1.MaxAP);
             FastTextChange(new Label[] { BeforeATK, BeforeDEF, BeforeAG, BeforeSP, BeforeHP, BeforeAP, AfterATK, AfterDEF, AfterAG, AfterSP, AfterHP, AfterAP }, new string[] { Convert.ToString(CurrentNextParams[0]), Convert.ToString(CurrentNextParams[1]), Convert.ToString(CurrentNextParams[2]), Convert.ToString(CurrentNextParams[3]), Super1.CurrentHP + "/" + CurrentNextHPAP[0], Super1.CurrentAP + "/" + CurrentNextHPAP[1], Convert.ToString(CurrentNextParams[0]), Convert.ToString(CurrentNextParams[1]), Convert.ToString(CurrentNextParams[2]), Convert.ToString(CurrentNextParams[3]), Super1.CurrentHP + "/" + CurrentNextHPAP[0], Super1.CurrentAP + "/" + CurrentNextHPAP[1] });
-            if (HPbar.Maximum < 333)
+            if (Super1.MaxHP < 333)
             {
                 NewMaximumX(CurrentNextHPAP[0], BeforeHPbar, AfterHPbar);
                 SetAnyValues(new object[] { HPbarOver333.Value, HPbarOver666.Value }, 0, 0);
             }
             else
             {
-                NewMaximumX(HPbarOver333.Maximum < 333 ? new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[0] - 333), Shrt(CurrentNextHPAP[0] - 333) } : new UInt16[] { 333, 333, 333, 333, Shrt(CurrentNextHPAP[0] - 666), Shrt(CurrentNextHPAP[0] - 666) }, HPbarOver333.Width < 333 ? new ProgressBar[] { BeforeHPbar, AfterHPbar, BeforeHPbarOver333, AfterHPbarOver333 } : new ProgressBar[] { BeforeHPbar, AfterHPbar, BeforeHPbarOver333, AfterHPbarOver333, BeforeHPbarOver666, AfterHPbarOver666 });
-                BarShowX(HPbarOver333.Maximum < 333 ? new ProgressBar[] { BeforeHPbarOver333 } : new ProgressBar[] { BeforeHPbarOver333, BeforeHPbarOver666 });
-                HPbarOver666.Value = (HPbarOver333.Maximum < 333 ? 0 : HPbarOver666.Value);
+                NewMaximumX(Super1.MaxHP - 333 < 333 ? new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[0] - 333), Shrt(CurrentNextHPAP[0] - 333) } : new UInt16[] { 333, 333, 333, 333, Shrt(CurrentNextHPAP[0] - 666), Shrt(CurrentNextHPAP[0] - 666) }, Super1.MaxHP - 333 < 333 ? new ProgressBar[] { BeforeHPbar, AfterHPbar, BeforeHPbarOver333, AfterHPbarOver333 } : new ProgressBar[] { BeforeHPbar, AfterHPbar, BeforeHPbarOver333, AfterHPbarOver333, BeforeHPbarOver666, AfterHPbarOver666 });
+                BarShowX(Super1.MaxHP - 333 < 333 ? new ProgressBar[] { BeforeHPbarOver333 } : new ProgressBar[] { BeforeHPbarOver333, BeforeHPbarOver666 });
+                HPbarOver666.Value = (Super1.MaxHP - 333 < 333 ? 0 : HPbarOver666.Value);
             }
             if (APbar.Maximum < 333)
             {
@@ -4244,18 +4241,18 @@ namespace WpfApp1
             }
             else
             {
-                NewMaximumX(APbarOver333.Maximum < 333 ? new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[1] - 333), Shrt(CurrentNextHPAP[1] - 333) } : new UInt16[] { 333, 333, 333, 333, Shrt(CurrentNextHPAP[1] - 666), Shrt(CurrentNextHPAP[1] - 666) }, HPbarOver333.Width < 333 ? new ProgressBar[] { BeforeAPbar, AfterAPbar, BeforeAPbarOver333, AfterAPbarOver333 } : new ProgressBar[] { BeforeAPbar, AfterAPbar, BeforeAPbarOver333, AfterAPbarOver333, BeforeAPbarOver666, AfterAPbarOver666 });
-                BarShowX(APbarOver333.Maximum < 333 ? new ProgressBar[] { BeforeAPbarOver333 } : new ProgressBar[] { BeforeAPbarOver333, BeforeAPbarOver666 });
-                APbarOver666.Value = APbarOver333.Maximum < 333 ? 0 : APbarOver666.Value;
+                NewMaximumX(Super1.MaxAP - 333 < 333 ? new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[1] - 333), Shrt(CurrentNextHPAP[1] - 333) } : new UInt16[] { 333, 333, 333, 333, Shrt(CurrentNextHPAP[1] - 666), Shrt(CurrentNextHPAP[1] - 666) }, Super1.MaxAP - 333 < 333 ? new ProgressBar[] { BeforeAPbar, AfterAPbar, BeforeAPbarOver333, AfterAPbarOver333 } : new ProgressBar[] { BeforeAPbar, AfterAPbar, BeforeAPbarOver333, AfterAPbarOver333, BeforeAPbarOver666, AfterAPbarOver666 });
+                BarShowX(Super1.MaxAP - 333 < 333 ? new ProgressBar[] { BeforeAPbarOver333 } : new ProgressBar[] { BeforeAPbarOver333, BeforeAPbarOver666 });
+                APbarOver666.Value = Super1.MaxAP - 333 < 333 ? 0 : APbarOver666.Value;
             }
             SetAnyValues(new object[] { BeforeHPbar.Value, AfterHPbar.Value, BeforeHPbarOver333.Value, AfterHPbarOver333.Value, BeforeHPbarOver666.Value, AfterHPbarOver666.Value, BeforeAPbar.Value, AfterAPbar.Value, BeforeAPbarOver333.Value, AfterAPbarOver333.Value, BeforeAPbarOver666.Value, AfterAPbarOver666.Value }, new object[] { HPbar.Value, HPbar.Value, HPbarOver333.Value, HPbarOver333.Value, HPbarOver666.Value, HPbarOver666.Value, APbar.Value, APbar.Value, APbarOver333.Value, APbarOver333.Value, APbarOver666.Value, APbarOver666.Value });
             FastTextChange(new Label[] { MaterialsOnHand, MaterialsAdd, AfterLevel }, new string[] { "" + BAG.Materials, "+" + Mat, Txt.Com.Lv + " " + Super1.CurrentLevel });
             AnyShowX(ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg, NextExpBar, BeforeHPbar, BeforeAPbar);
             ItemsGetSlot1.Content = "";
-            WidelyUsedAnyTimer(out timer12, Levelling_Time_Tick40, new TimeSpan(0, 0, 0, 0, 1));
-            WidelyUsedAnyTimer(out timer, AddingMaterials_Time_Tick42, new TimeSpan(0, 0, 0, 0, 1));
+            TimerOn(ref NLevl);
+            TimerOn(ref AMats);
             RefreshAllHPAP();
-            timer2.Stop();
+            if (ETurn.IsEnabled) TimerOff(ref ETurn);
             BAG.AntidoteITM = ItemsGetAfterFight(0, BAG.AntidoteITM);
             BAG.BandageITM = ItemsGetAfterFight(1, BAG.BandageITM);
             BAG.EtherITM = ItemsGetAfterFight(2, BAG.EtherITM);
@@ -4309,15 +4306,15 @@ namespace WpfApp1
                 ButtonShow(SwitchAbils);
                 BuffUp.IsEnabled = AbilityBonuses[0] == 0;
                 ToughenUp.IsEnabled = AbilityBonuses[1] == 0;
-                Control.IsEnabled = !HPRegenerate.IsEnabled;
-                Regen.IsEnabled = !APRegenerate.IsEnabled;
+                Control.IsEnabled = !PCtrl.IsEnabled;
+                Regen.IsEnabled = !PRegn.IsEnabled;
                 ToNextImg.Source = Bmper(Path.BtnCustomize.ArrowNext);
             }
         }
 
         private void Cancel2_Click(object sender, RoutedEventArgs e)
         {
-            timer9.Stop();
+            if (Targt.IsEnabled) TimerOff(ref Targt);
             AnyHideX(HPenemyBar, HPenemy, BattleText1, EnemyImg, TrgtImg, Fight, ACT1, ACT2, ACT3, ACT4, Cancel2, Cancel1);
             ButtonShow(Back1);
             InBattleHighSkillsMenu();
@@ -4350,14 +4347,14 @@ namespace WpfApp1
         }
         private void Heal_Click(object sender, RoutedEventArgs e)
         {
-            LabShow(BattleText1);
             AfterIcon.Source = Icon0.Source = Img5.Source = Bmper(@Path.IconStatePath.Usual);
             SetAnyValues(new object[] { Super1.PlayerStatus, Time1.Value },0,0);
             AfterStatus.Content = StatusP.Content = Txt.Com.Hlthy + " ♫";
             Super1.CurrentAP -= 3;
             CurrentAPcalculate();
             AbilitiesMakeDisappear1();
-            PersonTextAnimationStart(Heal_Time_Tick12, HealPsn_Time_Tick19, Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));
+            TimerOn(ref PHeal, Shrt(25 / GameSpeed.Value));
+            TimerOn(ref PAtxc, Shrt(75 / GameSpeed.Value));
             Dj(Path.GameNoises.Heal);
         }
         private void Whip_Click(object sender, RoutedEventArgs e)
@@ -4389,7 +4386,6 @@ namespace WpfApp1
         {
             AbilitiesMakeDisappear1();
             AnyHideX(TrgtImg, BattleText1, HPenemy, Fight, Cancel1, Cancel2, HPenemyBar);
-            LabShow(BattleText1);
             SelectedTrgt = 4;
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
@@ -4779,8 +4775,8 @@ namespace WpfApp1
             AnyShowX(MusicText, SoundsText, NoiseText, GameSpeedText, BrightnessText, MusicPercent, SoundsPercent, NoisePercent, BrightnessPercent, GameSpeedX, MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness, DescribeHeader, Describe1, Menu1);
             FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Setts, Txt.Sct.Setts });
         }
-        private void TimerTurnOn_Checked(object sender, RoutedEventArgs e) { TimeRecord.Stop(); }
-        private void TimerTurnOn_Unchecked(object sender, RoutedEventArgs e) { WidelyUsedAnyTimer(out TimeRecord, WorldRecord, new TimeSpan(0, 0, 0, 0, 1)); }
+        private void TimerTurnOn_Checked(object sender, RoutedEventArgs e) { if (WRecd.IsEnabled) TimerOff(ref WRecd); }
+        private void TimerTurnOn_Unchecked(object sender, RoutedEventArgs e) { if (!WRecd.IsEnabled) TimerOn(ref WRecd); }
         private void AnyEquipments_MouseLeave(object sender, MouseEventArgs e) { LabHideX(new Label[] { AddATK1, AddDEF1 }); }
         private void EquipCollectInfo(string describe, Label Stat, string statrise)
         {
@@ -5061,7 +5057,7 @@ namespace WpfApp1
             AnyHideX(SpDmg1, SpDmg2, SpDmg3, SpDmg4, SpDmg5, SpHrb1, SpHrb2, SpHrb3, SpHrb4, SpHrb5, SpHrb6, SpHrb7, SpHrb8, SpHrb9, SpHrb10, SpHrb11, SpHrb12, SpHrb13, SpHrb14,
                 SpEtr1, SpEtr2, SpEtr3, SpEtr4, SpEtr5, SpEtr6, SpEtr7, SpEtr8, SpEtr9, SpEtr10, SpEtr11, SpEtr12, SpEtr13, SpEtr14, SpEtr15, SpEtr16, SpEtr17, SpEtr18, SpElx1, SpElx2, SpElx3, SpElx4, SpElx5, SpElx6,
                 SpSbg1, SpSbg2, SpSbg3, SpSbg4, SpSbg5, SpSbg6, SpSbg7, SpSbg8, SpSbg9, SpSbg10, SpSbg11, SpSer, SpTsk, Lever1, Lever2, Lever3, Bridge1, Bridge2, Bridge3, Bridge4, Bridge5, Bridge6, Bridge7, Bridge8);
-            WidelyUsedAnyTimer(out TimeToGetAway, TryGetOut, new TimeSpan(0, 0, 0, 1));
+            TimerOn(ref TRout);
             PlayerSetLocation(Bits(1), Bits(30));
         }
         private void Threasures()
@@ -5135,6 +5131,7 @@ namespace WpfApp1
             ArmorCheckPoint();
             PantsCheckPoint();
             BootsCheckPoint();
+            CheckSeriousBonus();
         }
         private void WeaponCheckPoint()
         {
@@ -5202,7 +5199,8 @@ namespace WpfApp1
         private void Cure2_Click(object sender, RoutedEventArgs e)
         {
             Super1.SetCurrentHpAp(Super1.MaxHP, Shrt(Super1.CurrentAP-10));
-            PersonTextAnimationStart(Cure2_Time_Tick27, CureHP2_Time_Tick28, Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));
+            TimerOn(ref Pure2, Shrt(25 / GameSpeed.Value));
+            TimerOn(ref PCur2, Shrt(75 / GameSpeed.Value));
             Dj(Path.GameNoises.Cure2);
             CurrentHpApCalculate();
             AbilitiesMakeDisappear1();
@@ -5213,57 +5211,74 @@ namespace WpfApp1
             AbilityBonuses[0] = Super1.Special;
             Super1.CurrentAP -= 12;
             Dj(Path.GameNoises.PowUp);
-            PersonTextAnimationStart(BuffUp_Time_Tick29, BuffUpVal_Time_Tick30, Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));            
+            TimerOn(ref PBuff, Shrt(25 / GameSpeed.Value));
+            TimerOn(ref PPowr, Shrt(75 / GameSpeed.Value));
             CurrentAPcalculate();
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
         }
-        private void BuffUpVal_Time_Tick30(object sender, EventArgs e) { BuffUpTxt.Content = "+"+Super1.Special; BuffUpShow(); }
-        private void BuffUpShow()
+        private bool BuffUpShow(in string Power)
         {
+            if (BuffUpTxt.Content.ToString() != Power) BuffUpTxt.Content = "+" + Power;
             Byte[] RowSet2 = { 22, 21, 20, 19, 18 };
             if (!BuffUpTxt.IsEnabled) LabShow(BuffUpTxt);
             if (CureCurrent == RowSet2.Length - 1)
             {
                 CureCurrent = 0;
-                timer11.Stop();
                 LabHide(BuffUpTxt);
+                return true;
             }
             else { Grid.SetRow(BuffUpTxt, RowSet2[CureCurrent]); CureCurrent++; }
+            return false;
         }
         private void ToughenUp_Click(object sender, RoutedEventArgs e)
         {
             AbilityBonuses[1] = Super1.Special;
             Super1.CurrentAP -= 8;
             Dj(Path.GameNoises.Shield);
-            PersonTextAnimationStart(Toughen_Time_Tick31, BuffUpVal_Time_Tick30, Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));            
+            TimerOn(ref PTogh, Shrt(25 / GameSpeed.Value));
+            TimerOn(ref PPowr, Shrt(75 / GameSpeed.Value));
             CurrentAPcalculate();
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
-        }
-        private void RegCon()
-        {
-            ChangeTimer(ref HPRegenerate, RegenHP_Time_Tick33, new TimeSpan(0, 0, 0, 0, 20));
-            ChangeTimer(ref APRegenerate, ControlAP_Time_Tick34, new TimeSpan(0, 0, 0, 0, 20));
         }
         private void Regen_Click(object sender, RoutedEventArgs e)
         {
             Super1.CurrentAP -= 15;
             Dj(Path.GameNoises.HpUp);
-            HPRegenerate.IsEnabled = true;
-            HPRegenerate.Start();
-            WidelyUsedAnyTimer(out timer8, Regen_Time_Tick32, new TimeSpan(Shrt(25 / GameSpeed.Value)));
+            TimerOn(ref PRegn, Shrt((511 - Super1.Special) / GameSpeed.Value));
+            TimerOn(ref PHpUp, Shrt(25 / GameSpeed.Value));
             CurrentAPcalculate();
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
         }
+        private void TimerOn(ref System.Windows.Threading.DispatcherTimer timer)
+        {
+            timer.IsEnabled = true;
+            timer.Start();
+        }
+        private void TimerOn(ref System.Windows.Threading.DispatcherTimer timer, in TimeSpan time)
+        {
+            timer.IsEnabled = true;
+            timer.Interval = time;
+            timer.Start();
+        }
+        private void TimerOn(ref System.Windows.Threading.DispatcherTimer timer, in UInt16 time)
+        {
+            timer.IsEnabled = true;
+            timer.Interval = new TimeSpan(0,0,0,0,time);
+            timer.Start();
+        }
+        private void TimerOff(ref System.Windows.Threading.DispatcherTimer timer)
+        {
+            timer.IsEnabled = false;
+            timer.Stop();
+        }
         private void Control_Click(object sender, RoutedEventArgs e)
         {
             Dj(Path.GameNoises.ApUp);
-            APRegenerate.IsEnabled = true;
-            //WidelyUsedAnyTimer(out APRegenerate, ControlAP_Time_Tick34, new TimeSpan(0, 0, 0, 0, Shrt(6375 / Super1.Special / GameSpeed.Value > 1 ? 6375 / Super1.Special / GameSpeed.Value : 1)));
-            APRegenerate.Start();
-            WidelyUsedAnyTimer(out timer8, Control_Time_Tick35, new TimeSpan(Shrt(25 / GameSpeed.Value)));
+            TimerOn(ref PCtrl, Shrt((511 - Super1.Special) / GameSpeed.Value));
+            TimerOn(ref PApUp, Shrt(25 / GameSpeed.Value));
             AbilitiesMakeDisappear1();
             Time1.Value = 0;
         }
@@ -5277,7 +5292,6 @@ namespace WpfApp1
         }
         private void ActionOnOne_Click(object sender, RoutedEventArgs e)
         {
-            EventHandler[,] ActTime = { { Torch_Time_Tick13, Whip_Time_Tick14, Thrower_Time_Tick37 }, { TorchDmg_Time_Tick20, WhipDmg_Time_Tick21, Thrower_Time_Tick36 } };
             string[] ActSounds = { Path.GameNoises.Torch, Path.GameNoises.Whip, Path.GameNoises.Thrower };
             Byte[] Cost = { 4, 6, 15 };
             Button[] Actions = { ACT1, ACT2, ACT3 };
@@ -5290,15 +5304,20 @@ namespace WpfApp1
                     ACT(i);
                     Dj(ActSounds[i]);
                     AnyHideX(TrgtImg, Actions[i], Cancel2);
-                    DmgTextAnimationStart(ActTime[0, i], ActTime[1, i], Shrt(25 / GameSpeed.Value), Shrt(50 / GameSpeed.Value));
+                    switch (i)
+                    {
+                        case 0: TimerOn(ref PTrch, Shrt(25 / GameSpeed.Value)); TimerOn(ref PToch, Shrt(50 / GameSpeed.Value)); break;
+                        case 1: TimerOn(ref PWhip, Shrt(25 / GameSpeed.Value)); TimerOn(ref PWhpd, Shrt(50 / GameSpeed.Value)); break;
+                        case 2: TimerOn(ref PThrw, Shrt(25 / GameSpeed.Value)); TimerOn(ref PThwr, Shrt(50 / GameSpeed.Value)); break;
+                        default: TimerOn(ref PTrch, Shrt(25 / GameSpeed.Value)); TimerOn(ref PToch, Shrt(50 / GameSpeed.Value)); break;
+                    }
                     break;
                 }
             CurrentAPcalculate();
-            timer9.Stop();
+            if (Targt.IsEnabled) TimerOff(ref Targt);
         }
         private void ActionOnAll_Click(object sender, RoutedEventArgs e)
         {
-            EventHandler[,] ActTime = { { Super_Time_Tick15, Tornado_Time_Tick38, Quake_Time_Tick43 }, { SuperDmg_Time_Tick22, TornadoDmg_Time_Tick39, QuakeDmg_Time_Tick44 } };
             string[] ActSounds = { Path.GameNoises.Super, Path.GameNoises.Whirl, Path.GameNoises.Quake };
             Byte[] Cost = { 10, 20, 30 };
             UInt16[] AbilityPowers = { Shrt(Super1.Special * 2), Shrt(Super1.Special * 3), Shrt(Super1.Special * 4) };
@@ -5312,7 +5331,13 @@ namespace WpfApp1
                     AbilitySupers(AbilityPowers[i]);
                     Dj(ActSounds[i]);
                     AnyHideX(TrgtImg, Actions[i], Cancel2);
-                    DmgTextAnimationStart(ActTime[0, i], ActTime[1, i], Shrt(25 / GameSpeed.Value), Shrt(50 / GameSpeed.Value));
+                    switch (i)
+                    {
+                        case 0: TimerOn(ref Puper, Shrt(25 / GameSpeed.Value)); TimerOn(ref PSupr, Shrt(50 / GameSpeed.Value)); break;
+                        case 1: TimerOn(ref Pnado, Shrt(25 / GameSpeed.Value)); TimerOn(ref PWhrl, Shrt(50 / GameSpeed.Value)); break;
+                        case 2: TimerOn(ref Puake, Shrt(25 / GameSpeed.Value)); TimerOn(ref PQuak, Shrt(50 / GameSpeed.Value)); break;
+                        default: TimerOn(ref Puper, Shrt(25 / GameSpeed.Value)); TimerOn(ref PSupr, Shrt(50 / GameSpeed.Value)); break;
+                    }
                     break;
                 }
             CurrentAPcalculate();
@@ -5405,16 +5430,16 @@ namespace WpfApp1
             Byte[] Counts = { BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM };
             UInt16[] HpFill = { Shrt((Super1.CurrentHP + 50) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 50)), Super1.CurrentHP, Shrt((Super1.CurrentHP + 80) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 80)), Shrt((Super1.CurrentHP + 350) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 350)), Super1.CurrentHP, Super1.MaxHP };
             UInt16[] ApFill = {  Super1.CurrentAP, Shrt((Super1.CurrentAP + 50) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 50)), Shrt((Super1.CurrentAP + 80) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 80)), Super1.CurrentAP, Shrt((Super1.CurrentAP + 300) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 300)), Super1.MaxAP };
-            EventHandler[] Animate = { Bandage_Time_Tick23, Ether_Time_Tick24, Fused_Time_Tick25, HerbsHP_Time_Tick46, Ether2AP_Time_Tick47, ElixirHPAP_Time_Tick48 };
             AnyHideX(ItemText, ItemsCountImg);
             MenuItemsHide1();
+            TimerOn(ref PItem, Shrt(25 / GameSpeed.Value));
             if (sender.Equals(Antidote))
             {
                 BAG.AntidoteITM--;
                 Super1.PlayerStatus = 0;
                 AfterStatus.Content = StatusP.Content = Txt.Com.Hlthy + " ♫";
                 AfterIcon.Source = Icon0.Source = Img5.Source = Bmper(@Path.IconStatePath.Usual);
-                PersonTextAnimationStart(Items_Time_Tick10, Antidote_Time_Tick26, Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));
+                TimerOn(ref PAtdt, Shrt(75 / GameSpeed.Value));
             }
             else
                 for (Byte i=0;i<Items.Length;i++)
@@ -5424,7 +5449,15 @@ namespace WpfApp1
                         Super1.SetCurrentHpAp(HpFill[i], ApFill[i]);
                         CurrentHpApCalculate();
                         Time1.Value = 0;
-                        PersonTextAnimationStart(Items_Time_Tick10, Animate[i], Shrt(25 / GameSpeed.Value), Shrt(75 / GameSpeed.Value));
+                        switch (i)
+                        {
+                            case 0: TimerOn(ref PBndg, Shrt(75 / GameSpeed.Value)); break;
+                            case 1: TimerOn(ref PEthr, Shrt(75 / GameSpeed.Value)); break;
+                            case 2: TimerOn(ref PFusd, Shrt(75 / GameSpeed.Value)); break;
+                            case 3: TimerOn(ref PHerb, Shrt(75 / GameSpeed.Value)); break;
+                            case 4: TimerOn(ref PEtr2, Shrt(75 / GameSpeed.Value)); break;
+                            case 5: TimerOn(ref PElxr, Shrt(75 / GameSpeed.Value)); break;
+                        }
                         break;
                     }
             BAG.ItemsSet(Counts[0],BAG.AntidoteITM, Counts[1], Counts[2], Counts[3], BAG.SleepBagITM, Counts[4], Counts[5]);
@@ -5519,37 +5552,6 @@ namespace WpfApp1
             BtnHideX(new Button[] { Equipments, Equipments2, Equipments3, Equipments4, CancelEq });
             EquipWatch();
         }
-        private void DamageTime_Tick3(object sender, EventArgs e)
-        {
-            Img4.Source = Bmper(Path.PersonAnimatePath.Hurt[PlayerHurt]);
-            if (PlayerHurt == Path.PersonAnimatePath.Hurt.Length - 1)
-            {
-                HP.Foreground = Brushes.White;
-                PlayerHurt = 0;
-                Img4.Source = Bmper(Path.PersonStatePath.Usual);
-                timer3.Stop();
-                timer3.IsEnabled = false;
-            }
-            else PlayerHurt++;
-        }
-
-        private void HurtTime_Tick4(object sender, EventArgs e)
-        {
-            Byte[] RowSet1 = { 17, 18, 19, 18, 19 };
-            Byte[] ColumnSet1 = { 50, 51, 52, 53, 54 };
-            if (PlayerHurtM == ColumnSet1.Length - 1)
-            {
-                PlayerHurtM = 0;
-                timer4.Stop();
-                timer4.IsEnabled = false;
-                LabHide(BattleText6);
-            }
-            else
-            {
-                LabGrid(BattleText6, RowSet1[PlayerHurtM], ColumnSet1[PlayerHurtM]);
-                PlayerHurtM++;
-            }
-        }
         private string FoesStaticCheck(in string EnemyName)
         {
             return EnemyName switch
@@ -5615,12 +5617,80 @@ namespace WpfApp1
                 return false;
             }
         }
-        private void AllDamaged(in UInt16 strength, EventHandler Eh)
+        private bool AllDamaged(in UInt16 strength)
         {
             UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
             AllDmgTimeTextChangeConstruction(Shrt(strength > EnemyAura ? strength - EnemyAura : 0));
-            FoesKicked(Eh);
+            return FoesKicked();
         }
+        private bool FoesFighting()
+        {
+            if (Super1.CurrentHP <= 0)
+            {
+                Super1.PlayerStatus = 0;
+                Sound1.Stop();
+                Sound2.Stop();
+                Sound3.Stop();
+                LabHide(BattleText3);
+                MediaShow(GameOver);
+                GameOver.Play();
+                if (PTurn.IsEnabled) TimerOff(ref PTurn);
+                return true;
+            }
+            if ((Super1.PlayerStatus == 1) && (Super1.CurrentHP > 0)) if (poison < 30) poison += 1; else { poison = 0; Super1.CurrentHP = Shrt(Super1.CurrentHP - 1); CurrentHPcalculate(); }
+            if (((Foe1.EnemyHP[0] > 0) || (Foe1.EnemyHP[1] > 0) || (Foe1.EnemyHP[2] > 0)) && (Super1.CurrentHP > 0))
+            {
+                BattleFoeCharges(0, ref E1Atk);
+                BattleFoeCharges(1, ref E2Atk);
+                BattleFoeCharges(2, ref E3Atk);
+            }
+            else return true;
+            return false;
+        }
+        private bool AcquireDamage()
+        {
+            Img4.Source = Bmper(Path.PersonAnimatePath.Hurt[PlayerHurt]);
+            if (PlayerHurt == Path.PersonAnimatePath.Hurt.Length - 1)
+            {
+                HP.Foreground = Brushes.White;
+                PlayerHurt = 0;
+                Img4.Source = Bmper(Path.PersonStatePath.Usual);
+                return true;
+            }
+            else PlayerHurt++;
+            return false;
+        }
+        private bool AOuch()
+        {
+            Byte[] RowSet1 = { 17, 18, 19, 18, 19 };
+            Byte[] ColumnSet1 = { 50, 51, 52, 53, 54 };
+            if (PlayerHurtM == ColumnSet1.Length - 1)
+            {
+                PlayerHurtM = 0;
+                LabHide(BattleText6);
+                return true;
+            }
+            else
+            {
+                LabGrid(BattleText6, RowSet1[PlayerHurtM], ColumnSet1[PlayerHurtM]);
+                PlayerHurtM++;
+            }
+            return false;
+        }
+        private bool ThrowAtFoes()
+        {
+            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
+            string[] EnemyNames = { "Паук", "Мумия", "Зомби", "Страж", "Стервятник", "Гуль", "Жнец", "Скарабей", "Моль-убийца", "Прислужник", "П. червь", "Мастер" };
+            UInt16 strength = Shrt((Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[4] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[8] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[9] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[11] ? Super1.Special * 5 : Super1.Special * 2.5) + Super1.Special * Super1.Speed * 0.01);
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            Labs[SelectedTrgt].Content = Shrt(strength > EnemyAura ? strength - EnemyAura : 0);
+            return FoesKicked();
+        }
+
+        //[EN] OLD
+
+        /*private void DamageTime_Tick3(object sender, EventArgs e) { AcquireDamage(); }
+        private void HurtTime_Tick4(object sender, EventArgs e) { AOuch(); }
         private void FoeAttack1_Time_Tick5(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(0)) timer5.Stop(); }
         private void FoeAttack2_Time_Tick6(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(1)) timer6.Stop(); }
         private void FoeAttack3_Time_Tick7(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(2)) timer7.Stop(); }
@@ -5635,39 +5705,310 @@ namespace WpfApp1
         private void Torch_Time_Tick13(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Torch, Path.IconAnimatePath.Torch, Torch_Time_Tick13); }
         private void Whip_Time_Tick14(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Whip, Path.IconAnimatePath.Whip, Whip_Time_Tick14); }
         private void Super_Time_Tick15(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Super, Path.IconAnimatePath.Super, Super_Time_Tick15); }
-        private void Target_Time_Tick16(object sender, EventArgs e) { UnlimitedActionsTickCheck(Path.MiscAnimatePath.Target); }
-        private void Bandage_Time_Tick23(object sender, EventArgs e) { CureHealTxt.Content = "+50"; CureOrHeal(Bandage_Time_Tick23); }
-        private void Ether_Time_Tick24(object sender, EventArgs e) { RecoverAPTxt.Content = "+50"; RestoreAP(Ether_Time_Tick24); }
-        private void Fused_Time_Tick25(object sender, EventArgs e) { FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "+80", "+80" }); CureOrHeal(Fused_Time_Tick25); RestoreAP(Fused_Time_Tick25); }
-        private void Antidote_Time_Tick26(object sender, EventArgs e) { CureHealTxt.Content = "-Яд"; CureOrHeal(Antidote_Time_Tick26); }
         private void Cure2_Time_Tick27(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Cure2, Path.IconAnimatePath.Cure2, Cure2_Time_Tick27); }
-        private void CureHP2_Time_Tick28(object sender, EventArgs e) { CureHealTxt.Content = "100%"; CureOrHeal(CureHP2_Time_Tick28); }
         private void BuffUp_Time_Tick29(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.BuffUp, Path.IconAnimatePath.BuffUp, BuffUp_Time_Tick29); }
         private void Regen_Time_Tick32(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Regen, Path.IconAnimatePath.Regen, Regen_Time_Tick32); }
         private void Toughen_Time_Tick31(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.ToughenUp, Path.IconAnimatePath.ToughenUp, Toughen_Time_Tick31); }
-        private void RegenHP_Time_Tick33(object sender, EventArgs e) { if (Super1.CurrentHP == Super1.MaxHP) { HPRegenerate.IsEnabled = false; HPRegenerate.Stop(); HPRegenerate.Tick -= RegenHP_Time_Tick33; } else { Super1.CurrentHP++; CurrentHPcalculate(); } }//throw new Exception("End? "+APRegenerate.IsEnabled);
-        private void ControlAP_Time_Tick34(object sender, EventArgs e) { if (Super1.CurrentAP == Super1.MaxAP) { APRegenerate.IsEnabled = false; APRegenerate.Stop(); APRegenerate.Tick -= ControlAP_Time_Tick34; } else { Super1.CurrentAP++; CurrentAPcalculate(); } }
         private void Control_Time_Tick35(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Control, Path.IconAnimatePath.Control, Control_Time_Tick35); }
-        private void Thrower_Time_Tick36(object sender, EventArgs e)
-        {
-            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
-            string[] EnemyNames = { "Паук", "Мумия", "Зомби", "Страж", "Стервятник", "Гуль", "Жнец", "Скарабей", "Моль-убийца", "Прислужник", "П. червь", "Мастер" };
-            UInt16 strength = Shrt((Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[4] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[8] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[9] || Foe1.EnemyAppears[SelectedTrgt] == EnemyNames[11] ? Super1.Special * 5 : Super1.Special * 2.5) + Super1.Special * Super1.Speed * 0.01);
-            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
-            Labs[SelectedTrgt].Content = Shrt(strength > EnemyAura ? strength - EnemyAura : 0);
-            FoesKicked(Thrower_Time_Tick36);
-        }
         private void Thrower_Time_Tick37(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Thrower, Path.IconAnimatePath.Thrower, Thrower_Time_Tick37); }
         private void Tornado_Time_Tick38(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Tornado, Path.IconAnimatePath.Tornado, Tornado_Time_Tick38); }
-        private void TornadoDmg_Time_Tick39(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 3 + Super1.Special * Super1.Speed * 0.01), TornadoDmg_Time_Tick39); }
         private void SeriousMinigun_Time_Tick39(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SeriousMg, Path.IconAnimatePath.SeriousMg, SeriousMinigun_Time_Tick39); }
         private void Quake_Time_Tick43(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Quake, Path.IconAnimatePath.Quake, Quake_Time_Tick43); }
-        private void QuakeDmg_Time_Tick44(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 4 + Super1.Special * Super1.Speed * 0.01), QuakeDmg_Time_Tick44); }
         private void SeriousSwitch_Time_Tick45(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.SSwitch, Path.IconAnimatePath.SSwitch, SeriousSwitch_Time_Tick45); }
+        private void Learn_Time_Tick49(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Learn, Path.IconAnimatePath.Learn, Learn_Time_Tick49); }
+        private void Target_Time_Tick16(object sender, EventArgs e) { UnlimitedActionsTickCheck(Path.MiscAnimatePath.Target); }
+        private void Bandage_Time_Tick23(object sender, EventArgs e) { CureHealTxt.Content = "+50"; CureOrHeal(Bandage_Time_Tick23); }
+        private void Ether_Time_Tick24(object sender, EventArgs e) { RecoverAPTxt.Content = "+50"; RestoreAP(Ether_Time_Tick24); }
         private void HerbsHP_Time_Tick46(object sender, EventArgs e) { CureHealTxt.Content = "+350"; CureOrHeal(HerbsHP_Time_Tick46); }
         private void Ether2AP_Time_Tick47(object sender, EventArgs e) { RecoverAPTxt.Content = "+300"; RestoreAP(Ether2AP_Time_Tick47); }
+        private void Antidote_Time_Tick26(object sender, EventArgs e) { CureHealTxt.Content = "-Яд"; CureOrHeal(Antidote_Time_Tick26); }
+        private void CureHP2_Time_Tick28(object sender, EventArgs e) { CureHealTxt.Content = "100%"; CureOrHeal(CureHP2_Time_Tick28); }
+        private void Fused_Time_Tick25(object sender, EventArgs e) { FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "+80", "+80" }); CureOrHeal(Fused_Time_Tick25); RestoreAP(Fused_Time_Tick25); }
         private void ElixirHPAP_Time_Tick48(object sender, EventArgs e) { FastTextChange(new Label[] { CureHealTxt, RecoverAPTxt }, new String[] { "100%", "100%" }); CureOrHeal(ElixirHPAP_Time_Tick48); RestoreAP(ElixirHPAP_Time_Tick48); }
-        private void Learn_Time_Tick49(object sender, EventArgs e) { ActionsTickCheck(Path.PersonAnimatePath.Learn, Path.IconAnimatePath.Learn, Learn_Time_Tick49); }
+        private void RegenHP_Time_Tick33(object sender, EventArgs e) { if (Super1.CurrentHP == Super1.MaxHP) { HPRegenerate.IsEnabled = false; HPRegenerate.Stop(); HPRegenerate.Tick -= RegenHP_Time_Tick33; } else { Super1.CurrentHP++; CurrentHPcalculate(); } }//throw new Exception("End? "+APRegenerate.IsEnabled);
+        private void ControlAP_Time_Tick34(object sender, EventArgs e) { if (Super1.CurrentAP == Super1.MaxAP) { APRegenerate.IsEnabled = false; APRegenerate.Stop(); APRegenerate.Tick -= ControlAP_Time_Tick34; } else { Super1.CurrentAP++; CurrentAPcalculate(); } }
+        private void Thrower_Time_Tick36(object sender, EventArgs e) { ThrowAtFoes(); }
+        private void TornadoDmg_Time_Tick39(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 3 + Super1.Special * Super1.Speed * 0.01), TornadoDmg_Time_Tick39); }
+        private void QuakeDmg_Time_Tick44(object sender, EventArgs e) { AllDamaged(Shrt(Super1.Special * 4 + Super1.Special * Super1.Speed * 0.01), QuakeDmg_Time_Tick44); }
+        private void Player_Time_Tick(object sender, EventArgs e) { if (Time1.Value < Time1.Maximum) Time1.Value += 1; else { TimerOff(ref timer); Time(); } }
+        private void EnemyTime_Tick2(object sender, EventArgs e) { FoesFighting(); }*/
+
+        public static Byte Appearance = 0;
+        //[EN] Mini cutscenes
+        //[RU] Мини сцены.
+        private bool Pharaoh1()
+        {
+            if (!PharaohAppears.IsEnabled) ImgShow(PharaohAppears);
+            if (PharaohAppears.Opacity < 1) PharaohAppears.Opacity += 0.01;
+            else
+            {
+                if (Bits(Numb(PharaohAppears.GetValue(Grid.RowProperty)) - 1) < 6) { LetsBattle(); return true; }
+                ImgGrid(PharaohAppears, Bits(Numb(PharaohAppears.GetValue(Grid.RowProperty)) - 1), Bits(Numb(PharaohAppears.GetValue(Grid.ColumnProperty))));
+            }
+            return false;
+        }
+        private bool Ancient2()
+        {
+            if (!Ancient.IsEnabled) AnyShow(Ancient);
+            if (Ancient.Opacity < 1) Ancient.Opacity += 0.25;
+            else
+            {
+                if (!Warrior.IsEnabled) AnyShow(Warrior);
+                if (Appearance < Path.AniModel.Ancient.Length) AncientAppear_Phase1(Appearance);
+                if (Appearance < 2) AncientAppear_Phase2(Appearance);
+                else if (Numb(Warrior.GetValue(Grid.ColumnProperty)) < 5) AncientAppear_Phase3();
+                else { ImgGrid(Warrior, Bits(Numb(Warrior.GetValue(Grid.RowProperty))), Bits(Numb(Warrior.GetValue(Grid.ColumnProperty)) - 1)); LetsBattle(); return true; }
+                Appearance++;
+            }
+            return false;
+        }
+        private bool TheLord3()
+        {
+            if (!FinalAppears.IsEnabled) AnyShow(FinalAppears);
+            if (FinalAppears.Opacity < 1) FinalAppears.Opacity += 0.05; else { LetsBattle(); return true; }
+            return false;
+        }
+        private bool RockRoll()
+        {
+            Byte[] MapModel = CheckModelCoord(7);
+            if ((MapModel[0] == Adoptation.ImgYbounds) && (MapModel[1] == Adoptation.ImgXbounds)) { ImgShow(PainImg); if (Super1.CurrentHP - 50 >= 0) Super1.CurrentHP -= 50; else { WonOrDied(); MediaShow(GameOver); } }
+            ChangeMapToVoid(7);
+            if (MapScheme[MapModel[0] + 1, MapModel[1]] != 1)
+            {
+                MapModel[0]++;
+                ReplaceModel(MapModel[0], MapModel[1], 7);
+                ImgGrid(Boulder1, MapModel[0], MapModel[1]);
+                Boulder1.RenderTransform = new RotateTransform(45 * Adoptation.WidthAdBack * MapModel[0], 16*Adoptation.WidthAdBack, 15 * Adoptation.HeightAdBack);
+            }
+            else { ImgHide(Boulder1); return true; }
+            return false;
+        }
+        private bool FoeHurts()
+        {
+            UInt16 pow = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus);
+            UInt16 strength = Shrt(pow - EnemyTough(Sets.SelectedTarget) <= 0 ? 0 : pow - EnemyTough(Sets.SelectedTarget));
+            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
+            Labs[SelectedTrgt].Content = strength;
+            return FoesKicked();
+        }
+        private bool Torchs()
+        {
+            UInt16 trchsp = Shrt((Foe1.EnemyAppears[SelectedTrgt] == "Паук") || (Foe1.EnemyAppears[SelectedTrgt] == "Мумия") ? Super1.Special * 2.5 : Foe1.EnemyAppears[SelectedTrgt] == "Фараон" ? Super1.Special * 0.5 : Super1.Special * 1.25);
+            trchsp += Shrt(Super1.Special * Super1.Speed * 0.01);
+            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            Labs[SelectedTrgt].Content = Shrt(trchsp > EnemyAura ? trchsp - EnemyAura : 0);
+            return FoesKicked();
+        }
+        private bool Whips()
+        {
+            UInt16 whipsp = Shrt((Foe1.EnemyAppears[SelectedTrgt] == "Зомби") || (Foe1.EnemyAppears[SelectedTrgt] == "Страж") ? Super1.Special * 3 : Foe1.EnemyAppears[SelectedTrgt] == "Фараон" ? Super1.Special * 0.75 : Super1.Special * 1.5);
+            whipsp += Shrt(Super1.Special * Super1.Speed * 0.01);
+            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            Labs[SelectedTrgt].Content = Shrt(whipsp > EnemyAura ? whipsp - EnemyAura : 0);
+            return FoesKicked();
+        }
+        private bool Combos()
+        {
+            UInt16 supersp = Shrt(Super1.Special * 2);
+            supersp += Shrt(Super1.Special * Super1.Speed * 0.01);
+            UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
+            Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
+            for (Byte i = 0; i < Labs.Length; i++) if (Foe1.EnemyHP[i] != 0) Labs[i].Content = supersp > EnemyAura ? supersp - EnemyAura : 0;
+            return FoesKicked();
+        }
+        private void AncientAppear_Phase1(in Byte App) { Ancient.Source = Bmper(Path.AniModel.Ancient[App]); }
+        private void AncientAppear_Phase2(in Byte App) { Warrior.Source = Bmper(Path.AniModel.Warrior[App]); }
+        private void AncientAppear_Phase3() { ImgGrid(Warrior, Bits(Warrior.GetValue(Grid.RowProperty)), Bits((Int32)Warrior.GetValue(Grid.ColumnProperty) + 1)); }
+        
+        /*private void PharaohAppear_Time51(object sender, EventArgs e) { Pharaoh1(); }
+        private void AncientAppear_Time52(object sender, EventArgs e) { Ancient2(); }
+        private void MrOfAllAppear_Time53(object sender, EventArgs e) { TheLord3(); }
+
+        private void DamageFoe_Time_Tick17(object sender, EventArgs e) { if (FoeHurts()) TimerOff(ref ); }
+        private void CureHP_Time_Tick18(object sender, EventArgs e) { if (CureOrHeal("+" + Super1.Special * 2)) TimerOff(ref ); }
+        private void HealPsn_Time_Tick19(object sender, EventArgs e) { if (CureOrHeal("-Яд")) TimerOff(ref ); }
+        private void TorchDmg_Time_Tick20(object sender, EventArgs e) { if (Torchs()) TimerOff(ref ); }
+        private void WhipDmg_Time_Tick21(object sender, EventArgs e) { if (Whips()) TimerOff(ref ); }
+        private void SuperDmg_Time_Tick22(object sender, EventArgs e) { if (Combos()) TimerOff(ref ); }
+        private void BuffUpVal_Time_Tick30(object sender, EventArgs e) { BuffUpShow("" + Super1.Special); }
+        private void AddingStats_Time_Tick41(object sender, EventArgs e) { AddStats(); }
+        private void AddingMaterials_Time_Tick42(object sender, EventArgs e) { AddToBag(); }
+        private void Levelling_Time_Tick40(object sender, EventArgs e) { LevelUps(); }
+        private void LevelingUPImage_Time_Tick44(object sender, EventArgs e) { IconActions(AfterIcon, Path.IconAnimatePath.LevelUp); }
+        private void TryGetOut(object sender, EventArgs e) { if (TimeChamber()) TimerOff(ref TRout); }
+        private void ILevl_D_T(object sender, EventArgs e) { IconActions(AfterIcon, Path.IconAnimatePath.LevelUp); }*/
+
+
+        //[EN] NEW
+
+        private void PHurt_D_T1(object sender, EventArgs e) { if (AcquireDamage()) TimerOff(ref PHurt); }
+        private void THurt_D_T2(object sender, EventArgs e) { if (AOuch()) TimerOff(ref THurt); }
+        private void E1Atk_D_T3(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(0)) TimerOff(ref E1Atk); }
+        private void E2Atk_D_T4(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(1)) TimerOff(ref E2Atk); }
+        private void E3Atk_D_T5(object sender, EventArgs e) { if (FoeAttacks_Time_Ticks(2)) TimerOff(ref E3Atk); }
+        private void PHAtk_D_T6(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.HdAttack, Path.IconAnimatePath.HdAttack)) TimerOff(ref PHAtk); }
+        private void PKAtk_D_T7(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.KnAttack, Path.IconAnimatePath.KnAttack)) TimerOff(ref PKAtk); }
+        private void PSAtk_D_T8(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.SwAttack, Path.IconAnimatePath.SwAttack)) TimerOff(ref PSAtk); }
+        private void PMAtk_D_T9(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.MgAttack, Path.IconAnimatePath.MgAttack)) TimerOff(ref PMAtk); }
+        private void PFlee_D_T10(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Escape, Path.IconAnimatePath.Escape)) TimerOff(ref PFlee); }
+        private void PItem_D_T11(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.BagUse, Path.IconAnimatePath.BagUse)) TimerOff(ref PItem); }
+        private void Pure1_D_T12(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Cure, Path.IconAnimatePath.Cure)) TimerOff(ref Pure1); }
+        private void Pure2_D_T13(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Cure2, Path.IconAnimatePath.Cure2)) TimerOff(ref Pure2); }
+        private void PHeal_D_T14(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Heal, Path.IconAnimatePath.Heal)) TimerOff(ref PHeal); }
+        private void PBuff_D_T15(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.BuffUp, Path.IconAnimatePath.BuffUp)) TimerOff(ref PBuff); }
+        private void PTogh_D_T16(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.ToughenUp, Path.IconAnimatePath.ToughenUp)) TimerOff(ref PTogh); }
+        private void PHpUp_D_T17(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Regen, Path.IconAnimatePath.Regen)) TimerOff(ref PHpUp); }
+        private void PApUp_D_T18(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Control, Path.IconAnimatePath.Control)) TimerOff(ref PApUp); }
+        private void PTrch_D_T19(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Torch, Path.IconAnimatePath.Torch)) TimerOff(ref PTrch); }
+        private void PWhip_D_T20(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Whip, Path.IconAnimatePath.Whip)) TimerOff(ref PWhip); }
+        private void PThrw_D_T21(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Thrower, Path.IconAnimatePath.Thrower)) TimerOff(ref PThrw); }
+        private void Puper_D_T22(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Super, Path.IconAnimatePath.Super)) TimerOff(ref Puper); }
+        private void Pnado_D_T23(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Tornado, Path.IconAnimatePath.Tornado)) TimerOff(ref Pnado); }
+        private void Puake_D_T24(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Quake, Path.IconAnimatePath.Quake)) TimerOff(ref Puake); }
+        private void Pearn_D_T25(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.Learn, Path.IconAnimatePath.Learn)) TimerOff(ref Pearn); }
+        private void SMini_D_T26(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.SeriousMg, Path.IconAnimatePath.SeriousMg)) TimerOff(ref SMini); }
+        private void SSwth_D_T27(object sender, EventArgs e) { if (ActionsTickCheck(Path.PersonAnimatePath.SSwitch, Path.IconAnimatePath.SSwitch)) TimerOff(ref SSwth); }
+        private void Targt_D_T28(object sender, EventArgs e) { UnlimitedActionsTickCheck(Path.MiscAnimatePath.Target); }
+        private void PBndg_D_T29(object sender, EventArgs e) { if (CureOrHeal("+50")) TimerOff(ref PBndg); }
+        private void PEthr_D_T30(object sender, EventArgs e) { if (RestoreAP("+50")) TimerOff(ref PEthr); }
+        private void PHerb_D_T31(object sender, EventArgs e) { if (CureOrHeal("+350")) TimerOff(ref PHerb); }
+        private void PEtr2_D_T32(object sender, EventArgs e) { if (RestoreAP("+300")) TimerOff(ref PEtr2); }
+        private void PAtdt_D_T33(object sender, EventArgs e) { if (CureOrHeal("-Яд")) TimerOff(ref PAtdt); }
+        private void PCur2_D_T34(object sender, EventArgs e) { if (CureOrHeal("100%")) TimerOff(ref PCur2); }
+        private void PFusd_D_T35(object sender, EventArgs e) { if (CureOrHeal("+80") || RestoreAP("+80")) TimerOff(ref PFusd); }
+        private void PElxr_D_T36(object sender, EventArgs e) { if (CureOrHeal("100%") || RestoreAP("100%")) TimerOff(ref PElxr); }
+        private void PRegn_F_T37(object sender, EventArgs e) { if (Super1.CurrentHP == Super1.MaxHP) { TimerOff(ref PRegn); } else { Super1.CurrentHP++; CurrentHPcalculate(); } }//throw new Exception("End? "+APRegenerate.IsEnabled);
+        private void PCtrl_F_T38(object sender, EventArgs e) { if (Super1.CurrentAP == Super1.MaxAP) { TimerOff(ref PCtrl); } else { Super1.CurrentAP++; CurrentAPcalculate(); } }
+        private void PThwr_I_T39(object sender, EventArgs e) { if (ThrowAtFoes()) TimerOff(ref PThwr); }
+        private void PWhrl_I_T40(object sender, EventArgs e) { if (AllDamaged(Shrt(Super1.Special * 3 + Super1.Special * Super1.Speed * 0.01))) TimerOff(ref PWhrl); }
+        private void PQuak_I_T41(object sender, EventArgs e) { if (AllDamaged(Shrt(Super1.Special * 4 + Super1.Special * Super1.Speed * 0.01))) TimerOff(ref PQuak); }
+        private void PTurn_I_T42(object sender, EventArgs e) { if (Time1.Value < Time1.Maximum) Time1.Value += 1; else { TimerOff(ref PTurn); Time(); } }
+        private void ETurn_I_T43(object sender, EventArgs e) { if (FoesFighting()) TimerOff(ref ETurn); }
+        private void WRecd_R_T44(object sender, EventArgs e) { if (WorldRecord()) TimerOff(ref WRecd); }
+        private void Boss1_C_T45(object sender, EventArgs e) { if (Pharaoh1()) TimerOff(ref Boss1); }
+        private void Boss2_C_T46(object sender, EventArgs e) { if (Ancient2()) TimerOff(ref Boss2); }
+        private void Boss3_C_T47(object sender, EventArgs e) { if (TheLord3()) TimerOff(ref Boss3); }
+        private void RRoll_L_T48(object sender, EventArgs e) { if (RockRoll()) TimerOff(ref RRoll); }
+        private void EHurt_D_T49(object sender, EventArgs e) { if (FoeHurts()) TimerOff(ref EHurt); }
+        private void PCure_D_T50(object sender, EventArgs e) { if (CureOrHeal("+" + Super1.Special * 2)) TimerOff(ref PCure); }
+        private void PAtxc_D_T51(object sender, EventArgs e) { if (CureOrHeal("-Яд")) TimerOff(ref PAtxc); }
+        private void PToch_D_T52(object sender, EventArgs e) { if (Torchs()) TimerOff(ref PToch); }
+        private void PWhpd_D_T53(object sender, EventArgs e) { if (Whips()) TimerOff(ref PWhpd); }
+        private void PSupr_D_T54(object sender, EventArgs e) { if (Combos()) TimerOff(ref PSupr); }
+        private void PPowr_D_T55(object sender, EventArgs e) { if (BuffUpShow("" + Super1.Special)) TimerOff(ref PPowr); }
+        private void AStat_F_T56(object sender, EventArgs e) { if (AddStats()) TimerOff(ref AStat); }
+        private void AMats_F_T57(object sender, EventArgs e) { if (AddToBag()) TimerOff(ref AMats); }
+        private void NLevl_F_T58(object sender, EventArgs e) { if (LevelUps()) TimerOff(ref NLevl); }
+        private void TRout_F_T59(object sender, EventArgs e) { if (TimeChamber()) TimerOff(ref TRout); }
+        private bool AddToBag()
+        {
+            if ((Mat > 0) && (BAG.Materials + 1 < 65535))
+            {
+                BAG.Materials += Shrt(Mat - 10000 >= 0 ? 10000 : Mat - 1000 >= 0 ? 1000 : Mat - 100 >= 0 ? 100 : Mat - 10 >= 0 ? 10 : 1);
+                MaterialsOnHand.Content = BAG.Materials;
+                Mat -= Shrt(Mat - 10000 >= 0 ? 10000 : Mat - 1000 >= 0 ? 1000 : Mat - 100 >= 0 ? 100 : Mat - 10 >= 0 ? 10 : 1);
+                MaterialsAdd.Content = "+" + Mat;
+            }
+            else
+            {
+                Mat = 0;
+                LabHide(MaterialsAdd);
+                return true;
+            }
+            return false;
+        }
+        private bool LevelUps()
+        {
+            if ((Exp > 0) && (Super1.CurrentLevel < 25))
+            {
+                if (Super1.Experience + Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1) >= NextExpBar.Maximum)
+                {
+                    if (Super1.CurrentLevel < 25)
+                    {
+                        Dj(Path.GameNoises.LevelUp);
+                        RecursiveLevelUp(Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1));
+                        if (!NewLevelGet.IsEnabled) LevelUpShow();
+                    }
+                    else
+                    {
+                        Super1.Experience = Shrt(NextExpBar.Maximum);
+                        NextExpBar.Value = NextExpBar.Maximum;
+                        ExpText.Content = Txt.Com.Expert;
+                        Exp = 0;
+                        if (!NewLevelGet.IsEnabled) ButtonShow(TextOk1); else TimerOn(ref AStat, new TimeSpan(0, 0, 0, 0, 25));
+                        return true;
+                    }
+                }
+                else
+                {
+                    Super1.Experience += Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1); ;
+                    NextExpBar.Value = Super1.Experience;
+                    ExpText.Content = Txt.Com.Exp + " " + NextExpBar.Value + "/" + NextExpBar.Maximum;
+                }
+                Exp -= Shrt(Exp - 10000 >= 0 ? 10000 : Exp - 1000 >= 0 ? 1000 : Exp - 100 >= 0 ? 100 : Exp - 10 >= 0 ? 10 : 1);
+            }
+            else if (!NewLevelGet.IsEnabled)
+            {
+                ButtonShow(TextOk1);
+                return true;
+            }
+            else
+            {
+                TimerOn(ref AStat, new TimeSpan(0, 0, 0, 0, 25));
+                return true;
+            }
+            return false;
+        }
+        private bool AddStats()
+        {
+            if ((CurrentNextHPAP[0] < Super1.MaxHP) || (CurrentNextHPAP[1] < Super1.MaxAP) || (CurrentNextParams[0] < Super1.Attack) || (CurrentNextParams[1] < Super1.Defence) || (CurrentNextParams[2] < Super1.Speed) || (CurrentNextParams[3] < Super1.Special))
+            {
+                if (CurrentNextHPAP[0] < Super1.MaxHP)
+                {
+                    CurrentNextHPAP[0]++;
+                    if (Super1.MaxHP < 333) NewMaximum(AfterHPbar, CurrentNextHPAP[0]);
+                    else
+                    {
+                        if (CurrentNextHPAP[0] - 666 < 0 && Super1.MaxHP >= 666) CurrentNextHPAP[0] = 666; else if (CurrentNextHPAP[0] - 333 < 0) CurrentNextHPAP[0] = 333;
+                        NewMaximumX(Super1.MaxHP < 666 ? new UInt16[] { 333, Shrt(CurrentNextHPAP[0] - 333) } : new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[0] - 666) }, Super1.MaxHP < 666 ? new ProgressBar[] { AfterHPbar, AfterHPbarOver333 } : new ProgressBar[] { AfterHPbar, AfterHPbarOver333, AfterHPbarOver666 });
+                        AnyShowX(Super1.MaxHP < 666 ? new ProgressBar[] { AfterHPbarOver333 } : new ProgressBar[] { AfterHPbarOver333, AfterHPbarOver666 });
+                        //throw new Exception("Super1.MaxHP: " + Super1.MaxHP + "/666, HP+:" + (CurrentNextHPAP[0] - 333));
+                    }
+                    FastTextChange(new Label[] { AddHP, AfterHP }, new string[] { "+" + (Super1.MaxHP - CurrentNextHPAP[0]), Super1.CurrentHP + "/" + CurrentNextHPAP[0] });
+                }
+                else LabHide(AddHP);
+
+                if (CurrentNextHPAP[1] < Super1.MaxAP)
+                {
+                    CurrentNextHPAP[1]++;
+                    if (Super1.MaxAP < 333) NewMaximum(AfterAPbar, CurrentNextHPAP[1]);
+                    else
+                    {
+                        if (CurrentNextHPAP[1] - 666 < 0 && Super1.MaxAP >= 666) CurrentNextHPAP[1] = 666; else if (CurrentNextHPAP[1] - 333 < 0) CurrentNextHPAP[1] = 333;
+                        NewMaximumX(Super1.MaxAP < 666 ? new UInt16[] { 333, Shrt(CurrentNextHPAP[1] - 333) } : new UInt16[] { 333, 333, Shrt(CurrentNextHPAP[1] - 666) }, Super1.MaxAP < 666 ? new ProgressBar[] { AfterAPbar, AfterAPbarOver333 } : new ProgressBar[] { AfterAPbar, AfterAPbarOver333, AfterAPbarOver666 });
+                        AnyShowX(Super1.MaxAP < 666 ? new ProgressBar[] { AfterAPbarOver333 } : new ProgressBar[] { AfterAPbarOver333, AfterAPbarOver666 });
+                    }
+                    FastTextChange(new Label[] { AddAP, AfterAP }, new string[] { "+" + (Super1.MaxAP - CurrentNextHPAP[1]), Super1.CurrentAP + "/" + CurrentNextHPAP[1] });
+                }
+                else LabHide(AddAP);
+
+                CustomAddStat(0, Super1.Attack, AddATK, AfterATK);
+                CustomAddStat(1, Super1.Defence, AddDEF, AfterDEF);
+                CustomAddStat(2, Super1.Speed, AddAG, AfterAG);
+                CustomAddStat(3, Super1.Special, AddSP, AfterSP);
+            }
+            else
+            {
+                MaxAndWidthHPcalculate();
+                MaxAndWidthAPcalculate();
+                LabHideX(new Label[] { AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP });
+                ButtonShow(TextOk1);
+                return true;
+            }
+            return false;
+        }
         private void AllDmgTimeTextChangeConstruction(in UInt16 ActionPower)
         {
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
@@ -5717,8 +6058,8 @@ namespace WpfApp1
             CurrentAPcalculate();
             AnyHideX(BattleText1, HPenemyBar, HPenemy, TrgtImg, EnemyImg, ACT4, Cancel2);
             Dj(Path.GameNoises.Learn);
-            WidelyUsedAnyTimer(out timer8, Learn_Time_Tick49, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value)));
-            timer9.Stop();
+            TimerOn(ref Pearn, new TimeSpan(0,0,0,0,Shrt(25/GameSpeed.Value)));
+            TimerOff(ref Targt);
         }
         private void Skip1_MouseEnter(object sender, MouseEventArgs e) { SkipImg.Source = Bmper(Path.Adv.AfterSkip); }
         private void Skip1_MouseLeave(object sender, MouseEventArgs e) { SkipImg.Source = Bmper(Path.Adv.BeforeSkip); }
