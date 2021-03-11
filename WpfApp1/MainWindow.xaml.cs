@@ -13,9 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Resources;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+
+using System.IO;
 
 namespace WpfApp1
 {
@@ -127,7 +130,7 @@ namespace WpfApp1
                 Imp = "Прислужник";
                 Worm = "П. червь";
                 Master = "Мастер";
-                GetFast = new string[] { Spider, Mummy, Zombie, Bones,  Vulture, Ghoul, GrimReaper, Scarab,  KillerMole, Imp, Worm, Master  };
+                GetFast = new string[] { Spider, Mummy, Zombie, Bones, Vulture, Ghoul, GrimReaper, Scarab, KillerMole, Imp, Worm, Master };
                 GetByIndexes = new string[,] { { Spider, Mummy, Zombie, Bones }, { Vulture, Ghoul, GrimReaper, Scarab }, { KillerMole, Imp, Worm, Master } };
             }
             public String Spider { get; set; }
@@ -170,7 +173,7 @@ namespace WpfApp1
                 InfoChange1 = 0;
                 HelpInfo1 = new string[,]{ {"Введение","Древние - кто они?","Приключение","Управление","Сражение","Цель боя","Очки здоровья","Урон","Оборона","Побег","Статус","Показатели","Скорость (СКР)","Больше чем бой","Настройки","Проходы","Сундуки","Сила земли","Сцены" },
                 {"Неизвестный...","Предыстория","Розыск","Меню/Выход","Противники","Ходы","Очки действий","Бой","Умения","Результаты","Уровень","Атака (АТК)","Спец. (СПЦ)","Бестиарий","Разработал","Стены","Опасности","Погостить пришёл","Благодарности" },
-                {"Древние святыни","Артефакты","Главы","Взаимодействие","Боссы","Действия","АВШ","Выбор","Предметы","Прирост","Опыт","Защита (ЗЩТ)","Время игры","Задачи","До новых встреч","Замки","Цветные камушки","Секреты","Финансы" } };
+                {"Древние святыни","Артефакты","Главы","Взаимодействие","Боссы","Действия","АВШ","Выбор","Предметы","Прирост","Опыт","Защита (ЗЩТ)","Время игры","Задачи","До новых встреч","Замки","Камни","Секреты","Финансы" } };
                 HelpInfo2 = new string[,] { {"Добро пожаловать, искатели\nприключений! Приветствуем\nвас в кратком своде правил.","Древние - люди, что когда-то\nобладали технологиями, кото-\nрые нам и не снились.","Вам доступно создание\nнового или загрузка старого\nприключения если оно было","Клавиатура обязательна\nПередвижение - WASD,\nВзаимодействие - E","Во время передвижения, на\nвас могут напасть. Не бой-\nтесь сражаться за правое!","Во время сражения нужно\nубрать всех противников и\nбоссов с поля, не погибнув.","Определяют какое количе-\nство урона персонаж может\nвзять, прежде чем умереть.","Числом определяет силу, с\nкоторой бьёт герой или враг,\nприближает к гибели.","Повышает защиту героя в\nдва раза до следующего\nхода.","Существует альтернативный\nспособ выйти из сражения -\nизбежать этим действием.","Выводит состояние героя,\nпри отравлении персонаж\nбудет терять ОЗ.","Влияют на выживаемость\nгероя, каждый отвечает за\nчто-то своё.","Влияет на скорость заполне-\nния АВШ и возможность\nсбежать из боя.","Умения доступны вне боя, а\nещё каждое из них можно\n\"пожамкать\" ^_^.","Не так-то просто справляться\nс шумом? Слишком яркое\nизображение? Не вопрос!","Место, по которому может\nходить герой, обычная\nплита.","Там хранится всевозможное\nоружие и броня древних.\nПочему бы и не одолжить?","Источники, бьющие прямо\nиз огненных песков лечат\nвсе недомогания.","Как никогда лучше показы-\nвают происходящее в\nсамом эпицентре событий." },
                 {"Вы играете за одарённого\nархеолога Рэя, его целью\nявляется поиск артефактов.","После глупых войн и жажды\nвласти, люди истратили нас-\n","Здесь находятся все\nискатели! Можно разделять\nпрогресс с друзьями","Клавиатура обязательна\nОткрыть меню - Left CTRL\nВыйти из игры - ESC","Монстры и прочие чудища,\nвышедшие из под контроля\nжаждут вашей гибели","Действия героя и врагов\nраспределены: они могут\nвыполнять их спустя время","От ОД зависит доступ к осо-\nбым действиям - умениям,\nвызывающие эффекты","Опция позволяющая физи-\nчески атаковать врага\nгерою, зависит от АТК.","Каждое умение тратит ОД и\nможет оказывать эффект\nкак на врага, так и на героя.","Победив, вы получаете\nопыт, материалы и ве-\nщи в конце сражения.","Показывает потенциал\nперсонажа, от него за-\nвисят все показатели.","Урон, наносимый героем\nпри обычной атаке. Может\nбыть увеличена оружием.","Специальное влияет на силу\nэффектов от использования\nумений персонажа.","После открытия умения \"Из-\nучение\", вы сможете смот-\nреть показатели врагов","Прошу любить и жаловать:\nТатаринцев Александр,\nвыступал в роли FullStack.","Препятствия, через которые\nнельзя передвигаться. Из\nних составлены лабиринты.","Какое приключение не обо-\nйдётся без опасностей?\nВсё как положено.","-Алло, это кто?\n-Сэм.\n-Шутник, Сэм, это я.","Посвящается (Вы лучшие):\nМасленников Денис,\nМасленникова Татьяна" },
                 {"Основными местами для\nпоиска сокровищ стали\nсооружения древних.","Артефакты содержат посла-\nния, лежащие в основе\nключа к мудрости веков","Приключение рассказывает\nисторию, основные события\nкоторой показаны в главах","Все нажатия на кнопки\nосуществляются с помощью\nлевой кнопки мыши (ЛКМ)","Древние стражи и могучие\nвластители, пробудившиеся\nото сна ждут боя.","Совокупность опций возни-\nкающих около персонажа.\nНужны для победы в бою.","Активная временная шкала\nпосле заполнения, даёт ход\nгерою, отображая действия.","Для выбора зоны пораже-\nния. Отмена - вернуться к\nпредыдущим опциям","Использование предметов,\nполученных после боя или\nсозданных материалами.","При повышении уровня, по-\nказатели героя вырастут,\nоблегчая новые задачи.","При сборе достаточного\nколичества - повышает\nуровень.","Снижает урон, получаемый\nот врагов. Может быть\nувеличена доспехами.","Всему своё время и приклю-\nчение - не исключение, бе-\nрегите глаза, друзья!","Для понимания основной\nцели - она разбита на\nзадачи.","Надеюсь данное руководст-\nво было вам полезно, даль-\nше для общего развития =)","Закрытые проходы, веду-\nщие через путь к выходу\nк артефактам. ","Артефакты - ключи, ведущие\nк сокровищам, эта основная\nцель приключения.","Каждое сооружение хранит\nсвои секреты. Сможете ли\nвы отыскать их все?","А в плане денег - у нас нет\nденег. Поможете ли доброй\nкопеечкой? 89212049320" } };
@@ -479,21 +482,21 @@ namespace WpfApp1
             public CutScenes() { SetAllPaths(); }
             public void SetAllPaths()
             {
-                Ambushed = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleStarts\BattleStations1.mp4";
-                BattleStations = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleStarts\BattleStations2.mp4";
-                NotAgain = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleStarts\BattleStations3.mp4";
-                PreChapter1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Chapter1.mp4";
-                PreChapter2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Chapter2.mp4";
-                PreChapter3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Chapter3.mp4";
-                PreChapter4 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersIntroduction\Epilogue.mp4";
-                Victory = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleEnds\Win1.mp4";
-                WasteTime = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleEnds\Win2.mp4";
-                PowerRanger = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleEnds\Win3.mp4";
-                Fin_Chapter1 = @"Final1.mp4";
-                Fin_Chapter2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersEnding\Final2.mp4";
-                Fin_Chapter3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersEnding\Final3.mp4";
-                Ending = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChaptersEnding\Ending.mp4";
-                Titres = @"Titres3.mp4";
+                Ambushed = @"Resources\CutScenes\BattleStarts\BattleStations1.mp4";
+                BattleStations = @"Resources\CutScenes\BattleStarts\BattleStations2.mp4";
+                NotAgain = @"Resources\CutScenes\BattleStarts\BattleStations3.mp4";
+                PreChapter1 = @"Resources\CutScenes\ChaptersIntroduction\Chapter1.mp4";
+                PreChapter2 = @"Resources\CutScenes\ChaptersIntroduction\Chapter2.mp4";
+                PreChapter3 = @"Resources\CutScenes\ChaptersIntroduction\Chapter3.mp4";
+                PreChapter4 = @"Resources\CutScenes\ChaptersIntroduction\Epilogue.mp4";
+                Victory = @"Resources\CutScenes\BattleEnds\Win1.mp4";
+                WasteTime = @"Resources\CutScenes\BattleEnds\Win2.mp4";
+                PowerRanger = @"Resources\CutScenes\BattleEnds\Win3.mp4";
+                Fin_Chapter1 = @"Resources\CutScenes\ChaptersEnding\Final1.mp4";
+                Fin_Chapter2 = @"Resources\CutScenes\ChaptersEnding\Final2.mp4";
+                Fin_Chapter3 = @"Resources\CutScenes\ChaptersEnding\Final3.mp4";
+                Ending = @"Resources\CutScenes\ChaptersEnding\Ending.mp4";
+                Titres = @"Resources\CutScenes\ChaptersEnding\Titres.mp4";
             }
             public String Prologue { get; set; }
             public String Ambushed { get; set; }
@@ -519,29 +522,29 @@ namespace WpfApp1
                 public Music() { SetAllPaths(); }
                 public void SetAllPaths()
                 {
-                    MainTheme = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\Main_theme.mp3";
-                    Prologue = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\Intro.mp3";
+                    MainTheme = @"Resources\OST\Music\Main_theme.mp3";
+                    Prologue = @"Resources\OST\Music\Intro.mp3";
 
-                    AncientPyramid = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\AncientPyramid_theme.mp3";
-                    WaterTemple = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\WaterTemple_theme.mp3";
-                    LavaTemple = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\FireTemple_theme.mp3";
-                    GetAway = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\GetAway.mp3";
+                    AncientPyramid = @"Resources\OST\Music\AncientPyramid_theme.mp3";
+                    WaterTemple = @"Resources\OST\Music\WaterTemple_theme.mp3";
+                    LavaTemple = @"Resources\OST\Music\FireTemple_theme.mp3";
+                    GetAway = @"Resources\OST\Music\GetAway.mp3";
 
-                    FoesChase = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BattleTheme1.mp3";
-                    HandleThis = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BattleTheme2.mp3";
-                    StampSmth = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BattleTheme3.mp3";
+                    FoesChase = @"Resources\OST\Music\BattleTheme1.mp3";
+                    HandleThis = @"Resources\OST\Music\BattleTheme2.mp3";
+                    StampSmth = @"Resources\OST\Music\BattleTheme3.mp3";
 
-                    LookWhoAwake = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BossBattle1.mp3";
-                    SayHello = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\BossBattle2.mp3";
-                    SeriousTalk = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\FinalBoss_theme.mp3";
-                    SeriousIsMe = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\SecretBossFight.mp3";
+                    LookWhoAwake = @"Resources\OST\Music\BossBattle1.mp3";
+                    SayHello = @"Resources\OST\Music\BossBattle2.mp3";
+                    SeriousTalk = @"Resources\OST\Music\FinalBoss_theme.mp3";
+                    SeriousIsMe = @"Resources\OST\Music\SecretBossFight.mp3";
 
-                    AncientKey = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\ChFin1.mp3";
-                    Conversation = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\ChFin2.mp3";
-                    Threasures = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\ChFin3.mp3";
-                    PutTheEnd = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\Ending.mp3";
+                    AncientKey = @"Resources\OST\Music\ChFin1.mp3";
+                    Conversation = @"Resources\OST\Music\ChFin2.mp3";
+                    Threasures = @"Resources\OST\Music\ChFin3.mp3";
+                    PutTheEnd = @"Resources\OST\Music\Ending.mp3";
 
-                    SayGoodbye = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Music\Titres.mp3";
+                    SayGoodbye = @"Resources\OST\Music\Titres.mp3";
                 }
                 public String MainTheme { get; set; }
                 public String Prologue { get; set; }
@@ -567,28 +570,28 @@ namespace WpfApp1
                 public Sounds() { SetAllPaths(); }
                 public void SetAllPaths()
                 {
-                    DoorOpened = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\DoorOpened.mp3";
-                    ChestOpened = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\ChestOpened.mp3";
-                    ControlSave = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\SaveSound.mp3";
-                    NowTheWinnerIs = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\YouWon.mp3";
+                    DoorOpened = @"Resources\OST\Sounds\DoorOpened.mp3";
+                    ChestOpened = @"Resources\OST\Sounds\ChestOpened.mp3";
+                    ControlSave = @"Resources\OST\Sounds\SaveSound.mp3";
+                    NowTheWinnerIs = @"Resources\OST\Sounds\YouWon.mp3";
 
-                    SpiderDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\SpiderDied.mp3";
-                    MummyDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\MummyDied.mp3";
-                    ZombieDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\ZombieDied.mp3";
-                    BonesDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\BonesDied.mp3";
-                    VultureDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\VultureDied.mp3";
-                    GhoulDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\GhoulDied.mp3";
-                    GrimReaperDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\GrimReaperDied.mp3";
-                    ScarabDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\ScarabDied.mp3";
-                    KillerMoleDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\KillerMoleDied.mp3";
-                    ImpDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\ImpDied.mp3";
-                    WormDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\WormDied.mp3";
-                    MasterDied = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\MasterDied.mp3";
+                    SpiderDied = @"Resources\OST\Sounds\SpiderDied.mp3";
+                    MummyDied = @"Resources\OST\Sounds\MummyDied.mp3";
+                    ZombieDied = @"Resources\OST\Sounds\ZombieDied.mp3";
+                    BonesDied = @"Resources\OST\Sounds\BonesDied.mp3";
+                    VultureDied = @"Resources\OST\Sounds\VultureDied.mp3";
+                    GhoulDied = @"Resources\OST\Sounds\GhoulDied.mp3";
+                    GrimReaperDied = @"Resources\OST\Sounds\GrimReaperDied.mp3";
+                    ScarabDied = @"Resources\OST\Sounds\ScarabDied.mp3";
+                    KillerMoleDied = @"Resources\OST\Sounds\KillerMoleDied.mp3";
+                    ImpDied = @"Resources\OST\Sounds\ImpDied.mp3";
+                    WormDied = @"Resources\OST\Sounds\WormDied.mp3";
+                    MasterDied = @"Resources\OST\Sounds\MasterDied.mp3";
 
-                    PhaGetLost = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\DefeatPharaoh.mp3";
-                    ByeFriend = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\DefeatFriend.mp3";
-                    ThisIsAll = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\DefeatMasterOfAll.mp3";
-                    HereGetSome = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Sounds\UghZan1Died.mp3";
+                    PhaGetLost = @"Resources\OST\Sounds\DefeatPharaoh.mp3";
+                    ByeFriend = @"Resources\OST\Sounds\DefeatFriend.mp3";
+                    ThisIsAll = @"Resources\OST\Sounds\DefeatMasterOfAll.mp3";
+                    HereGetSome = @"Resources\OST\Sounds\UghZan1Died.mp3";
                 }
                 public String DoorOpened { get; set; }
                 public String ChestOpened { get; set; }
@@ -619,38 +622,38 @@ namespace WpfApp1
                 }
                 public void SetAllPaths()
                 {
-                    Danger = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Ambushed.mp3";
-                    Danger2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\FoesNearby.mp3";
-                    Danger3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\GetReady.mp3";
-                    Horror = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Horror.mp3";
-                    EgoRage = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\PharaohRoar.mp3";
+                    Danger = @"Resources\OST\Noises\Ambushed.mp3";
+                    Danger2 = @"Resources\OST\Noises\FoesNearby.mp3";
+                    Danger3 = @"Resources\OST\Noises\GetReady.mp3";
+                    Horror = @"Resources\OST\Noises\Horror.mp3";
+                    EgoRage = @"Resources\OST\Noises\PharaohRoar.mp3";
                     
-                    StrongStand = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Defence.mp3";
-                    FleeAway = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Escape.mp3";
-                    HandAttack = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Punch.mp3";
-                    Knife = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Knife.mp3";
-                    Sword = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Sword.mp3";
-                    Minigun = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Minigun2.mp3";
+                    StrongStand = @"Resources\OST\Noises\Defence.mp3";
+                    FleeAway = @"Resources\OST\Noises\Escape.mp3";
+                    HandAttack = @"Resources\OST\Noises\Punch.mp3";
+                    Knife = @"Resources\OST\Noises\Knife.mp3";
+                    Sword = @"Resources\OST\Noises\Sword.mp3";
+                    Minigun = @"Resources\OST\Noises\Minigun2.mp3";
 
-                    Cure = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Cure.mp3";
-                    Cure2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Cure2.mp3";
-                    Heal = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Heal.mp3";
-                    PowUp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\PowUp.mp3";
-                    Shield = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Shield.mp3";
-                    HpUp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\HpUp.mp3";
-                    ApUp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Control.mp3";
-                    Torch = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Torch.mp3";
-                    Whip = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Whip.mp3";
-                    Thrower = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Thrower.mp3";
-                    Super = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Super.mp3";
-                    Whirl = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Wind.mp3";
-                    Quake = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Quake.mp3";
-                    Learn = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\Scan.mp3";
+                    Cure = @"Resources\OST\Noises\Cure.mp3";
+                    Cure2 = @"Resources\OST\Noises\Cure2.mp3";
+                    Heal = @"Resources\OST\Noises\Heal.mp3";
+                    PowUp = @"Resources\OST\Noises\PowUp.mp3";
+                    Shield = @"Resources\OST\Noises\Shield.mp3";
+                    HpUp = @"Resources\OST\Noises\HpUp.mp3";
+                    ApUp = @"Resources\OST\Noises\Control.mp3";
+                    Torch = @"Resources\OST\Noises\Torch.mp3";
+                    Whip = @"Resources\OST\Noises\Whip.mp3";
+                    Thrower = @"Resources\OST\Noises\Thrower.mp3";
+                    Super = @"Resources\OST\Noises\Super.mp3";
+                    Whirl = @"Resources\OST\Noises\Wind.mp3";
+                    Quake = @"Resources\OST\Noises\Quake.mp3";
+                    Learn = @"Resources\OST\Noises\Scan.mp3";
 
-                    BagOpen = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\ItemsOpen.mp3";
-                    BagClose = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\ItemsClose.mp3";
-                    UseItems = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\ItemsUsed.mp3";
-                    LevelUp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\OST\Noises\LevelUp.mp3";
+                    BagOpen = @"Resources\OST\Noises\ItemsOpen.mp3";
+                    BagClose = @"Resources\OST\Noises\ItemsClose.mp3";
+                    UseItems = @"Resources\OST\Noises\ItemsUsed.mp3";
+                    LevelUp = @"Resources\OST\Noises\LevelUp.mp3";
                 }
                 public String Danger { get; set; }
                 public String Danger2 { get; set; }
@@ -693,14 +696,14 @@ namespace WpfApp1
                 }
                 public void SetAllMapPaths()
                 {
-                    Main = @"New_game_show.jpg";
-                    Location1 = @"Loc1_2.jpg";
-                    Location2 = @"Loc2_1.png";
-                    Location3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Loc3.jpg";
-                    Location4 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Loc4.jpg";
-                    Normal = @"AbsoluteBlack.jpg";
-                    Register = "Wanted.png";
-                    UnRegister = "Wanted2.png";
+                    Main = @"/Resources\Images\Locations\Regular\New_game_show.jpg";
+                    Location1 = @"/Resources\Images\Locations\Loc1\Loc1.jpg";
+                    Location2 = @"/Resources\Images\Locations\Loc2\Loc2.png";
+                    Location3 = @"/Resources\Images\Locations\Loc3\Loc3.jpg";
+                    Location4 = @"/Resources\Images\Locations\Loc4\Loc4.jpg";
+                    Normal = @"/Resources\Images\Locations\Regular\AbsoluteBlack.jpg";
+                    Register = @"/Resources/Images/Autorize/Wanted.png";
+                    UnRegister = @"/Resources/Images/Autorize/Wanted2.png";
                 }
                 public class Models : Map
                 {
@@ -709,16 +712,16 @@ namespace WpfApp1
                         public Guy() { SetAllGuyPaths(); }
                         public void SetAllGuyPaths()
                         {
-                            StaticUp = @"person2.png";
-                            StaticRight = @"person3.png";
-                            StaticLeft = @"person4.png";
-                            StaticDown = @"person1.png";
-                            GoUp1 = "WalkU1.png";
-                            GoUp2 = "WalkU2.png";
-                            GoLeft = "WalkL1.png";
-                            GoRight = "WalkR1.png";
-                            GoDown1 = "WalkD1.png";
-                            GoDown2 = "WalkD2.png";
+                            StaticUp = @"/Resources/Images/Locations/Total/Person/Static/Up.png";
+                            StaticRight = @"/Resources/Images/Locations/Total/Person/Static/Right.png";
+                            StaticLeft = @"/Resources/Images/Locations/Total/Person/Static/Left.png";
+                            StaticDown = @"/Resources/Images/Locations/Total/Person/Static/Down.png";
+                            GoUp1 = @"/Resources/Images/Locations/Total/Person/Walk/Up1.png";
+                            GoUp2 = @"/Resources/Images/Locations/Total/Person/Walk/Up2.png";
+                            GoLeft = @"/Resources/Images/Locations/Total/Person/Walk/Left.png";
+                            GoRight = @"/Resources/Images/Locations/Total/Person/Walk/Right.png";
+                            GoDown1 = @"/Resources/Images/Locations/Total/Person/Walk/Down1.png";
+                            GoDown2 = @"/Resources/Images/Locations/Total/Person/Walk/Down2.png";
                         }
                         public String StaticUp { get; set; }
                         public String StaticRight { get; set; }
@@ -734,20 +737,17 @@ namespace WpfApp1
                     public Models() { SetAllModPaths(); }
                     public void SetAllModPaths()
                     {
-                        LeverOff = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\LeverOff.png";
-                        LeverOn = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\LeverOn.png";
-                        ChestClosed1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestClosed(ver1).png";
-                        ChestClosed2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestVersions\ChestClosed(ver2).png";
-                        ChestClosed3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\ChestClosed(ver3).png";
-                        ChestOpened1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestOpened(ver1).png";
-                        ChestOpened2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ChestVersions\ChestOpened(ver2).png";
-                        ChestOpened3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\ChestOpened(ver3).png";
-                        Artifact1 = @"AncientArtifact.png";
-                        Artifact2 = @"AncientArtifact2.png";
-                        Artifact3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Locations\Objects\AncientArtifact3.png";
-                        SeriousPants = @"GetItemsCustomPants4.png";
-                        BandageBoots = @"GetItemsCustomBoots1.png";
-                        StrongBoots = @"GetItemsCustomBoots2.png";
+                        LeverOff = @"/Resources\Images\Locations\Loc3\Models\LeverOff.png";
+                        LeverOn = @"/Resources\Images\Locations\Loc3\Models\LeverOn.png";
+                        ChestClosed1 = @"/Resources\Images\Locations\Total\Chests\ChestClosed(ver1).png";
+                        ChestClosed2 = @"/Resources\Images\Locations\Total\Chests\ChestClosed(ver2).png";
+                        ChestClosed3 = @"/Resources\Images\Locations\Total\Chests\ChestClosed(ver3).png";
+                        ChestOpened1 = @"/Resources\Images\Locations\Total\Chests\ChestOpened(ver1).png";
+                        ChestOpened2 = @"/Resources\Images\Locations\Total\Chests\ChestOpened(ver2).png";
+                        ChestOpened3 = @"/Resources\Images\Locations\Total\Chests\ChestOpened(ver3).png";
+                        Artifact1 = @"/Resources\Images\Locations\Loc1\Models\AncientArtifact.png";
+                        Artifact2 = @"/Resources\Images\Locations\Loc2\Models\AncientArtifact2.png";
+                        Artifact3 = @"/Resources\Images\Locations\Loc3\Models\AncientArtifact3.png";
                     }
                     public String LeverOff { get; set; }
                     public String LeverOn { get; set; }
@@ -760,39 +760,36 @@ namespace WpfApp1
                     public String Artifact1 { get; set; }
                     public String Artifact2 { get; set; }
                     public String Artifact3 { get; set; }
-                    public String SeriousPants { get; set; }
-                    public String BandageBoots { get; set; }
-                    public String StrongBoots { get; set; }
                 }
                 public class Messages : Map
                 {
                     public Messages() { SetAllMsgPaths(); }
                     public void SetAllMsgPaths()
                     {
-                        Knucleduster = @"GetItemsCustomWeapon1.png";
-                        AncientKnife = @"GetItemsCustomWeapon2.png";
-                        LegendSword = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsCustomWeapon3.png";
-                        SeriousMinigun = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsCustomWeapon4.png";
-                        LeatherArmor = @"GetItemsArmor1.png";
-                        AncientArmor = @"GetItemsArmor2.png";
-                        LegendArmor = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsArmor3.png";
-                        FeatherWears = @"GetItemsCustomPants1.png";
-                        AncientPants = @"GetItemsCustomPants2.png";
-                        LegendPants = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsCustomPants3.png";
-                        SeriousPants = @"GetItemsCustomPants4.png";
-                        BandageBoots = @"GetItemsCustomBoots1.png";
-                        StrongBoots = @"GetItemsCustomBoots2.png";
-                        LegendBoots = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\GetItemsCustomBoots3.png";
-                        Tb1_Msg1 = @"TableMessage1.png";
-                        Tb1_Msg2 = @"TableMessage4.png";
-                        Tb1_Msg3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\TableMessage7.png";
-                        Tb2_Msg1 = @"TableMessage2.png";
-                        Tb2_Msg2 = @"TableMessage5.png";
-                        Tb2_Msg3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\TableMessage8.png";
-                        Tb3_Msg1 = @"TableMessage3.png";
-                        Tb3_Msg2 = @"TableMessage6.png";
-                        Tb3_Msg3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Messages\TableMessage9.png";
-                        Completed ="/TaskCompleted.png";
+                        Knucleduster = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomWeapon1.png";
+                        AncientKnife = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomWeapon2.png";
+                        LegendSword = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomWeapon3.png";
+                        SeriousMinigun = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomWeapon4.png";
+                        LeatherArmor = @"/Resources\Images\Locations\Messages\Chests\GetItemsArmor1.png";
+                        AncientArmor = @"/Resources\Images\Locations\Messages\Chests\GetItemsArmor2.png";
+                        LegendArmor = @"/Resources\Images\Locations\Messages\Chests\GetItemsArmor3.png";
+                        FeatherWears = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomPants1.png";
+                        AncientPants = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomPants2.png";
+                        LegendPants = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomPants3.png";
+                        SeriousPants = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomPants4.png";
+                        BandageBoots = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomBoots1.png";
+                        StrongBoots = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomBoots2.png";
+                        LegendBoots = @"/Resources\Images\Locations\Messages\Chests\GetItemsCustomBoots3.png";
+                        Tb1_Msg1 = @"/Resources\Images\Locations\Messages\Tables\TableMessage1.png";
+                        Tb1_Msg2 = @"/Resources\Images\Locations\Messages\Tables\TableMessage4.png";
+                        Tb1_Msg3 = @"/Resources\Images\Locations\Messages\Tables\TableMessage7.png";
+                        Tb2_Msg1 = @"/Resources\Images\Locations\Messages\Tables\TableMessage2.png";
+                        Tb2_Msg2 = @"/Resources\Images\Locations\Messages\Tables\TableMessage5.png";
+                        Tb2_Msg3 = @"/Resources\Images\Locations\Messages\Tables\TableMessage8.png";
+                        Tb3_Msg1 = @"/Resources\Images\Locations\Messages\Tables\TableMessage3.png";
+                        Tb3_Msg2 = @"/Resources\Images\Locations\Messages\Tables\TableMessage6.png";
+                        Tb3_Msg3 = @"/Resources\Images\Locations\Messages\Tables\TableMessage9.png";
+                        Completed = @"/Resources\Images\Locations\Messages\TasksTaskCompleted.png";
                     }
                     public String Knucleduster { get; set; }
                     public String AncientKnife { get; set; }
@@ -833,9 +830,9 @@ namespace WpfApp1
                 public Battle() { SetAllBPaths(); }
                 public void SetAllBPaths()
                 {
-                    Battle1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\Battle1.jpg";
-                    Battle2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\Battle2.jpg";
-                    Battle3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\BattleImages\Battle3.jpg";
+                    Battle1 = @"/Resources\Images\Fight\Background\Battle1.jpg";
+                    Battle2 = @"/Resources\Images\Fight\Background\Battle2.jpg";
+                    Battle3 = @"/Resources\Images\Fight\Background\Battle3.jpg";
                 }
                 public String Battle1 { get; set; }
                 public String Battle2 { get; set; }
@@ -848,13 +845,13 @@ namespace WpfApp1
                     public Adventures() { SetAllAPaths(); }
                     public void SetAllAPaths()
                     {
-                        AdventureLock = @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\PNG\Inform\Page3\Info1\Adventures5.png";
-                        BeforeNewAdv = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\GameStartBtns\Adventures3.png";
-                        AfterNewAdv = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\GameStartBtns\Adventures1.png";
-                        BeforeConAdv = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\GameStartBtns\Adventures4.png";
-                        AfterConAdv = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\GameStartBtns\Adventures2.png";
-                        BeforeSkip = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\MainGameBtns\Skips1.png";
-                        AfterSkip = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\MainGameBtns\Skips2.png";
+                        AdventureLock = @"/Resources\Images\Autorize\Adventures5.png";
+                        BeforeNewAdv = @"/Resources\Images\Autorize\Adventures3.png";
+                        AfterNewAdv = @"/Resources\Images\Autorize\Adventures1.png";
+                        BeforeConAdv = @"/Resources\Images\Autorize\Adventures4.png";
+                        AfterConAdv = @"/Resources\Images\Autorize\Adventures2.png";
+                        BeforeSkip = @"/Resources\Images\Autorize\Skips1.png";
+                        AfterSkip = @"/Resources\Images\Autorize\Skips2.png";
                     }
                     public String BeforeNewAdv { get; set; }
                     public String AfterNewAdv { get; set; }
@@ -869,9 +866,9 @@ namespace WpfApp1
                     public MTasks() { SetAllTPaths(); }
                     public void SetAllTPaths()
                     {
-                        UsualTask = @"ActiveTask.png";
-                        Completed = @"CompletedTask.png";
-                        ExperTask = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\ExperTask.png";
+                        UsualTask = @"/Resources\Images\Menu\Tasks\Priority\ActiveTask.png";
+                        Completed = @"/Resources\Images\Menu\Tasks\Priority\CompletedTask.png";
+                        ExperTask = @"/Resources\Images\Menu\Tasks\Priority\ExperTask.png";
                     }
                     public String UsualTask { get; set; }
                     public String ExperTask { get; set; }
@@ -884,63 +881,63 @@ namespace WpfApp1
                         public MAfter() { SetAllMPaths(); }
                         public void SetAllMPaths()
                         {
-                            Help1_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info1\Introduction2.png";
-                            Help1_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info2\Founder2.png";
-                            Help1_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info3\AncientPlaces2.png";
-                            Help2_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info1\WhoIsAncients2.png";
-                            Help2_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info2\PreHistory2.png";
-                            Help2_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info3\Artifacts2.png";
-                            Help3_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info1\NewAdventures2.png";
-                            Help3_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info2\Wanted2.png";
-                            Help3_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info3\Chapters2.png";
-                            Help4_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info1\Movement2.png";
-                            Help4_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info2\Exit2.png";
-                            Help4_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info3\Click2.png";
-                            Help5_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info1\Fight2.png";
-                            Help5_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info2\Foes2.png";
-                            Help5_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info3\Bosses2.png";
-                            Help6_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info1\FoesDestroy2.png";
-                            Help6_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info2\Timing2.png";
-                            Help6_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info3\Actions2.png";
-                            Help7_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info1\Hp2.png";
-                            Help7_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info2\Ap2.png";
-                            Help7_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info3\Time2.png";
-                            Help8_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info1\Damage2.png";
-                            Help8_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info2\Kombat2.png";
-                            Help8_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info3\Select2.png";
-                            Help9_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info1\Defence2.png";
-                            Help9_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info2\Skills2.png";
-                            Help9_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info3\Bag2.png";
-                            Help10_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info1\Flee2.png";
-                            Help10_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info2\Results2.png";
-                            Help10_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info3\StatsUp2.png";
-                            Help11_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info1\Status2.png";
-                            Help11_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info2\Levels2.png";
-                            Help11_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info3\Exp2.png";
-                            Help12_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info1\Stats2.png";
-                            Help12_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info2\ATK2.png";
-                            Help12_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info3\DEF2.png";
-                            Help13_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info1\SPD2.png";
-                            Help13_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info2\SPC2.png";
-                            Help13_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info3\TimeOut2.png";
-                            Help14_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info1\MoreFight2.png";
-                            Help14_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info2\Bestiary2.png";
-                            Help14_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info3\Tasks2.png";
-                            Help15_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info1\Settings2.png";
-                            Help15_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info2\Creator2.png";
-                            Help15_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info3\Goodbye2.png";
-                            Help16_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info1\Ways2.png";
-                            Help16_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info2\Walls2.png";
-                            Help16_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info3\Locks2.png";
-                            Help17_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info1\Chests2.png";
-                            Help17_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info2\Dangers2.png";
-                            Help17_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info3\Artifacts2.png";
-                            Help18_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info1\Sources2.png";
-                            Help18_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info2\SupposeSam2.png";
-                            Help18_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info3\Secrets2.png";
-                            Help19_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info1\Scenes2.png";
-                            Help19_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info2\Thanks2.png";
-                            Help19_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info3\Help2.png";
+                            Help1_1 = @"/Resources\Images\Menu\Help\Inform\Page1\Info1\Introduction2.png";
+                            Help1_2 = @"/Resources\Images\Menu\Help\Inform\Page1\Info2\Founder2.png";
+                            Help1_3 = @"/Resources\Images\Menu\Help\Inform\Page1\Info3\AncientPlaces2.png";
+                            Help2_1 = @"/Resources\Images\Menu\Help\Inform\Page2\Info1\WhoIsAncients2.png";
+                            Help2_2 = @"/Resources\Images\Menu\Help\Inform\Page2\Info2\PreHistory2.png";
+                            Help2_3 = @"/Resources\Images\Menu\Help\Inform\Page2\Info3\Artifacts2.png";
+                            Help3_1 = @"/Resources\Images\Menu\Help\Inform\Page3\Info1\NewAdventures2.png";
+                            Help3_2 = @"/Resources\Images\Menu\Help\Inform\Page3\Info2\Wanted2.png";
+                            Help3_3 = @"/Resources\Images\Menu\Help\Inform\Page3\Info3\Chapters2.png";
+                            Help4_1 = @"/Resources\Images\Menu\Help\Inform\Page4\Info1\Movement2.png";
+                            Help4_2 = @"/Resources\Images\Menu\Help\Inform\Page4\Info2\Exit2.png";
+                            Help4_3 = @"/Resources\Images\Menu\Help\Inform\Page4\Info3\Click2.png";
+                            Help5_1 = @"/Resources\Images\Menu\Help\Inform\Page5\Info1\Fight2.png";
+                            Help5_2 = @"/Resources\Images\Menu\Help\Inform\Page5\Info2\Foes2.png";
+                            Help5_3 = @"/Resources\Images\Menu\Help\Inform\Page5\Info3\Bosses2.png";
+                            Help6_1 = @"/Resources\Images\Menu\Help\Inform\Page6\Info1\FoesDestroy2.png";
+                            Help6_2 = @"/Resources\Images\Menu\Help\Inform\Page6\Info2\Timing2.png";
+                            Help6_3 = @"/Resources\Images\Menu\Help\Inform\Page6\Info3\Actions2.png";
+                            Help7_1 = @"/Resources\Images\Menu\Help\Inform\Page7\Info1\Hp2.png";
+                            Help7_2 = @"/Resources\Images\Menu\Help\Inform\Page7\Info2\Ap2.png";
+                            Help7_3 = @"/Resources\Images\Menu\Help\Inform\Page7\Info3\Time2.png";
+                            Help8_1 = @"/Resources\Images\Menu\Help\Inform\Page8\Info1\Damage2.png";
+                            Help8_2 = @"/Resources\Images\Menu\Help\Inform\Page8\Info2\Kombat2.png";
+                            Help8_3 = @"/Resources\Images\Menu\Help\Inform\Page8\Info3\Select2.png";
+                            Help9_1 = @"/Resources\Images\Menu\Help\Inform\Page9\Info1\Defence2.png";
+                            Help9_2 = @"/Resources\Images\Menu\Help\Inform\Page9\Info2\Skills2.png";
+                            Help9_3 = @"/Resources\Images\Menu\Help\Inform\Page9\Info3\Bag2.png";
+                            Help10_1 = @"/Resources\Images\Menu\Help\Inform\Page10\Info1\Flee2.png";
+                            Help10_2 = @"/Resources\Images\Menu\Help\Inform\Page10\Info2\Results2.png";
+                            Help10_3 = @"/Resources\Images\Menu\Help\Inform\Page10\Info3\StatsUp2.png";
+                            Help11_1 = @"/Resources\Images\Menu\Help\Inform\Page11\Info1\Status2.png";
+                            Help11_2 = @"/Resources\Images\Menu\Help\Inform\Page11\Info2\Levels2.png";
+                            Help11_3 = @"/Resources\Images\Menu\Help\Inform\Page11\Info3\Exp2.png";
+                            Help12_1 = @"/Resources\Images\Menu\Help\Inform\Page12\Info1\Stats2.png";
+                            Help12_2 = @"/Resources\Images\Menu\Help\Inform\Page12\Info2\ATK2.png";
+                            Help12_3 = @"/Resources\Images\Menu\Help\Inform\Page12\Info3\DEF2.png";
+                            Help13_1 = @"/Resources\Images\Menu\Help\Inform\Page13\Info1\SPD2.png";
+                            Help13_2 = @"/Resources\Images\Menu\Help\Inform\Page13\Info2\SPC2.png";
+                            Help13_3 = @"/Resources\Images\Menu\Help\Inform\Page13\Info3\TimeOut2.png";
+                            Help14_1 = @"/Resources\Images\Menu\Help\Inform\Page14\Info1\MoreFight2.png";
+                            Help14_2 = @"/Resources\Images\Menu\Help\Inform\Page14\Info2\Bestiary2.png";
+                            Help14_3 = @"/Resources\Images\Menu\Help\Inform\Page14\Info3\Tasks2.png";
+                            Help15_1 = @"/Resources\Images\Menu\Help\Inform\Page15\Info1\Settings2.png";
+                            Help15_2 = @"/Resources\Images\Menu\Help\Inform\Page15\Info2\Creator2.png";
+                            Help15_3 = @"/Resources\Images\Menu\Help\Inform\Page15\Info3\Goodbye2.png";
+                            Help16_1 = @"/Resources\Images\Menu\Help\Inform\Page16\Info1\Ways2.png";
+                            Help16_2 = @"/Resources\Images\Menu\Help\Inform\Page16\Info2\Walls2.png";
+                            Help16_3 = @"/Resources\Images\Menu\Help\Inform\Page16\Info3\Locks2.png";
+                            Help17_1 = @"/Resources\Images\Menu\Help\Inform\Page17\Info1\Chests2.png";
+                            Help17_2 = @"/Resources\Images\Menu\Help\Inform\Page17\Info2\Dangers2.png";
+                            Help17_3 = @"/Resources\Images\Menu\Help\Inform\Page17\Info3\Artifacts2.png";
+                            Help18_1 = @"/Resources\Images\Menu\Help\Inform\Page18\Info1\Sources2.png";
+                            Help18_2 = @"/Resources\Images\Menu\Help\Inform\Page18\Info2\SupposeSam2.png";
+                            Help18_3 = @"/Resources\Images\Menu\Help\Inform\Page18\Info3\Secrets2.png";
+                            Help19_1 = @"/Resources\Images\Menu\Help\Inform\Page19\Info1\Scenes2.png";
+                            Help19_2 = @"/Resources\Images\Menu\Help\Inform\Page19\Info2\Thanks2.png";
+                            Help19_3 = @"/Resources\Images\Menu\Help\Inform\Page19\Info3\Help2.png";
                         }
                         public String Help1_1 { get; set; }
                         public String Help1_2 { get; set; }
@@ -1005,63 +1002,63 @@ namespace WpfApp1
                         public MBefore() { SetAllMPaths(); }
                         public void SetAllMPaths()
                         {
-                            Help1_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info1\Introduction1.png";
-                            Help1_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info2\Founder1.png";
-                            Help1_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page1\Info3\AncientPlaces1.png";
-                            Help2_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info1\WhoIsAncients1.png";
-                            Help2_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info2\PreHistory1.png";
-                            Help2_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page2\Info3\Artifacts1.png";
-                            Help3_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info1\NewAdventures1.png";
-                            Help3_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info2\Wanted1.png";
-                            Help3_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page3\Info3\Chapters1.png";
-                            Help4_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info1\Movement1.png";
-                            Help4_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info2\Exit1.png";
-                            Help4_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page4\Info3\Click1.png";
-                            Help5_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info1\Fight1.png";
-                            Help5_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info2\Foes1.png";
-                            Help5_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page5\Info3\Bosses1.png";
-                            Help6_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info1\FoesDestroy1.png";
-                            Help6_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info2\Timing1.png";
-                            Help6_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page6\Info3\Actions1.png";
-                            Help7_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info1\Hp1.png";
-                            Help7_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info2\Ap1.png";
-                            Help7_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page7\Info3\Time1.png";
-                            Help8_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info1\Damage1.png";
-                            Help8_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info2\Kombat1.png";
-                            Help8_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page8\Info3\Select1.png";
-                            Help9_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info1\Defence1.png";
-                            Help9_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info2\Skills1.png";
-                            Help9_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page9\Info3\Bag1.png";
-                            Help10_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info1\Flee1.png";
-                            Help10_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info2\Results1.png";
-                            Help10_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page10\Info3\StatsUp1.png";
-                            Help11_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info1\Status1.png";
-                            Help11_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info2\Levels1.png";
-                            Help11_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page11\Info3\Exp1.png";
-                            Help12_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info1\Stats1.png";
-                            Help12_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info2\ATK1.png";
-                            Help12_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page12\Info3\DEF1.png";
-                            Help13_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info1\SPD1.png";
-                            Help13_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info2\SPC1.png";
-                            Help13_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page13\Info3\TimeOut1.png";
-                            Help14_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info1\MoreFight1.png";
-                            Help14_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info2\Bestiary1.png";
-                            Help14_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page14\Info3\Tasks1.png";
-                            Help15_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info1\Settings1.png";
-                            Help15_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info2\Creator1.png";
-                            Help15_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page15\Info3\Goodbye1.png";
-                            Help16_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info1\Ways1.png";
-                            Help16_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info2\Walls1.png";
-                            Help16_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page16\Info3\Locks1.png";
-                            Help17_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info1\Chests1.png";
-                            Help17_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info2\Dangers1.png";
-                            Help17_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page17\Info3\Artifacts1.png";
-                            Help18_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info1\Sources1.png";
-                            Help18_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info2\SupposeSam1.png";
-                            Help18_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page18\Info3\Secrets1.png";
-                            Help19_1 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info1\Scenes1.png";
-                            Help19_2 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info2\Thanks1.png";
-                            Help19_3 = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Inform\Page19\Info3\Help1.png";
+                            Help1_1 = @"/Resources/Images/Menu/Help/Inform/Page1/Info1/Introduction1.png";
+                            Help1_2 = @"/Resources/Images/Menu/Help/Inform/Page1/Info2/Founder1.png";
+                            Help1_3 = @"/Resources/Images/Menu/Help/Inform/Page1/Info3/AncientPlaces1.png";
+                            Help2_1 = @"/Resources/Images/Menu/Help/Inform/Page2/Info1/WhoIsAncients1.png";
+                            Help2_2 = @"/Resources/Images/Menu/Help/Inform/Page2/Info2/PreHistory1.png";
+                            Help2_3 = @"/Resources/Images/Menu/Help/Inform/Page2/Info3/Artifacts1.png";
+                            Help3_1 = @"/Resources/Images/Menu/Help/Inform/Page3/Info1/NewAdventures1.png";
+                            Help3_2 = @"/Resources/Images/Menu/Help/Inform/Page3/Info2/Wanted1.png";
+                            Help3_3 = @"/Resources/Images/Menu/Help/Inform/Page3/Info3/Chapters1.png";
+                            Help4_1 = @"/Resources/Images/Menu/Help/Inform/Page4/Info1/Movement1.png";
+                            Help4_2 = @"/Resources/Images/Menu/Help/Inform/Page4/Info2/Exit1.png";
+                            Help4_3 = @"/Resources/Images/Menu/Help/Inform/Page4/Info3/Click1.png";
+                            Help5_1 = @"/Resources/Images/Menu/Help/Inform/Page5/Info1/Fight1.png";
+                            Help5_2 = @"/Resources/Images/Menu/Help/Inform/Page5/Info2/Foes1.png";
+                            Help5_3 = @"/Resources/Images/Menu/Help/Inform/Page5/Info3/Bosses1.png";
+                            Help6_1 = @"/Resources/Images/Menu/Help/Inform/Page6/Info1/FoesDestroy1.png";
+                            Help6_2 = @"/Resources/Images/Menu/Help/Inform/Page6/Info2/Timing1.png";
+                            Help6_3 = @"/Resources/Images/Menu/Help/Inform/Page6/Info3/Actions1.png";
+                            Help7_1 = @"/Resources/Images/Menu/Help/Inform/Page7/Info1/Hp1.png";
+                            Help7_2 = @"/Resources/Images/Menu/Help/Inform/Page7/Info2/Ap1.png";
+                            Help7_3 = @"/Resources/Images/Menu/Help/Inform/Page7/Info3/Time1.png";
+                            Help8_1 = @"/Resources/Images/Menu/Help/Inform/Page8/Info1/Damage1.png";
+                            Help8_2 = @"/Resources/Images/Menu/Help/Inform/Page8/Info2/Kombat1.png";
+                            Help8_3 = @"/Resources/Images/Menu/Help/Inform/Page8/Info3/Select1.png";
+                            Help9_1 = @"/Resources/Images/Menu/Help/Inform/Page9/Info1/Defence1.png";
+                            Help9_2 = @"/Resources/Images/Menu/Help/Inform/Page9/Info2/Skills1.png";
+                            Help9_3 = @"/Resources/Images/Menu/Help/Inform/Page9/Info3/Bag1.png";
+                            Help10_1 = @"/Resources/Images/Menu/Help/Inform/Page10/Info1/Flee1.png";
+                            Help10_2 = @"/Resources/Images/Menu/Help/Inform/Page10/Info2/Results1.png";
+                            Help10_3 = @"/Resources/Images/Menu/Help/Inform/Page10/Info3/StatsUp1.png";
+                            Help11_1 = @"/Resources/Images/Menu/Help/Inform/Page11/Info1/Status1.png";
+                            Help11_2 = @"/Resources/Images/Menu/Help/Inform/Page11/Info2/Levels1.png";
+                            Help11_3 = @"/Resources/Images/Menu/Help/Inform/Page11/Info3/Exp1.png";
+                            Help12_1 = @"/Resources/Images/Menu/Help/Inform/Page12/Info1/Stats1.png";
+                            Help12_2 = @"/Resources/Images/Menu/Help/Inform/Page12/Info2/ATK1.png";
+                            Help12_3 = @"/Resources/Images/Menu/Help/Inform/Page12/Info3/DEF1.png";
+                            Help13_1 = @"/Resources/Images/Menu/Help/Inform/Page13/Info1/SPD1.png";
+                            Help13_2 = @"/Resources/Images/Menu/Help/Inform/Page13/Info2/SPC1.png";
+                            Help13_3 = @"/Resources/Images/Menu/Help/Inform/Page13/Info3/TimeOut1.png";
+                            Help14_1 = @"/Resources/Images/Menu/Help/Inform/Page14/Info1/MoreFight1.png";
+                            Help14_2 = @"/Resources/Images/Menu/Help/Inform/Page14/Info2/Bestiary1.png";
+                            Help14_3 = @"/Resources/Images/Menu/Help/Inform/Page14/Info3/Tasks1.png";
+                            Help15_1 = @"/Resources/Images/Menu/Help/Inform/Page15/Info1/Settings1.png";
+                            Help15_2 = @"/Resources/Images/Menu/Help/Inform/Page15/Info2/Creator1.png";
+                            Help15_3 = @"/Resources/Images/Menu/Help/Inform/Page15/Info3/Goodbye1.png";
+                            Help16_1 = @"/Resources/Images/Menu/Help/Inform/Page16/Info1/Ways1.png";
+                            Help16_2 = @"/Resources/Images/Menu/Help/Inform/Page16/Info2/Walls1.png";
+                            Help16_3 = @"/Resources/Images/Menu/Help/Inform/Page16/Info3/Locks1.png";
+                            Help17_1 = @"/Resources/Images/Menu/Help/Inform/Page17/Info1/Chests1.png";
+                            Help17_2 = @"/Resources/Images/Menu/Help/Inform/Page17/Info2/Dangers1.png";
+                            Help17_3 = @"/Resources/Images/Menu/Help/Inform/Page17/Info3/Artifacts1.png";
+                            Help18_1 = @"/Resources/Images/Menu/Help/Inform/Page18/Info1/Sources1.png";
+                            Help18_2 = @"/Resources/Images/Menu/Help/Inform/Page18/Info2/SupposeSam1.png";
+                            Help18_3 = @"/Resources/Images/Menu/Help/Inform/Page18/Info3/Secrets1.png";
+                            Help19_1 = @"/Resources/Images/Menu/Help/Inform/Page19/Info1/Scenes1.png";
+                            Help19_2 = @"/Resources/Images/Menu/Help/Inform/Page19/Info2/Thanks1.png";
+                            Help19_3 = @"/Resources/Images/Menu/Help/Inform/Page19/Info3/Help1.png";
                         }
                         public String Help1_1 { get; set; }
                         public String Help1_2 { get; set; }
@@ -1131,24 +1128,24 @@ namespace WpfApp1
                     public Usual() { SetAllPaths(); }
                     public void SetAllPaths()
                     {
-                        ArrowNext = @"ToNext.png";
-                        ArrowPrev = @"ToPrev.png";
-                        Knucleduster= @"KnucledusterItem.png";
-                        AncientKnife = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\AncientKnife.png";
-                        LegendSword = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\LegendSword.png";
-                        SeriousMinigun = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\SeriousMinigun.png";
-                        LeatherArmor = @"BlackSkinItems.png";
-                        AncientArmor = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\AncientArmorButton.png";
-                        LegendArmor = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\LegendArmor.png";
-                        SeriousTshirt = @"CoolT-shirt.png";
-                        FeatherWears = @"EagleWearsItems.png";
-                        AncientPants = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\WarPants.png";
-                        LegendPants = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\LegendPants.png";
-                        SeriousPants = @"SeriousPants.png";
-                        BandageBoots = @"BandageBootsItems.png";
-                        StrongBoots = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\ManBoots.png";
-                        LegendBoots = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EquipBtnImg\LegendBoots.png";
-                        SeriousBoots = @"SeriousBoots.png";
+                        ArrowNext = @"/Resources/Images/Fight/Options/ToNext.png";
+                        ArrowPrev = @"/Resources/Images/Fight/Options/ToPrev.png";
+                        Knucleduster= @"/Resources/Images/Menu/Equip/Equipment/KnucledusterItem.png";
+                        AncientKnife = @"/Resources/Images/Menu/Equip/Equipment/AncientKnife.png";
+                        LegendSword = @"/Resources/Images/Menu/Equip/Equipment/LegendSword.png";
+                        SeriousMinigun = @"/Resources/Images/Menu/Equip/Equipment/SeriousMinigun.png";
+                        LeatherArmor = @"/Resources/Images/Menu/Equip/Equipment/BlackSkinItems.png";
+                        AncientArmor = @"/Resources/Images/Menu/Equip/Equipment/AncientArmorButton.png";
+                        LegendArmor = @"/Resources/Images/Menu/Equip/Equipment/LegendArmor.png";
+                        SeriousTshirt = @"/Resources/Images/Menu/Equip/Equipment/CoolT-shirt.png";
+                        FeatherWears = @"/Resources/Images/Menu/Equip/Equipment/EagleWearsItems.png";
+                        AncientPants = @"/Resources/Images/Menu/Equip/Equipment/WarPants.png";
+                        LegendPants = @"/Resources/Images/Menu/Equip/Equipment/LegendPants.png";
+                        SeriousPants = @"/Resources/Images/Menu/Equip/Equipment/SeriousPants.png";
+                        BandageBoots = @"/Resources/Images/Menu/Equip/Equipment/BandageBootsItems.png";
+                        StrongBoots = @"/Resources/Images/Menu/Equip/Equipment/ManBoots.png";
+                        LegendBoots = @"/Resources/Images/Menu/Equip/Equipment/LegendBoots.png";
+                        SeriousBoots = @"/Resources/Images/Menu/Equip/Equipment/SeriousBoots.png";
                     }
                     public String ArrowNext { get; set; }
                     public String ArrowPrev { get; set; }
@@ -1174,12 +1171,12 @@ namespace WpfApp1
                     public Before() { SetAllPaths(); }
                     public void SetAllPaths()
                     {
-                        Fight = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\FightBeforeImg.png";
-                        Defence = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\DefenceBeforeImg.png";
-                        Escape = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\EscapeBeforeImg.png";
-                        Bag = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ItemsBeforeImg.png";
-                        Skills = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\SkillsBeforeImg.png";
-                        Select = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectBeforeImg.png";
+                        Fight = @"/Resources\Images\Fight\Options\FightBeforeImg.png";
+                        Defence = @"/Resources\Images\Fight\Options\DefenceBeforeImg.png";
+                        Escape = @"/Resources\Images\Fight\Options\EscapeBeforeImg.png";
+                        Bag = @"/Resources\Images\Fight\Options\ItemsBeforeImg.png";
+                        Skills = @"/Resources\Images\Fight\Options\SkillsBeforeImg.png";
+                        Select = @"/Resources\Images\Fight\Options\TrgtSelectBeforeImg.png";
                     }
                     public String Fight { get; set; }
                     public String Defence { get; set; }
@@ -1193,12 +1190,12 @@ namespace WpfApp1
                     public After() { SetAllPaths(); }
                     public void SetAllPaths()
                     {
-                        Fight = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\FightAfterImg.png";
-                        Defence = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\DefenceAfterImg.png";
-                        Escape = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\EscapeAfterImg.png";
-                        Bag = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\ItemsAfterImg.png";
-                        Skills = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\SkillsAfterImg.png";
-                        Select = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesImgs\TrgtSelectAfterImg.png";
+                        Fight = @"/Resources\Images\Fight\Options\FightAfterImg.png";
+                        Defence = @"/Resources\Images\Fight\Options\DefenceAfterImg.png";
+                        Escape = @"/Resources\Images\Fight\Options\EscapeAfterImg.png";
+                        Bag = @"/Resources\Images\Fight\Options\ItemsAfterImg.png";
+                        Skills = @"/Resources\Images\Fight\Options\SkillsAfterImg.png";
+                        Select = @"/Resources\Images\Fight\Options\TrgtSelectAfterImg.png";
                     }
                     public String Fight { get; set; }
                     public String Defence { get; set; }
@@ -1214,31 +1211,31 @@ namespace WpfApp1
 
                 private void SetAllEnemyPaths()
                 {
-                    Spider = "Spider.png";
-                    Mummy = "Mummy.png";
-                    Zombie = "Zombie.png";
-                    Bones = "Bones.png";
-                    Vulture = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Vulture.png";
-                    Ghoul = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Ghoul.png";
-                    GrimReaper = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\GrimReaper.png";
-                    Scarab = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Scarab.png";
-                    KillerMole = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\KillerMole.png";
-                    Imp = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Imp.png";
-                    Worm = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Worm.png";
-                    Master = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Master.png";
+                    Spider = @"/Resources\Images\Fight\Enemies\Enemies\Spider.png";
+                    Mummy = @"/Resources\Images\Fight\Enemies\Enemies\Mummy.png";
+                    Zombie = @"/Resources\Images\Fight\Enemies\Enemies\Zombie.png";
+                    Bones = @"/Resources\Images\Fight\Enemies\Enemies\Bones.png";
+                    Vulture = @"/Resources\Images\Fight\Enemies\Enemies\Vulture.png";
+                    Ghoul = @"/Resources\Images\Fight\Enemies\Enemies\Ghoul.png";
+                    GrimReaper = @"/Resources\Images\Fight\Enemies\Enemies\GrimReaper.png";
+                    Scarab = @"/Resources\Images\Fight\Enemies\Enemies\Scarab.png";
+                    KillerMole = @"/Resources\Images\Fight\Enemies\Enemies\KillerMole.png";
+                    Imp = @"/Resources\Images\Fight\Enemies\Enemies\Imp.png";
+                    Worm = @"/Resources\Images\Fight\Enemies\Enemies\Worm.png";
+                    Master = @"/Resources\Images\Fight\Enemies\Enemies\Master.png";
 
-                    SpiderIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Spider1.png";
-                    MummyIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Mummy1.png";
-                    ZombieIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Zombie1.png";
-                    BonesIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Bones1.png";
-                    VultureIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Vulture1.png";
-                    GhoulIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Ghoul1.png";
-                    GrimReaperIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\GrimReaper1.png";
-                    ScarabIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Scarab.png";
-                    KillerMoleIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\KillerMole1.png";
-                    ImpIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Imp1.png";
-                    WormIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Worm1.png";
-                    MasterIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Master1.png";
+                    SpiderIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Spider1.png";
+                    MummyIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Mummy1.png";
+                    ZombieIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Zombie1.png";
+                    BonesIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Bones1.png";
+                    VultureIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Vulture1.png";
+                    GhoulIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Ghoul1.png";
+                    GrimReaperIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\GrimReaper1.png";
+                    ScarabIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Scarab.png";
+                    KillerMoleIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\KillerMole1.png";
+                    ImpIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Imp1.png";
+                    WormIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Worm1.png";
+                    MasterIcon = @"/Resources\Images\Fight\Enemies\EnemyImgs\Master1.png";
                 }
                 public String Spider { get; set; }
                 public String Mummy { get; set; }
@@ -1270,15 +1267,15 @@ namespace WpfApp1
                 public Bosses() { SetAllEnemyPaths(); }
                 private void SetAllEnemyPaths()
                 {
-                    Pharaoh = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Pharaoh.png";
-                    UghZan = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\UghZan.png";
-                    Warrior = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Warrior.png";
-                    MrOfAll = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\MasterOfAll1.png";
+                    Pharaoh = @"/Resources\Images\Fight\Enemies\Bosses\Static\Pharaoh.png";
+                    UghZan = @"/Resources\Images\Fight\Enemies\Bosses\Static\UghZan1.png";
+                    Warrior = @"/Resources\Images\Fight\Enemies\Bosses\Static\Warrior.png";
+                    MrOfAll = @"/Resources\Images\Fight\Enemies\Bosses\Static\MasterOfAll1.png";
 
-                    PharaohIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Pharaoh.png";
-                    UghZanIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\UghZan1.png";
-                    WarriorIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\Warrior1.png";
-                    MrOfAllIcon = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\EnemyImgs\MasterOfAll1.png";
+                    PharaohIcon = @"/Resources\Images\Fight\Enemies\BossImgs\Pharaoh.png";
+                    UghZanIcon = @"/Resources\Images\Fight\Enemies\BossImgs\UghZan1.png";
+                    WarriorIcon = @"/Resources\Images\Fight\Enemies\BossImgs\Warrior1.png";
+                    MrOfAllIcon = @"/Resources\Images\Fight\Enemies\BossImgs\MasterOfAll1.png";
                 }
                 public String Pharaoh { get; set; }
                 public String UghZan { get; set; }
@@ -1294,9 +1291,9 @@ namespace WpfApp1
                 public Person() { SetAllPaths(); }
                 private void SetAllPaths()
                 {
-                    Usual = "/pers5.png";
-                    Serious = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSam.png";
-                    Defensive = @"Defence.png";
+                    Usual = @"/Resources\Images\Fight\Character\Person\Static\Usual.png";
+                    Serious = @"/Resources\Images\Fight\Character\Person\Static\SeriousSam.png";
+                    Defensive = @"/Resources\Images\Fight\Character\Person\Static\Defence.png";
                 }
                 public String Usual { get; set; }
                 public String Serious { get; set; }
@@ -1307,11 +1304,11 @@ namespace WpfApp1
                 public Icon() { SetAllPaths(); }
                 private void SetAllPaths()
                 {
-                    Usual = "/person6.png";
-                    Poison = "IconPoisoned.png";
-                    Serious = @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSam.png";
-                    Defensive = @"IconDefence1.png";
-                    LevelUp = "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon9.png";
+                    Usual = @"/Resources\Images\Fight\Character\Icon\Static\Usual.png";
+                    Poison = @"/Resources\Images\Fight\Character\Icon\Static\Poison.png";
+                    Serious = @"/Resources\Images\Fight\Character\Icon\Static\Sam.png";
+                    Defensive = @"/Resources\Images\Fight\Character\Icon\Static\Defence.png";
+                    LevelUp = @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon9.png";
                 }
                 public String Usual { get; set; }
                 public String Poison { get; set; }
@@ -1327,18 +1324,18 @@ namespace WpfApp1
                 public Foes() { SetAllPaths(); }
                 private void SetAllPaths()
                 {
-                    Spider = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SpiderAttacks\\SpiderAttacks1.png" };
-                    Mummy = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\MummyAttacks\\MummyAttacks1.png" };
-                    Zombie = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ZombieAttacks\\ZombieAttacks1.png" };
-                    Bones = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\BonesAttacks\\BonesAttacks1.png" };
-                    Vulture = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\VultureAttacks\VultureAttacks1.png" };
-                    Ghoul = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png" };
-                    GrimReaper = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png" };
-                    Scarab = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png" };
-                    KillerMole = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\KillerMoleAttacks\KillerMole1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\KillerMoleAttacks\KillerMole2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\KillerMoleAttacks\KillerMole1.png" };
-                    Imp = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ImpAttacks\Imp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ImpAttacks\Imp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\ImpAttacks\Imp1.png" };
-                    Worm = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\WormAttacks\Worm1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\WormAttacks\Worm2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\WormAttacks\Worm1.png" };
-                    Master = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\MasterAttacks\Master1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\MasterAttacks\Master2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Enemies\Dynamic\MasterAttacks\Master1.png" };
+                    Spider = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\SpiderAttacks\SpiderAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\SpiderAttacks\SpiderAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\SpiderAttacks\SpiderAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\SpiderAttacks\SpiderAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\SpiderAttacks\SpiderAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\SpiderAttacks\SpiderAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\SpiderAttacks\SpiderAttacks1.png" };
+                    Mummy = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MummyAttacks\MummyAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MummyAttacks\MummyAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MummyAttacks\MummyAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MummyAttacks\MummyAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MummyAttacks\MummyAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MummyAttacks\MummyAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MummyAttacks\MummyAttacks1.png" };
+                    Zombie = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ZombieAttacks\ZombieAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ZombieAttacks\ZombieAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ZombieAttacks\ZombieAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ZombieAttacks\ZombieAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ZombieAttacks\ZombieAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ZombieAttacks\ZombieAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ZombieAttacks\ZombieAttacks1.png" };
+                    Bones = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\BonesAttacks\BonesAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\BonesAttacks\BonesAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\BonesAttacks\BonesAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\BonesAttacks\BonesAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\BonesAttacks\BonesAttacks3.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\BonesAttacks\BonesAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\BonesAttacks\BonesAttacks1.png" };
+                    Vulture = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\VultureAttacks\VultureAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\VultureAttacks\VultureAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\VultureAttacks\VultureAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\VultureAttacks\VultureAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\VultureAttacks\VultureAttacks1.png" };
+                    Ghoul = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GhoulAttacks\GhoulAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GhoulAttacks\GhoulAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GhoulAttacks\GhoulAttacks1.png" };
+                    GrimReaper = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\GrimReaperAttacks\GrimReaperAttacks1.png" };
+                    Scarab = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ScarabAttacks\ScarabAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ScarabAttacks\ScarabAttacks2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ScarabAttacks\ScarabAttacks1.png" };
+                    KillerMole = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\KillerMoleAttacks\KillerMole1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\KillerMoleAttacks\KillerMole2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\KillerMoleAttacks\KillerMole1.png" };
+                    Imp = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ImpAttacks\Imp1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ImpAttacks\Imp2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\ImpAttacks\Imp1.png" };
+                    Worm = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\WormAttacks\Worm1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\WormAttacks\Worm2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\WormAttacks\Worm1.png" };
+                    Master = new string[] { @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MasterAttacks\Master1.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MasterAttacks\Master2.png", @"/Resources\Images\Fight\Enemies\Enemies\Dynamic\MasterAttacks\Master1.png" };
                 }
                 public String[] Spider { get; set; }
                 public String[] Mummy { get; set; }
@@ -1360,10 +1357,10 @@ namespace WpfApp1
 
                 private void SetAllBossesPaths()
                 {
-                    Pharaoh = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PharaohAttacks\\PharaohAttacks.png" };
-                    UghZan = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\UghZan1Attacks\UghZan1Attacks10.png" };
-                    Warrior = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\WarriorAttacks\WarriorAttacks1.png" };
-                    MrOfAll = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Bosses\Dynamic\MofallAttacks\MasterOfAll5.png" };
+                    Pharaoh = new string[] { @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\PharaohAttacks\PharaohAttacks.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\PharaohAttacks\PharaohAttacks2.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\PharaohAttacks\PharaohAttacks3.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\PharaohAttacks\PharaohAttacks3.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\PharaohAttacks\PharaohAttacks3.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\PharaohAttacks\PharaohAttacks2.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\PharaohAttacks\PharaohAttacks.png" };
+                    UghZan = new string[] { @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks1.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks2.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks3.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks4.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks5.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks6.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks7.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks8.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks9.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\UghZan1Attacks\UghZan1Attacks10.png" };
+                    Warrior = new string[] { @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\WarriorAttacks\WarriorAttacks1.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\WarriorAttacks\WarriorAttacks2.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\WarriorAttacks\WarriorAttacks3.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\WarriorAttacks\WarriorAttacks2.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\WarriorAttacks\WarriorAttacks1.png" };
+                    MrOfAll = new string[] { @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\MofallAttacks\MasterOfAll1.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\MofallAttacks\MasterOfAll2.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\MofallAttacks\MasterOfAll3.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\MofallAttacks\MasterOfAll4.png", @"/Resources\Images\Fight\Enemies\Bosses\Dynamic\MofallAttacks\MasterOfAll5.png" };
                 }
                 public String[] Pharaoh { get; set; }
                 public String[] UghZan { get; set; }
@@ -1379,30 +1376,30 @@ namespace WpfApp1
 
                 public void SetAllPersonPaths()
                 {
-                    Cure = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Cure\\Cure10.png"};
-                    Cure2 = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Cure2\Cure2_14.png"};
-                    Heal = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Heal\\Heal10.png"};
-                    BuffUp = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUp\BuffUp10.png"};
-                    ToughenUp = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUp\ToughenUp10.png"};
-                    Regen = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Regen\Regen10.png"};
-                    Control = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Control\Control10.png"};
-                    Torch = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Torch\\Torch10.png"};
-                    Whip = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Whip\\Whip10.png"};
-                    Thrower = new string[] {@"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Thrower\Thrower1.png"};
-                    Super = new string[] {"D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png"};
-                    Tornado = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Super\\Super5.png" };
-                    Quake = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\Quake\Quake8.png" };
-                    Learn = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Learn\Learn10.png" };
-                    BagUse = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\ItemsUsed\\ItemUsed1.png" };
-                    Escape = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Escape\\Escape2.png" };
-                    HdAttack = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HandAttack\\HandAttack10.png" };
-                    KnAttack = new string[] { @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck1.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck2.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck3.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck4.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck5.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck6.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck7.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck8.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck9.png", @"D:\Александр\Windows 7\Учёба, ПТК НовГУ\3 курс\Курсовая\GIF\KnifeAttack\KnifeAttck10.png" };
-                    SwAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\SwordAttack\Sword10.png" };
-                    MgAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Person\MinigunAttack\MinigunAttack14.png" };
-                    SeriousMg = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun10.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun11.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun12.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun13.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun14.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSamMinigun\SeriousSamMinigun15.png" };
-                    SSwitch = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\SeriousSwitch\SeriousSwitch9.png" };
-                    Hurt = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\PersonHurts\\PersonHurts5.png" };
-                    //GetByIndexes = BmpArrayNotStatedX(Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake);
+                    Cure = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure\Cure10.png"};
+                    Cure2 = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_10.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_11.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_12.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_13.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Cure2\Cure2_14.png"};
+                    Heal = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Heal\Heal10.png"};
+                    BuffUp = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\BuffUp\BuffUp10.png"};
+                    ToughenUp = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\ToughenUp\ToughenUp10.png"};
+                    Regen = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Regen\Regen10.png"};
+                    Control = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Control\Control10.png"};
+                    Torch = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Torch\Torch10.png"};
+                    Whip = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Whip\Whip10.png"};
+                    Thrower = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Thrower\Thrower1.png"};
+                    Super = new string[] {@"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super5.png"};
+                    Tornado = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Super\Super5.png" };
+                    Quake = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Quake\Quake8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Quake\Quake1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Quake\Quake2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Quake\Quake3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Quake\Quake4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Quake\Quake5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Quake\Quake6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Quake\Quake7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Quake\Quake8.png" };
+                    Learn = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Skills\Learn\Learn10.png" };
+                    
+                    BagUse = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Items\ItemUsed1.png" };
+                    Escape = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Escape\Escape2.png" };
+                    HdAttack = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\HandAttack\HandAttack10.png" };
+                    KnAttack = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\KnifeAttack\KnifeAttck10.png" };
+                    SwAttack = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SwordAttack\Sword10.png" };
+                    MgAttack = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack10.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack11.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack12.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack13.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\MinigunAttack\MinigunAttack14.png" };
+                    SeriousMg = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun9.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun10.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun11.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun12.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun13.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun14.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Fight\SeriousSamMinigun\SeriousSamMinigun15.png" };
+                    SSwitch = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch5.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch6.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch7.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch8.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\SeriousSwitch\SeriousSwitch9.png" };
+                    Hurt = new string[] { @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\PersonHurts\PersonHurts1.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\PersonHurts\PersonHurts2.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\PersonHurts\PersonHurts3.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\PersonHurts\PersonHurts4.png", @"/Resources\Images\Fight\Character\Person\Dynamic\Misc\PersonHurts\PersonHurts5.png" };
                 }
                 public string[] Cure { get; set; }
                 public string[] Cure2 { get; set; }
@@ -1437,29 +1434,31 @@ namespace WpfApp1
 
                 public void SetAllIconPaths()
                 {
-                    Cure = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconCure\\IconCure10.png" };
-                    Cure2 = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\CureIcon2\IconCure2_9.png" };
-                    Heal = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\HealIcon\\HealIcon10.png" };
-                    BuffUp = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\BuffUpIcon\BuffUpIcon10.png" };
-                    ToughenUp = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ToughenUpIcon\ToughenUpIcon10.png" };
-                    Regen = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\RegenIcon\RegenIcon10.png" };
-                    Control = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ControlIcon\ControlIcon10.png" };
-                    Torch = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconTorch\\IconTorch10.png" };
-                    Whip = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\WhipIcon\\WhipIcon10.png" };
-                    Thrower = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\ThrowerIcon\ThrowerIcon10.png" };
-                    Super = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\SuperIcon\\SuperIcon4.png" };
-                    Tornado = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\TornadoIcon\TornadoIcon10.png" };
-                    Quake = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\AbilitiesShow\QuakeIcon\QuakeIcon9.png" };
-                    Learn = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LearnIcon\LearnIcon10.png" };
-                    BagUse = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconItemUsed\\IconItemUsed10.png" };
-                    Escape = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconEscape\\IconEscape2.png" };
-                    HdAttack = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\IconRage\\IconRage10.png" };
-                    KnAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconKnAtk\IconKnAtk10.png" };
-                    SwAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\SwordIcon\Sword8.png" };
-                    MgAttack = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Animation\Icon\MinigunIcon\MinigunIcon1.png" };
-                    SeriousMg = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconSeriousSamMinigun\IconSeriousSamMinigun1.png" };
-                    SSwitch = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked7.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked8.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked9.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\IconShocked\IconShocked10.png" };
-                    LevelUp = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon4.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon5.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon6.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon7.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon8.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon9.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\LevelUp\\LevelUpIcon9.png" };
+                    Cure = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconCure\IconCure10.png" };
+                    Cure2 = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\CureIcon2\IconCure2_9.png" };
+                    Heal = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\HealIcon\HealIcon10.png" };
+                    BuffUp = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\BuffUpIcon\BuffUpIcon10.png" };
+                    ToughenUp = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ToughenUpIcon\ToughenUpIcon10.png" };
+                    Regen = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\RegenIcon\RegenIcon10.png" };
+                    Control = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ControlIcon\ControlIcon10.png" };
+                    Torch = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\IconTorch\IconTorch10.png" };
+                    Whip = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\WhipIcon\WhipIcon10.png" };
+                    Thrower = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\ThrowerIcon\ThrowerIcon10.png" };
+                    Super = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\SuperIcon\SuperIcon4.png" };
+                    Tornado = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\TornadoIcon\TornadoIcon10.png" };
+                    Quake = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\QuakeIcon\QuakeIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\QuakeIcon\QuakeIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\QuakeIcon\QuakeIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\QuakeIcon\QuakeIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\QuakeIcon\QuakeIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\QuakeIcon\QuakeIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\QuakeIcon\QuakeIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\QuakeIcon\QuakeIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\QuakeIcon\QuakeIcon9.png" };
+                    Learn = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Skills\LearnIcon\LearnIcon10.png" };
+                    
+                    BagUse = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Items\IconItemUsed10.png" };
+                    Escape = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Escape\Flee2.png" };
+                    HdAttack = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Punch\IconRage10.png" };
+                    KnAttack = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Knife\IconKnAtk10.png" };
+                    SwAttack = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sword\Sword8.png" };
+                    MgAttack = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Minigun\MinigunIcon1.png" };
+                    SeriousMg = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Fight\Sam\IconSeriousSamMinigun1.png" };
+                    
+                    SSwitch = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\IconShocked\IconShocked10.png" };
+                    LevelUp = new string[] { @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon1.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon2.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon3.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon4.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon5.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon6.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon7.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon8.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon9.png", @"/Resources\Images\Fight\Character\Icon\Dynamic\Misc\LevelUp\LevelUpIcon9.png" };
                 }
                 public string[] Cure { get; set; }
                 public string[] Cure2 { get; set; }
@@ -1489,7 +1488,7 @@ namespace WpfApp1
             public class Misc : Dynamic
             {
                 public Misc() { SetAllMiscPaths(); }
-                public void SetAllMiscPaths() { Target = new string[] { "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target1.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target3.png", "D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\Target\\Target2.png" }; }
+                public void SetAllMiscPaths() { Target = new string[] { @"/Resources\Images\Fight\Target\Target1.png", @"/Resources\Images\Fight\Target\Target2.png", @"/Resources\Images\Fight\Target\Target3.png", @"/Resources\Images\Fight\Target\Target2.png", @"/Resources\Images\Fight\Target\Target1.png", @"/Resources\Images\Fight\Target\Target2.png", @"/Resources\Images\Fight\Target\Target3.png", @"/Resources\Images\Fight\Target\Target2.png" }; }
                 public string[] Target { get; set; }
             }
             public class Models : Dynamic
@@ -1497,8 +1496,8 @@ namespace WpfApp1
                 public Models() { SetAllPaths(); }
                 public void SetAllPaths()
                 {
-                    Ancient = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel3.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel4.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel6.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel5.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\AncientModel6.png" };
-                    Warrior = new string[] { @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\WarriorModel_1.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\WarriorModel2.png", @"D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\LocationModels\WarriorModel3.png", };
+                    Ancient = new string[] { @"/Resources\Images\Locations\Loc2\Models\Dynamic\Ancient\Act1.png", @"/Resources\Images\Locations\Loc2\Models\Dynamic\Ancient\Act2.png", @"/Resources\Images\Locations\Loc2\Models\Dynamic\Ancient\Act3.png", @"/Resources\Images\Locations\Loc2\Models\Dynamic\Ancient\Act4.png", @"/Resources\Images\Locations\Loc2\Models\Dynamic\Ancient\Act5.png", @"/Resources\Images\Locations\Loc2\Models\Dynamic\Ancient\Act6.png", @"/Resources\Images\Locations\Loc2\Models\Dynamic\Ancient\Act5.png", @"/Resources\Images\Locations\Loc2\Models\Dynamic\Ancient\Act6.png" };
+                    Warrior = new string[] { @"/Resources\Images\Locations\Loc2\Models\Dynamic\Warrior\Act1.png", @"/Resources\Images\Locations\Loc2\Models\Dynamic\Warrior\Act2.png", @"/Resources\Images\Locations\Loc2\Models\Dynamic\Warrior\Act3.png", };
                 }
                 public string[] Ancient { get; set; }
                 public string[] Warrior { get; set; }
@@ -2165,9 +2164,39 @@ namespace WpfApp1
             ShowFoesStats();
             TimerOn(ref WRecd);
             HeyPlaySomething(Path.GameMusic.MainTheme);
+            
             CheckScreenProperties();
 
             try { Autorization(); SeeMap(); } catch (Exception ex) { throw new Exception("Something get wrong, Read this: " + ex); }
+            //ResourceManager resource = new ResourceManager(typeof(Autorize));
+
+            //ResourceManager resource = new ResourceManager(typeof(MusicMp3));
+            //throw new Exception(resource.BaseName);
+            /*Sound1.Stop();
+            Sound1.Source = resource.GetObject("Main_theme");
+            Sound1.Play();
+            */
+            //throw new Exception(MusicMp3.Main_theme.ToString());
+            /*System.Media.SoundPlayer sndplayr = new System.Media.SoundPlayer(MusicMp3.Main_theme);
+            sndplayr.Play();*/
+            //System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            //System.IO.Stream resource1 = assembly.GetManifestResourceStream("WpfApp1.AutorizeRu.resx.Adventures2.png");
+            //resource.GetString("Main_theme");
+            //NewAdv.Source = ToImage(Autorize.Adventures2);
+
+            
+        }
+        public BitmapImage ToImage(byte[] array)
+        {
+            using (var ms = new System.IO.MemoryStream(array))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad; // here
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
         }
 
         //[EN] Connection to database and show progress feature
@@ -2351,7 +2380,7 @@ namespace WpfApp1
             foreach (MediaElement med in MedMS) { MedShrink(med, med.Width * Adoptation.WidthAdBack, med.Height * Adoptation.HeightAdBack); }*/
         }
 
-        //D:\\Александр\\Windows 7\\misc\\Надгробные плиты\\C#\\WpfApp1\\WpfApp1\\
+        ///Resources/Images/Menu/Help/
 
         private void FullImgMedAutoShrink(in int W, in int H)
         {
@@ -2763,6 +2792,7 @@ namespace WpfApp1
         //[RU] Преобразование в изображения и URI из строки
         public Uri Ura(in string Path) { return new Uri(Path, UriKind.RelativeOrAbsolute); }
         public BitmapImage Bmper(string UriToBmp) { return new BitmapImage(new Uri(UriToBmp, UriKind.RelativeOrAbsolute)); }
+        public BitmapImage Bmper(object Obj) { return (BitmapImage)Obj; }
         public BitmapImage[] BmpersToX(params BitmapImage[] bitmapImages) { return bitmapImages; }
         public BitmapImage[] BmpersToX(params string[] texts) { List<BitmapImage> bmps = new List<BitmapImage>(); foreach (string txt in texts) bmps.Add(Bmper(txt)); return bmps.ToArray(); }
         private void AnyShowX(in Boolean[] Conditions, Object[] Objects) { for (Byte i = 0; i < Conditions.Length; i++) if (Conditions[i]) AnyShow(Objects[i]); }
@@ -3186,7 +3216,7 @@ namespace WpfApp1
                         case 224: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpElx1, SpElx2, SpElx3, SpElx4, SpElx5, SpElx6); if (BAG.ElixirITM < 255) BAG.ElixirITM++; break;
                         case 225: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpSbg1, SpSbg2, SpSbg3, SpSbg4, SpSbg5, SpSbg6, SpSbg7, SpSbg8, SpSbg9, SpSbg10, SpSbg11); if (BAG.SleepBagITM < 255) BAG.SleepBagITM++; break;
                         case 226: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpSer); BAG.Weapon[3] = true; break;
-                        case 232: ChestOpen(SecretChestImg2, Bmper(Path.Msg.Completed), Bmper(ChestOp[CurrentLocation]), 2, 3); GetSecretReward(); break;
+                        case 232: GetSecretReward(); /*ChestOpen(SecretChestImg2, Bmper(Path.Msg.Completed), Bmper(ChestOp[CurrentLocation]), 2, 3);*/ break;
                         case 233: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpTsk); GetSecretReward(); break;
                         default: break;
                     }
@@ -3678,7 +3708,7 @@ namespace WpfApp1
             HP.Foreground = Brushes.White;
             if (Sets.SpecialBattle == 200)
             {
-                FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Path.PersonStatePath.Serious), Bmper(Path.PersonStatePath.Usual)));
+                FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Path.PersonStatePath.Serious), Bmper(Path.IconStatePath.Serious)));
                 Super1.SetCurrentHpAp(Shrt(Super1.CurrentHP + 40 < Super1.MaxHP ? Super1.CurrentHP + 40 : Super1.MaxHP), Shrt(Super1.CurrentAP + 20 < Super1.MaxAP ? Super1.CurrentAP + 20 : Super1.MaxAP));
                 CurrentHpApCalculate();
             }
@@ -3757,8 +3787,8 @@ namespace WpfApp1
             if (Sets.SpecialBattle != 200) Super1.CurrentHP = Shrt(Super1.CurrentHP - dmg > 0? Super1.CurrentHP - dmg:0);
             else
             {
-                if (Super1.CurrentAP - 10 >= 0) Super1.SetCurrentHpAp(Shrt(Super1.CurrentHP - dmg + 10 > 0 ? Super1.CurrentHP - (dmg - 10) : 0), Shrt(Super1.CurrentAP - 10));                
-                else Super1.SetCurrentHpAp(Shrt(Super1.CurrentHP - dmg + Super1.CurrentAP > 0 ? Super1.CurrentHP - (dmg - Super1.CurrentAP) : 0), 0);                
+                if (Super1.CurrentAP - 10 >= 0) Super1.SetCurrentHpAp(Shrt(dmg - 10 > 0 ? (Super1.CurrentHP - dmg + 10 > 0 ? Super1.CurrentHP - (dmg - 10) : 0) : Super1.CurrentHP), Shrt(Super1.CurrentAP - 10));                
+                else Super1.SetCurrentHpAp(Shrt(dmg > 0 ? (Super1.CurrentHP - dmg + Super1.CurrentAP > 0 ? Super1.CurrentHP - (dmg - Super1.CurrentAP) : 0) : 0), 0);                
                 CurrentAPcalculate();
             }
             CurrentHPcalculate();
@@ -3857,12 +3887,6 @@ namespace WpfApp1
                 Button4.IsEnabled = Sets.SpecialBattle == 0;
                 Abilities.IsEnabled = Super1.CurrentLevel >= 2;
             }
-        }
-        private void Trgt_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            Trgt.Stop();
-            Med1.Position = new TimeSpan(0, 0, 0, 0, 0);
-            Trgt.Play();
         }
         public static Byte SelectedTrgt = 0;
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -4512,8 +4536,8 @@ namespace WpfApp1
         private void Bandage_MouseLeave(object sender, MouseEventArgs e) { LabHide(CountText); }
         private void Ether1_MouseLeave(object sender, MouseEventArgs e) { LabHide(CountText); }
         private void Antidote_MouseLeave(object sender, MouseEventArgs e) { LabHide(CountText); }
-        private void RefreshAllAP() { FastTextChange(new Label[] { AP, AP1 }, new string[] { Super1.CurrentAP + "/" + Super1.MaxAP, Super1.CurrentAP + "/" + Super1.MaxAP }); }
-        private void RefreshAllHP() { FastTextChange(new Label[] { HP, HP1 }, new string[] { Super1.CurrentHP + "/" + Super1.MaxHP, Super1.CurrentHP + "/" + Super1.MaxHP }); }
+        private void RefreshAllAP() { FastTextChange(new Label[] { AP, AP1 }, new string[] { Super1.CurrentAP + "/" + (Sets.SpecialBattle==200 ? 200 :Super1.MaxAP), Super1.CurrentAP + "/" + Super1.MaxAP }); }
+        private void RefreshAllHP() { FastTextChange(new Label[] { HP, HP1 }, new string[] { Super1.CurrentHP + "/" + (Sets.SpecialBattle == 200 ? 200 : Super1.MaxHP), Super1.CurrentHP + "/" + Super1.MaxHP }); }
         private void RefreshAllHPAP() { RefreshAllHP(); RefreshAllAP(); }
         private void Fused_MouseLeave(object sender, MouseEventArgs e) { LabHide(CountText); }
         private void HeroEquip()
@@ -4663,14 +4687,6 @@ namespace WpfApp1
             if (Txt.Doc.InfoChange1 <= 0) ButtonHide(InfoIndexMinus);
             GameHint();
         }
-        private void PharaohBattle_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            ImgHide(Img2);
-            Sound1.Stop();
-            MediaHide(PharaohBattle);
-            Dj(Path.GameNoises.Danger);
-            MediaShow(Med2);
-        }
         private void TheEnd_MediaEnded(object sender, RoutedEventArgs e)
         {
             HideFightIconPersActions();
@@ -4690,13 +4706,6 @@ namespace WpfApp1
         private void Sound3_MediaEnded(object sender, RoutedEventArgs e) { Sound3.Stop(); Sound3.Position = new TimeSpan(0, 0, 0, 0, 0); }
         private void Win_MediaOpened(object sender, RoutedEventArgs e) { WonOrDied(); }
         private void Med1_MediaOpened(object sender, RoutedEventArgs e) { AnyHideX(Button1, Img1, Lab1, Skip1); AnyShow(Skip1); }
-        private void PharaohBattle_MediaFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            AnyHideX(PharaohBattle, Img2);
-            Sound1.Stop();
-            Dj(Path.GameNoises.Danger);
-            MediaShow(Med2);
-        }
         private void Form1_KeyUp(object sender, KeyEventArgs e) { if (Img2.IsEnabled) Img2.Source = Bmper(e.Key == Key.W ? Path.Ray.StaticUp : e.Key == Key.A ? Path.Ray.StaticLeft : e.Key == Key.D ? Path.Ray.StaticRight : Path.Ray.StaticDown); }
         private void SwitchAbils_Click(object sender, RoutedEventArgs e){ InBattleHighSkillsMenu(); }
         private void RemoveButtons_MouseEnter(object sender, MouseEventArgs e)
@@ -4735,7 +4744,7 @@ namespace WpfApp1
         private void AbilsMenu_Click(object sender, RoutedEventArgs e)
         {
             Button[] abils = new Button[] { Cure1, Cure2Out, Heal1, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1, BuffUp1, ToughenUp1, Regen1, Control1 };
-            string[] uris = new string[] { Path.GameNoises.Cure, Path.GameNoises.Cure, Path.GameNoises.Heal, Path.GameNoises.Torch, Path.GameNoises.Whip, Path.GameNoises.Thrower, Path.GameNoises.Super, Path.GameNoises.Whirl, Path.GameNoises.Quake, Path.GameNoises.Learn, Path.GameNoises.PowUp, Path.GameNoises.Shield, Path.GameNoises.HpUp, Path.GameNoises.ApUp };
+            string[] uris = new string[] { Path.GameNoises.Cure, Path.GameNoises.Cure2, Path.GameNoises.Heal, Path.GameNoises.Torch, Path.GameNoises.Whip, Path.GameNoises.Thrower, Path.GameNoises.Super, Path.GameNoises.Whirl, Path.GameNoises.Quake, Path.GameNoises.Learn, Path.GameNoises.PowUp, Path.GameNoises.Shield, Path.GameNoises.HpUp, Path.GameNoises.ApUp };
             for (Byte i=0;i< abils.Length; i++) if (sender.Equals(abils[i])) Dj(uris[i]);
             if (sender.Equals(Cure1)) Super1.SetCurrentHpAp(Shrt(Super1.CurrentHP + Shrt(Super1.Special * 2) >= Super1.MaxHP ? Super1.MaxHP : Super1.CurrentHP + Shrt(Super1.Special * 2)), Shrt(Super1.CurrentAP - 5));
             if (sender.Equals(Cure2Out)) Super1.SetCurrentHpAp(Super1.MaxHP, Shrt(Super1.CurrentAP - 10));
@@ -5495,10 +5504,10 @@ namespace WpfApp1
             {
                 case 0: Super1.MiniTask = false; ChangeOnChapter(0); Location1_AncientPyramid(); ImgShowX(new Image[] { Threasure1, SaveProgress }); Threasures(); TablesSetInfo(); break;
                 case 3:
-                case 4: Super1.MiniTask = false; ChangeOnChapter(1); Location2_WaterTemple(); Threasures(); SaveGame(); AnyShow(SaveProgress); break;
+                case 4: Super1.MiniTask = false; ChangeOnChapter(1); Location2_WaterTemple(); Threasures(); if (DataBaseMSsql.CurrentLogin != "????") SaveGame(); AnyShow(SaveProgress); break;
                 case 6:
-                case 7: Super1.MiniTask = false; ChangeOnChapter(2); Location3_LavaTemple(); Threasures(); SaveGame(); AnyShow(SaveProgress); break;
-                case 8: case 9: ChangeOnChapter(3); Location4_BigRun(); SaveGame(); break;
+                case 7: Super1.MiniTask = false; ChangeOnChapter(2); Location3_LavaTemple(); Threasures(); if (DataBaseMSsql.CurrentLogin != "????") SaveGame(); AnyShow(SaveProgress); break;
+                case 8: case 9: ChangeOnChapter(3); Location4_BigRun(); if (DataBaseMSsql.CurrentLogin != "????") SaveGame(); break;
                 case 10: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Titres), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.SayGoodbye); break;
                 default: Form1.Close(); break;
             }
@@ -5633,7 +5642,6 @@ namespace WpfApp1
                 Sound3.Stop();
                 LabHide(BattleText3);
                 MediaShow(GameOver);
-                GameOver.Play();
                 if (PTurn.IsEnabled) TimerOff(ref PTurn);
                 return true;
             }
@@ -6042,7 +6050,6 @@ namespace WpfApp1
         private void GameStartBtns_MouseEnter(object sender, MouseEventArgs e) { if (sender.Equals(Button1)) NewAdv.Source = Bmper(Path.Adv.AfterNewAdv); else ConAdv.Source = Bmper(Path.Adv.AfterConAdv); }
         private void GameStartBtns_MouseLeave(object sender, MouseEventArgs e) { if (sender.Equals(Button1)) NewAdv.Source = Bmper(Path.Adv.BeforeNewAdv); else ConAdv.Source = Bmper(Path.Adv.BeforeConAdv); }
         private void MediaErrorEncountered(object sender, ExceptionRoutedEventArgs e) { throw new Exception("The video got some Exception! Read the message: " + e); }
-        private void Trgt_MediaFailed(object sender, ExceptionRoutedEventArgs e) { Trgt.Stop(); Trgt.Play(); }
         private void Learn_Click(object sender, RoutedEventArgs e)
         {
             Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);

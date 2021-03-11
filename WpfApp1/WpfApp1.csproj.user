@@ -6,6 +6,7 @@
   <PropertyGroup>
     <ActiveDebugProfile>WpfApp1</ActiveDebugProfile>
     <_LastSelectedProfileId>D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+    <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
   <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
