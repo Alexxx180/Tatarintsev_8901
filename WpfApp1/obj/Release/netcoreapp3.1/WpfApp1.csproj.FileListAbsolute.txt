@@ -24,7 +24,6 @@ D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage.g.resources
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage.dll
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage.pdb
-D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.csprojAssemblyReference.cache
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Resources\OST\Music\AncientPyramid_theme.mp3
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Resources\OST\Music\BattleTheme1.mp3
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Resources\OST\Music\BattleTheme2.mp3
@@ -110,3 +109,5 @@ D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Resources\CutScenes\ChaptersIntroduction\Chapter3.mp4
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Resources\CutScenes\ChaptersIntroduction\Epilogue.mp4
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Resources\CutScenes\ChaptersIntroduction\Prologue.mp4
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.csprojAssemblyReference.cache
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage_Content.g.cs

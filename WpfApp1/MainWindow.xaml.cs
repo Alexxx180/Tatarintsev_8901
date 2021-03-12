@@ -1536,7 +1536,15 @@ namespace WpfApp1
             Con = NewConnection();
             PlayerLogins = new List<string>();
         }
-        public SqlConnection NewConnection() { return new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True"); }
+        public SqlConnection NewConnection() {
+            //[EN] Server connection
+            //[RU] Подключение через сервер (ПК создателя)
+            //return new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True");//SASHA
+            
+            //[EN] Local connection
+            //[RU] Подключение локально
+            return new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = "+ Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\Resources\Database\DesertRageGame.mdf; Integrated Security = True");
+        }
         private void NewStoredProcedureBuild(in String ProcedureName) { Cmd = new SqlCommand(ProcedureName, Con) { CommandType = CommandType.StoredProcedure }; }
         private void NewExecuteNonQueryBuild()
         {
@@ -1742,7 +1750,7 @@ namespace WpfApp1
                 Byte[] Vital   = {   3,  7,  5, 15, 25, 40, 20, 80,100,120, 70,150, 40,120,255, 50 };
                 Byte[] Speed   = {  10, 17, 25, 35, 65, 30, 45, 80,100, 90,130,150, 40, 90,255, 50 };
                 Byte[] Abils   = {   0,  2,  5,  7, 30, 20, 60, 80, 75,110, 70,150, 35,140,255, 50 };
-                Byte[] Exper   = { 255,255,255,255, 35, 75,100, 60,175,140,200,225,100,200,255,150 };
+                Byte[] Exper   = {   5,  7, 11, 15, 35, 75,100, 60,175,140,200,225,100,200,255,150 };
                 Byte[] Mater   = {   5, 10, 35, 75, 60,110, 80,255,105,180,150,255,100,200,255,150 };
                 Byte[] Drops =   { 0,1,2,3, 6,4,5,7, 6,5,5,7, 3, 7, 7, 5 };
                 EnemyAttack = Power[FoeIndex];

@@ -135,6 +135,8 @@
     <None Remove="Quake.png" />
     <None Remove="Regen.png" />
     <None Remove="Remove.png" />
+    <None Remove="Resources\Database\DesertRageGame.mdf" />
+    <None Remove="Resources\Database\DesertRageGame_log.ldf" />
     <None Remove="Resources\Images\Autorize\Adventures1.png" />
     <None Remove="Resources\Images\Autorize\Adventures2.png" />
     <None Remove="Resources\Images\Autorize\Adventures3.png" />
@@ -1212,6 +1214,18 @@
       <VersionMinor>4</VersionMinor>
       <WrapperTool>tlbimp</WrapperTool>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Database\DesertRageGame.mdf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Database\DesertRageGame_log.ldf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
