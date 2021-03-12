@@ -111,3 +111,5 @@ D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Resources\CutScenes\ChaptersIntroduction\Prologue.mp4
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\WpfApp1.csprojAssemblyReference.cache
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\obj\Release\netcoreapp3.1\Desert Rage_Content.g.cs
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Resources\Database\DesertRageGame.mdf
+D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\bin\Release\netcoreapp3.1\Resources\Database\DesertRageGame_log.ldf
