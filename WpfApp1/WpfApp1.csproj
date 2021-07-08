@@ -6,6 +6,13 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <AssemblyName>Desert Rage</AssemblyName>
+    <Authors>Татаринцев Александр</Authors>
+    <Company>XEtreme Team</Company>
+    <Copyright>©2021, XEtreme Team. Все права защищены</Copyright>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <NeutralLanguage>ru</NeutralLanguage>
+    <PackageIcon>favicon.ico</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -655,6 +662,8 @@
     <None Remove="Resources\Images\Fight\Options\EscapeBeforeImg.png" />
     <None Remove="Resources\Images\Fight\Options\FightAfterImg.png" />
     <None Remove="Resources\Images\Fight\Options\FightBeforeImg.png" />
+    <None Remove="Resources\Images\Fight\Options\GenocideAfterImg.png" />
+    <None Remove="Resources\Images\Fight\Options\GenocideBeforeImg.png" />
     <None Remove="Resources\Images\Fight\Options\ItemsAfterImg.png" />
     <None Remove="Resources\Images\Fight\Options\ItemsBeforeImg.png" />
     <None Remove="Resources\Images\Fight\Options\SkillsAfterImg.png" />
@@ -974,9 +983,15 @@
     <None Remove="Worm1.png" />
     <None Remove="Zombie.png" />
     <None Remove="Zombie1.png" />
+    <None Include="Resources\Images\Autorize\favicon.ico">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Fight\Options\GenocideAfterImg.png" />
+    <Resource Include="Resources\Images\Fight\Options\GenocideBeforeImg.png" />
     <Resource Include="Resources\Images\Menu\Help\Inform\Page4\Info3\Click1.png" />
     <Resource Include="Resources\Images\Menu\Help\Inform\Page4\Info3\Click2.png" />
   </ItemGroup>

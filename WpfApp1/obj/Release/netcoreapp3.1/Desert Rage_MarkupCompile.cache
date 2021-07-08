@@ -1,5 +1,5 @@
 ﻿Desert Rage
-
+1.0.1.0
 
 winexe
 C#
@@ -10,11 +10,11 @@ none
 false
 TRACE;RELEASE;NETCOREAPP;NETCOREAPP3_1
 D:\Александр\Windows 7\misc\Надгробные плиты\C#\WpfApp1\WpfApp1\App.xaml
-11151548125
+21091257859
 2-1943587640
-3-917710711
+41048719063
 193732489513
-MainWindow.xaml;
+MainWindow.xaml;Reload.xaml;
 
 False
 

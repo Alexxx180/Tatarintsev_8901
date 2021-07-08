@@ -11,13 +11,15 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("Desert Rage")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("XEtreme Team")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyCopyrightAttribute("©2021, XEtreme Team. Все права защищены")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.1.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Desert Rage")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Desert Rage")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.1.0")]
+[assembly: System.Resources.NeutralResourcesLanguageAttribute("ru")]
 
 // Создано классом WriteCodeFragment MSBuild.
 

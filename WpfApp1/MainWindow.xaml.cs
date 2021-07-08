@@ -19,6 +19,8 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
 using System.IO;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace WpfApp1
 {
@@ -84,6 +86,7 @@ namespace WpfApp1
                 Inv = "Посмотреть инвентарь";
                 Act = "Особые умения";
                 Trg = "Подтвердить цель";
+                Gen = "Атаковать всех подряд";
                 S1 = "Поджечь выбранного врага";
                 S2 = "Ударить врага хлыстом";
                 S3 = "Подстрелить врага";
@@ -94,6 +97,7 @@ namespace WpfApp1
             public String Esc { get; set; }
             public String Inv { get; set; }
             public String Act { get; set; }
+            public String Gen { get; set; }
             public String Trg { get; set; }
             public String S1 { get; set; }
             public String S2 { get; set; }
@@ -265,7 +269,7 @@ namespace WpfApp1
             public Abililities() { SetAbililities(); }
             private void SetAbililities()
             {
-                Cur = "Восстановление ОЗ, [-2 ОД]";
+                Cur = "Восстановление ОЗ, [-5 ОД]";
                 Cr2 = "ОЗ 100% мгновенно, [-10 ОД]";
                 Hl = "Лечение статуса, [-3 ОД]";
                 Bf = "Повышает атаку, [-12 ОД]";
@@ -1177,6 +1181,7 @@ namespace WpfApp1
                         Bag = @"/Resources\Images\Fight\Options\ItemsBeforeImg.png";
                         Skills = @"/Resources\Images\Fight\Options\SkillsBeforeImg.png";
                         Select = @"/Resources\Images\Fight\Options\TrgtSelectBeforeImg.png";
+                        Genocide = @"/Resources\Images\Fight\Options\GenocideBeforeImg.png";
                     }
                     public String Fight { get; set; }
                     public String Defence { get; set; }
@@ -1184,6 +1189,7 @@ namespace WpfApp1
                     public String Bag { get; set; }
                     public String Skills { get; set; }
                     public String Select { get; set; }
+                    public String Genocide { get; set; }
                 }
                 public class After : BtnImgs
                 {
@@ -1196,6 +1202,7 @@ namespace WpfApp1
                         Bag = @"/Resources\Images\Fight\Options\ItemsAfterImg.png";
                         Skills = @"/Resources\Images\Fight\Options\SkillsAfterImg.png";
                         Select = @"/Resources\Images\Fight\Options\TrgtSelectAfterImg.png";
+                        Genocide = @"/Resources\Images\Fight\Options\GenocideAfterImg.png";
                     }
                     public String Fight { get; set; }
                     public String Defence { get; set; }
@@ -1203,6 +1210,7 @@ namespace WpfApp1
                     public String Bag { get; set; }
                     public String Skills { get; set; }
                     public String Select { get; set; }
+                    public String Genocide { get; set; }
                 }
             }
             public class Foes : Static
@@ -1268,7 +1276,7 @@ namespace WpfApp1
                 private void SetAllEnemyPaths()
                 {
                     Pharaoh = @"/Resources\Images\Fight\Enemies\Bosses\Static\Pharaoh.png";
-                    UghZan = @"/Resources\Images\Fight\Enemies\Bosses\Static\UghZan1.png";
+                    UghZan = @"/Resources\Images\Fight\Enemies\Bosses\Static\UghZan.png";
                     Warrior = @"/Resources\Images\Fight\Enemies\Bosses\Static\Warrior.png";
                     MrOfAll = @"/Resources\Images\Fight\Enemies\Bosses\Static\MasterOfAll1.png";
 
@@ -1540,13 +1548,14 @@ namespace WpfApp1
             //[EN] Server connection
             //[RU] Подключение через сервер (ПК создателя)
             //return new SqlConnection("Data Source=SASHA;Initial Catalog=DesertRageGame;Integrated Security=True"); //SASHA
-            
+
             //[EN] Local connection
             //[RU] Подключение локально
-            return new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = "+ Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\Resources\Database\DesertRageGame.mdf; Integrated Security = True");
+            //return new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = "+ Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\Resources\Database\DesertRageGame.mdf; Integrated Security = True");
 
-            //[[EN] Debug | [RU] Отладка]      1. Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName
-            //[[EN] Publish | [RU] Публикация] 2. Environment.CurrentDirectory
+            //[EN] Publishing local connection
+            //[RU] Публикация с локальным подключением
+            return new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = "+ Environment.CurrentDirectory + @"\Resources\Database\DesertRageGame.mdf; Integrated Security = True");
         }
         private void NewStoredProcedureBuild(in String ProcedureName) { Cmd = new SqlCommand(ProcedureName, Con) { CommandType = CommandType.StoredProcedure }; }
         private void NewExecuteNonQueryBuild()
@@ -1677,7 +1686,7 @@ namespace WpfApp1
         {
             NewStoredProcedureBuild("CheckSettings");
             AddProcedureParameter("@LOGIN", PlayerLogin);
-            return NewSqlDataReaderBuild(Settings, 2, 7);
+            return NewSqlDataReaderBuild(Settings, 2, 8);
         }
         public void SavePlayerBag(in String[] Parameters, in Object[] Items)
         {
@@ -1882,6 +1891,7 @@ namespace WpfApp1
         }
         public void SetStats(in Byte Level)
         {
+            CurrentLevel = Convert.ToByte(Level + 1);
             MaxHP = MaxHPNxt[Level];
             MaxAP = MaxAPNxt[Level];
             Attack = AttackNxt[Level];
@@ -2167,6 +2177,8 @@ namespace WpfApp1
         }
         private void Functionality()
         {
+            DataContext = this;
+            Txt = new Txts();
             Txt.SetTxt();
             Path.SetPaths();
             Foe1.SetEnemies();
@@ -2179,8 +2191,9 @@ namespace WpfApp1
             CheckScreenProperties();
 
             try { Autorization(); SeeMap(); } catch (Exception ex) {
-                MessageBox.Show("[RU]\nПохоже, что вы столкнулись с проблемой под-\nключения к базе данных приложения. Свяжи-\nтесь с администратором для решения проблемы.\n\n[EN]\nIt's seems that you get encountered\nby problem of connection to database.\nContact with administrator to solve this.\n\n[RU] Полное сообщение | [EN] Full message\n" + ex.Message, "Произошла ошибка подключения!", MessageBoxButton.OK, MessageBoxImage.Error);
-                Form1.Close();
+                Reload rel = new Reload("Столкнулись с проблемой подключения. Свяжитесь с администратором для решения проблемы.", "You encountered a problem of connection to database. Contact with administrator to solve this.", ex.Message);
+                rel.ShowDialog();
+                Close();
             }
             Anonymous();
         }
@@ -2196,7 +2209,7 @@ namespace WpfApp1
             {
                 if (FleeTime[1] > 0) { FleeTime[1]--; } else { FleeTime[0]--; FleeTime[1] = 59; }
                 TimerFlees.Foreground = TimerFlees1.Foreground = new SolidColorBrush(Color.FromRgb(255, Bits(((FleeTime[0] <= 0) && (FleeTime[1] % 2 == 1)) ? 0 : 255), Bits(((FleeTime[0] <= 0) && (FleeTime[1] % 2 == 1)) ? 0 : 255)));
-                TimerFlees.Content = TimerFlees1.Content = FleeTime[0] + ((FleeTime[1] >= 10) ? ":" : ":0") + FleeTime[1];
+                TimerFlees.Content = FleeTime[0] + ((FleeTime[1] >= 10) ? ":" : ":0") + FleeTime[1];
                 TimerFlees.BorderBrush = TimerFlees1.BorderBrush = new SolidColorBrush(Color.FromRgb(Bits(255 - (FleeTime[0] * 60 + FleeTime[1]) * 1.7), Bits(75 + (FleeTime[0] * 60 + FleeTime[1])), Bits(105 + (FleeTime[0] * 60 + FleeTime[1]))));
             }
             else
@@ -2205,7 +2218,7 @@ namespace WpfApp1
                 TimerFlees.Foreground = TimerFlees1.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                 TimerFlees.BorderBrush = TimerFlees1.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 220, 255));
                 FleeTime = new Byte[] { 2, 30 };
-                TimerFlees.Content = TimerFlees1.Content = FleeTime[0] + ":" + FleeTime[1];
+                TimerFlees.Content = FleeTime[0] + ":" + FleeTime[1];
                 WonOrDied(); MediaShow(GameOver);
                 return true;
             }
@@ -2224,13 +2237,32 @@ namespace WpfApp1
 
         //[EN] Initialize public objects
         //[RU] Инициализация объектов публичного доступа
-        Txts Txt = new Txts();
+        Txts Txt { get; set; }
+        public Txts _Txt { get { return Txt; } set { Txt = value; OnPropertyChanged(); } }
         Paths Path = new Paths();
         Bag BAG = new Bag();
         Characteristics Super1 = new Characteristics { MaxHP = 100, MaxAP = 40, Attack = 25, Defence = 15, Speed = 15, Special = 25 };
         Foe Foe1 = new Foe();
         Misc Sets = new Misc();
         Misc.Adopt Adoptation = new Misc.Adopt();
+
+        #region INotifyPropertyChanged Members
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Raises this object's PropertyChanged event.
+        /// </summary>
+        /// <param name="propertyName">The property that has a new value.</param>
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null)
+            {
+                var e = new PropertyChangedEventArgs(propertyName);
+                handler(this, e);
+            }
+        }
+        #endregion
 
         //[EN] Initialize timers for events
         //[RU] Инициализация таймеров для событий.
@@ -2308,6 +2340,14 @@ namespace WpfApp1
         public static Int32 rnd = Random1.Next(5, 20);
         public static int poison = 0;
 
+        //[EN] Injuries.
+        //[RU] Ранения.
+        public static Byte PlayerHurt = 0;
+        public static Byte PlayerHurtM = 0;
+        public static Byte trgt = 0;
+        public static Byte SelectedTrgt = 0;
+        public static Byte[] EnemyAtck = new Byte[] { 0, 0, 0 };
+
         //[EN] Values for stopwatch and timer
         //[RU] Значения времени для секундомера и таймера.
         public static UInt16[] TimeWorldRecord = new UInt16[] { 0, 0, 0, 0 };
@@ -2318,7 +2358,6 @@ namespace WpfApp1
         public static Byte CurrentLocation = 0;
         public static Byte[,] MapScheme;
         public static Byte[] EnemyNamesFight = new Byte[] { 0, 0, 0, 0 };
-
 
         //[EN] Animation variables.
         //[RU] Переменные анимации.
@@ -2392,6 +2431,7 @@ namespace WpfApp1
                 case "System.Windows.Controls.MediaElement": MediaHide((MediaElement)Element); break;
                 case "System.Windows.Controls.ProgressBar": BarHide((ProgressBar)Element); break;
                 case "System.Windows.Controls.TextBox": TBoxHide((TextBox)Element); break;
+                case "System.Windows.Controls.Grid": GHide((Grid)Element); break;
             }
         }
         private void AnyShow(Object Element)
@@ -2407,6 +2447,7 @@ namespace WpfApp1
                 case "System.Windows.Controls.MediaElement": MediaShow((MediaElement)Element); break;
                 case "System.Windows.Controls.ProgressBar": BarShow((ProgressBar)Element); break;
                 case "System.Windows.Controls.TextBox": TBoxShow((TextBox)Element); break;
+                case "System.Windows.Controls.Grid": GShow((Grid)Element); break;
             }
         }
         private void AnyGrid(Object Element, in Byte row, in Byte column)
@@ -2416,9 +2457,6 @@ namespace WpfApp1
                 case "System.Windows.Controls.Label": LabGrid((Label)Element, row, column); break;
                 case "System.Windows.Controls.Button": BtnGrid((Button)Element, row, column); break;
                 case "System.Windows.Controls.Image": ImgGrid((Image)Element, row, column); break;
-                /*case "System.Windows.Controls.TextBlock": TxtGrid((TextBlock)Element, rows, columns); break;
-                case "System.Windows.Controls.Slider": SldGrid((Slider)Element, rows, columns); break;
-                case "System.Windows.Controls.CheckBox": ChbGrid((CheckBox)Element, rows, columns); break;*/
                 case "System.Windows.Controls.MediaElement": MedGrid((MediaElement)Element, row, column); break;
                 case "System.Windows.Controls.ProgressBar": BarGrid((ProgressBar)Element, row, column); break;
             }
@@ -2433,7 +2471,7 @@ namespace WpfApp1
             //[RU] Механика адаптации, формула расположения элементов: ТекущееРазрешениеЭкрана/Рекомендуемое(1920Х1080)
             Button[] BtnWFM = { CraftSwitch, AddProfile, DeleteProfile };
             FullMediaShrink(Numb(1920*Adoptation.WidthAdBack), Numb(1080 * Adoptation.HeightAdBack));
-            Label[] LabMS = { CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6, Lab1, TimerFlees, TimerFlees1, CureHealTxt, RecoverAPTxt, BuffUpTxt, DamageFoe, DamageFoe2, DamageFoe3, Lab2, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, HPtext, APtext, LevelText, HP, AP, HPenemy, ItemText, ATK, ExpText, AfterLevel, AfterName, AfterStatus, NewLevelGet, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterBattleGet, MaterialsGet, MaterialsAdd, MaterialsOnHand, ItemsGet, ItemsGetSlot1, Name0, Level0, StatusP, HPtext1, APtext1, HP1, AP1, Exp1, TimeRecordText, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, ATK1, AddATK1, DEF1, AddDEF1, AG1, SP1, EquipText, EquipH, EquipB, EquipL, EquipD, CostText, AbilsCost, HealCost, FightSkills, MiscSkills, BandageText, HerbsText, EtherText, Ether2OutText, SleepBagText, ElixirText, AntidoteText, FusedText, CountText, MaterialsCraft, CrftAntidoteCostTxt, CrftBandageCostTxt, CrftEtherCostTxt, CrftFusedCostTxt, CrftHerbsCostTxt, CrftEther2CostTxt, CrftBedbagCostTxt, CrftElixirCostTxt, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, DescribeHeader, Describe1, Describe2, MusicText, MusicPercent, SoundsText, SoundsPercent, NoiseText, NoisePercent, BrightnessText, BrightnessPercent, GameSpeedText, GameSpeedX, FoeAtk1, FoeDef1, FoeSpd1, FoeSpc1, FoeWkn1, FoeNam1, FoeDsc1, FoeAtk2, FoeDef2, FoeSpd2, FoeSpc2, FoeWkn2, FoeNam2, FoeDsc2, FoeAtk3, FoeDef3, FoeSpd3, FoeSpc3, FoeWkn3, FoeNam3, FoeDsc3, FoeAtk4, FoeDef4, FoeSpd4, FoeSpc4, FoeWkn4, FoeNam4, FoeDsc4, FoeAtk5, FoeDef5, FoeSpd5, FoeSpc5, FoeWkn5, FoeNam5, FoeDsc5, FoeAtk6, FoeDef6, FoeSpd6, FoeSpc6, FoeWkn6, FoeNam6, FoeDsc6, FoeAtk7, FoeDef7, FoeSpd7, FoeSpc7, FoeWkn7, FoeNam7, FoeDsc7, FoeAtk8, FoeDef8, FoeSpd8, FoeSpc8, FoeWkn8, FoeNam8, FoeDsc8, FoeAtk9, FoeDef9, FoeSpd9, FoeSpc9, FoeWkn9, FoeNam9, FoeDsc9, FoeAtk10, FoeDef10, FoeSpd10, FoeSpc10, FoeWkn10, FoeNam10, FoeDsc10, FoeAtk11, FoeDef11, FoeSpd11, FoeSpc11, FoeWkn11, FoeNam11, FoeDsc11, FoeAtk12, FoeDef12, FoeSpd12, FoeSpc12, FoeWkn12, FoeNam12, FoeDsc12, FoeAtk13, FoeDef13, FoeSpd13, FoeSpc13, FoeWkn13, FoeNam13, FoeDsc13, FoeAtk14, FoeDef14, FoeSpd14, FoeSpc14, FoeWkn14, FoeNam14, FoeDsc14, FoeAtk15, FoeDef15, FoeSpd15, FoeSpc15, FoeWkn15, FoeNam15, FoeDsc15, FoeAtk16, FoeDef16, FoeSpd16, FoeSpc16, FoeWkn16, FoeNam16, FoeDsc16, Task5, CrftCraftPerfbootsCostTxt };
+            Label[] LabMS = { CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6, Lab1, TimerFlees, TimerFlees1, CureHealTxt, RecoverAPTxt, BuffUpTxt, DamageFoe, DamageFoe2, DamageFoe3, Lab2, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, HPtext, APtext, LevelText, HP, AP, HPenemy, ItemText, ATK, ExpText, AfterLevel, AfterName, AfterStatus, NewLevelGet, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterBattleGet, MaterialsGet, MaterialsAdd, MaterialsOnHand, ItemsGet, ItemsGetSlot1, Name0, Level0, StatusP, HPtext1, APtext1, HP1, AP1, Exp1, TimeRecordText, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, ATK1, AddATK1, DEF1, AddDEF1, AG1, SP1, EquipText, EquipH, EquipB, EquipL, EquipD, CostText, AbilsCost, FightSkills, MiscSkills, BandageText, HerbsText, EtherText, Ether2OutText, SleepBagText, ElixirText, AntidoteText, FusedText, CountText, MaterialsCraft, CrftAntidoteCostTxt, CrftBandageCostTxt, CrftEtherCostTxt, CrftFusedCostTxt, CrftHerbsCostTxt, CrftEther2CostTxt, CrftBedbagCostTxt, CrftElixirCostTxt, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, DescribeHeader, Describe1, Describe2, MusicText, MusicPercent, SoundsText, SoundsPercent, NoiseText, NoisePercent, BrightnessText, BrightnessPercent, GameSpeedText, GameSpeedX, FoeAtk1, FoeDef1, FoeSpd1, FoeSpc1, FoeWkn1, FoeNam1, FoeDsc1, FoeAtk2, FoeDef2, FoeSpd2, FoeSpc2, FoeWkn2, FoeNam2, FoeDsc2, FoeAtk3, FoeDef3, FoeSpd3, FoeSpc3, FoeWkn3, FoeNam3, FoeDsc3, FoeAtk4, FoeDef4, FoeSpd4, FoeSpc4, FoeWkn4, FoeNam4, FoeDsc4, FoeAtk5, FoeDef5, FoeSpd5, FoeSpc5, FoeWkn5, FoeNam5, FoeDsc5, FoeAtk6, FoeDef6, FoeSpd6, FoeSpc6, FoeWkn6, FoeNam6, FoeDsc6, FoeAtk7, FoeDef7, FoeSpd7, FoeSpc7, FoeWkn7, FoeNam7, FoeDsc7, FoeAtk8, FoeDef8, FoeSpd8, FoeSpc8, FoeWkn8, FoeNam8, FoeDsc8, FoeAtk9, FoeDef9, FoeSpd9, FoeSpc9, FoeWkn9, FoeNam9, FoeDsc9, FoeAtk10, FoeDef10, FoeSpd10, FoeSpc10, FoeWkn10, FoeNam10, FoeDsc10, FoeAtk11, FoeDef11, FoeSpd11, FoeSpc11, FoeWkn11, FoeNam11, FoeDsc11, FoeAtk12, FoeDef12, FoeSpd12, FoeSpc12, FoeWkn12, FoeNam12, FoeDsc12, FoeAtk13, FoeDef13, FoeSpd13, FoeSpc13, FoeWkn13, FoeNam13, FoeDsc13, FoeAtk14, FoeDef14, FoeSpd14, FoeSpc14, FoeWkn14, FoeNam14, FoeDsc14, FoeAtk15, FoeDef15, FoeSpd15, FoeSpc15, FoeWkn15, FoeNam15, FoeDsc15, FoeAtk16, FoeDef16, FoeSpd16, FoeSpc16, FoeWkn16, FoeNam16, FoeDsc16, Task5, CrftCraftPerfbootsCostTxt };
             TextBlock[] blocks = { InfoText1, InfoText2, InfoText3 };
             ProgressBar[] BarMS = { Time1, HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, HPenemyBar, NextExpBar, BeforeHPbar, BeforeHPbarOver333, BeforeHPbarOver666, BeforeAPbar, BeforeAPbarOver333, BeforeAPbarOver666, AfterHPbar, AfterHPbarOver333, AfterHPbarOver666, AfterAPbar, AfterAPbarOver333, AfterAPbarOver666, HPbar1, APbar1, ExpBar1 };
             ScaleTransform[] scls = { MuLd, SnLd, NsLd, Gs, Brgt, TmOn };
@@ -2664,21 +2702,13 @@ namespace WpfApp1
         private void New_game()
         {
             DataBaseMSsql.DeselectAllPlayers();
-            AnyHideX(AddProfile, DeleteProfile, Player1, Player2, Player3, Player4, Player5, Player6, CurrentPlayer, AutorizeImg, Continue, AddPlayer);
 
             DataBaseMSsql.NewGameStart(DataBaseMSsql.CurrentLogin);
 
             SetEnemies();
             Exp = 0;
-            Foe1.EnemyAppears[0] = "";
-            Foe1.EnemyAppears[1] = "";
-            Foe1.EnemyAppears[2] = "";
-
-            Foe1.EnemiesStillAlive = 0;
-            Sets.FoeType1Alive = 0;
-            Sets.FoeType2Alive = 0;
-            Sets.FoeType3Alive = 0;
-            Sets.FoeType4Alive = 0;
+            Foe1.EnemyAppears = new string[] { "", "", "" };
+            Foe1.EnemiesStillAlive = Sets.FoeType4Alive = Sets.FoeType3Alive = Sets.FoeType2Alive = Sets.FoeType1Alive = 0;
 
             PharaohAppears.Opacity = 0.1;
             Ancient.Opacity = 0.25;
@@ -2696,12 +2726,13 @@ namespace WpfApp1
             
             //[EN] Normal
             //[RU] Обычный
-            Super1.SetStats(1, 100, 40, 25, 15, 15, 25);
+            Super1.SetStats(0);
             Super1.SetCurrentHpAp(100, 40);
             Time1.Maximum = TimeFormula();
             PlayerSetLocation(34, 18);
             MaxAndWidthHPcalculate();
             MaxAndWidthAPcalculate();
+            HeroStatus();
             BAG.EquipWearSet(false, false, false, false);
             BAG.ItemsSet(0, 0, 0, 0, 0, 0, 0, 0, 0);
             Super1.MenuTask = 0;
@@ -2735,20 +2766,19 @@ namespace WpfApp1
         private void ChbHide(CheckBox Chb) { Chb.Visibility = Visibility.Hidden; Chb.IsEnabled = false; }
         private void TBoxShow(TextBox tbx) { tbx.Visibility = Visibility.Visible; tbx.IsEnabled = true; }
         private void TBoxHide(TextBox tbx) { tbx.Visibility = Visibility.Hidden; tbx.IsEnabled = false; }
+        private void GHide(Grid grid) { grid.Visibility = Visibility.Hidden; grid.IsEnabled = false; }
+        private void GShow(Grid grid) { grid.Visibility = Visibility.Visible; grid.IsEnabled = true; }
         private void ImgShowX(in Image[] ImagesArray) { foreach (Image img in ImagesArray) ImgShow(img); }
         private void LabShowX(in Label[] LabelArray) { foreach (Label Lab in LabelArray) LabShow(Lab); }
         private void BarShowX(in ProgressBar[] ProgressBarArray) { foreach (ProgressBar Bar in ProgressBarArray) BarShow(Bar); }
-        private void BtnShowX(in Button[] ButtonArray) { foreach (Button Btn in ButtonArray) ButtonShow(Btn); }
         private void ImgGridX(in Image[] ImageArray, in Byte[] rows, in Byte[] cols) { for (Byte i = 0; i < ImageArray.Length; i++) ImgGrid(ImageArray[i], rows[i], cols[i]); }
-        private void LabGridX(in Label[] LabelArray, in Byte[] rows, in Byte[] cols) { for (Byte i = 0; i < LabelArray.Length; i++) LabGrid(LabelArray[i], rows[i], cols[i]); }
-        private void BarGridX(in ProgressBar[] ProgressBarArray, in Byte[] rows, in Byte[] cols) { for (Byte i = 0; i < ProgressBarArray.Length; i++) BarGrid(ProgressBarArray[i], rows[i], cols[i]); }
         private void LabHideX(Label[] LabelArray) { foreach (Label Lab in LabelArray) LabHide(Lab); }
         private void ImgHideX(Image[] ImageArray) { foreach (Image Img in ImageArray) ImgHide(Img); }
         private void Button1_Click(object sender, RoutedEventArgs e)
         {
             New_game();
             MediaShow(Med1);
-            AnyHideX(Lab1, Button1);
+            AnyHide(MainMenu);
             HeyPlaySomething(Path.GameMusic.Prologue);
         }
 
@@ -2902,7 +2932,7 @@ namespace WpfApp1
                     { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  0,  1,  1,  0,  1,  0,  0,  1,  0,  1,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  1,  1,  1,  1 },
                     { 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  1,  0,  0,  0,  1,  0,  1,  1,  0,  1,  0,  0,  1,  0,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  1 },
                     { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  1,  1,  0,  1,  0,  0,  1,  0,  0,  1,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  0,  1 },
-                    { 1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  1,  1,  0,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,  0,  1,  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  1,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1 },
+                    { 1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  1,  1,  0,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,  0,  1,  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  1,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1 },
                     { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1 },
                     { 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  1,  1,  0,  1,  0,  0,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  1 },
                     { 1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  1,  1,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1,  0,  0,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1,  1,  1,  1,  1,  1 },
@@ -2938,7 +2968,12 @@ namespace WpfApp1
         private void ChestsAndTablesAllTurnOff1() { ImgHideX(new Image[] { ChestImg1, ChestImg2, ChestImg3, ChestImg4, Table1, Table2, Table3 }); }
         private void Map1ModelsAllTurnOn1() { ImgShowX(new Image[] { KeyImg1, KeyImg2, KeyImg3, LockImg1, LockImg2, LockImg3 }); }
         private void Map1ModelsAllTurnOff1() { ImgHideX(new Image[] { LockImg1, LockImg2, LockImg3, KeyImg1, KeyImg2, KeyImg3 }); }
-        private void CheckIfInteracted() { Image[] images = { ChestMessage1, TaskCompletedImg, PainImg }; foreach (Image image in images) if (image.IsEnabled) ImgHide(image); }
+        private void CheckIfInteracted() {
+            UIElement[] elements = { ChestMessage1, TaskCompletedImg, PainImg, HPhelper };
+            foreach (UIElement element in elements)
+                if (element.IsEnabled)
+                    AnyHide(element);
+        }
 
         //[EN] After game intro has been ended
         //[RU] После завершения пролога.
@@ -3070,7 +3105,16 @@ namespace WpfApp1
             PlayerSetLocation(Bits(Adoptation.ImgYbounds), Bits(Adoptation.ImgXbounds));
             GroundCheck(MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds]);
             TablesSetInfo();
-            if (CurrentLocation < 3) { if (Sets.StepsToBattle >= rnd) { AnyHideX(PainImg, Img2); Sound1.Stop(); Dj(Path.GameNoises.Danger); LetsBattle(); } Sets.StepsToBattle++; }
+            if (CurrentLocation < 3) {
+                if (Sets.StepsToBattle >= rnd)
+                {
+                    AnyHideX(PainImg, Img2, HPhelper);
+                    Sound1.Stop();
+                    Dj(Path.GameNoises.Danger);
+                    LetsBattle();
+                }
+                Sets.StepsToBattle++;
+            }
             GetPoisoned();
         }
 
@@ -3093,8 +3137,8 @@ namespace WpfApp1
             if (Super1.CurrentHP <= 0)
             {
                 Super1.PlayerStatus = 0;
-                ImgHideX(new Image[] { Img2, Menu1 });
-                MegaHide();
+                ImgHide(Img2);
+                AnyHide(GameMenu);
                 Sound1.Stop();
                 Sound2.Stop();
                 Sound3.Stop();
@@ -3144,9 +3188,26 @@ namespace WpfApp1
 
         //[EN] Determine a battle
         //[RU] Определение битвы.
-        private void LetsBattle() { Sets.StepsToBattle--; string[] dng = { Path.GameNoises.Danger, Path.GameNoises.Danger2, Path.GameNoises.Danger3 }; Dj(dng[CurrentLocation]); MediaShow(Med2); }
-        private void WhatsGoingOn(in Byte SecretBattlesIndex) { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] = 0; Sets.SpecialBattle = SecretBattlesIndex; }
-
+        private void LetsBattle() 
+        {
+            Sets.StepsToBattle--;
+            string[] dng = { Path.GameNoises.Danger, Path.GameNoises.Danger2, Path.GameNoises.Danger3 };
+            Dj(dng[CurrentLocation]);
+            MediaShow(Med2);
+        }
+        private void WhatsGoingOn(in Byte SecretBattlesIndex)
+        { 
+            MapScheme[Adoptation.ImgYbounds,Adoptation.ImgXbounds] = 0;
+            Sets.SpecialBattle = SecretBattlesIndex;
+        }
+        private void IhurtMyLegKit(int damage)
+        {
+            Super1.CurrentHP -= Shrt(damage);
+            HPbar1.Value = Super1.CurrentHP;
+            BarGrid(HPhelper, Bits(Shrt(Img2.GetValue(Grid.RowProperty)) - 1), Bits(Shrt(Img2.GetValue(Grid.ColumnProperty)) - 1));
+            AnyShow(HPhelper);
+            ImgShow(PainImg);
+        }
         //[EN] Check what is under person foot.
         //[RU] Проверить на что герой наступил.
         private void GroundCheck(in Byte Interaction)
@@ -3154,9 +3215,9 @@ namespace WpfApp1
             switch (Interaction)
             {
                 case 0: break;
-                case 6: Super1.CurrentHP--; ImgShow(PainImg); break;
-                case 8: Super1.CurrentHP -= 10; ImgShow(PainImg); break;
-                case 9: Super1.CurrentHP -= 25; ImgShow(PainImg); break;
+                case 6: IhurtMyLegKit(1); break;
+                case 8: IhurtMyLegKit(10); break;
+                case 9: IhurtMyLegKit(25); break;
                 case 104: ChangeMapToVoidOrWallX(new Byte[] { 104, 134 }, 0); ImgHide(JailImg1); Sets.EnemyRate = 5; Super1.MenuTask++; break;
                 case 105: ChangeMapToVoidOrWallX(new Byte[] { 105, 135 }, 0); ImgHideX((CurrentLocation == 1) ? new Image[] { JailImg2, JailImg3 } : new Image[] { JailImg2 }); TimerOn(ref RRoll); break;
                 case 106: ChangeMapToVoidOrWallX(new Byte[] { 106, 136 }, 0); ImgHide(JailImg5); if (CurrentLocation == 1) Super1.MenuTask++; break;
@@ -3165,7 +3226,7 @@ namespace WpfApp1
                 case 150: if (DataBaseMSsql.CurrentLogin != "????") { SaveGame(); SEF(Path.GameSounds.ControlSave); } break;
                 case 151: Super1.CurrentHP = Super1.MaxHP; Dj(Path.GameNoises.Cure2); break;
                 case 152: Super1.CurrentAP = Super1.MaxAP; Dj(Path.GameNoises.ApUp); break;
-                case 170: if (TRout.IsEnabled) TimerOff(ref TRout); FleeTime = new Byte[] { 2, 30 }; TimerFlees.Content = TimerFlees1.Content = "2:30"; AnyHide(Img2); Super1.MenuTask++; MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Ending), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.PutTheEnd); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
+                case 170: if (TRout.IsEnabled) TimerOff(ref TRout); FleeTime = new Byte[] { 2, 30 }; TimerFlees.Content = "2:30"; AnyHideX(Img2, TimerFlees); Super1.MenuTask++; MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Ending), new TimeSpan(0, 0, 0, 0, 0)); AnyShow(Skip1); HeyPlaySomething(Path.GameMusic.PutTheEnd); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
                 case 191: WhatsGoingOn(200); LetsBattle(); break;
                 case 192: ChangeMapToVoid(192); PlayerSetLocation(1, 57); break;
                 default: break;
@@ -3177,6 +3238,22 @@ namespace WpfApp1
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             CheckIfInteracted();
+            if (e.Key == Key.Escape) Form1.Close();
+            if (e.Key == Key.P)
+            {
+                if (Pause.IsEnabled)
+                {
+                    Resume();
+                    AnyHide(Pause);
+                }
+                else
+                {
+                    PauseGame();
+                    AnyShow(Pause);
+                }
+            }
+            if (Pause.IsEnabled)
+                return;
             if (Img2.IsEnabled)
             {
                 Sets.Rnd1 = 0;
@@ -3215,46 +3292,65 @@ namespace WpfApp1
                         case 211: ChestOpen(ChestImg3, Bmper(EquipmentAll[CurrentLocation, 2]), Bmper(ChestOp[CurrentLocation]), 2, CurrentLocation); break;
                         case 212: ChestOpen(ChestImg4, Bmper(EquipmentAll[CurrentLocation, 3]), Bmper(ChestOp[CurrentLocation]), 3, CurrentLocation); break;
                         case 213: ChestOpen(SecretChestImg1, Bmper(Path.Msg.SeriousPants), Bmper(ChestOp[CurrentLocation]), 2, 3); break;
-                        case 221: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpDmg1, SpDmg2, SpDmg3, SpDmg4, SpDmg5); Super1.CurrentHP -= 50; ImgShow(PainImg); break;
+                        case 221: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpDmg1, SpDmg2, SpDmg3, SpDmg4, SpDmg5); IhurtMyLegKit(50); break;
                         case 222: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpHrb1, SpHrb2, SpHrb3, SpHrb4, SpHrb5, SpHrb6, SpHrb7, SpHrb8, SpHrb9, SpHrb10, SpHrb11, SpHrb12, SpHrb13, SpHrb14); if (BAG.HerbsITM < 255) BAG.HerbsITM++; break;
                         case 223: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpEtr1, SpEtr2, SpEtr3, SpEtr4, SpEtr5, SpEtr6, SpEtr7, SpEtr8, SpEtr9, SpEtr10, SpEtr11, SpEtr12, SpEtr13, SpEtr14, SpEtr15, SpEtr16, SpEtr17, SpEtr18); if (BAG.Ether2ITM < 255) BAG.Ether2ITM++; break;
                         case 224: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpElx1, SpElx2, SpElx3, SpElx4, SpElx5, SpElx6); if (BAG.ElixirITM < 255) BAG.ElixirITM++; break;
                         case 225: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpSbg1, SpSbg2, SpSbg3, SpSbg4, SpSbg5, SpSbg6, SpSbg7, SpSbg8, SpSbg9, SpSbg10, SpSbg11); if (BAG.SleepBagITM < 255) BAG.SleepBagITM++; break;
                         case 226: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpSer); BAG.Weapon[3] = true; break;
-                        case 232: GetSecretReward(); /*ChestOpen(SecretChestImg2, Bmper(Path.Msg.Completed), Bmper(ChestOp[CurrentLocation]), 2, 3);*/ break;
+                        case 232: ChangeMapToWall(232); SecretChestImg2.Source = Bmper(ChestOp[CurrentLocation]); ImgGrid(TaskCompletedImg, RowMgs(SecretChestImg2), ColMgs(SecretChestImg2)); AnyShow(TaskCompletedImg); GetSecretReward(); break;
                         case 233: ChangeMapToVoid(Bits(LocItem[0]), Bits(LocItem[1]), SpTsk); GetSecretReward(); break;
                         default: break;
                     }
                 }
-                if (e.Key == Key.LeftCtrl) { HeroStatus(); }
-                if (e.Key == Key.I) { Bestiary(); }
+                if (e.Key == Key.LeftCtrl) { AnyHideX(Img2, Img1); StatusCalculate(); AnyShow(GameMenu); }
+                if (e.Key == Key.I) { Bestiary(); return; }
             }
-            else if (Fight.IsEnabled || ACT1.IsEnabled || ACT2.IsEnabled || ACT3.IsEnabled || ACT4.IsEnabled) { if (e.Key == Key.W || e.Key == Key.A || e.Key == Key.S || e.Key == Key.D) SelectWithKeyBoard(e.Key == Key.W || e.Key == Key.A); }
-            else if (e.Key == Key.LeftCtrl) { if (BestiaryImg.IsEnabled || Menu1.IsEnabled) { HideMenus(); AnyShow(Img2); } }
-            else if (e.Key == Key.I) { if (BestiaryImg.IsEnabled || Menu1.IsEnabled) { HideMenus(); AnyShow(Img2); } }
-            if (e.Key == Key.Escape) Form1.Close();
+            else if (SelectMenuFight.IsEnabled || SelectMenuSkills.IsEnabled) { if (e.Key == Key.W || e.Key == Key.A || e.Key == Key.S || e.Key == Key.D) SelectWithKeyBoard(e.Key == Key.W || e.Key == Key.A); }
+            else if (e.Key == Key.LeftCtrl) { if (BestiaryImg.IsEnabled || GameMenu.IsEnabled) { HideMenus(); AnyShow(Img2); } }
+            else if (e.Key == Key.I) { if (BestiaryImg.IsEnabled || GameMenu.IsEnabled) { HideMenus(); AnyShow(Img2); } }
+            
         }
 
         //[EN] Menu-hide methods. + Decor-methods.
         //[RU] Методы для скрытия меню. + Методы-декораторы.
         private void HideMenus() {
-            AnyHideX(Menu1, Status, Abils, Items0, Equip, Tasks, Info, Settings);
-            MegaHide();
+            AnyHideX(BestiaryImg, GameMenu);
             MegaHide2();
             AnyShow(Img1);
         }
+        private void PauseGame()
+        {
+            Sound1.Pause();
+            if (Med1.IsEnabled) Med1.Pause();
+            if (Med2.IsEnabled) Med2.Pause();
+            if (Win.IsEnabled) Win.Pause();
+            if (TheEnd.IsEnabled) TheEnd.Pause();
+            if (ChapterIntroduction.IsEnabled) ChapterIntroduction.Pause();
+            if (GameOver.IsEnabled) GameOver.Pause();
+            if (!FoesFighting()) { TimerOff(ref PTurn); TimerOff(ref ETurn); }
+            if (CurrentLocation==3&&!TheEnd.IsEnabled) { TimerOff(ref TRout); };
+        }
+        private void Resume()
+        {
+            Sound1.Play();
+            if (Med1.IsEnabled) Med1.Play();
+            if (Med2.IsEnabled) Med2.Play();
+            if (Win.IsEnabled) Win.Play();
+            if (TheEnd.IsEnabled) TheEnd.Play();
+            if (ChapterIntroduction.IsEnabled) ChapterIntroduction.Play();
+            if (GameOver.IsEnabled) GameOver.Play();
+            if (!FoesFighting()) { TimerOn(ref PTurn); TimerOn(ref ETurn); }
+            if (CurrentLocation == 3 && !TheEnd.IsEnabled) { TimerOn(ref TRout); };
+        }
         private void MegaHide()
         {
-            AnyHideX(InfoText1, InfoText2, InfoText3, MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness, TimerTurnOn, DescribeHeader, TimerFlees1,
-                MusicText, SoundsText, NoiseText, GameSpeedText, BrightnessText, MusicPercent, SoundsPercent, NoisePercent, BrightnessPercent, GameSpeedX,
-                TimeRecordText, HerbsText, Ether2OutText, SleepBagText, ElixirText, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg,
-                SPImg, Task1Img, Task2Img, Task3Img, Task4Img, MaterialsCraftImg, HPbar1, APbar1, ExpBar1, Name0, StatusP, Exp1, HPtext1, APtext1, HP1, AP1,
-                Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD,
-                AbilsCost, HealCost, CountText, CostText, FightSkills, MiscSkills, Task1, Task2, Task3, Task4, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3,
-                InfoIndex, Level0, AntidoteText, EtherText, BandageText, FusedText, MaterialsCraft, Ether1, Bandage, Antidote, Cure1, Fused, Equip1, Equip2,
-                Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, Equipments, CancelEq, InfoIndexPlus, InfoIndexMinus, CraftSwitch, CraftAntidote, InfoImg1, InfoImg2, InfoImg3,
-                CraftBandage, CraftFused, CraftEther, Torch1, Whip1, Super0, Heal1, Cure2Out, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1, Task5, Task5Img,
-                BuffUp1, ToughenUp1, Regen1, Control1, Herbs1, Ether2Out, SleepBag1, Elixir1, CraftBedbag, CraftElixir, CraftHerbs, CraftPerfboots, CraftEther2);
+            AnyHideX(GameStatus, GameSkills, GameItems, GameEquip, GameTasks, HelpHints, GameSettings, SwitchPanel,
+                TimeRecordText, TimerFlees1, CountText,
+                Task1, Task2, Task3, Task4, Task5, Task1Img, Task2Img, Task3Img, Task4Img, Task5Img,
+                AntidoteText, EtherText, BandageText, FusedText, HerbsText, Ether2OutText, SleepBagText, ElixirText, Ether1, Bandage, Antidote, Fused, Herbs1, Ether2Out, SleepBag1, Elixir1,
+                Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4, Equipments, CancelEq
+                );
         }
         private void MegaHide2()
         {
@@ -3329,8 +3425,12 @@ namespace WpfApp1
             SEF(Path.GameSounds.ChestOpened);
             ImgGrid(ChestMessage1, Bits(Bits(Chest.GetValue(Grid.RowProperty)) - 5), Bits(Bits(Chest.GetValue(Grid.ColumnProperty)) - 3));
         }
-        private void GetSecretReward() { Exp += 250; Mat += 250; Super1.MiniTask = true; ShowAfterBattleMenu(); }
-        
+        private void GetSecretReward() {
+            Exp += 250;
+            Mat += 250;
+            Super1.MiniTask = true;
+            ShowAfterBattleMenu();
+        }
 
         //[EN] Menu : Player status
         //[RU] Меню : Статус игрока
@@ -3338,12 +3438,12 @@ namespace WpfApp1
         private void HeroStatus()
         {
             StatusCalculate();
-            AnyHideX(Img2, Img1);
-            AnyShowX(Menu1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, HPbar1, APbar1, ExpBar1, Name0, Level0, StatusP, Exp1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, DescribeHeader, Describe1);
-            AnyGridX(new Object[] { HPbar1, APbar1, StatusP, HPtext1, APtext1 }, new Byte[] { 7, 9, 2, 7, 9 }, new Byte[] { 11, 11, 14, 2, 2 });
-            LabGridX(new Label[] { HP1, AP1, Exp1 }, new byte[] { Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new byte[] { Bits(Bits(HPbar1.GetValue(Grid.ColumnProperty)) + Bits(HPbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(APbar1.GetValue(Grid.ColumnProperty)) + Bits(APbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(ExpBar1.GetValue(Grid.ColumnProperty)) + Bits(ExpBar1.GetValue(Grid.ColumnSpanProperty))) });
+            AnyShow(GameStatus);
             RightPanelMenuTurnON();
-            if (!TimerTurnOn.IsChecked.Value) LabShow(TimeRecordText);
+            if (TimerTurnOn.IsChecked.Value)
+                LabHide(TimeRecordText); 
+            else
+                LabShow(TimeRecordText);
             if (CurrentLocation==3) AnyShow(TimerFlees1);
             PlayerSetLocation(Bits(Adoptation.ImgYbounds), Bits(Adoptation.ImgXbounds));
             Status.IsEnabled = false;
@@ -3410,16 +3510,25 @@ namespace WpfApp1
             CurrentHpApCalculate();
             speed = 0;
             Lab2.Foreground = Brushes.Yellow;
-            AnyShowX(LevelText, Lab2, HP, AP, HPtext, APtext, Img3, Img4, Img5, TimeTurnImg, HPbar, APbar, Time1);
+            AnyShow(BattleStatus);
             AnyHideX(Threasure1, Med2, Img1, Img2, PharaohAppears, SaveProgress, JailImg1, JailImg2, JailImg3, JailImg5, JailImg6, JailImg7, Boulder1, Ancient, Warrior, FinalAppears);
             Map1ModelsAllTurnOff1();
             ChestsAndTablesAllTurnOff1();
-            if (Sets.SpecialBattle != 200) FightMenuBack();
+            AnyShowX(Img3, Img4);
+            Items.IsEnabled = Sets.SpecialBattle != 200;
+            Button4.IsEnabled = Sets.SpecialBattle == 0;
+            Abilities.IsEnabled = Super1.CurrentLevel >= 2 && Sets.SpecialBattle != 200;
             ImgGrid(Img6, 23, 2);
             AbilityBonuses[0] = 0;
             AbilityBonuses[1] = 0;
-            Time1.Value = Time1.Maximum;
-            Icon0.Source = Super1.PlayerStatus == 0 ? Bmper(Path.IconStatePath.Usual) : Bmper(Path.IconStatePath.Poison);
+            if (AutoTurn.IsEnabled)
+                BadTime();
+            else
+            {
+                AnyShow(FightMenu);
+                Time1.Value = Time1.Maximum;
+            }
+            HeroSetStatus(Super1.PlayerStatus);
         }
         private void SizeEnemy(Image img, in Boolean huge)
         {
@@ -3442,7 +3551,6 @@ namespace WpfApp1
         private void RegularBattle()
         {
             FoesZero();
-            CalculateBattleStatus();
             Byte[][] Mat = { new Byte[] { Foe1.Spider.Materials, Foe1.Mummy.Materials, Foe1.Zombie.Materials, Foe1.Bones.Materials, Foe1.BOSS1.Materials, Foe1.SecretBOSS1.Materials }, new Byte[] { Foe1.Vulture.Materials, Foe1.Ghoul.Materials, Foe1.GrimReaper.Materials, Foe1.Scarab.Materials }, new Byte[] { Foe1.KillerMole.Materials, Foe1.Imp.Materials, Foe1.Worm.Materials, Foe1.Master.Materials } };
             Byte[][] XP = { new Byte[] { Foe1.Spider.Experience, Foe1.Mummy.Experience, Foe1.Zombie.Experience, Foe1.Bones.Experience, Foe1.BOSS1.Experience, Foe1.SecretBOSS1.Experience }, new Byte[] { Foe1.Vulture.Experience, Foe1.Ghoul.Experience, Foe1.GrimReaper.Experience, Foe1.Scarab.Experience }, new Byte[] { Foe1.KillerMole.Experience, Foe1.Imp.Experience, Foe1.Worm.Experience, Foe1.Master.Experience } };
             Byte[][] DrRt = { new Byte[] { Foe1.Spider.DropRate, Foe1.Mummy.DropRate, Foe1.Zombie.DropRate, Foe1.Bones.DropRate, Foe1.BOSS1.DropRate, Foe1.SecretBOSS1.DropRate }, new Byte[] { Foe1.Vulture.DropRate, Foe1.Ghoul.DropRate, Foe1.GrimReaper.DropRate, Foe1.Scarab.DropRate }, new Byte[] { Foe1.KillerMole.DropRate, Foe1.Imp.DropRate, Foe1.Worm.DropRate, Foe1.Master.DropRate } };
@@ -3474,6 +3582,7 @@ namespace WpfApp1
                     default: ImgShow(Img6); break;
                 }
             }
+            CalculateBattleStatus();
             TimeEnemy();
         }
 
@@ -3482,7 +3591,6 @@ namespace WpfApp1
         private void BossBattle1()
         {
             FoesZero();
-            CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
             BattleText3.Content = Txt.Bos.Pharaoh +": " + Foe1.EnemiesStillAlive;
@@ -3496,6 +3604,7 @@ namespace WpfApp1
             Exp += 125;
             Mat += 250;
             HeyPlaySomething(Path.GameMusic.LookWhoAwake);
+            CalculateBattleStatus();
             TimeEnemy();
         }
 
@@ -3504,7 +3613,6 @@ namespace WpfApp1
         private void BossBattle2()
         {
             FoesZero();
-            CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
             BattleText3.Content = Txt.Bos.Friend + ": " + Foe1.EnemiesStillAlive;
@@ -3518,6 +3626,7 @@ namespace WpfApp1
             Exp += 255;
             Mat += 255;
             HeyPlaySomething(Path.GameMusic.SayHello);
+            CalculateBattleStatus();
             TimeEnemy();
         }
 
@@ -3526,7 +3635,6 @@ namespace WpfApp1
         private void BossBattle3()
         {
             FoesZero();
-            CalculateBattleStatus();
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
             BattleText3.Content = Txt.Bos.AMaster+": " + Foe1.EnemiesStillAlive;
@@ -3540,6 +3648,7 @@ namespace WpfApp1
             Exp += 255;
             Mat += 255;
             HeyPlaySomething(Path.GameMusic.SeriousTalk);
+            CalculateBattleStatus();
             TimeEnemy();
         }
 
@@ -3550,37 +3659,32 @@ namespace WpfApp1
         private void SecretBossBattle1()
         {
             FoesZero();
-            CalculateBattleStatus();
+            BtnHideX(new Button[] { Button4, Items, Abilities });
             Sets.Rnd1 = 1;
             Foe1.EnemiesStillAlive = Bits(Sets.Rnd1);
             BattleText3.Content = Txt.Bos.UghZan + ": " + Foe1.EnemiesStillAlive;
             LabShow(BattleText3);
             Foe1.EnemyAppears[0] = "Угх-зан I";
-            Foe1.EnemyHP[0] = 500;
+            Foe1.EnemyHP[0] = 350;
             Img6.Source = Bmper(Path.BossesStatePath.UghZan);
             ImgGrid(Img6, 18, 2);
-            ImgShrink(Img6, 450 * Adoptation.WidthAdBack, 450 * Adoptation.HeightAdBack);
+            SizeEnemy(Img6, true);
             ImgShow(Img6);
             TimerOn(ref SSwth, new TimeSpan(0, 0, 0, 0, Bits(50 / GameSpeed.Value)));
-            RememberHPAP[0] = Shrt(Super1.CurrentHP);
-            RememberHPAP[1] = Shrt(Super1.CurrentAP);
-            RememberHPAP[2] = Super1.MaxHP;
-            RememberHPAP[3] = Super1.MaxAP;
-            RememberParams[0] = Super1.Attack;
-            RememberParams[1] = Super1.Defence;
-            RememberParams[2] = Super1.Speed;
-            RememberParams[3] = Super1.Special;
             APtext.Content = "БР";
             NewMaximumX(200, HPbar, APbar);
             FullRecoverX(HPbar, APbar);
             Super1.CurrentHP = 200;
             Super1.CurrentAP = 200;
+            Super1.MaxHP = 200;
+            Super1.MaxAP = 200;
             CurrentHpApCalculate();
             Super1.Attack = 100;
             Super1.Defence = 35;
             Exp += 250;
             Mat += 500;
             HeyPlaySomething(Path.GameMusic.SeriousIsMe);
+            CalculateBattleStatus();
             TimeEnemy();
         }
         private void Med2_MediaEnded(object sender, RoutedEventArgs e)
@@ -3602,11 +3706,11 @@ namespace WpfApp1
         {
             Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
             SelectedTrgt = Sets.SelectedTarget;
-            FightMenuMakesDisappear();
-            BtnShowX(new Button[] { Fight, Cancel1 });
+            AnyHide(FightMenu);
+            AnyShow(SelectMenuFight);
             SelectTarget();
         }
-
+        
         //[EN] Target select mech
         //[RU] Механика выбора цели.
         private void NormalTarget() { Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } }; ImgGrid(TrgtImg, grRowColumn[0, Sets.SelectedTarget], grRowColumn[1, Sets.SelectedTarget]); SizeEnemy(TrgtImg, false); }
@@ -3642,18 +3746,17 @@ namespace WpfApp1
             for (int en = 0; en < Foe1.EnemyName[CurrentLocation].Length; en++)
                 if (Foe1.EnemyAppears[Sets.SelectedTarget] == Foe1.EnemyName[CurrentLocation][en])
                 {
-                    BattleText1.Content = Foe1.EnemyName[CurrentLocation][en];
+                    Enemy.Content = Foe1.EnemyName[CurrentLocation][en];
                     HPenemyBar.Maximum = newHP[CurrentLocation][en];
                     HPenemyBARwidth(HPenemyBar.Maximum);
                     EnemyImg.Source = Bmper(EnemySource[CurrentLocation][en]);
-                    Grid.SetColumn(BattleText1, 17);
                     break;
                 }
             if (Sets.SpecialBattle == 0) { NormalTarget(); } else { MegaTarget(); };
             HPenemyBar.Value = Foe1.EnemyHP[Sets.SelectedTarget];
             HPenemy.Content = HPenemyBar.Value + "/" + HPenemyBar.Maximum;
             RefreshAllHP();
-            LabShowX(new Label[] { HPenemy, BattleText1 });
+            AnyShow(EnemyStatus);
         }
         private void HPenemyBARwidth(in double maxHp)
         {
@@ -3663,7 +3766,8 @@ namespace WpfApp1
         }
         public void SelectTarget()
         {
-            AnyShowX(HPenemy, HPenemyBar, EnemyImg, TrgtImg);
+            AnyShow(EnemyStatus);
+            AnyShowX(TrgtImg);
             RefreshAllHP();
             InfoAboutEnemies();
             TimerOn(ref Targt);
@@ -3680,6 +3784,7 @@ namespace WpfApp1
             LabHideX(new Label[] { BattleText1, BattleText2 });
             if (speed > 0)
             {
+                NotLaugh();
                 if (PRegn.IsEnabled) { TimerOff(ref PRegn); }
                 if (PCtrl.IsEnabled) { TimerOff(ref PCtrl); }
                 Sets.FoeType1Alive = 0;
@@ -3692,7 +3797,8 @@ namespace WpfApp1
                 Foe1.EnemyHP[2] = 0;
                 Exp = 0;
                 Mat = 0;
-                AnyHideX(BattleText2, Img3, Img4, Img5, Img6, Img7, Img8, TimeTurnImg, HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, NextExpBar, Time1, HP, AP, Lab2, HPtext, APtext, LevelText, ExpText, BattleText3, BattleText4, BattleText5, BattleText6);
+                AnyHide(BattleStatus);
+                AnyHideX(BattleText2, Img3, Img4, Img6, Img7, Img8, BattleText3, BattleText4, BattleText5, BattleText6);
                 ImgShowX(new Image[] { Img1, Img2, Threasure1, SaveProgress });
                 CheckMapIfModelExistsX(new Byte[] { 104, 105, 105, 106, 107, 108 }, new Image[] { JailImg1, JailImg2, JailImg3, JailImg5, JailImg6, JailImg7 });
                 speed = 0;
@@ -3701,7 +3807,6 @@ namespace WpfApp1
                 ChestsAndTablesAllTurnOn1();
                 if (CurrentLocation == 0) Map1EnableModels(); else if (CurrentLocation == 1) ImgShowX(new Image[] { SecretChestImg1, SecretChestImg2 });
                 if (CheckMapIfModelExists(7)) ImgShow(Boulder1);
-                ButtonHide(Abilities);
                 Abilities.IsEnabled = Super1.CurrentLevel >= 2;
                 string[] music = new string[] { Path.GameMusic.AncientPyramid, Path.GameMusic.WaterTemple, Path.GameMusic.LavaTemple };
                 HeyPlaySomething(music[CurrentLocation]);
@@ -3713,20 +3818,19 @@ namespace WpfApp1
                 if (PCtrl.IsEnabled) { TimerOff(ref PCtrl); }
                 Sound1.Stop();
                 SEF(Path.GameSounds.NowTheWinnerIs);
-                Grid.SetColumn(BattleText1, 22);
                 AnyHideX(BattleText3, BattleText4, BattleText5);
-                FastTextChange(new Label[] { BattleText1, BattleText2 }, new string[] { Txt.Com.Won, Txt.Com.Thres });
+                FastTextChange(new Label[] { BattleText2 }, new string[] { Txt.Com.Thres });
                 AnyShowX(Img4, BattleText1, BattleText2, textOk2);
             }
             else if (Super1.CurrentHP > 0) { Time(); AnyHideX(BattleText1, BattleText2); }
         }
 
         //[EN] Battle : Person defence.
-        //[RU] Сражение : Зашита героя.
+        //[RU] Сражение : Защита героя.
         private void Button3_Click(object sender, RoutedEventArgs e)
         {
             Super1.DefenseState = 2;
-            FightMenuMakesDisappear();
+            AnyHide(FightMenu);
             Time1.Value = 0;
             HP.Foreground = Brushes.White;
             if (Sets.SpecialBattle == 200)
@@ -3750,7 +3854,13 @@ namespace WpfApp1
             {
                 Super1.DefenseState = 1;
                 FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Sets.SpecialBattle == 200 ? Path.PersonStatePath.Serious : Path.PersonStatePath.Usual), Bmper(Sets.SpecialBattle == 200 ? Path.IconStatePath.Serious : Super1.PlayerStatus == 1 ? Path.IconStatePath.Poison : Path.IconStatePath.Usual)));
-                FightMenuBack();
+                if (AutoTurn.IsEnabled && !FoesFighting())
+                    BadTime();
+                else
+                    AnyShow(FightMenu);
+                Items.IsEnabled = Sets.SpecialBattle != 200;
+                Button4.IsEnabled = Sets.SpecialBattle == 0;
+                Abilities.IsEnabled = Super1.CurrentLevel >= 2 && Sets.SpecialBattle != 200;
                 if (Sets.SpecialBattle == 200) BtnHideX(new Button[] { Button4, Items, Abilities });
                 Lab2.Foreground = Brushes.Yellow;
             }
@@ -3826,12 +3936,6 @@ namespace WpfApp1
             }
         }
 
-        //[EN] Injuries.
-        //[RU] Ранения.
-        public static Byte PlayerHurt = 0;
-        public static Byte PlayerHurtM = 0;
-        public static Byte[] EnemyAtck = new Byte[] { 0, 0, 0 };
-
         //[EN] Fast setting values
         //[RU] Быстрая установка значений.
         public void SetAnyValues(Object[] Properties, params Object[] Values)
@@ -3875,26 +3979,35 @@ namespace WpfApp1
                         TimerOn(ref SomeTimer, new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
                         EnemyOnAttack(enemy, dmg);
                         Super1.PlayerStatus = Bits((Random1.Next(1, 13) == 7) && (Super1.PlayerStatus != 1) && ((Foe1.EnemyAppears[FoeNo] == "Паук") && (Foe1.EnemyAppears[FoeNo] == "Моль-убийца")) ? 1 : 0);
-                        AfterIcon.Source = Icon0.Source = Img5.Source = Bmper(Super1.PlayerStatus == 1 ? Path.IconStatePath.Poison : Path.IconStatePath.Usual);
-                        AfterStatus.Content = StatusP.Content = Super1.PlayerStatus == 1 ? Txt.Com.Ill + " §" : Txt.Com.Hlthy + " ♫";
+                        if (Sets.SpecialBattle != 200)
+                            HeroSetStatus(Super1.PlayerStatus);
                     }
                 }
                 else Foe1.EnemyTurn[FoeNo] += 1;
                     
             }
         }
-        private void Skip1_Click(object sender, RoutedEventArgs e) { ButtonHide(Skip1); Med1.Position = new TimeSpan(0, 0, 0, 7, 500); }
+        private void Skip1_Click(object sender, RoutedEventArgs e) {
+            AnyHide(Skip1);
+            MediaElement[] media = { Med1, TheEnd };
+            foreach(MediaElement med in media)            
+                if (med.IsEnabled)
+                {
+                    med.Stop();
+                    med.RaiseEvent(new RoutedEventArgs(MediaElement.MediaEndedEvent));
+                    break;
+                }
+        }
         private void Sound1_MediaEnded(object sender, RoutedEventArgs e)
         {
             Sound1.Stop();
             Sound1.Position = TimeSpan.Zero;
             Sound1.Play();
         }
-        private void FightMenuMakesDisappear() { BtnHideX(new Button[] { Button2, Button3, Button4, Abilities, Items }); }
         private void Button4_Click(object sender, RoutedEventArgs e)
         {
             Byte agl = Super1.Speed;
-            FightMenuMakesDisappear();
+            AnyHide(FightMenu);
             GetOut(out byte fagl);
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
@@ -3903,42 +4016,32 @@ namespace WpfApp1
             Dj(Path.GameNoises.FleeAway);
             LabHide(BattleText2);
         }
-        private void FightMenuBack()
+        
+        private void BadTime()
         {
-            BtnShowX(new Button[] { Button2, Button3 });
-            if (Sets.SpecialBattle != 200) {
-                BtnShowX(new Button[] { Button4, Abilities, Items });
-                Button4.IsEnabled = Sets.SpecialBattle == 0;
-                Abilities.IsEnabled = Super1.CurrentLevel >= 2;
-            }
-        }
-        public static Byte SelectedTrgt = 0;
-
-        //[EN] Battle : Person attack, calculate.
-        //[RU] Сражение : Атака героя, подсчёт.
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            TimerOff(ref Targt);
             SelectedTrgt = Sets.SelectedTarget;
-            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus);
+            UInt16 strength = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus + Super1.Attack * Super1.Speed / 100);
             UInt16 EnemyDefence = EnemyTough(SelectedTrgt);
-            AnyHideX(BattleText1, HPenemyBar, HPenemy, Fight, Cancel1, TrgtImg, EnemyImg);
+            AnyHideX(EnemyStatus, SelectMenuFight, TrgtImg);
             TimerOn(ref EHurt, new TimeSpan(0, 0, 0, 0, Shrt(50 / GameSpeed.Value)));
 
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
 
             Foe1.EnemyHP[Sets.SelectedTarget] = Shrt(Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence) <= 0 ? 0 : Foe1.EnemyHP[Sets.SelectedTarget] - (strength - EnemyDefence));
-            if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
+            if (Foe1.EnemyHP[Sets.SelectedTarget] <= 0)
             {
                 string res;
-                try { res = EnemySounds(Sets.SelectedTarget); } catch (Exception ex) {
+                try { res = EnemySounds(Sets.SelectedTarget); }
+                catch (Exception ex)
+                {
                     res = Path.GameSounds.SpiderDied;
-                    MessageBox.Show("[RU]\nПуть к звуку не найден. При повторном появле-\nнии cообщения cвяжитесь с администратором.\n\n[EN]\nCan't find directory to sound. If problem repeat\nto occur contact with administrator.\n\n[RU] Полное сообщение | [EN] Full message\n" + ex.Message, "Ошибка поиска пути файла!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Reload rel = new Reload("Путь к звуку не найден. При повторном появлении cообщения cвяжитесь с администратором.", "Can't find path to sound. If problem repeat to occur contact with administrator.", ex.Message);
+                    rel.ShowDialog();
                 }
                 SEF(res);
             }
-            if (Foe1.EnemyHP[Sets.SelectedTarget] == 0)
+            if (Foe1.EnemyHP[Sets.SelectedTarget] <= 0)
             {
                 switch (Sets.SelectedTarget)
                 {
@@ -3947,12 +4050,12 @@ namespace WpfApp1
                     case 2: ImgHide(Img8); break;
                 }
                 SuperCheckFoes(Bits(Sets.SelectedTarget));
-                Sets.SelectedTarget = Bits(Foe1.EnemyHP[0] > 0? 0 : Foe1.EnemyHP[1] > 0 ? 1 : Foe1.EnemyHP[2] > 0 ? 2 : 0);
+                Sets.SelectedTarget = Bits(Foe1.EnemyHP[0] > 0 ? 0 : Foe1.EnemyHP[1] > 0 ? 1 : Foe1.EnemyHP[2] > 0 ? 2 : 0);
 
                 Byte[,] grRowColumn = new Byte[,] { { 23, 15, 21 }, { 2, 13, 24 } };
                 ImgGrid(TrgtImg, grRowColumn[0, Sets.SelectedTarget], grRowColumn[1, Sets.SelectedTarget]);
                 Foe1.EnemiesStillAlive = Bits(Foe1.EnemiesStillAlive - 1);
-                if ((Foe1.EnemyAppears[Sets.SelectedTarget] == "Фараон")|| (Foe1.EnemyAppears[Sets.SelectedTarget] == "Угх-зан I"))
+                if ((Foe1.EnemyAppears[Sets.SelectedTarget] == "Фараон") || (Foe1.EnemyAppears[Sets.SelectedTarget] == "Угх-зан I"))
                     if (Foe1.EnemiesStillAlive == 0)
                     {
                         LabHide(BattleText6);
@@ -3969,7 +4072,14 @@ namespace WpfApp1
                     case 200: TimerOn(ref PSAtk, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value))); Dj(atk[2]); break;
                     default: TimerOn(ref PHAtk, new TimeSpan(0, 0, 0, 0, Shrt(25 / GameSpeed.Value))); Dj(atk[0]); break;
                 }
-            else TimerOn(ref SMini);
+            else { TimerOn(ref SMini); Dj(atk[3]); }
+        }
+        //[EN] Battle : Person attack, calculate.
+        //[RU] Сражение : Атака героя, подсчёт.
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            TimerOff(ref Targt);
+            BadTime();
         }
         private bool CureOrHeal(string Power)
         {
@@ -4054,7 +4164,6 @@ namespace WpfApp1
             else Actions++;
             return false;
         }
-        public static Byte trgt = 0;
         private void UnlimitedActionsTickCheck(in string[] spec)
         {
             TrgtImg.Source = new BitmapImage(new Uri(spec[trgt], UriKind.RelativeOrAbsolute));
@@ -4063,11 +4172,14 @@ namespace WpfApp1
         private void Cancel1_Click(object sender, RoutedEventArgs e)
         {
             if (Targt.IsEnabled) TimerOff(ref Targt);
-            AnyHideX(Fight, Cancel1, HPenemy, BattleText1, EnemyImg, TrgtImg, HPenemyBar);
-            FightMenuBack();
+            AnyHideX(EnemyStatus, SelectMenuFight, TrgtImg);
+            AnyShow(FightMenu);
+            Items.IsEnabled = Sets.SpecialBattle != 200;
+            Button4.IsEnabled = Sets.SpecialBattle == 0;
+            Abilities.IsEnabled = Super1.CurrentLevel >= 2 && Sets.SpecialBattle != 200;
             if (Sets.SpecialBattle == 200) BtnHideX(new Button[] { Button4, Items, Abilities });
         }
-        private void Win_MediaEnded(object sender, RoutedEventArgs e) { WinStop(); HideAfterBattleMenu(); }
+        private void Win_MediaEnded(object sender, RoutedEventArgs e) { WinStop(); AnyHideX(NewLevelGet, AfterHPbar, AfterHPbarOver333, AfterHPbarOver666, AfterAPbar, AfterAPbarOver333, AfterAPbarOver666, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterAttackImg, AfterDefenceImg, AfterSpecialImg, AfterAgilityImg, FightResults); }
         private void WinStop()
         {
             WonOrDied();
@@ -4077,7 +4189,7 @@ namespace WpfApp1
             if (CurrentLocation == 0) Map1EnableModels();
             if (CheckMapIfModelExists(7)) AnyShow(Boulder1);
             ImgShowX(new Image[] { Threasure1, Img2, SaveProgress });
-            AnyHideX(Win, Img5);
+            AnyHideX(Win);
             Win.Position = new TimeSpan(0, 0, 0, 0, 0);
             HeyPlaySomething(music[CurrentLocation]);
         }
@@ -4095,11 +4207,10 @@ namespace WpfApp1
         }
         private void Sound2_MediaEnded(object sender, RoutedEventArgs e) { Sound2.Stop(); }
         private void Win_MediaFailed(object sender, ExceptionRoutedEventArgs e) { WonOrDied(); Win.Stop(); ImgShow(Img2); }
-        private void HideAfterBattleMenu() { AnyHideX(NewLevelGet, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1, AfterAttackImg, AfterDefenceImg, AfterAgilityImg, AfterSpecialImg, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg, AfterHPbar, AfterAPbar, NextExpBar, BeforeHPbar, BeforeAPbar, BeforeHPbarOver333, AfterHPbarOver333, BeforeHPbarOver666, AfterHPbarOver666, BeforeAPbarOver333, AfterAPbarOver333, BeforeAPbarOver666, AfterAPbarOver666, TextOk1); }
         private void TextOk1_Click(object sender, RoutedEventArgs e)
         {
-            AfterIcon.Source = Bmper(Path.IconStatePath.Usual);
-            Win.Source = CurrentLocation == 2 ? Ura(Path.CutScene.PowerRanger) : CurrentLocation ==1? Ura(Path.CutScene.WasteTime) : Ura(Path.CutScene.Victory);
+            HeroSetStatus(Super1.PlayerStatus);
+            Win.Source = CurrentLocation == 2 ? Ura(Path.CutScene.PowerRanger) : CurrentLocation ==1 ? Ura(Path.CutScene.WasteTime) : Ura(Path.CutScene.Victory);
             MaterialsAdd.Content = "";
             Mat = 0;
             if (Sets.SpecialBattle == 0)
@@ -4114,81 +4225,104 @@ namespace WpfApp1
                 LabHideX(new Label[] { BattleText1, BattleText2, BattleText3 });
                 switch (Sets.SpecialBattle)
                 {
-                    case 1: case 2: case 3: MediaShow(TheEnd); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
+                    case 1: case 2: case 3: MediaShow(TheEnd); AnyShow(Skip1); Img1.Source = Bmper(Path.Backgrounds.Normal); break;
                     case 200: MediaShow(Win); AnyHide(Img1); break;
                     default: MediaShow(Win); AnyHide(Img1); break;
                 }
                 Sets.SpecialBattle = 0;
             }
-            HideAfterBattleMenu();
+            AnyHideX(NewLevelGet, AfterHPbar, AfterHPbarOver333, AfterHPbarOver666, AfterAPbar, AfterAPbarOver333, AfterAPbarOver666, AfterParams, AfterHPtxt, AfterAPtxt, AfterHP, AfterAP, AfterAttack, AfterDefence, AfterAgility, AfterSpecial, AfterATK, AfterDEF, AfterAG, AfterSP, AddHP, AddAP, AddATK, AddDEF, AddAG, AddSP, AfterAttackImg, AfterDefenceImg, AfterSpecialImg, AfterAgilityImg, FightResults);
             Sound1.Stop();
             ImgShow(Img1);
         }
-        private void WonOrDied() { Sound1.Stop(); AnyHideX(BattleText1, BattleText2, BattleText3, Lab2, HPtext, APtext, LevelText, HP, AP, ATK, TextOk1, Button2, Button3, Button4, Items, Abilities, textOk2, HPbar, APbar, Time1, Img3, Img4, Img5, Img6, Img7, Img8, TimeTurnImg); }
+        private void WonOrDied() {
+            Sound1.Stop();
+            AnyHideX(BattleText1, BattleText2, BattleText3, ATK, TextOk1, FightMenu, textOk2, Img3, Img4, Img6, Img7, Img8, BattleStatus);
+        }
         private void FightStaticButtons_MouseEnter(object sender, MouseEventArgs e)
         {
-            Button[] FightMenu = { Cancel1, Cancel2, Back1, Back2 };
-            String[] BattleTxt = { Txt.Can.Fgt, Txt.Can.Act, Txt.Can.Back, Txt.Can.Back };
-            for (Byte i = 0; i < FightMenu.Length; i++)
-                if (sender.Equals(FightMenu[i]))
-                {
-                    BattleText2.Content = BattleTxt[i];
-                    LabShow(BattleText2);
-                    break;
-                }
+            Button b = sender as Button;
+            BattleText2.Content = b.Tag.ToString();
+            LabShow(BattleText2);
         }
         private void FightStaticButtons_MouseLeave(object sender, MouseEventArgs e)
         {
-            Button[] FightMenu = { Cancel1, Cancel2, Back1, Back2 };
-            for (Byte i = 0; i < FightMenu.Length; i++) if (sender.Equals(FightMenu[i])) { LabHide(BattleText2); break; }
+            LabHide(BattleText2);
         }
         private void FightDynamicButtons_MouseLeave(object sender, MouseEventArgs e)
         {
-            Button[] FightMenu = { Button2, Button3, Button4, Items, Abilities, Fight, ACT1, ACT2, ACT3, ACT4 };
-            Image[] images = { FightImg, DefenceImg, EscapeFromBattleImg, ItemsImg, AbilitiesImg, SelectTrgt1Img, SelectTrgt2Img, SelectTrgt3Img, SelectTrgt4Img, SelectTrgt5Img };
-            BitmapImage[] Btim = { Bmper(Path.BtnBefore.Fight), Bmper(Path.BtnBefore.Defence), Bmper(Path.BtnBefore.Escape), Bmper(Path.BtnBefore.Bag), Bmper(Path.BtnBefore.Skills), Bmper(Path.BtnBefore.Select), Bmper(Path.BtnBefore.Select), Bmper(Path.BtnBefore.Select), Bmper(Path.BtnBefore.Select), Bmper(Path.BtnBefore.Select) };
-            for (Byte i = 0; i < FightMenu.Length; i++) if (sender.Equals(FightMenu[i])) { images[i].Source = Btim[i]; break; }
+            Button b = sender as Button;
+            int p = Numb(b.Tag);
+            Image img = b.Content as Image;
+            BitmapImage[] Btim = { Bmper(Path.BtnBefore.Fight), Bmper(Path.BtnBefore.Defence), Bmper(Path.BtnBefore.Escape), Bmper(Path.BtnBefore.Skills), Bmper(Path.BtnBefore.Bag), Bmper(Path.BtnBefore.Genocide) };
+            img.Source = Btim[p];
             LabHide(BattleText2);
         }
         private void FightDynamicButtons_MouseEnter(object sender, MouseEventArgs e)
         {
-            Button[] FightMenu = { Button2, Button3, Button4, Items, Abilities, Fight, ACT1, ACT2, ACT3, ACT4 };
-            Image[] images = { FightImg, DefenceImg, EscapeFromBattleImg, ItemsImg, AbilitiesImg, SelectTrgt1Img, SelectTrgt2Img, SelectTrgt3Img, SelectTrgt4Img, SelectTrgt5Img };
-            BitmapImage[] Btim = { Bmper(Path.BtnAfter.Fight), Bmper(Path.BtnAfter.Defence), Bmper(Path.BtnAfter.Escape), Bmper(Path.BtnAfter.Bag), Bmper(Path.BtnAfter.Skills), Bmper(Path.BtnAfter.Select), Bmper(Path.BtnAfter.Select), Bmper(Path.BtnAfter.Select), Bmper(Path.BtnAfter.Select), Bmper(Path.BtnAfter.Select) };
-            String[] text = { Txt.Fht.Atk, Txt.Fht.Def, Txt.Fht.Esc, Txt.Fht.Inv, Txt.Fht.Act, Txt.Fht.Trg, Txt.Fht.S1, Txt.Fht.S2, Txt.Fht.S3, Txt.Fht.S4 };
-            for (Byte i = 0; i < FightMenu.Length; i++)
-                if (sender.Equals(FightMenu[i]))
-                {
-                    images[i].Source = Btim[i];
-                    BattleText2.Content = text[i];
-                    LabShow(BattleText2);
-                    break;
-                }
+            Button b = sender as Button;
+            int p = Numb(b.Tag);
+            Image img = b.Content as Image;
+            BitmapImage[] Btim = { Bmper(Path.BtnAfter.Fight), Bmper(Path.BtnAfter.Defence), Bmper(Path.BtnAfter.Escape), Bmper(Path.BtnAfter.Skills),Bmper(Path.BtnAfter.Bag), Bmper(Path.BtnAfter.Genocide) };
+            String[] text = { Txt.Fht.Atk, Txt.Fht.Def, Txt.Fht.Esc, Txt.Fht.Inv, Txt.Fht.Act, Txt.Fht.Gen };
+            img.Source = Btim[p];
+            BattleText2.Content = text[p];
+            LabShow(BattleText2);
         }
-        private void HideFightIconPersActions() { AnyHideX(HPenemyBar, BattleText4, BattleText5, BattleText6, HPenemy, ItemText, ItemsCountImg, Img4, Img5, TrgtImg, Cure, Heal, Torch, Whip, Super, Back1, Button2, Button3, Button4, Items, Abilities, Fight, Cancel1, ACT1, ACT2, Cancel2); }
-        private void GameOver_MediaEnded(object sender, RoutedEventArgs e) { Form1.Close(); }
+        private void SelectDynamicButtons_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Image img = ((Button)sender).Content as Image;
+            img.Source = Bmper(Path.BtnAfter.Select);
+            BattleText2.Content = ((Button)sender).Tag.ToString();
+            LabShow(BattleText2);
+        }
+        private void SelectDynamicButtons_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Image img = ((Button)sender).Content as Image;
+            img.Source = Bmper(Path.BtnBefore.Select);
+            LabHide(BattleText2);
+        }
+        private void HideFightIconPersActions() {
+            AnyHideX(EnemyStatus, BattleText4, BattleText5, BattleText6, ItemsMenu, Img4, TrgtImg, SkillsMenu, FightMenu, SelectMenuFight, SelectMenuSkills);
+        }
+        private void GameOver_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            Reload.Reloading();
+            Form1.Close();
+        }
         public static Byte[] AbilityBonuses = new Byte[] { 0, 0, 0, 0 };
-        private void AbilitiesMakeDisappear1() { BtnHideX(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake, Learn, Back1, SwitchAbils }); }
-        private void Back1_Click(object sender, RoutedEventArgs e) { AbilitiesMakeDisappear1(); FightMenuBack(); }
+        private void Back1_Click(object sender, RoutedEventArgs e) {
+            AnyHide(SkillsMenu);
+            AnyShow(FightMenu);
+            Items.IsEnabled = Sets.SpecialBattle != 200;
+            Button4.IsEnabled = Sets.SpecialBattle == 0;
+            Abilities.IsEnabled = Super1.CurrentLevel >= 2 && Sets.SpecialBattle != 200;
+        }
         private void Cure_Click(object sender, RoutedEventArgs e)
         {
-            TimerOn(ref Pure1, Shrt(25 / GameSpeed.Value));
-            TimerOn(ref PCure, Shrt(75 / GameSpeed.Value));
-            Dj(Path.GameNoises.Cure);
-            Super1.SetCurrentHpAp(Shrt(Super1.Special * 2 + Super1.CurrentHP >= Super1.MaxHP ? Super1.MaxHP : Super1.CurrentHP + Super1.Special * 2), Shrt(Super1.CurrentAP - 5));
-            CurrentHpApCalculate();
-            AbilitiesMakeDisappear1();
-            Time1.Value = 0;
+            if (Super1.CurrentAP >= 5)
+            {
+                TimerOn(ref Pure1, Shrt(25 / GameSpeed.Value));
+                TimerOn(ref PCure, Shrt(75 / GameSpeed.Value));
+                Dj(Path.GameNoises.Cure);
+                Super1.SetCurrentHpAp(Shrt(Super1.Special * 2 + Super1.CurrentHP >= Super1.MaxHP ? Super1.MaxHP : Super1.CurrentHP + Super1.Special * 2), Shrt(Super1.CurrentAP - 5));
+                CurrentHpApCalculate();
+                AnyHide(SkillsMenu);
+                Time1.Value = 0;
+            }
         }
         private void Abilities_Click(object sender, RoutedEventArgs e)
         {
-            CheckAccessAbilities(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control }, new Byte[] { 2, 21, 4, 16, 14, 20, 25 }, new Byte[] { 5, 10, 3, 12, 8, 15, 0 });
-            BtnShowX(new Button[] { SwitchAbils, Back1 });
+            Button[][] pages = { new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control }, new Button[] { Torch, Whip, Thrower, Super, Tornado, Quake, Learn } };
+            Byte[][] levels = { new Byte[] { 2, 21, 4, 16, 14, 20, 25 }, new Byte[] { 3, 6, 11, 7, 13, 18, 5 } };
+            Byte[][] apcost = { new Byte[] { 5, 10, 3, 12, 8, 15, 0 }, new Byte[] { 4, 6, 15, 10, 20, 30, 2 } };
+            int i = Bits(SwitchAbils.Tag);
+            CheckAccessAbilities(pages[i], levels[i], apcost[i]);
+            AnyShow(SkillsMenu);
             Control.IsEnabled = !PCtrl.IsEnabled;
             Regen.IsEnabled = !PRegn.IsEnabled;
             FastEnableDisableBtn(new Boolean[] { AbilityBonuses[0] <= 0, AbilityBonuses[1] <= 0 }, BuffUp, ToughenUp);
-            ToNextImg.Source = Bmper(Path.BtnCustomize.ArrowNext);
-            FightMenuMakesDisappear();
+            AnyHide(FightMenu);
         }
         private void LevelUpShow()
         {
@@ -4230,22 +4364,22 @@ namespace WpfApp1
             {
                 APtext.Content = "ОД";
                 Super1.SetStats(Bits(Super1.CurrentLevel-1));
-                Super1.SetCurrentHpAp(RememberHPAP[0], RememberHPAP[1]);
+                Super1.SetCurrentHpAp(Super1.MaxHPNxt[Super1.CurrentLevel - 1], Super1.MaxAPNxt[Super1.CurrentLevel - 1]);
                 RefreshAllHPAP();
                 Sets.SpecialBattle = 0;
-                FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Path.PersonStatePath.Usual), Bmper(Path.IconStatePath.Usual)));
+                FastImgChange(new Image[] { Img4, Img5 }, BmpersToX(Bmper(Path.PersonStatePath.Usual), Bmper(Super1.PlayerStatus == 1 ? Path.IconStatePath.Poison : Path.IconStatePath.Usual)));
                 BAG.Armor[3] = true;
                 BAG.Jacket = Super1.PlayerEQ[1] == 0;
                 ItemsGetSlot1.Content += Txt.Eqp.Tors.Serious+" \n";
                 Super1.MiniTask = true;
+                AnyShowX(Button4, Items, Abilities);
                 LabShow(ItemsGetSlot1);
             }
-            AnyHideX(HPbar, HPbarOver333, HPbarOver666, APbar, APbarOver333, APbarOver666, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, textOk2);
+            AnyHideX(BattleStatus, BattleText1, BattleText2, BattleText3, BattleText4, BattleText5, BattleText6, textOk2);
             ShowAfterBattleMenu();
             WonOrDied();
         }
         private void GoldBar(ProgressBar bar, in UInt16 val) { bar.Value = val; }
-        private void GoldBarX(in UInt16 val, params ProgressBar[] bar) { foreach (ProgressBar b in bar) GoldBar(b, val); }
         private void GoldBarX(in UInt16[] val, params ProgressBar[] bar) { for (Byte i=0;i<val.Length;i++) GoldBar(bar[i], val[i]); }
         private void ShowAfterBattleMenu()
         {
@@ -4285,7 +4419,8 @@ namespace WpfApp1
             }
             SetAnyValues(new object[] { BeforeHPbar.Value, AfterHPbar.Value, BeforeHPbarOver333.Value, AfterHPbarOver333.Value, BeforeHPbarOver666.Value, AfterHPbarOver666.Value, BeforeAPbar.Value, AfterAPbar.Value, BeforeAPbarOver333.Value, AfterAPbarOver333.Value, BeforeAPbarOver666.Value, AfterAPbarOver666.Value }, new object[] { HPbar.Value, HPbar.Value, HPbarOver333.Value, HPbarOver333.Value, HPbarOver666.Value, HPbarOver666.Value, APbar.Value, APbar.Value, APbarOver333.Value, APbarOver333.Value, APbarOver666.Value, APbarOver666.Value });
             FastTextChange(new Label[] { MaterialsOnHand, MaterialsAdd, AfterLevel }, new string[] { "" + BAG.Materials, "+" + Mat, Txt.Com.Lv + " " + Super1.CurrentLevel });
-            AnyShowX(ExpText, AfterLevel, AfterName, AfterStatus, BeforeParams, BeforeHPtxt, BeforeAPtxt, BeforeHP, BeforeAP, BeforeAttack, BeforeDefence, BeforeAgility, BeforeSpecial, BeforeATK, BeforeDEF, BeforeAG, BeforeSP, AfterBattleGet, MaterialsGet, MaterialsOnHand, MaterialsAdd, ItemsGet, ItemsGetSlot1, AfterBattleMenuImg, AfterIcon, BeforeAttackImg, BeforeDefenceImg, BeforeAgilityImg, BeforeSpecialImg, MaterialsGetImg, NextExpBar, BeforeHPbar, BeforeAPbar);
+
+            AnyShow(FightResults);
             ItemsGetSlot1.Content = "";
             TimerOn(ref NLevl);
             TimerOn(ref AMats);
@@ -4321,48 +4456,34 @@ namespace WpfApp1
         }
         private void Torch_Click(object sender, RoutedEventArgs e)
         {
-            Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
-            SelectedTrgt = Sets.SelectedTarget;
-            SelectTarget();
-            AbilitiesMakeDisappear1();
-            BtnShowX(new Button[] { ACT1, Cancel2 });
-        }
-
-        private void InBattleHighSkillsMenu()
-        {             
-            if (ToNextImg.Source.ToString().Contains(Path.BtnCustomize.ArrowNext))
+            if (Super1.CurrentAP >= 4)
             {
-                BtnHideX(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control });
-                CheckAccessAbilities(new Button[] { Torch, Whip, Thrower, Super, Tornado, Quake, Learn }, new Byte[] { 3, 6, 11, 7, 13, 18, 5 }, new Byte[] { 4, 6, 15, 10, 20, 30, 2 });
-                ButtonShow(SwitchAbils);
-                ToNextImg.Source = Bmper(Path.BtnCustomize.ArrowPrev);
-            }
-            else if (ToNextImg.Source.ToString().Contains(Path.BtnCustomize.ArrowPrev))
-            {
-                BtnHideX(new Button[] { Torch, Whip, Thrower, Super, Tornado, Quake, Learn });
-                CheckAccessAbilities(new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control }, new Byte[] { 2, 21, 4, 16, 14, 20, 25 }, new Byte[] { 5, 10, 3, 12, 8, 15, 0 });
-                ButtonShow(SwitchAbils);
-                BuffUp.IsEnabled = AbilityBonuses[0] == 0;
-                ToughenUp.IsEnabled = AbilityBonuses[1] == 0;
-                Control.IsEnabled = !PCtrl.IsEnabled;
-                Regen.IsEnabled = !PRegn.IsEnabled;
-                ToNextImg.Source = Bmper(Path.BtnCustomize.ArrowNext);
+                Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
+                SelectedTrgt = Sets.SelectedTarget;
+                SelectTarget();
+                AnyHide(SkillsMenu);
+                AnyShowX(ACT1, SelectMenuSkills);
             }
         }
 
         private void Cancel2_Click(object sender, RoutedEventArgs e)
         {
             if (Targt.IsEnabled) TimerOff(ref Targt);
-            AnyHideX(HPenemyBar, HPenemy, BattleText1, EnemyImg, TrgtImg, Fight, ACT1, ACT2, ACT3, ACT4, Cancel2, Cancel1);
-            ButtonShow(Back1);
-            InBattleHighSkillsMenu();
+            AnyHideX(EnemyStatus, TrgtImg, SelectMenuSkills, ACT1, ACT2, ACT3, ACT4);
+            AnyShow(SkillsMenu);
         }
         private void ACT(in Byte a1)
         {
             string[] EnemyNames = { "Паук", "Мумия", "Зомби", "Страж", "Стервятник", "Гуль", "Жнец", "Скарабей", "Моль-убийца", "Прислужник", "П. червь", "Мастер"  };
-            UInt16 strength = Shrt(a1 == 0? ( Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[0] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[1] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[5] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[6] ? Super1.Special * 2.5 : Super1.Special * 1.25) : a1 == 1? ( Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[2] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[3] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[7] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[9] ? Super1.Special * 3 : Super1.Special * 1.5 ) : a1 == 2 ? (Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[4] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[8] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[9] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[11] ? Super1.Special*5 : Super1.Special*2.5) : Super1.Special);
+            UInt16 strength = a1 switch
+            {
+                0 => Shrt(Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[0] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[1] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[5] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[6] ? Super1.Special * 2.5 : Super1.Special * 1.25),
+                1 => Shrt(Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[2] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[3] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[7] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[9] ? Super1.Special * 3 : Super1.Special * 1.5),
+                2 => Shrt(Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[4] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[8] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[9] || Foe1.EnemyAppears[Sets.SelectedTarget] == EnemyNames[11] ? Super1.Special * 5 : Super1.Special * 2.5),
+                _ => Super1.Special,
+            };
             strength += Shrt(Super1.Special * Super1.Speed * 0.01);
-            AnyHideX(HPenemy, BattleText1, HPenemyBar, EnemyImg, Fight, Cancel1, Cancel2);
+            AnyHideX(EnemyStatus, SelectMenuSkills);
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
             UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
@@ -4372,7 +4493,8 @@ namespace WpfApp1
                 string res;
                 try { res = EnemySounds(Sets.SelectedTarget); } catch (Exception ex) {
                     res = Path.GameSounds.SpiderDied;
-                    MessageBox.Show("[RU]\nПуть к звуку не найден. При повторном появле-\nнии cообщения cвяжитесь с администратором.\n\n[EN]\nCan't find directory to sound. If problem repeat\nto occur contact with administrator.\n\n[RU] Полное сообщение | [EN] Full message\n" + ex.Message, "Ошибка поиска пути файла!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Reload rel = new Reload("Путь к звуку не найден. При повторном появлении cообщения cвяжитесь с администратором.", "Can't find path to sound. If problem repeat to occur contact with administrator.", ex.Message);
+                    rel.ShowDialog();
                 }
                 SEF(res);
                 SuperCheckFoes(Sets.SelectedTarget);
@@ -4388,23 +4510,29 @@ namespace WpfApp1
         }
         private void Heal_Click(object sender, RoutedEventArgs e)
         {
-            AfterIcon.Source = Icon0.Source = Img5.Source = Bmper(@Path.IconStatePath.Usual);
-            SetAnyValues(new object[] { Super1.PlayerStatus, Time1.Value },0,0);
-            AfterStatus.Content = StatusP.Content = Txt.Com.Hlthy + " ♫";
-            Super1.CurrentAP -= 3;
-            CurrentAPcalculate();
-            AbilitiesMakeDisappear1();
-            TimerOn(ref PHeal, Shrt(25 / GameSpeed.Value));
-            TimerOn(ref PAtxc, Shrt(75 / GameSpeed.Value));
-            Dj(Path.GameNoises.Heal);
+            if (Super1.CurrentAP >= 3)
+            {
+                HeroSetStatus(0);
+                Time1.Value = 0;
+                AfterStatus.Content = StatusP.Content = Txt.Com.Hlthy + " ♫";
+                Super1.CurrentAP -= 3;
+                CurrentAPcalculate();
+                AnyHide(SkillsMenu);
+                TimerOn(ref PHeal, Shrt(25 / GameSpeed.Value));
+                TimerOn(ref PAtxc, Shrt(75 / GameSpeed.Value));
+                Dj(Path.GameNoises.Heal);
+            }
         }
         private void Whip_Click(object sender, RoutedEventArgs e)
         {
-            Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
-            SelectedTrgt = Sets.SelectedTarget;
-            SelectTarget();
-            AbilitiesMakeDisappear1();
-            BtnShowX(new Button[] { ACT2, Cancel2 });
+            if (Super1.CurrentAP >= 6)
+            {
+                Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
+                SelectedTrgt = Sets.SelectedTarget;
+                SelectTarget();
+                AnyHide(SkillsMenu);
+                AnyShowX(SelectMenuSkills, ACT2);
+            }
         }
         private void SuperCheckFoes(in Byte seltrg)
         {
@@ -4425,8 +4553,8 @@ namespace WpfApp1
         }
         private void AbilitySupers(in UInt16 strength)
         {
-            AbilitiesMakeDisappear1();
-            AnyHideX(TrgtImg, BattleText1, HPenemy, Fight, Cancel1, Cancel2, HPenemyBar);
+            AnyHide(SkillsMenu);
+            AnyHideX(TrgtImg, SelectMenuSkills, EnemyStatus);
             SelectedTrgt = 4;
             Time1.Value = 0;
             Lab2.Foreground = Brushes.White;
@@ -4451,20 +4579,20 @@ namespace WpfApp1
         }
         private void Items_Click(object sender, RoutedEventArgs e)
         {
-            FightMenuMakesDisappear();
-            AnyShowX(Back2, ItemText, ItemsCountImg);
+            AnyHide(FightMenu);
+            AnyShowX(ItemsMenu);
             CheckAccessItems(new Byte[] { BAG.AntidoteITM, BAG.FusedITM, BAG.BandageITM, BAG.EtherITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM }, new Button[] { Antidote1, Fused1, Bandage1, Ether, Herbs, Ether2, Elixir });
             Dj(Path.GameNoises.BagOpen);
         }
-        private void MenuItemsHide1() { BtnHideX(new Button[] { Antidote1, Fused1, Bandage1, Ether, Herbs, Ether2, Elixir, Back2 }); }
         private void Back2_Click(object sender, RoutedEventArgs e)
         {
-            MenuItemsHide1();
-            FightMenuBack();
-            AnyHideX(ItemText, ItemsCountImg);
+            AnyHide(ItemsMenu);
+            AnyShow(FightMenu);
+            Items.IsEnabled = Sets.SpecialBattle != 200;
+            Button4.IsEnabled = Sets.SpecialBattle == 0;
+            Abilities.IsEnabled = Super1.CurrentLevel >= 2 && Sets.SpecialBattle != 200;
             Dj(Path.GameNoises.BagClose);
         }
-        private void ShowEquipAndStats() { AnyShowX(EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText); }
         private void MenuHpApExp()
         {
             HPbar1.Width = (HPbar.Width + HPbarOver333.Width + HPbarOver666.Width) * 0.65;
@@ -4481,8 +4609,7 @@ namespace WpfApp1
             RefreshAllHPAP();
             BarColoring(HPbar1, 0);
             BarColoring(APbar1, 1);
-            Icon0.Source = Bmper(Super1.PlayerStatus == 0 ? Path.IconStatePath.Usual : Path.IconStatePath.Poison);
-            StatusP.Content = Super1.PlayerStatus == 0 ? Txt.Com.Hlthy + " ♫" : Txt.Com.Ill + " §";
+            HeroSetStatus(Super1.PlayerStatus);
         }
         private void BarColoring(ProgressBar Bar, in Byte color)
         {
@@ -4508,15 +4635,13 @@ namespace WpfApp1
             RightPanelMenuTurnON();
             HeroStatus();
         }
-        private void RightPanelMenuTurnON() { BtnShowX(new Button[] { Status, Abils, Items0, Equip, Tasks, Info, Settings }); }
+        private void RightPanelMenuTurnON() { AnyShowX(Status, Abils, Items0, Equip, Tasks, Info, Settings); }
         private void CheckAccessAbilities(Button[] abils, in Byte[] lvl, in Byte[] apcost) { for (Byte i = 0; i < abils.Length; i++) if (Super1.CurrentLevel >= lvl[i]) { ButtonShow(abils[i]); abils[i].IsEnabled = Super1.CurrentAP >= apcost[i]; } }
         private void HeroAbilities()
         {
             MenuHpApExp();
             RightPanelMenuTurnON();
-            AnyShowX(Menu1, Icon0, HPbar1, APbar1, Name0, StatusP, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, CostText, MiscSkills, FightSkills);
-            BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 4, 26 }, new Byte[] { 16, 11 });
-            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 4, 26, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 7, 2, Bits(Bits(HPbar1.GetValue(Grid.ColumnProperty)) + Bits(HPbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(APbar1.GetValue(Grid.ColumnProperty)) + Bits(APbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(ExpBar1.GetValue(Grid.ColumnProperty)) + Bits(ExpBar1.GetValue(Grid.ColumnSpanProperty))) });
+            AnyShowX(GameSkills);
             CheckAccessAbilities(new Button[] { Cure1, Heal1, Cure2Out, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1, BuffUp1, ToughenUp1, Regen1, Control1 }, new Byte[] { 2, 4, 21, 3, 6, 11, 7, 13, 18, 5, 16, 14, 20, 25 }, new Byte[] { 5, 3, 10, 4, 6, 15, 10, 20, 30, 2, 12, 8, 15, 0 });
         }
         private void Abils_Click(object sender, RoutedEventArgs e)
@@ -4532,16 +4657,14 @@ namespace WpfApp1
         private void CheckAccessItems(in Byte[] bag, Button[] btn) { for (Byte i = 0; i < btn.Length; i++) if (bag[i] >= 1) ButtonShow(btn[i]); else ButtonHide(btn[i]); }
         private void HeroItems()
         {
-            MenuHpApExp();            
+            MenuHpApExp();
             RightPanelMenuTurnON();
-            BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 2, 4 }, new Byte[] { 16, 16 });
-            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 7, 2, 4, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 2, 7, 7, Bits(Bits(HPbar1.GetValue(Grid.ColumnProperty)) + Bits(HPbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(APbar1.GetValue(Grid.ColumnProperty)) + Bits(APbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(ExpBar1.GetValue(Grid.ColumnProperty)) + Bits(ExpBar1.GetValue(Grid.ColumnSpanProperty))) });
             CheckAccessItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { Antidote, Bandage, Ether1, Fused, Herbs1, Ether2Out, SleepBag1, Elixir1 }, new Label[] { AntidoteText, BandageText, EtherText, FusedText, HerbsText, Ether2OutText, SleepBagText, ElixirText });
             FastEnableDisableBtn(new Boolean[] { MapScheme[Adoptation.ImgYbounds, Adoptation.ImgXbounds] == 150, false }, new Button[] { SleepBag1, Items0 });
             CraftSwitch.Content = "Создание";
             MaterialsCraft.Content = BAG.Materials;
             FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Items, Txt.Sct.Items });
-            AnyShowX(DescribeHeader, Describe2, Describe1, StatusP, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, MaterialsCraft, HPbar1, APbar1, CraftSwitch, Menu1, Icon0, MaterialsCraftImg);
+            AnyShow(GameItems);
         }
         private void Items0_Click(object sender, RoutedEventArgs e)
         {
@@ -4560,9 +4683,7 @@ namespace WpfApp1
         {
             StatusCalculate();
             RightPanelMenuTurnON();
-            BarGridX(new ProgressBar[] { HPbar1, APbar1 }, new Byte[] { 2, 4 }, new Byte[] { 16, 16 });
-            LabGridX(new Label[] { StatusP, HPtext1, APtext1, HP1, AP1, Exp1 }, new Byte[] { 2, 2, 4, Bits(HPbar1.GetValue(Grid.RowProperty)), Bits(APbar1.GetValue(Grid.RowProperty)), Bits(ExpBar1.GetValue(Grid.RowProperty)) }, new Byte[] { 14, 7, 7, Bits(Bits(HPbar1.GetValue(Grid.ColumnProperty)) + Bits(HPbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(APbar1.GetValue(Grid.ColumnProperty)) + Bits(APbar1.GetValue(Grid.ColumnSpanProperty))), Bits(Bits(ExpBar1.GetValue(Grid.ColumnProperty)) + Bits(ExpBar1.GetValue(Grid.ColumnSpanProperty))) });
-            AnyShowX(Menu1, Img1, Icon0, EquipHImg, EquipBImg, EquipLImg, EquipDImg, ATKImg, DEFImg, AGImg, SPImg, HPbar1, APbar1, HPtext1, APtext1, HP1, AP1, Describe1, Describe2, Params, ParamsATK, ParamsDEF, ParamsAG, ParamsSP, EquipText, ATK1, DEF1, AG1, SP1, EquipH, EquipB, EquipL, EquipD, DescribeHeader, Describe1, Equip1, Equip2, Equip3, Equip4, Remove1, Remove2, Remove3, Remove4);
+            AnyShowX(GameEquip);
             FastEnableDisableBtn(false, new Button[] { Equip, Remove1, Remove2, Remove3, Remove4, Equip1, Equip2, Equip3, Equip4 });
             FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Equip, Txt.Sct.Equip });
         }
@@ -4573,7 +4694,6 @@ namespace WpfApp1
             if (!Items0.IsEnabled) Dj(Path.GameNoises.BagClose);
             MegaHide();
             HeroEquip();
-            ShowEquipAndStats();
             EquipWatch();
         }
         private void CheckSeriousBonus() { Sets.SeriousBonus = Bits(((Super1.PlayerEQ[0] == 165) && (Super1.PlayerEQ[1] == 85) && (Super1.PlayerEQ[2] == 55) && (Super1.PlayerEQ[3] == 25)) ? 90 : 0); }
@@ -4663,24 +4783,25 @@ namespace WpfApp1
         {
             if (!Items0.IsEnabled) Dj(Path.GameNoises.BagClose);
             MegaHide();
+            AnyShow(GameTasks);
             RightPanelMenuTurnON();
             Tasks.IsEnabled = false;
             RealTasks();
             MiniTasks();
             FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Tasks, Txt.Sct.Tasks });            
-            AnyShowX(Describe1, Describe2, DescribeHeader);
         }
         private void Tasks_Click(object sender, RoutedEventArgs e) { HeroTasks(); }
         private void Info_Click(object sender, RoutedEventArgs e)
         {
             if (!Items0.IsEnabled) Dj(Path.GameNoises.BagClose);
             MegaHide();
+            AnyShow(HelpHints);
             RightPanelMenuTurnON();
             Info.IsEnabled = false;
             Txt.Doc.InfoChange1 = 0;
             FastInfoChange(new TextBlock[] { InfoText1, InfoText2, InfoText3 }, new Label[] { InfoHeaderText1, InfoHeaderText2, InfoHeaderText3 }, new string[] { Txt.Doc.HelpInfo2[0, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo2[1, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo2[2, Txt.Doc.InfoChange1] }, new string[] { Txt.Doc.HelpInfo1[0, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo1[1, Txt.Doc.InfoChange1], Txt.Doc.HelpInfo1[2, Txt.Doc.InfoChange1] });
             FastTextChange(new Label[] { InfoIndex, Describe1, Describe2 }, new string[] { Txt.Doc.InfoChange1 + 1 + "/19", Txt.Hnt.Infos, Txt.Sct.Infos });
-            AnyShowX(DescribeHeader, Describe1, Describe2, InfoHeaderText1, InfoHeaderText2, InfoHeaderText3, InfoIndex, InfoIndexPlus, InfoText1, InfoText2, InfoText3, InfoImg1, InfoImg2, InfoImg3);
+            AnyShowX(SwitchPanel);
             GameHint();
         }
         private void FastInfoChange(TextBlock[] Texts, Label[] Headers, in string[] text, in string[] content) { for (Byte i = 0; i < Headers.Length; i++) { Headers[i].Content = content[i]; Texts[i].Text = text[i]; } }
@@ -4707,13 +4828,14 @@ namespace WpfApp1
         {
             HideFightIconPersActions();
             WonOrDied();
+            AnyHide(Skip1);
             switch (Super1.MenuTask)
             {
-                case 3: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter1), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); break;
+                case 3: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter1), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.AncientKey); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); AnyShow(Skip1); break;
                 case 4: MediaShowAdvanced(ChapterIntroduction, Ura(Path.CutScene.PreChapter2), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.WaterTemple); break;
-                case 6: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter2), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.Conversation); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal);  break;
+                case 6: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter2), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.Conversation); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); AnyShow(Skip1); break;
                 case 7: MediaShowAdvanced(ChapterIntroduction, Ura(Path.CutScene.PreChapter3), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.LavaTemple); break;
-                case 8: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter3), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.Threasures); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); break;
+                case 8: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Fin_Chapter3), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.Threasures); Super1.MenuTask++; Img1.Source = Bmper(Path.Backgrounds.Normal); AnyShow(Skip1); break;
                 case 9: MediaShowAdvanced(ChapterIntroduction, Ura(Path.CutScene.PreChapter4), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.GetAway); break;
                 case 10: MediaShowAdvanced(TheEnd, Ura(Path.CutScene.Titres), new TimeSpan(0, 0, 0, 0, 0)); HeyPlaySomething(Path.GameMusic.SayGoodbye); Super1.MenuTask++; break;
                 default: Form1.Close(); break;
@@ -4723,7 +4845,23 @@ namespace WpfApp1
         private void Win_MediaOpened(object sender, RoutedEventArgs e) { WonOrDied(); }
         private void Med1_MediaOpened(object sender, RoutedEventArgs e) { AnyHideX(Button1, Img1, Lab1, Skip1); AnyShow(Skip1); }
         private void Form1_KeyUp(object sender, KeyEventArgs e) { if (Img2.IsEnabled) Img2.Source = Bmper(e.Key == Key.W ? Path.Ray.StaticUp : e.Key == Key.A ? Path.Ray.StaticLeft : e.Key == Key.D ? Path.Ray.StaticRight : Path.Ray.StaticDown); }
-        private void SwitchAbils_Click(object sender, RoutedEventArgs e){ InBattleHighSkillsMenu(); }
+        private void SwitchAbils_Click(object sender, RoutedEventArgs e)
+        {
+            Button b = sender as Button;
+            int i = Bits(b.Tag);
+            Button[][] pages = { new Button[] { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control }, new Button[] { Torch, Whip, Thrower, Super, Tornado, Quake, Learn } };
+            Byte[][] levels = { new Byte[] { 2, 21, 4, 16, 14, 20, 25 }, new Byte[] { 3, 6, 11, 7, 13, 18, 5 } };
+            Byte[][] apcost = { new Byte[] { 5, 10, 3, 12, 8, 15, 0 }, new Byte[] { 4, 6, 15, 10, 20, 30, 2 } };
+            BtnHideX(pages[i]);
+            i = (i + 1 >= pages.Length) ? 0 : i + 1;
+            b.Tag = i;
+            ToNextImg.Source = Bmper((i == pages.Length-1) ? Path.BtnCustomize.ArrowPrev : Path.BtnCustomize.ArrowNext);
+            CheckAccessAbilities(pages[i], levels[i], apcost[i]);
+            BuffUp.IsEnabled = AbilityBonuses[0] == 0;
+            ToughenUp.IsEnabled = AbilityBonuses[1] == 0;
+            Control.IsEnabled = !PCtrl.IsEnabled;
+            Regen.IsEnabled = !PRegn.IsEnabled;
+        }
         private void RemoveButtons_MouseEnter(object sender, MouseEventArgs e)
         {
             Byte[] EquipQuality = { Super1.PlayerEQ[0], Super1.PlayerEQ[1], Super1.PlayerEQ[2], Super1.PlayerEQ[3] };
@@ -4750,10 +4888,10 @@ namespace WpfApp1
                 CheckAccessMaterials(new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
                 if (!BAG.ArmBoots[3]) CheckAccessMaterials(new UInt16[] { 30000 }, new Button[] { CraftPerfboots });
                 TooManyItems(new Byte[] { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM }, new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir });
-                CraftSwitch.Content = "Предметы";
+                CraftSwitch.Content = "Сумка";
             } else
             {
-                MegaHide();
+                AnyHideX(CraftAntidote,CraftBandage,CraftBedbag,CraftElixir,CraftEther,CraftEther2,CraftFused,CraftHerbs,CraftPerfboots);
                 HeroItems();
             }
         }
@@ -4761,10 +4899,12 @@ namespace WpfApp1
         {
             Button[] abils = new Button[] { Cure1, Cure2Out, Heal1, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1, BuffUp1, ToughenUp1, Regen1, Control1 };
             string[] uris = new string[] { Path.GameNoises.Cure, Path.GameNoises.Cure2, Path.GameNoises.Heal, Path.GameNoises.Torch, Path.GameNoises.Whip, Path.GameNoises.Thrower, Path.GameNoises.Super, Path.GameNoises.Whirl, Path.GameNoises.Quake, Path.GameNoises.Learn, Path.GameNoises.PowUp, Path.GameNoises.Shield, Path.GameNoises.HpUp, Path.GameNoises.ApUp };
-            for (Byte i=0;i< abils.Length; i++) if (sender.Equals(abils[i])) Dj(uris[i]);
-            if (sender.Equals(Cure1)) Super1.SetCurrentHpAp(Shrt(Super1.CurrentHP + Shrt(Super1.Special * 2) >= Super1.MaxHP ? Super1.MaxHP : Super1.CurrentHP + Shrt(Super1.Special * 2)), Shrt(Super1.CurrentAP - 5));
-            if (sender.Equals(Cure2Out)) Super1.SetCurrentHpAp(Super1.MaxHP, Shrt(Super1.CurrentAP - 10));
-            if (sender.Equals(Heal1)) { Super1.PlayerStatus = 0; Super1.CurrentAP -= 3; }
+            for (Byte i=0;i< abils.Length; i++)
+                if (sender.Equals(abils[i]))
+                    Dj(uris[i]);
+            if (sender.Equals(Cure1)) if (Super1.CurrentAP >= 5) { Super1.SetCurrentHpAp(Shrt(Super1.CurrentHP + Shrt(Super1.Special * 2) >= Super1.MaxHP ? Super1.MaxHP : Super1.CurrentHP + Shrt(Super1.Special * 2)), Shrt(Super1.CurrentAP - 5)); if (Super1.CurrentAP < 5) Heal1.IsEnabled = false; }
+            if (sender.Equals(Cure2Out)) if (Super1.CurrentAP >= 10) { Super1.SetCurrentHpAp(Super1.MaxHP, Shrt(Super1.CurrentAP - 10)); if (Super1.CurrentAP < 10) Heal1.IsEnabled = false; }
+            if (sender.Equals(Heal1)) if (Super1.CurrentAP >= 3) { HeroSetStatus(0); Super1.CurrentAP -= 3; if (Super1.CurrentAP < 3) Heal1.IsEnabled = false; }
             RefreshAllHPAP();
             MenuHpApExp();
         }
@@ -4773,7 +4913,6 @@ namespace WpfApp1
         //[RU] Настройки игры.
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            Settings.IsEnabled = false;
             MegaHide();
             ChbShow(TimerTurnOn);
             HeroSettings();
@@ -4784,7 +4923,6 @@ namespace WpfApp1
             Sound3.Volume = SoundsLoud.Value;
             if (!Button1.IsEnabled) SEF(Path.GameSounds.ChestOpened);
             if (SoundsPercent != null) SoundsPercent.Content = Bits(Sound3.Volume * 100) + "%";
-
         }
         private void NoiseLoud_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -4797,7 +4935,8 @@ namespace WpfApp1
         private void HeroSettings()
         {
             RightPanelMenuTurnON();
-            AnyShowX(MusicText, SoundsText, NoiseText, GameSpeedText, BrightnessText, MusicPercent, SoundsPercent, NoisePercent, BrightnessPercent, GameSpeedX, MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness, DescribeHeader, Describe1, Menu1);
+            Settings.IsEnabled = false;
+            AnyShow(GameSettings);
             FastTextChange(new Label[] { Describe1, Describe2 }, new string[] { Txt.Hnt.Setts, Txt.Sct.Setts });
         }
         private void TimerTurnOn_Checked(object sender, RoutedEventArgs e) { if (WRecd.IsEnabled) TimerOff(ref WRecd); }
@@ -4858,8 +4997,9 @@ namespace WpfApp1
                     CheckRecords();
                 }
                 catch (Exception ex) {
-                    MessageBox.Show("[RU]\nПохоже, что вы столкнулись с проблемой под-\nключения к базе данных приложения. Свяжи-\nтесь с администратором для решения проблемы.\n\n[EN]\nIt's seems that you get encountered\nby problem of connection to database.\nContact with administrator to solve this.\n\n[RU] Полное сообщение | [EN] Full message\n" + ex.Message, "Произошла ошибка подключения!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    Form1.Close();
+                    Reload rel = new Reload("Столкнулись с проблемой подключения. Свяжитесь с администратором для решения проблемы.", "You encountered a problem of connection to database. Contact with administrator to solve this.", ex.Message);
+                    rel.ShowDialog();
+                    Close();
                 }
             }
             else AddPlayer.Text = "Никем быть нельзя!";
@@ -4874,42 +5014,34 @@ namespace WpfApp1
         private void CheckRecords()
         {
             Label[] Profiles = new Label[] { Player1, Player2, Player3, Player4, Player5, Player6 };
-            Byte[] RowGrid = new Byte[] { 3, 5, 7, 9, 11, 13 };
             Byte rem = 0;
             if (DataBaseMSsql.PlayerLogins.Count < 6)
             {
                 for (Byte i = 0; i <DataBaseMSsql.PlayerLogins.Count; i++)
                 {
-                    Profiles[i].Content =DataBaseMSsql.PlayerLogins[i];
+                    Profiles[i].Content = DataBaseMSsql.PlayerLogins[i];
                     LabShow(Profiles[i]);
-                    BtnGrid(AddProfile, RowGrid[i], 0);
+                    BtnGrid(AddProfile, Bits(i+1), 0);
                     rem++;
                 }
-                Grid.SetRow(AddPlayer, RowGrid[rem]);
-                Grid.SetRow(AddProfile, RowGrid[rem]);
-                rem = 0;
+                Grid.SetRow(AddPlayer, rem+1);
+                Grid.SetRow(AddProfile, rem+1);
                 AnyShowX(AddProfile, AddPlayer);
             }
             else for (Byte i = 0; i <DataBaseMSsql.PlayerLogins.Count; i++) { Profiles[i].Content =DataBaseMSsql.PlayerLogins[i]; LabShow(Profiles[i]); }
         }
         private void OnPlayers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Label[] Players = { Player1, Player2, Player3, Player4, Player5, Player6 };
-            Byte[] Btngrid = { 3, 5, 7, 9, 11, 13 };
-            for (Byte i=0;i<Players.Length;i++)
-                if (sender.Equals(Players[i]))
-                {
-                    DataBaseMSsql.CurrentLogin = DataBaseMSsql.PlayerLogins[i];
-                    CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
-                    BtnGrid(DeleteProfile, Btngrid[i], 0);
-                    ButtonShow(DeleteProfile);
-                    Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue();
-                    ConAdv.Source = Bmper(Continue.IsEnabled? Path.Adv.BeforeConAdv : Path.Adv.AdventureLock);
-                    SeeMap();
-                    break;
-                }
+            Label btn = sender as Label;
+            Byte select = Bits(btn.GetValue(Grid.RowProperty));
+            DataBaseMSsql.CurrentLogin = DataBaseMSsql.PlayerLogins[select-1];
+            CurrentPlayer.Content = DataBaseMSsql.CurrentLogin;
+            BtnGrid(DeleteProfile, select, 0);
+            ButtonShow(DeleteProfile);
+            Continue.IsEnabled = DataBaseMSsql.CheckIfPlayerCanContinue();
+            ConAdv.Source = Bmper(Continue.IsEnabled ? Path.Adv.BeforeConAdv : Path.Adv.AdventureLock);
+            SeeMap();
         }
-        private void CancelDelete(object sender, MouseEventArgs e) { ButtonHide(DeleteProfile); }
         private void Anonymous()
         {
             if (CurrentPlayer.Content.ToString() == "????") Continue.IsEnabled = false;
@@ -4937,8 +5069,9 @@ namespace WpfApp1
                 DataBaseMSsql.SavePlayerStats(new string[] { "@LOGIN", "@LV", "@LC", "@HP", "@AP", "@XP", "@TK", "@LN", "@TR" }, Super1.GetPlayerRecord(DataBaseMSsql.CurrentLogin));
             }
             catch (Exception ex) {
-                MessageBox.Show("[RU]\nПохоже, что вы столкнулись с проблемой под-\nключения к базе данных приложения. Свяжи-\nтесь с администратором для решения проблемы.\n\n[EN]\nIt's seems that you get encountered\nby problem of connection to database.\nContact with administrator to solve this.\n\n[RU] Полное сообщение | [EN] Full message\n" + ex.Message, "Произошла ошибка подключения!", MessageBoxButton.OK, MessageBoxImage.Error);
-                Form1.Close();
+                Reload rel = new Reload("Столкнулись с проблемой подключения. Свяжитесь с администратором для решения проблемы.", "You encountered a problem of connection to database. Contact with administrator to solve this.", ex.Message);
+                rel.ShowDialog();
+                Close();
             }
         }
 
@@ -4947,7 +5080,6 @@ namespace WpfApp1
         private Byte Encoder(in Byte[] CipherValues, in Boolean[] ToEncode, in Byte length) { Byte Cipher = 0; for (Byte i = 0; i < length; i++) if (ToEncode[i]) Cipher += CipherValues[i]; return Cipher; }
         private Boolean[] Decoder(in Byte[] CipherValues, in Boolean[] CipherPattern, Byte Cipher, in Byte length)
         {
-            Lab1.Content = "";
             for (Byte i = length; i > 0; i--)
                 if (Cipher - CipherValues[i - 1] >= 0)
                 {
@@ -4958,7 +5090,6 @@ namespace WpfApp1
         }
         private Boolean[] Decoder(in UInt16[] CipherValues, in Boolean[] CipherPattern, UInt16 Cipher, in Byte length)
         {
-            Lab1.Content = "";
             for (Byte i = length; i > 0; i--)
                 if (Cipher - CipherValues[i - 1] >= 0)
                 {
@@ -5025,8 +5156,9 @@ namespace WpfApp1
         private void SettingsSetAll(params Byte[] SettingValues)
         {
             Slider[] Sliders = { MusicLoud, SoundsLoud, NoiseLoud, GameSpeed, Brightness };
-            for (Byte i = 0; i < Sliders.Length; i++) Sliders[i].Value= Convert.ToDouble(SettingValues[i]) * 0.01;
-            TimerTurnOn.IsChecked = Convert.ToBoolean(SettingValues[5]);
+            for (Byte i = 0; i < Sliders.Length; i++)
+                Sliders[i].Value = Convert.ToDouble(SettingValues[i]) * 0.01;
+            TimerTurnOn.IsChecked = SettingValues[5] >= 1;
         }
         private void PlayerSetLocation(in Byte row, in Byte column)
         {
@@ -5142,8 +5274,7 @@ namespace WpfApp1
         private void SurpriseCheck(in Boolean CheckValue, in Byte OnMap, Image Chest) { if (CheckValue) { AnyHide(Chest); ChangeMapToVoid(OnMap); } }
         private void ContinueCheckPoints()
         {
-            AnyHideX(Lab1, CurrentPlayer, Player1, Player2, Player3, Player4, Player5, Player6, Continue, DeleteProfile, AddProfile, Button1, AutorizeImg);
-            TBoxHide(AddPlayer);
+            AnyHide(MainMenu);
             MaxAndWidthHPcalculate();
             MaxAndWidthAPcalculate();
             RefreshAllHPAP();
@@ -5167,50 +5298,51 @@ namespace WpfApp1
             PantsCheckPoint();
             BootsCheckPoint();
             CheckSeriousBonus();
+            HeroStatus();
         }
         private void WeaponCheckPoint()
         {
-            switch (Super1.PlayerEQ[0])
+            EquipH.Content = (Super1.PlayerEQ[0]) switch
             {
-                case 10: EquipH.Content = Txt.Eqp.Hand.Duster; break;
-                case 50: EquipH.Content = Txt.Eqp.Hand.Knife; break;
-                case 200: EquipH.Content = Txt.Eqp.Hand.Sword; break;
-                case 165: EquipH.Content = Txt.Eqp.Hand.Minigun; break;
-                default: EquipH.Content = Txt.Eqp.Hand.Bare; break;
-            }
+                10 => Txt.Eqp.Hand.Duster,
+                50 => Txt.Eqp.Hand.Knife,
+                200 => Txt.Eqp.Hand.Sword,
+                165 => Txt.Eqp.Hand.Minigun,
+                _ => Txt.Eqp.Hand.Bare,
+            };
         }
         private void ArmorCheckPoint()
         {
-            switch (Super1.PlayerEQ[1])
+            EquipB.Content = (Super1.PlayerEQ[1]) switch
             {
-                case 5: EquipB.Content = Txt.Eqp.Tors.Bcoat; break;
-                case 25: EquipB.Content = Txt.Eqp.Tors.Ancient; break;
-                case 90:  EquipB.Content = Txt.Eqp.Tors.Legend; break;
-                case 85: EquipB.Content = Txt.Eqp.Tors.Serious; break;
-                default: EquipB.Content = Txt.Eqp.Tors.Bare; break;
-            }
+                5 => Txt.Eqp.Tors.Bcoat,
+                25 => Txt.Eqp.Tors.Ancient,
+                90 => Txt.Eqp.Tors.Legend,
+                85 => Txt.Eqp.Tors.Serious,
+                _ => Txt.Eqp.Tors.Bare,
+            };
         }
         private void PantsCheckPoint()
         {
-            switch (Super1.PlayerEQ[2])
+            EquipL.Content = (Super1.PlayerEQ[2]) switch
             {
-                case 4: EquipL.Content = Txt.Eqp.Legs.Vulture; break;
-                case 15: EquipL.Content = Txt.Eqp.Legs.Ancient; break;
-                case 65: EquipL.Content = Txt.Eqp.Legs.Legend; break;
-                case 55: EquipL.Content = Txt.Eqp.Legs.Serious; break;
-                default: EquipL.Content = Txt.Eqp.Legs.Bare; break;
-            }
+                4 => Txt.Eqp.Legs.Vulture,
+                15 => Txt.Eqp.Legs.Ancient,
+                65 => Txt.Eqp.Legs.Legend,
+                55 => Txt.Eqp.Legs.Serious,
+                _ => Txt.Eqp.Legs.Bare,
+            };
         }
         private void BootsCheckPoint()
         {
-            switch (Super1.PlayerEQ[3])
+            EquipD.Content = (Super1.PlayerEQ[3]) switch
             {
-                case 1:  EquipD.Content = Txt.Eqp.Boot.Bboots; break;
-                case 10: EquipD.Content = Txt.Eqp.Boot.Ancient; break;
-                case 45: EquipD.Content = Txt.Eqp.Boot.Legend; break;
-                case 25: EquipD.Content = Txt.Eqp.Boot.Serious; break;
-                default: EquipD.Content = Txt.Eqp.Boot.Bare; break;
-            }
+                1 => Txt.Eqp.Boot.Bboots,
+                10 => Txt.Eqp.Boot.Ancient,
+                45 => Txt.Eqp.Boot.Legend,
+                25 => Txt.Eqp.Boot.Serious,
+                _ => Txt.Eqp.Boot.Bare,
+            };
         }
         private void ReplaceModel(in Byte y, in Byte x, in Byte Model) { MapScheme[y, x]=Model; }
         private Byte[] CheckModelCoord(in Byte Condition)
@@ -5220,37 +5352,62 @@ namespace WpfApp1
         }
         private Boolean CheckMapIfModelExists(in Byte Condition)
         {
-            for (Byte i = 0; i < MapScheme.GetLength(0); i++) for (Byte j = 0; j < MapScheme.GetLength(1); j++) if (MapScheme[i, j] == Condition) return true;            
+            for (Byte i = 0; i < MapScheme.GetLength(0); i++)
+                for (Byte j = 0; j < MapScheme.GetLength(1); j++)
+                    if (MapScheme[i, j] == Condition)
+                        return true;            
             return false;
         }
         private void ChangeMapToVoid(in Byte Condition) { for (Byte i = 0; i < MapScheme.GetLength(0); i++) for (Byte j = 0; j < MapScheme.GetLength(1); j++) if (MapScheme[i, j] == Condition) MapScheme[i, j] = 0; }
         private void ChangeMapToVoid(in Byte Row, in Byte Col,  params Image[] Imgs)
         {
-            foreach (Image img in Imgs) if ((Bits(img.GetValue(Grid.RowProperty))==Row)&&(Bits(img.GetValue(Grid.ColumnProperty)) == Col)) { AnyHide(img); MapScheme[Row, Col] = 0; }
+            foreach (Image img in Imgs)
+                if ((Bits(img.GetValue(Grid.RowProperty))==Row)&&(Bits(img.GetValue(Grid.ColumnProperty)) == Col))
+                {
+                    AnyHide(img);
+                    MapScheme[Row, Col] = 0;
+                }
         }
-        private void ChangeMapToVoidOrWallX(in Byte[] Conditions, in Byte Model) { foreach (Byte Condition in Conditions) if (Model==0) ChangeMapToVoid(Condition); else ChangeMapToWall(Condition); }
-        private void ChangeMapToWall(in Byte Condition) { for (Byte i = 0; i < MapScheme.GetLength(0); i++) for (Byte j = 0; j < MapScheme.GetLength(1); j++) if (MapScheme[i, j] == Condition) MapScheme[i, j] = 1; }
+        private void ChangeMapToVoidOrWallX(in Byte[] Conditions, in Byte Model) {
+            foreach (Byte Condition in Conditions)
+                if (Model==0)
+                    ChangeMapToVoid(Condition);
+                else
+                    ChangeMapToWall(Condition);
+        }
+        private void ChangeMapToWall(in Byte Condition) {
+            for (Byte i = 0; i < MapScheme.GetLength(0); i++)
+                for (Byte j = 0; j < MapScheme.GetLength(1); j++)
+                    if (MapScheme[i, j] == Condition)
+                        MapScheme[i, j] = 1;
+        }
         private void AbilsMenu_MouseLeave(object sender, MouseEventArgs e) { LabHide(AbilsCost); }
         private void Cure2_Click(object sender, RoutedEventArgs e)
         {
-            Super1.SetCurrentHpAp(Super1.MaxHP, Shrt(Super1.CurrentAP-10));
-            TimerOn(ref Pure2, Shrt(25 / GameSpeed.Value));
-            TimerOn(ref PCur2, Shrt(75 / GameSpeed.Value));
-            Dj(Path.GameNoises.Cure2);
-            CurrentHpApCalculate();
-            AbilitiesMakeDisappear1();
-            Time1.Value = 0;
+            if (Super1.CurrentAP >= 10)
+            {
+                Super1.SetCurrentHpAp(Super1.MaxHP, Shrt(Super1.CurrentAP - 10));
+                TimerOn(ref Pure2, Shrt(25 / GameSpeed.Value));
+                TimerOn(ref PCur2, Shrt(75 / GameSpeed.Value));
+                Dj(Path.GameNoises.Cure2);
+                CurrentHpApCalculate();
+                AnyHide(SkillsMenu);
+                Time1.Value = 0;
+            }
         }
         private void BuffUp_Click(object sender, RoutedEventArgs e)
         {
-            AbilityBonuses[0] = Super1.Special;
-            Super1.CurrentAP -= 12;
-            Dj(Path.GameNoises.PowUp);
-            TimerOn(ref PBuff, Shrt(25 / GameSpeed.Value));
-            TimerOn(ref PPowr, Shrt(75 / GameSpeed.Value));
-            CurrentAPcalculate();
-            AbilitiesMakeDisappear1();
-            Time1.Value = 0;
+            if (Super1.CurrentAP >= 12)
+            {
+                AbilityBonuses[0] = Super1.Special;
+                Super1.CurrentAP -= 12;
+                Dj(Path.GameNoises.PowUp);
+                TimerOn(ref PBuff, Shrt(25 / GameSpeed.Value));
+                TimerOn(ref PPowr, Shrt(75 / GameSpeed.Value));
+                CurrentAPcalculate();
+                AnyHide(SkillsMenu);
+                Time1.Value = 0;
+            }
         }
         private bool BuffUpShow(in string Power)
         {
@@ -5268,24 +5425,30 @@ namespace WpfApp1
         }
         private void ToughenUp_Click(object sender, RoutedEventArgs e)
         {
-            AbilityBonuses[1] = Super1.Special;
-            Super1.CurrentAP -= 8;
-            Dj(Path.GameNoises.Shield);
-            TimerOn(ref PTogh, Shrt(25 / GameSpeed.Value));
-            TimerOn(ref PPowr, Shrt(75 / GameSpeed.Value));
-            CurrentAPcalculate();
-            AbilitiesMakeDisappear1();
-            Time1.Value = 0;
+            if (Super1.CurrentAP >= 8)
+            {
+                AbilityBonuses[1] = Super1.Special;
+                Super1.CurrentAP -= 8;
+                Dj(Path.GameNoises.Shield);
+                TimerOn(ref PTogh, Shrt(25 / GameSpeed.Value));
+                TimerOn(ref PPowr, Shrt(75 / GameSpeed.Value));
+                CurrentAPcalculate();
+                AnyHide(SkillsMenu);
+                Time1.Value = 0;
+            }
         }
         private void Regen_Click(object sender, RoutedEventArgs e)
         {
-            Super1.CurrentAP -= 15;
-            Dj(Path.GameNoises.HpUp);
-            TimerOn(ref PRegn, Shrt((511 - Super1.Special) / GameSpeed.Value));
-            TimerOn(ref PHpUp, Shrt(25 / GameSpeed.Value));
-            CurrentAPcalculate();
-            AbilitiesMakeDisappear1();
-            Time1.Value = 0;
+            if (Super1.CurrentAP >= 15)
+            {
+                Super1.CurrentAP -= 15;
+                Dj(Path.GameNoises.HpUp);
+                TimerOn(ref PRegn, Shrt((511 - Super1.Special) / GameSpeed.Value));
+                TimerOn(ref PHpUp, Shrt(25 / GameSpeed.Value));
+                CurrentAPcalculate();
+                AnyHide(SkillsMenu);
+                Time1.Value = 0;
+            }
         }
         private void TimerOn(ref System.Windows.Threading.DispatcherTimer timer)
         {
@@ -5314,138 +5477,136 @@ namespace WpfApp1
             Dj(Path.GameNoises.ApUp);
             TimerOn(ref PCtrl, Shrt((511 - Super1.Special) / GameSpeed.Value));
             TimerOn(ref PApUp, Shrt(25 / GameSpeed.Value));
-            AbilitiesMakeDisappear1();
+            AnyHide(SkillsMenu);
             Time1.Value = 0;
         }
         private void Thrower_Click(object sender, RoutedEventArgs e)
         {
-            Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
-            SelectedTrgt = Sets.SelectedTarget;
-            SelectTarget();
-            AbilitiesMakeDisappear1();
-            BtnShowX(new Button[] { ACT3, Cancel2 });
+            if (Super1.CurrentAP >= 4)
+            {
+                Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
+                SelectedTrgt = Sets.SelectedTarget;
+                SelectTarget();
+                AnyHide(SkillsMenu);
+                AnyShowX(ACT3, SelectMenuSkills);
+            }
         }
         private void ActionOnOne_Click(object sender, RoutedEventArgs e)
         {
+            Button btn = sender as Button;
+            Byte i = btn.Name switch
+            {
+                "ACT1" => 0,
+                "ACT2" => 1,
+                "ACT3" => 2,
+                _ => 0
+            };
             string[] ActSounds = { Path.GameNoises.Torch, Path.GameNoises.Whip, Path.GameNoises.Thrower };
             Byte[] Cost = { 4, 6, 15 };
-            Button[] Actions = { ACT1, ACT2, ACT3 };
             SelectedTrgt = Sets.SelectedTarget;
             Time1.Value = 0;
-            for (Byte i = 0; i < Actions.Length; i++)
-                if (sender.Equals(Actions[i]))
-                {
-                    Super1.CurrentAP -= Cost[i];
-                    ACT(i);
-                    Dj(ActSounds[i]);
-                    AnyHideX(TrgtImg, Actions[i], Cancel2);
-                    switch (i)
-                    {
-                        case 0: TimerOn(ref PTrch, Shrt(25 / GameSpeed.Value)); TimerOn(ref PToch, Shrt(50 / GameSpeed.Value)); break;
-                        case 1: TimerOn(ref PWhip, Shrt(25 / GameSpeed.Value)); TimerOn(ref PWhpd, Shrt(50 / GameSpeed.Value)); break;
-                        case 2: TimerOn(ref PThrw, Shrt(25 / GameSpeed.Value)); TimerOn(ref PThwr, Shrt(50 / GameSpeed.Value)); break;
-                        default: TimerOn(ref PTrch, Shrt(25 / GameSpeed.Value)); TimerOn(ref PToch, Shrt(50 / GameSpeed.Value)); break;
-                    }
-                    break;
-                }
+            Super1.CurrentAP -= Cost[i];
+            ACT(i);
+            Dj(ActSounds[i]);
+            AnyHideX(TrgtImg, btn, SelectMenuSkills);
+            switch (i)
+            {
+                case 0: TimerOn(ref PTrch, Shrt(25 / GameSpeed.Value)); TimerOn(ref PToch, Shrt(50 / GameSpeed.Value)); break;
+                case 1: TimerOn(ref PWhip, Shrt(25 / GameSpeed.Value)); TimerOn(ref PWhpd, Shrt(50 / GameSpeed.Value)); break;
+                case 2: TimerOn(ref PThrw, Shrt(25 / GameSpeed.Value)); TimerOn(ref PThwr, Shrt(50 / GameSpeed.Value)); break;
+                default: TimerOn(ref PTrch, Shrt(25 / GameSpeed.Value)); TimerOn(ref PToch, Shrt(50 / GameSpeed.Value)); break;
+            }
             CurrentAPcalculate();
             if (Targt.IsEnabled) TimerOff(ref Targt);
         }
         private void ActionOnAll_Click(object sender, RoutedEventArgs e)
         {
+            Button btn = sender as Button;
+            Byte i = btn.Name switch
+            {
+                "Super" => 0,
+                "Tornado" => 1,
+                "Quake" => 2,
+                _ => 0
+            };
             string[] ActSounds = { Path.GameNoises.Super, Path.GameNoises.Whirl, Path.GameNoises.Quake };
             Byte[] Cost = { 10, 20, 30 };
             UInt16[] AbilityPowers = { Shrt(Super1.Special * 2), Shrt(Super1.Special * 3), Shrt(Super1.Special * 4) };
-            Button[] Actions = { Super, Tornado, Quake };
             SelectedTrgt = Sets.SelectedTarget;
             Time1.Value = 0;
-            for (Byte i = 0; i < Actions.Length; i++)
-                if (sender.Equals(Actions[i]))
+            if (Super1.CurrentAP - Cost[i] >= 0)
+            {
+                Super1.CurrentAP -= Cost[i];
+                AbilitySupers(AbilityPowers[i]);
+                Dj(ActSounds[i]);
+                AnyHideX(TrgtImg, btn);
+                switch (i)
                 {
-                    Super1.CurrentAP -= Cost[i];
-                    AbilitySupers(AbilityPowers[i]);
-                    Dj(ActSounds[i]);
-                    AnyHideX(TrgtImg, Actions[i], Cancel2);
-                    switch (i)
-                    {
-                        case 0: TimerOn(ref Puper, Shrt(25 / GameSpeed.Value)); TimerOn(ref PSupr, Shrt(50 / GameSpeed.Value)); break;
-                        case 1: TimerOn(ref Pnado, Shrt(25 / GameSpeed.Value)); TimerOn(ref PWhrl, Shrt(50 / GameSpeed.Value)); break;
-                        case 2: TimerOn(ref Puake, Shrt(25 / GameSpeed.Value)); TimerOn(ref PQuak, Shrt(50 / GameSpeed.Value)); break;
-                        default: TimerOn(ref Puper, Shrt(25 / GameSpeed.Value)); TimerOn(ref PSupr, Shrt(50 / GameSpeed.Value)); break;
-                    }
-                    break;
+                    case 0: TimerOn(ref Puper, Shrt(25 / GameSpeed.Value)); TimerOn(ref PSupr, Shrt(50 / GameSpeed.Value)); break;
+                    case 1: TimerOn(ref Pnado, Shrt(25 / GameSpeed.Value)); TimerOn(ref PWhrl, Shrt(50 / GameSpeed.Value)); break;
+                    case 2: TimerOn(ref Puake, Shrt(25 / GameSpeed.Value)); TimerOn(ref PQuak, Shrt(50 / GameSpeed.Value)); break;
+                    default: TimerOn(ref Puper, Shrt(25 / GameSpeed.Value)); TimerOn(ref PSupr, Shrt(50 / GameSpeed.Value)); break;
                 }
+            }
             CurrentAPcalculate();
         }
         private void AbilitiesInFight_MouseLeave(object sender, MouseEventArgs e) { LabHide(BattleText2); }
         private void AbilitiesInFight_MouseEnter(object sender, MouseEventArgs e)
         {
-            Button[] buttons = { Cure, Cure2, Heal, BuffUp, ToughenUp, Regen, Control, Torch, Whip, Thrower, Super, Tornado, Quake, Learn };
-            String[] ondescr = { Txt.Skl.Cur, Txt.Skl.Cr2, Txt.Skl.Hl, Txt.Skl.Bf, Txt.Skl.Tg, Txt.Skl.Rg, Txt.Skl.Cn, Txt.Skl.Tr, Txt.Skl.Wh, Txt.Skl.Th, Txt.Skl.Sp, Txt.Skl.Sp2, Txt.Skl.Sp3, Txt.Skl.Ln };
-            for (Byte i=0;i<buttons.Length;i++) if (sender.Equals(buttons[i])) BattleText2.Content = ondescr[i];
+            Button b = sender as Button;
+            BattleText2.Content = b.Tag.ToString();
             LabShow(BattleText2);
         }
         private void AbilitiesOutFight_MouseEnter(object sender, MouseEventArgs e)
         {
-            Button[] buttons = { Cure1, Cure2Out, Heal1, BuffUp1, ToughenUp1, Regen1, Control1, Torch1, Whip1, Thrower1, Super0, Tornado1, Quake1, Learn1 };
-            SByte[] ondescr = { -2, -10, -3, -12, -8, -15, 0, -4, -6, -15, -10, -20, -30, -2 };
-            for (Byte i = 0; i < buttons.Length; i++) if (sender.Equals(buttons[i])) AbilsCost.Content = ondescr[i];
+            Button b = sender as Button;
+            AbilsCost.Content = Numb(b.Tag);
             LabShow(AbilsCost);
         }
         private void ItemsOutMenu_MouseEnter(object sender, MouseEventArgs e)
         {
-            Button[] buttons = { Bandage, Ether1, Antidote, Fused, Herbs1, Ether2Out, SleepBag1, Elixir1 };
-            Button[] buttons2 = { CraftBandage, CraftEther, CraftAntidote, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir };
-            Byte[] counts = { BAG.BandageITM, BAG.EtherITM, BAG.AntidoteITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM };
-            for (Byte i = 0; i < buttons.Length; i++) if (sender.Equals(buttons[i]) || sender.Equals(buttons2[i])) CountText.Content = "Всего: " + counts[i];
+            Button b = sender as Button;
+            Byte p = Bits(b.Tag);
+            Byte[] counts = { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM, BAG.SleepBagITM };
+            CountText.Content = "Всего: " + counts[p];
             LabShow(CountText);
         }
         private void ItemsOutMenu_Click(object sender, RoutedEventArgs e)
         {
-            Button[] Items = { Bandage, Ether1, Fused, Herbs1, Ether2Out, Elixir1, SleepBag1 };
-            Label[] Describes = { BandageText, EtherText, FusedText, HerbsText, Ether2OutText, ElixirText, SleepBagText };
-            Byte[] Counts = { BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM, BAG.SleepBagITM };
+            Button b = sender as Button;
+            Byte p = Bits(b.Tag);
+            Button[] Items = { Bandage, Ether1, Fused, Herbs1, Ether2Out, SleepBag1, Elixir1 };
+            Label[] Describes = { BandageText, EtherText, FusedText, HerbsText, Ether2OutText, SleepBagText, ElixirText };
+            Byte[] Counts = { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM };
             UInt16[] HpFill = { Shrt((Super1.CurrentHP + 50) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 50)), Super1.CurrentHP, Shrt((Super1.CurrentHP + 80) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 80)), Shrt((Super1.CurrentHP + 350) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 350)), Super1.CurrentHP, Super1.MaxHP, Super1.MaxHP };
             UInt16[] ApFill = { Super1.CurrentAP, Shrt((Super1.CurrentAP + 50) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 50)), Shrt((Super1.CurrentAP + 80) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 80)), Super1.CurrentAP, Shrt((Super1.CurrentAP + 300) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 300)), Super1.MaxAP, Super1.MaxAP };
-            if (sender.Equals(Antidote))
-            {
-                BAG.AntidoteITM--;
-                Super1.PlayerStatus = 0;
-                AfterStatus.Content = StatusP.Content = Txt.Com.Hlthy + " ♫";
-                AfterIcon.Source = Icon0.Source = Img5.Source = Bmper(@Path.IconStatePath.Usual);
-                if (BAG.AntidoteITM <= 0) ButtonHide(Antidote);
-            }
+            Counts[p]--;
+            if (Counts[p] <= 0)
+                AnyHideX(b, Describes[p]);
+            if (p == 0)
+                HeroSetStatus(0);
             else
-                for (Byte i = 0; i < Items.Length; i++)
-                    if (sender.Equals(Items[i]))
-                    {
-                        Counts[i]--;
-                        Super1.CurrentHP = HpFill[i];
-                        Super1.CurrentAP = ApFill[i];
-                        RefreshAllHPAP();
-                        MenuHpApExp();
-                        Time1.Value = 0;
-                        CheckAccessItems(Counts, Items);
-                        if (Counts[i] <= 0) AnyHide(Describes[i]);
-                        CountText.Content = Txt.Com.Total + ": " + Counts[i];
-                        break;
-                    }
-            BAG.ItemsSet(Counts[0], BAG.AntidoteITM, Counts[1], Counts[2], Counts[3], Counts[6], Counts[4], Counts[5]);
+            {
+                Super1.SetCurrentHpAp(HpFill[p - 1], ApFill[p - 1]);
+                RefreshAllHPAP();
+                MenuHpApExp();
+                CheckAccessItems(Counts, Items);
+            }
+            CountText.Content = Txt.Com.Total + ": " + Counts[p];
+            BAG.ItemsSet(Counts[1], BAG.AntidoteITM, Counts[2], Counts[3], Counts[4], Counts[6], Counts[5], Counts[7]);
             Dj(Path.GameNoises.UseItems);
         }
         private void CraftItems_Click(object sender, RoutedEventArgs e)
         {
+            Button b = sender as Button;
+            Byte p = Bits(b.Tag);
             Button[] cbuttons = new Button[] { CraftAntidote, CraftBandage, CraftEther, CraftFused, CraftHerbs, CraftEther2, CraftBedbag, CraftElixir };
             Byte[] ItemsCount = { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.SleepBagITM, BAG.ElixirITM };
             UInt16[] MatCosts = new UInt16[] { 10, 20, 70, 150, 500, 1500, 100, 10000 };
-            for (Byte i=0;i<cbuttons.Length;i++)
-                if (sender.Equals(cbuttons[i]))
-                {
-                    BAG.Materials -= MatCosts[i];
-                    ItemsCount[i]++;
-                    CountText.Content = Txt.Com.Total + ": " + ItemsCount[i];
-                    MaterialsCraft.Content = BAG.Materials;
-                }
+            BAG.Materials -= MatCosts[p];
+            ItemsCount[p]++;
+            CountText.Content = Txt.Com.Total + ": " + ItemsCount[p];
+            MaterialsCraft.Content = BAG.Materials;
             BAG.ItemsSet(ItemsCount[1], ItemsCount[0], ItemsCount[2], ItemsCount[3], ItemsCount[4], ItemsCount[6], ItemsCount[5], ItemsCount[7]);
             CheckAccessMaterials(MatCosts, cbuttons);
             TooManyItems(ItemsCount, cbuttons);
@@ -5459,61 +5620,62 @@ namespace WpfApp1
             BAG.Boots = Super1.PlayerEQ[3] == 0;
         }
         private void CraftPerfboots_MouseEnter(object sender, MouseEventArgs e) { CountText.Content = Txt.Com.QMark; LabShow(CountText); }
+        private void HeroSetStatus(byte code)
+        {
+            String[] text = { Txt.Com.Hlthy + " ♫", Txt.Com.Ill + " §" };
+            String[] icon = { @Path.IconStatePath.Usual, @Path.IconStatePath.Poison };
+            Super1.PlayerStatus = code;
+            AfterStatus.Content = StatusP.Content = text[code];
+            AfterIcon.Source = Img5.Source = Bmper(icon[code]);
+        }
         private void ItemsInFight_Click(object sender, RoutedEventArgs e)
         {
-            Button[] Items = { Bandage1, Ether, Fused1, Herbs, Ether2, Elixir};
-            Byte[] Counts = { BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM };
+            Button b = sender as Button;
+            Byte p = Bits(b.Tag);
+            Byte[] Counts = { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM };
             UInt16[] HpFill = { Shrt((Super1.CurrentHP + 50) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 50)), Super1.CurrentHP, Shrt((Super1.CurrentHP + 80) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 80)), Shrt((Super1.CurrentHP + 350) > Super1.MaxHP ? Super1.MaxHP : (Super1.CurrentHP + 350)), Super1.CurrentHP, Super1.MaxHP };
             UInt16[] ApFill = {  Super1.CurrentAP, Shrt((Super1.CurrentAP + 50) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 50)), Shrt((Super1.CurrentAP + 80) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 80)), Super1.CurrentAP, Shrt((Super1.CurrentAP + 300) > Super1.MaxAP ? Super1.MaxAP : (Super1.CurrentAP + 300)), Super1.MaxAP };
-            AnyHideX(ItemText, ItemsCountImg);
-            MenuItemsHide1();
+            AnyHide(ItemsMenu);
             TimerOn(ref PItem, Shrt(25 / GameSpeed.Value));
-            if (sender.Equals(Antidote))
-            {
-                BAG.AntidoteITM--;
-                Super1.PlayerStatus = 0;
-                AfterStatus.Content = StatusP.Content = Txt.Com.Hlthy + " ♫";
-                AfterIcon.Source = Icon0.Source = Img5.Source = Bmper(@Path.IconStatePath.Usual);
-                TimerOn(ref PAtdt, Shrt(75 / GameSpeed.Value));
-            }
+            Counts[p]--;
+            if (Counts[p] <= 0)
+                AnyHide(b);
+            if (p==0)
+                HeroSetStatus(0);
             else
-                for (Byte i=0;i<Items.Length;i++)
-                    if (sender.Equals(Items[i]))
-                    {
-                        Counts[i]--;
-                        Super1.SetCurrentHpAp(HpFill[i], ApFill[i]);
-                        CurrentHpApCalculate();
-                        Time1.Value = 0;
-                        switch (i)
-                        {
-                            case 0: TimerOn(ref PBndg, Shrt(75 / GameSpeed.Value)); break;
-                            case 1: TimerOn(ref PEthr, Shrt(75 / GameSpeed.Value)); break;
-                            case 2: TimerOn(ref PFusd, Shrt(75 / GameSpeed.Value)); break;
-                            case 3: TimerOn(ref PHerb, Shrt(75 / GameSpeed.Value)); break;
-                            case 4: TimerOn(ref PEtr2, Shrt(75 / GameSpeed.Value)); break;
-                            case 5: TimerOn(ref PElxr, Shrt(75 / GameSpeed.Value)); break;
-                        }
-                        break;
-                    }
-            BAG.ItemsSet(Counts[0],BAG.AntidoteITM, Counts[1], Counts[2], Counts[3], BAG.SleepBagITM, Counts[4], Counts[5]);
+            {
+                Super1.SetCurrentHpAp(HpFill[p-1], ApFill[p-1]);
+                CurrentHpApCalculate();
+            }
+            Time1.Value = 0;
+            switch (p)
+            {
+                case 0: TimerOn(ref PAtdt, Shrt(75 / GameSpeed.Value)); break;
+                case 1: TimerOn(ref PBndg, Shrt(75 / GameSpeed.Value)); break;
+                case 2: TimerOn(ref PEthr, Shrt(75 / GameSpeed.Value)); break;
+                case 3: TimerOn(ref PFusd, Shrt(75 / GameSpeed.Value)); break;
+                case 4: TimerOn(ref PHerb, Shrt(75 / GameSpeed.Value)); break;
+                case 5: TimerOn(ref PEtr2, Shrt(75 / GameSpeed.Value)); break;
+                case 6: TimerOn(ref PElxr, Shrt(75 / GameSpeed.Value)); break;
+            }
+            BAG.ItemsSet(Counts[1], Counts[0], Counts[2], Counts[3], Counts[4], BAG.SleepBagITM, Counts[5], Counts[6]);
             Dj(Path.GameNoises.UseItems);
         }
         private void ItemsUseInBattle_MouseEnter(object sender, RoutedEventArgs e)
         {
-            Button[] cbuttons = new Button[] { Antidote1, Bandage1, Ether,  Fused1, Herbs, Ether2, Elixir };
+            Button btn = sender as Button;
+            Byte p = Bits(btn.Tag);
             Byte[] ItemsCount = { BAG.AntidoteITM, BAG.BandageITM, BAG.EtherITM, BAG.FusedITM, BAG.HerbsITM, BAG.Ether2ITM, BAG.ElixirITM };
             String[] descrypt = { Txt.Bag.Ant, Txt.Bag.Ban, Txt.Bag.Etr, Txt.Bag.Bld, Txt.Bag.Hrb, Txt.Bag.Er2, Txt.Bag.Elx };
-            for (Byte i = 0; i < cbuttons.Length; i++)
-            {
-                if (sender.Equals(cbuttons[i]))
-                {
-                    ItemText.Content = Txt.Com.Total + ": " + ItemsCount[i];
-                    BattleText2.Content = descrypt[i];
-                    LabShowX(new Label[] { BattleText2, ItemText });
-                }
-            }
+            ItemText.Content = Txt.Com.Total + ": " + ItemsCount[p];
+            BattleText2.Content = descrypt[p];
+            LabShowX(new Label[] { BattleText2, ItemText });
         }
-        private void ItemsUseInBattle_MouseLeave(object sender, MouseEventArgs e) { ItemText.Content = ""; LabHideX(new Label[] { ItemText, BattleText2 }); }
+        private void ItemsUseInBattle_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ItemText.Content = "";
+            LabHideX(new Label[] { ItemText, BattleText2 });
+        }
         private void ChangeOnChapter(in Byte Loc)
         {
             BitmapImage[][] MapAndBattle = { BmpersToX(Bmper(Path.Backgrounds.Location1), Bmper(Path.Fighting.Battle1)), BmpersToX(Bmper(Path.Backgrounds.Location2), Bmper(Path.Fighting.Battle2)), BmpersToX(Bmper(Path.Backgrounds.Location3), Bmper(Path.Fighting.Battle2)), BmpersToX(Bmper(Path.Backgrounds.Location4), Bmper(Path.Fighting.Battle2)) };
@@ -5757,7 +5919,19 @@ namespace WpfApp1
         private bool RockRoll()
         {
             Byte[] MapModel = CheckModelCoord(7);
-            if ((MapModel[0] == Adoptation.ImgYbounds) && (MapModel[1] == Adoptation.ImgXbounds)) { ImgShow(PainImg); if (Super1.CurrentHP - 50 >= 0) Super1.CurrentHP -= 50; else { WonOrDied(); MediaShow(GameOver); } }
+            if ((MapModel[0] == Adoptation.ImgYbounds) && (MapModel[1] == Adoptation.ImgXbounds)) {
+                ImgShow(PainImg);
+                if (Super1.CurrentHP - 50 >= 0)
+                {
+                    Super1.CurrentHP -= 50;
+                    if (Img2.IsEnabled) HPbar1.Value = Super1.CurrentHP; HPhelper.SetValue(Grid.ColumnProperty, Bits(Img2.GetValue(Grid.ColumnProperty)) - 1); HPhelper.SetValue(Grid.RowProperty, Bits(Img2.GetValue(Grid.RowProperty)) - 1); AnyShow(HPhelper);
+                }
+                else 
+                { 
+                    WonOrDied(); 
+                    MediaShow(GameOver); 
+                } 
+            }
             ChangeMapToVoid(7);
             if (MapScheme[MapModel[0] + 1, MapModel[1]] != 1)
             {
@@ -5771,7 +5945,7 @@ namespace WpfApp1
         }
         private bool FoeHurts()
         {
-            UInt16 pow = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus);
+            UInt16 pow = Shrt(Super1.Attack + Super1.PlayerEQ[0] + AbilityBonuses[0] + Sets.SeriousBonus + Super1.Attack * Super1.Speed / 100);
             UInt16 strength = Shrt(pow - EnemyTough(Sets.SelectedTarget) <= 0 ? 0 : pow - EnemyTough(Sets.SelectedTarget));
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             Labs[SelectedTrgt].Content = strength;
@@ -5779,7 +5953,7 @@ namespace WpfApp1
         }
         private bool Torchs()
         {
-            UInt16 trchsp = Shrt((Foe1.EnemyAppears[SelectedTrgt] == "Паук") || (Foe1.EnemyAppears[SelectedTrgt] == "Мумия") ? Super1.Special * 2.5 : Foe1.EnemyAppears[SelectedTrgt] == "Фараон" ? Super1.Special * 0.5 : Super1.Special * 1.25);
+            UInt16 trchsp = Shrt((Foe1.EnemyAppears[SelectedTrgt] == "Паук") || (Foe1.EnemyAppears[SelectedTrgt] == "Мумия") || (Foe1.EnemyAppears[SelectedTrgt] == "Гуль") || (Foe1.EnemyAppears[SelectedTrgt] == "Жнец") ? Super1.Special * 2.5 : Super1.Special * 1.25);
             trchsp += Shrt(Super1.Special * Super1.Speed * 0.01);
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
@@ -5788,7 +5962,7 @@ namespace WpfApp1
         }
         private bool Whips()
         {
-            UInt16 whipsp = Shrt((Foe1.EnemyAppears[SelectedTrgt] == "Зомби") || (Foe1.EnemyAppears[SelectedTrgt] == "Страж") ? Super1.Special * 3 : Foe1.EnemyAppears[SelectedTrgt] == "Фараон" ? Super1.Special * 0.75 : Super1.Special * 1.5);
+            UInt16 whipsp = Shrt((Foe1.EnemyAppears[SelectedTrgt] == "Зомби") || (Foe1.EnemyAppears[SelectedTrgt] == "Страж") || (Foe1.EnemyAppears[SelectedTrgt] == "Скарабей") || (Foe1.EnemyAppears[SelectedTrgt] == "П. червь") ? Super1.Special * 3 : Super1.Special * 1.5);
             whipsp += Shrt(Super1.Special * Super1.Speed * 0.01);
             Label[] Labs = new Label[] { DamageFoe, DamageFoe2, DamageFoe3 };
             UInt16 EnemyAura = EnemyAntiSkill(Sets.SelectedTarget);
@@ -5851,7 +6025,7 @@ namespace WpfApp1
         private void PThwr_I_T39(object sender, EventArgs e) { if (ThrowAtFoes()) TimerOff(ref PThwr); }
         private void PWhrl_I_T40(object sender, EventArgs e) { if (AllDamaged(Shrt(Super1.Special * 3 + Super1.Special * Super1.Speed * 0.01))) TimerOff(ref PWhrl); }
         private void PQuak_I_T41(object sender, EventArgs e) { if (AllDamaged(Shrt(Super1.Special * 4 + Super1.Special * Super1.Speed * 0.01))) TimerOff(ref PQuak); }
-        private void PTurn_I_T42(object sender, EventArgs e) { if (Time1.Value < Time1.Maximum) Time1.Value += 1; else { TimerOff(ref PTurn); Time(); } }
+        private void PTurn_I_T42(object sender, EventArgs e) { if ((Time1.Value + 1 * GameSpeed.Value) < Time1.Maximum) Time1.Value += 1 * GameSpeed.Value; else { Time1.Value = Time1.Maximum; TimerOff(ref PTurn); Time(); } }
         private void ETurn_I_T43(object sender, EventArgs e) { if (FoesFighting()) TimerOff(ref ETurn); }
         private void WRecd_R_T44(object sender, EventArgs e) { if (WorldRecord()) TimerOff(ref WRecd); }
         private void Boss1_C_T45(object sender, EventArgs e) { if (Pharaoh1()) TimerOff(ref Boss1); }
@@ -5959,7 +6133,6 @@ namespace WpfApp1
                     FastTextChange(new Label[] { AddAP, AfterAP }, new string[] { "+" + (Super1.MaxAP - CurrentNextHPAP[1]), Super1.CurrentAP + "/" + CurrentNextHPAP[1] });
                 }
                 else LabHide(AddAP);
-
                 CustomAddStat(0, Super1.Attack, AddATK, AfterATK);
                 CustomAddStat(1, Super1.Defence, AddDEF, AfterDEF);
                 CustomAddStat(2, Super1.Speed, AddAG, AfterAG);
@@ -5985,19 +6158,19 @@ namespace WpfApp1
         //[RU] Игровое интерактивное руководство.
         private void InfoImgs_MouseEnter(object sender, MouseEventArgs e)
         {
-            Image[] imgs = { InfoImg1, InfoImg2, InfoImg3 };
+            Image img = sender as Image;
             string[,] inf = { { Path.AftMInfoImgs.Help1_1, Path.AftMInfoImgs.Help2_1, Path.AftMInfoImgs.Help3_1, Path.AftMInfoImgs.Help4_1, Path.AftMInfoImgs.Help5_1, Path.AftMInfoImgs.Help6_1, Path.AftMInfoImgs.Help7_1, Path.AftMInfoImgs.Help8_1, Path.AftMInfoImgs.Help9_1, Path.AftMInfoImgs.Help10_1, Path.AftMInfoImgs.Help11_1, Path.AftMInfoImgs.Help12_1, Path.AftMInfoImgs.Help13_1, Path.AftMInfoImgs.Help14_1, Path.AftMInfoImgs.Help15_1, Path.AftMInfoImgs.Help16_1, Path.AftMInfoImgs.Help17_1, Path.AftMInfoImgs.Help18_1, Path.AftMInfoImgs.Help19_1 },
             { Path.AftMInfoImgs.Help1_2, Path.AftMInfoImgs.Help2_2, Path.AftMInfoImgs.Help3_2, Path.AftMInfoImgs.Help4_2, Path.AftMInfoImgs.Help5_2, Path.AftMInfoImgs.Help6_2, Path.AftMInfoImgs.Help7_2, Path.AftMInfoImgs.Help8_2, Path.AftMInfoImgs.Help9_2, Path.AftMInfoImgs.Help10_2, Path.AftMInfoImgs.Help11_2, Path.AftMInfoImgs.Help12_2, Path.AftMInfoImgs.Help13_2, Path.AftMInfoImgs.Help14_2, Path.AftMInfoImgs.Help15_2, Path.AftMInfoImgs.Help16_2, Path.AftMInfoImgs.Help17_2, Path.AftMInfoImgs.Help18_2, Path.AftMInfoImgs.Help19_2 },
             { Path.AftMInfoImgs.Help1_3, Path.AftMInfoImgs.Help2_3, Path.AftMInfoImgs.Help3_3, Path.AftMInfoImgs.Help4_3, Path.AftMInfoImgs.Help5_3, Path.AftMInfoImgs.Help6_3, Path.AftMInfoImgs.Help7_3, Path.AftMInfoImgs.Help8_3, Path.AftMInfoImgs.Help9_3, Path.AftMInfoImgs.Help10_3, Path.AftMInfoImgs.Help11_3, Path.AftMInfoImgs.Help12_3, Path.AftMInfoImgs.Help13_3, Path.AftMInfoImgs.Help14_3, Path.AftMInfoImgs.Help15_3, Path.AftMInfoImgs.Help16_3, Path.AftMInfoImgs.Help17_3, Path.AftMInfoImgs.Help18_3, Path.AftMInfoImgs.Help19_3 } };
-            for (Byte i = 0;i < imgs.Length;i++) if (sender.Equals(imgs[i])) imgs[i].Source = Bmper(inf[i, Txt.Doc.InfoChange1]);
+            img.Source = Bmper(inf[Bits(img.Tag), Txt.Doc.InfoChange1]);
         }
         private void InfoImgs_MouseLeave(object sender, MouseEventArgs e)
         {
-            Image[] imgs = { InfoImg1, InfoImg2, InfoImg3 };
+            Image img = sender as Image;
             string[,] inf = { { Path.BefMInfoImgs.Help1_1, Path.BefMInfoImgs.Help2_1, Path.BefMInfoImgs.Help3_1, Path.BefMInfoImgs.Help4_1, Path.BefMInfoImgs.Help5_1, Path.BefMInfoImgs.Help6_1, Path.BefMInfoImgs.Help7_1, Path.BefMInfoImgs.Help8_1, Path.BefMInfoImgs.Help9_1, Path.BefMInfoImgs.Help10_1, Path.BefMInfoImgs.Help11_1, Path.BefMInfoImgs.Help12_1, Path.BefMInfoImgs.Help13_1, Path.BefMInfoImgs.Help14_1, Path.BefMInfoImgs.Help15_1, Path.BefMInfoImgs.Help16_1, Path.BefMInfoImgs.Help17_1, Path.BefMInfoImgs.Help18_1, Path.BefMInfoImgs.Help19_1 },
             { Path.BefMInfoImgs.Help1_2, Path.BefMInfoImgs.Help2_2, Path.BefMInfoImgs.Help3_2, Path.BefMInfoImgs.Help4_2, Path.BefMInfoImgs.Help5_2, Path.BefMInfoImgs.Help6_2, Path.BefMInfoImgs.Help7_2, Path.BefMInfoImgs.Help8_2, Path.BefMInfoImgs.Help9_2, Path.BefMInfoImgs.Help10_2, Path.BefMInfoImgs.Help11_2, Path.BefMInfoImgs.Help12_2, Path.BefMInfoImgs.Help13_2, Path.BefMInfoImgs.Help14_2, Path.BefMInfoImgs.Help15_2, Path.BefMInfoImgs.Help16_2, Path.BefMInfoImgs.Help17_2, Path.BefMInfoImgs.Help18_2, Path.BefMInfoImgs.Help19_2 },
             { Path.BefMInfoImgs.Help1_3, Path.BefMInfoImgs.Help2_3, Path.BefMInfoImgs.Help3_3, Path.BefMInfoImgs.Help4_3, Path.BefMInfoImgs.Help5_3, Path.BefMInfoImgs.Help6_3, Path.BefMInfoImgs.Help7_3, Path.BefMInfoImgs.Help8_3, Path.BefMInfoImgs.Help9_3, Path.BefMInfoImgs.Help10_3, Path.BefMInfoImgs.Help11_3, Path.BefMInfoImgs.Help12_3, Path.BefMInfoImgs.Help13_3, Path.BefMInfoImgs.Help14_3, Path.BefMInfoImgs.Help15_3, Path.BefMInfoImgs.Help16_3, Path.BefMInfoImgs.Help17_3, Path.BefMInfoImgs.Help18_3, Path.BefMInfoImgs.Help19_3 } };
-            for (Byte i = 0; i < imgs.Length; i++) if (sender.Equals(imgs[i])) imgs[i].Source = Bmper(inf[i, Txt.Doc.InfoChange1]);
+            img.Source = Bmper(inf[Bits(img.Tag), Txt.Doc.InfoChange1]);
         }
         private void GameHint()
         {
@@ -6006,28 +6179,66 @@ namespace WpfApp1
             { Path.BefMInfoImgs.Help1_3, Path.BefMInfoImgs.Help2_3, Path.BefMInfoImgs.Help3_3, Path.BefMInfoImgs.Help4_3, Path.BefMInfoImgs.Help5_3, Path.BefMInfoImgs.Help6_3, Path.BefMInfoImgs.Help7_3, Path.BefMInfoImgs.Help8_3, Path.BefMInfoImgs.Help9_3, Path.BefMInfoImgs.Help10_3, Path.BefMInfoImgs.Help11_3, Path.BefMInfoImgs.Help12_3, Path.BefMInfoImgs.Help13_3, Path.BefMInfoImgs.Help14_3, Path.BefMInfoImgs.Help15_3, Path.BefMInfoImgs.Help16_3, Path.BefMInfoImgs.Help17_3, Path.BefMInfoImgs.Help18_3, Path.BefMInfoImgs.Help19_3 } };
             FastImgChange(new Image[] { InfoImg1, InfoImg2, InfoImg3 }, BmpersToX(Bmper(inf[0, Txt.Doc.InfoChange1]), Bmper(inf[1, Txt.Doc.InfoChange1]), Bmper(inf[2, Txt.Doc.InfoChange1])));
         }
-        private void GameStartBtns_MouseEnter(object sender, MouseEventArgs e) { if (sender.Equals(Button1)) NewAdv.Source = Bmper(Path.Adv.AfterNewAdv); else ConAdv.Source = Bmper(Path.Adv.AfterConAdv); }
-        private void GameStartBtns_MouseLeave(object sender, MouseEventArgs e) { if (sender.Equals(Button1)) NewAdv.Source = Bmper(Path.Adv.BeforeNewAdv); else ConAdv.Source = Bmper(Path.Adv.BeforeConAdv); }
-        private void MediaErrorEncountered(object sender, ExceptionRoutedEventArgs e) { throw new Exception("The video got some Exception! Read the message: " + e); }
+        private void GameStartBtns_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Image img = ((Button)sender).Content as Image;
+            img.Source = Bmper(sender.Equals(Button1) ? Path.Adv.AfterNewAdv : Path.Adv.AfterConAdv);
+        }
+        private void GameStartBtns_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Image img = ((Button)sender).Content as Image;
+            img.Source = Bmper(sender.Equals(Button1) ? Path.Adv.BeforeNewAdv : Path.Adv.BeforeConAdv);
+        }
+        private void MediaErrorEncountered(object sender, ExceptionRoutedEventArgs e)
+        {
+            throw new Exception("The video got some Exception! Read the message: \n" + e);
+        }
         private void Learn_Click(object sender, RoutedEventArgs e)
         {
-            Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
-            SelectedTrgt = Sets.SelectedTarget;
-            SelectTarget();
-            AbilitiesMakeDisappear1();
-            BtnShowX(new Button[] { ACT4, Cancel2 });
+            if (Super1.CurrentAP >= 2)
+            {
+                Sets.SelectedTarget = Bits(Sets.SelectedTarget > 2 ? 0 : Sets.SelectedTarget);
+                SelectedTrgt = Sets.SelectedTarget;
+                SelectTarget();
+                AnyHide(SkillsMenu);
+                AnyShowX(SelectMenuSkills, ACT4);
+            }
         }
         private void ACT4_Click(object sender, RoutedEventArgs e)
         {
             LearnFoe();
             Super1.CurrentAP -= 2;
             CurrentAPcalculate();
-            AnyHideX(BattleText1, HPenemyBar, HPenemy, TrgtImg, EnemyImg, ACT4, Cancel2);
+            AnyHideX(EnemyStatus, TrgtImg, SelectMenuSkills, ACT4);
             Dj(Path.GameNoises.Learn);
             TimerOn(ref Pearn, new TimeSpan(0,0,0,0,Shrt(25/GameSpeed.Value)));
             TimerOff(ref Targt);
         }
         private void Skip1_MouseEnter(object sender, MouseEventArgs e) { SkipImg.Source = Bmper(Path.Adv.AfterSkip); }
         private void Skip1_MouseLeave(object sender, MouseEventArgs e) { SkipImg.Source = Bmper(Path.Adv.BeforeSkip); }
+
+        private void Genocide_Click(object sender, RoutedEventArgs e)
+        {
+            AnyShow(AutoTurn);
+            AnyHide(FightMenu);
+            BadTime();
+        }
+
+        private void AutoTurn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Button b = sender as Button;
+            b.Background = new SolidColorBrush(Color.FromArgb(255, 155, 15, 15));
+        }
+
+        private void AutoTurn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Button b = sender as Button;
+            b.Background = new SolidColorBrush(Color.FromArgb(255, 6, 79, 236));
+        }
+
+        private void AutoTurn_Click(object sender, RoutedEventArgs e)
+        {
+            AnyHide((Button)sender);
+        }
     }
 }
